@@ -1,6 +1,6 @@
 # The PROCESS Module
 
-[![RSD](https://img.shields.io/badge/rsd-jaspProcess-00a3e3.svg)](https://research-software-directory.org/software/jaspProcess)
+[![RSD](https://img.shields.io/badge/rsd-jaspProcess-00a3e3.svg)](https://research-software-directory.org/software/jaspprocess)
 
 A JASP implementation of the PROCESS macro for SPSS developed by Andrew Hayes. Test and compare causal and conditional process models using mediation, moderation, and moderated mediation analyses.
 
