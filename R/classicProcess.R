@@ -102,7 +102,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     independent <- path[["processIndependent"]]
     type <- path[["processType"]]
     processVariable <- path[["processVariable"]]
-    
+
     # Init list for regression of new dependent var
     # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
     if (!dependent %in% names(regList)) {
@@ -111,7 +111,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # Add independent var to regression of dependent var
     regList <- .procAddLavModVar(regList, dependent, independent)
-    
+
     # Add process var to regression of dependent var
     regList <- .procAddLavModVar(regList, dependent, processVariable)
 
@@ -129,6 +129,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Add interaction independent x moderator var to regression of dependent var
       interVar <- paste0(independent, ":", processVariable)
       regList <- .procAddLavModVar(regList, dependent, interVar)
+    }
+
+    if (type == "confounders") {
+      # Add extra regression equation where confounder -> independent variable
+      regList[[independent]] = list(vars = c(), dep = TRUE)
+      regList <- .procAddLavModVar(regList, independent, processVariable)
     }
   }
 
@@ -206,7 +212,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   } else {
     mainContainer <- createJaspContainer("Model fit tables")
     mainContainer$dependOn(.procGetDependencies())
-    
+
     jaspResults[["procMainContainer"]] <- mainContainer
   }
 
@@ -238,21 +244,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procTableSthElse <- function(jaspResults, options, procResults) {
   if (!is.null(jaspResults[["procMainContainer"]][["procTable2"]])) return()
-  
+
   # Below is one way of creating a table
   procTable2 <- createJaspTable(title = "proc Table Something Else")
   procTable2$dependOnOptions(c("variables", "someotheroption"))
-  
+
   # Bind table to jaspResults
   jaspResults[["procMainContainer"]][["procTable2"]] <- procTable2
-  
+
   # Add column info
   procTable2$addColumnInfo(name = "hallo", title = "Hallo", type = "string")
   procTable2$addColumnInfo(name = "doei",  title = "Doei",  type = "string")
-  
+
   # Calculate some data from results
   procSummary <- summary(procResults$someObject)
-  
+
   # Add data per column. Calculations are allowed here too!
   procTable2[["hallo"]] <- ifelse(procSummary$hallo > 1, "Hallo!", "Hello!")
   procTable2[["doei"]]  <- procSummary$doei^2
@@ -293,7 +299,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPlot <- createJaspPlot(title = "proc Plot", height = 320, width = 480)
   procPlot$dependOnOptions(c("variables", "someotheroption"))
-  
+
   # Bind plot to jaspResults
   jaspResults[["procPlot"]] <- procPlot
 
