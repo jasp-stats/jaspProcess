@@ -112,8 +112,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Add independent var to regression of dependent var
     regList <- .procAddLavModVar(regList, dependent, independent)
 
+    if (type != "directs") {
     # Add process var to regression of dependent var
     regList <- .procAddLavModVar(regList, dependent, processVariable)
+    }
 
     if (type == "mediators") {
       # Init list for regression of new process var var
@@ -126,7 +128,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     if (type == "moderators") {
-      # Add interaction independent x moderator var to regression of dependent var
+      # Add interaction independent x moderator var to regress on dependent var
       interVar <- paste0(independent, ":", processVariable)
       regList <- .procAddLavModVar(regList, dependent, interVar)
     }
