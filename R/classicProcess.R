@@ -301,6 +301,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(rev(pos))
 }
 
+# .procModGraphLayoutPosHelper <- function(layout)
+
 .procMainGraphLayoutMedPosHelper <- function(medPaths) {
   nMedPaths <- length(medPaths)
 
@@ -405,14 +407,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Calculate pos of hidden helper node as average between indep and dep node pos
       nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
       # Moderator pos has same x pos as hidden helper node
-      modPos <- c(nodePosI[1], max(layout[, 2]) + 1)
+      # y pos is chosen so that graph is balanced out
+      modPosY <- ifelse(abs(max(layout[, 2])) > abs(min(layout[, 2])), min(layout[, 2]) - 1, max(layout[, 2]) + 1)
+      modPos <- c(nodePosI[1], modPosY)
       # Append to node names and layout
       if (type == "conceptual") {
         nodeNames <- c(nodeNames, mods[i], paste0("i", i))
         layout <- rbind(layout, modPos, nodePosI)
       } else {
-        # Place interaction term above moderator node
-        intPos <- c(nodePosI[1], max(layout[, 2]) + 2)
+        # Place interaction term above/below moderator node
+        intPos <- c(nodePosI[1], modPosY + ifelse(modPosY > 0, 1, -1))
         nodeNames <- c(nodeNames, mods[i], paths[isIntPath, 1][i])
         layout <- rbind(layout, modPos, intPos)
       }
