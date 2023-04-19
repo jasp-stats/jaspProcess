@@ -33,6 +33,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   mainContainer <- .procContainerMain(jaspResults, options, procResults)
 
   .procConceptPathPlot(jaspResults, options, procResults)
+  .procStatPathPlot(jaspResults, options, procResults)
 
   # .procTableSomething(jaspResults, options, procResults)
   # .procTableSthElse(  jaspResults, options, procResults)
@@ -272,7 +273,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(.procGetDependencies())
   jaspResults[["conceptPathPlot"]] <- procPathPlot
-  procPathPlot$plotObject <- .procLavToGraph(procResults, options)
+  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", options)
+}
+
+.procStatPathPlot <- function(jaspResults, options, procResults) {
+  if (!is.null(jaspResults[["statPathPlot"]])) return()
+
+  procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
+  procPathPlot$dependOn(.procGetDependencies())
+  jaspResults[["statPathPlot"]] <- procPathPlot
+  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", options)
 }
 
 .procMainGraphLayoutPosHelper <- function(nNodes) {
@@ -347,7 +357,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(layout)
 }
 
-.procLavToGraph <- function(procResults, options) {
+.procLavToGraph <- function(procResults, type, options) {
   # Get table with SEM pars from lavaan model
   parTbl <- procResults@ParTable
 
@@ -367,11 +377,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   indeps <- sapply(intPathsSplit, function(path) path[1])
 
   # Create matrix with moderator paths
-  # Adds a path from moderator to helper node "iX" which will be invisible
-  modPaths <- matrix(c(mods, paste0("i", 1:length(mods))), ncol = 2)
-
+  if (type == "conceptual") {
+    # Adds paths from moderators to helper nodes "iX" which will be invisible
+    modPaths <- matrix(c(mods, paste0("i", 1:length(mods))), ncol = 2)
+  } else {
+    # Paths from moderator and interaction term to dep var node
+    modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
+  }
   # Filter out non-moderation paths -> main paths
-  mainPaths <- matrix(paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], ], ncol = 2)
+  mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
 
   # Get layout of main paths: matrix with x,y coordinates for each node
   layout <- .procMainGraphLayout(mainPaths, decodeColNames(options[["dependent"]]))
@@ -393,8 +407,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Moderator pos has same x pos as hidden helper node
       modPos <- c(nodePosI[1], max(layout[, 2]) + 1)
       # Append to node names and layout
-      nodeNames <- c(nodeNames, mods[i], paste0("i", i))
-      layout <- rbind(layout, modPos, nodePosI)
+      if (type == "conceptual") {
+        nodeNames <- c(nodeNames, mods[i], paste0("i", i))
+        layout <- rbind(layout, modPos, nodePosI)
+      } else {
+        # Place interaction term above moderator node
+        intPos <- c(nodePosI[1], max(layout[, 2]) + 2)
+        nodeNames <- c(nodeNames, mods[i], paths[isIntPath, 1][i])
+        layout <- rbind(layout, modPos, intPos)
+      }
     }
   }
 
