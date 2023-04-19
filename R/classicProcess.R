@@ -32,7 +32,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Output containers, tables, and plots based on the results. These functions should not return anything!
   mainContainer <- .procContainerMain(jaspResults, options, procResults)
 
-  .procPathPlot(jaspResults, options, procResults)
+  .procConceptPathPlot(jaspResults, options, procResults)
 
   # .procTableSomething(jaspResults, options, procResults)
   # .procTableSthElse(  jaspResults, options, procResults)
@@ -113,8 +113,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     regList <- .procAddLavModVar(regList, dependent, independent)
 
     if (type != "directs") {
-    # Add process var to regression of dependent var
-    regList <- .procAddLavModVar(regList, dependent, processVariable)
+      # Add process var to regression of dependent var
+      regList <- .procAddLavModVar(regList, dependent, processVariable)
     }
 
     if (type == "mediators") {
@@ -266,34 +266,172 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   procTable2[["doei"]]  <- procSummary$doei^2
 }
 
-.procPathPlot <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["pathPlot"]])) return()
+.procConceptPathPlot <- function(jaspResults, options, procResults) {
+  if (!is.null(jaspResults[["conceptPathPlot"]])) return()
 
-  procPathPlot <- createJaspPlot(title = gettext("Path plot"), height = 320, width = 480)
+  procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(.procGetDependencies())
-  jaspResults[["pathPlot"]] <- procPathPlot
-  procPathPlot$plotObject <- .procPathPlotHelper(procResults, options)
+  jaspResults[["conceptPathPlot"]] <- procPathPlot
+  procPathPlot$plotObject <- .procLavToGraph(procResults, options)
 }
 
-.procPathPlotHelper <- function(procResults, options) {
-  plotObject <- jaspSem:::.medLavToPlotObj(procResults, options)
+.procMainGraphLayoutPosHelper <- function(nNodes) {
+  # This function positions nodes alternatingly above and below zero with increasing distance
+  # Positions a single node a zero
+  if (nNodes == 1) return(0)
 
-  parTable <- procResults@ParTable
+  if (nNodes %% 2 == 0) {
+    nNodesHalf <- nNodes/2
+    pos <- -nNodesHalf:nNodesHalf
+  } else {
+    nNodesHalf <- floor(nNodes/2)
+    pos <- -nNodesHalf:(nNodesHalf+1)
+  }
+  pos <- pos[pos != 0]
+  return(rev(pos))
+}
 
-  nPars <- length(parTable[["label"]][parTable[["label"]] != ""])
+.procMainGraphLayoutMedPosHelper <- function(medPaths) {
+  nMedPaths <- length(medPaths)
 
-  p <- jaspBase:::.suppressGrDevice(semPlot::semPaths(
-    object         = plotObject,
-    intercepts     = FALSE,
-    residuals      = TRUE,
-    thresholds     = FALSE,
-    whatLabels     = "name",
-    border.width   = 1.5,
+  medPos <- list()
+  # Calc y pos of mediator nodes
+  medPosY <- .procMainGraphLayoutPosHelper(nMedPaths)
+
+  if (nMedPaths > 0) {
+    # Only set pos for nodes that have no pos yet
+    for (i in 1:nMedPaths) {
+      meds <- medPaths[[i]]
+      meds <- meds[!meds %in% names(medPos)]
+      nMeds <- length(meds)
+      if (nMeds > 0) {
+        for (j in 1:nMeds) {
+          medPos[[meds[j]]] <- c(j, medPosY[i])
+        }
+      }
+    }
+  }
+
+  return(t(sapply(medPos, function(x) x)))
+}
+
+.procMainGraphLayout <- function(mainPaths, depVar) {
+  # Create graph from path matrix
+  graph <- igraph::graph_from_edgelist(mainPaths)
+  nodeNames <- igraph::get.vertex.attribute(graph, "name")
+
+  # Get indices of exogeneous nodes (no incoming paths)
+  exoIdx <- which(!nodeNames %in% mainPaths[, 2])
+  depIdx <- which(nodeNames == depVar)
+
+  # Get all simple paths (each node only visited once) from exo nodes to dep var node
+  medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx], to = nodeNames[depIdx])
+  medPathLengths <- sapply(medPaths, length)
+  # Exclude X and Y from paths
+  medPaths <- lapply(medPaths, function(path) names(path)[names(path) %in% nodeNames[-c(exoIdx, depIdx)]])
+  # Sort paths according to length (longest at top)
+  medPaths <- medPaths[sort(medPathLengths, decreasing = TRUE, index.return = TRUE)$ix]
+
+  # Calc pos of exo nodes
+  exoPos <- matrix(c(rep(0, length(exoIdx)), .procMainGraphLayoutPosHelper(length(exoIdx))), ncol = 2)
+  # Set y pos of first exo node to 0
+  exoPos[1, 2] <- 0
+  depPos <- c(max(medPathLengths)-1, 0)
+
+  # Calc pos of mediator nodes
+  medPos <- .procMainGraphLayoutMedPosHelper(medPaths)
+
+  # Combine pos
+  layout <- rbind(exoPos, depPos, medPos)
+  rownames(layout) <- c(nodeNames[c(exoIdx, depIdx)], rownames(medPos))
+  return(layout)
+}
+
+.procLavToGraph <- function(procResults, options) {
+  # Get table with SEM pars from lavaan model
+  parTbl <- procResults@ParTable
+
+  # Create path matrix where first col is "from" and second col is "to"
+  paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs))[parTbl$op == "~"], ncol = 2)
+
+  # Check if "from" contains interaction term
+  isIntPath <- grepl(":", paths[, 1])
+
+  # Split interaction terms
+  intPathsSplit <- strsplit(paths[isIntPath, 1], ":")
+
+  # Get moderator vars from interaction terms
+  mods <- sapply(intPathsSplit, function(path) path[2])
+
+  # Get independent vars from interaction terms
+  indeps <- sapply(intPathsSplit, function(path) path[1])
+
+  # Create matrix with moderator paths
+  # Adds a path from moderator to helper node "iX" which will be invisible
+  modPaths <- matrix(c(mods, paste0("i", 1:length(mods))), ncol = 2)
+
+  # Filter out non-moderation paths -> main paths
+  mainPaths <- matrix(paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], ], ncol = 2)
+
+  # Get layout of main paths: matrix with x,y coordinates for each node
+  layout <- .procMainGraphLayout(mainPaths, decodeColNames(options[["dependent"]]))
+
+  # Node names are in rownames
+  nodeNames <- rownames(layout)
+
+  # Combine main paths and moderator paths
+  if (sum(isIntPath) > 0) mainPaths <- rbind(mainPaths, modPaths)
+
+  # Add layout of moderator nodes
+  if (length(mods) > 0) {
+    for (i in 1:length(mods)) {
+      # Get index of independent and dependent node in layout
+      idxIndep <- which(nodeNames == indeps[i])
+      idxDep <- which(nodeNames == paths[isIntPath, 2][i])
+      # Calculate pos of hidden helper node as average between indep and dep node pos
+      nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
+      # Moderator pos has same x pos as hidden helper node
+      modPos <- c(nodePosI[1], max(layout[, 2]) + 1)
+      # Append to node names and layout
+      nodeNames <- c(nodeNames, mods[i], paste0("i", i))
+      layout <- rbind(layout, modPos, nodePosI)
+    }
+  }
+
+  # Order of node labels as in qgraph
+  graphNodeNames <- unique(as.vector(mainPaths))
+  # Get idx of hidden helper node (to make it invisible)
+  graphIntIdx <- grepl("i[[:digit:]]", graphNodeNames)
+
+  # Calc node size depending on number of nodes
+  nodeSize <- rep(round(8*exp(-nrow(layout)/80)+1), length(graphNodeNames))
+  # Make hidden helper node invisible step 1
+  nodeSize[graphIntIdx] <- 0
+
+  # Invisible node must be circle, otherwise incoming edges are omitted (qgraph bug)
+  nodeShape <- rep("square", length(graphNodeNames))
+  nodeShape[graphIntIdx] <- "circle"
+
+  # Make hidden helper node invisible step 2
+  nodeLabels <- graphNodeNames
+  nodeLabels[graphIntIdx] <- ""
+
+  g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
+    mainPaths,
+    layout = layout[match(graphNodeNames, nodeNames), ], # match order of layout
+    vsize = nodeSize,
+    shape = nodeShape,
+    labels = TRUE,
+    border.width = 1.5,
     edge.label.cex = 1.2,
-    lty            = 2,
-    sizeMan        = round(8*exp(-nPars/80)+1)
+    edge.color = "black"
   ))
-  return (p)
+
+  # There seems to be a bug in qgraph where specifying labels
+  # in the initial function call does not work
+  g$graphAttributes$Nodes$labels <- nodeLabels
+
+  return(g)
 }
 
 .procPlotSomething <- function(jaspResults, options, procResults) {

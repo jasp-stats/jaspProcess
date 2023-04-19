@@ -107,12 +107,12 @@ Form
 							anchors.margins: 	jaspTheme.contentMargin
 							Label 
 							{
-								text: qsTr("To")
+								text: qsTr("From")
 								Layout.preferredWidth: modelsGroup.colWidth
 							}
 							Label
 							{
-								text: qsTr("From")
+								text: qsTr("To")
 								Layout.preferredWidth: modelsGroup.colWidth
 							}
 							Label
@@ -141,17 +141,17 @@ Form
 								Layout.columnSpan: 4
 								DropDown
 								{
-									id: 				procDep
-									name: 				'processDependent'
-									source: 			['dependent', "processVariable"]
+									id: 				procIndep
+									name: 				'processIndependent'
+									source: 			['covariates', 'factors']
 									controlMinWidth: 	modelsGroup.colWidth
 									addEmptyValue: 		true
 								}
 								DropDown
 								{
-									id: 				procIndep
-									name: 				'processIndependent'
-									source: 			['covariates', 'factors']
+									id: 				procDep
+									name: 				'processDependent'
+									source: 			['dependent', "processVariable"]
 									controlMinWidth: 	modelsGroup.colWidth
 									addEmptyValue: 		true
 								}							
@@ -202,6 +202,23 @@ Form
 										relations.addItemManually = Qt.binding(enableAddItemManually)
 									}
 								}
+							}
+						}
+
+						Group
+						{
+							title: qsTr("Path plots")
+							columns: 2
+							CheckBox
+							{
+								name: "conceptualPathPlot"
+								label: qsTr("Conceptual")
+								checked: true
+							}
+							CheckBox
+							{
+								name: "statisticalPathPlot"
+								label: qsTr("Statistical")
 							}
 						}
 					}
