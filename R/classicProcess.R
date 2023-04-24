@@ -30,10 +30,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   procResults <- .procComputeResults(jaspResults, dataset, options)
 
   # Output containers, tables, and plots based on the results. These functions should not return anything!
-  mainContainer <- .procContainerMain(jaspResults, options, procResults)
+  parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
+  pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
 
-  .procConceptPathPlot(jaspResults, options, procResults)
-  .procStatPathPlot(jaspResults, options, procResults)
+  .procConceptPathPlot(pathPlotContainer, options, procResults)
+  .procStatPathPlot(pathPlotContainer, options, procResults)
+
+  .procPathCoefficientsTable(parEstContainer, options, procResults)
 
   # .procTableSomething(jaspResults, options, procResults)
   # .procTableSthElse(  jaspResults, options, procResults)
@@ -209,79 +212,83 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 # Output functions ----
 # These are not in use for now, but left here as orientation for later
-.procContainerMain <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procMainContainer"]])) {
-    mainContainer <- jaspResults[["procMainContainer"]]
+.procContainerParameterEstimates <- function(jaspResults, options) {
+  if (!is.null(jaspResults[["parEstContainer"]])) {
+    parEstContainer <- jaspResults[["parEstContainer"]]
   } else {
-    mainContainer <- createJaspContainer("Model fit tables")
-    mainContainer$dependOn(.procGetDependencies())
+    parEstContainer <- createJaspContainer("Parameter estimates")
+    parEstContainer$dependOn(.procGetDependencies())
 
-    jaspResults[["procMainContainer"]] <- mainContainer
+    jaspResults[["parEstContainer"]] <- parEstContainer
   }
 
-  return(mainContainer)
+  return(parEstContainer)
 }
 
-.procTableSomething <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procMainContainer"]][["procTable"]])) return()
+.procContainerPathPlots <- function(jaspResults, options) {
+  if (!is.null(jaspResults[["pathPlotContainer"]])) {
+    pathPlotContainer <- jaspResults[["pathPlotContainer"]]
+  } else {
+    pathPlotContainer <- createJaspContainer("Path plots")
+    pathPlotContainer$dependOn(.procGetDependencies())
+
+    jaspResults[["pathPlotContainer"]] <- pathPlotContainer
+  }
+
+  return(pathPlotContainer)
+}
+
+.procPathCoefficientsTable <- function(container, options, procResults) {
+  if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   # Below is one way of creating a table
-  procTable <- createJaspTable(title = "proc Table")
-  procTable$dependOnOptions(c("variables", "someotheroption")) # not strictly necessary because container
+  pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
+  pathCoefTable$dependOn(.procGetDependencies())
 
-  # Bind table to jaspResults
-  jaspResults[["procMainContainer"]][["procTable"]] <- procTable
+  container[["pathCoefficientsTable"]] <- pathCoefTable
 
-  # Add column info
-  procTable$addColumnInfo(name = "chisq",  title = "\u03a7\u00b2", type = "number", format = "sf:4")
-  procTable$addColumnInfo(name = "pvalue", title = "p",            type = "number", format = "dp:3;p:.001")
-  procTable$addColumnInfo(name = "BF",     title = "Bayes Factor", type = "number", format = "sf:4")
-  procTable$addColumnInfo(name = "sth",    title = "Some Title",   type = "string")
+  pathCoefs <- lavaan::parameterEstimates(procResults)
 
-  # Add data per column
-  procTable[["chisq"]]  <- procResults$column1
-  procTable[["pvalue"]] <- procResults$column2
-  procTable[["BF"]]     <- procResults$column3
-  procTable[["sth"]]    <- procResults$sometext
+  pathCoefTable$addColumnInfo(name = "lhs",      title = "",                    type = "string")
+  pathCoefTable$addColumnInfo(name = "op",       title = "",                    type = "string")
+  pathCoefTable$addColumnInfo(name = "rhs",      title = "",                    type = "string")
+  pathCoefTable$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  pathCoefTable$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  pathCoefTable$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  pathCoefTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  pathCoefTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+  pathCoefTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+
+  pathCoefs <- pathCoefs[pathCoefs$op == "~",]
+
+  pathCoefTable[["lhs"]]      <- pathCoefs$rhs
+  pathCoefTable[["op"]]       <- rep("\u2192", nrow(pathCoefs))
+  pathCoefTable[["rhs"]]      <- pathCoefs$lhs
+  pathCoefTable[["est"]]      <- pathCoefs$est
+  pathCoefTable[["se"]]       <- pathCoefs$se
+  pathCoefTable[["z"]]        <- pathCoefs$z
+  pathCoefTable[["pvalue"]]   <- pathCoefs$pvalue
+  pathCoefTable[["ci.lower"]] <- pathCoefs$ci.lower
+  pathCoefTable[["ci.upper"]] <- pathCoefs$ci.upper
 }
 
-.procTableSthElse <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procMainContainer"]][["procTable2"]])) return()
-
-  # Below is one way of creating a table
-  procTable2 <- createJaspTable(title = "proc Table Something Else")
-  procTable2$dependOnOptions(c("variables", "someotheroption"))
-
-  # Bind table to jaspResults
-  jaspResults[["procMainContainer"]][["procTable2"]] <- procTable2
-
-  # Add column info
-  procTable2$addColumnInfo(name = "hallo", title = "Hallo", type = "string")
-  procTable2$addColumnInfo(name = "doei",  title = "Doei",  type = "string")
-
-  # Calculate some data from results
-  procSummary <- summary(procResults$someObject)
-
-  # Add data per column. Calculations are allowed here too!
-  procTable2[["hallo"]] <- ifelse(procSummary$hallo > 1, "Hallo!", "Hello!")
-  procTable2[["doei"]]  <- procSummary$doei^2
-}
-
-.procConceptPathPlot <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["conceptPathPlot"]])) return()
+.procConceptPathPlot <- function(container, options, procResults) {
+  if (!is.null(container[["conceptPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(.procGetDependencies())
-  jaspResults[["conceptPathPlot"]] <- procPathPlot
+  container[["conceptPathPlot"]] <- procPathPlot
   procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", estimates = FALSE, options)
 }
 
-.procStatPathPlot <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["statPathPlot"]])) return()
+.procStatPathPlot <- function(container, options, procResults) {
+  if (!is.null(container[["statPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(c(.procGetDependencies(), "statisticalPathPlotsParameterEstimates"))
-  jaspResults[["statPathPlot"]] <- procPathPlot
+  container[["statPathPlot"]] <- procPathPlot
   procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
 
@@ -367,7 +374,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procLavToGraph <- function(procResults, type, estimates, options) {
   # Get table with SEM pars from lavaan model
-  parTbl <- procResults@ParTable
+  parTbl <- lavaan::parameterTable(procResults)
 
   # Create path matrix where first col is "from" and second col is "to", third col is estimate
   labelField <- ifelse(estimates, "est", "label")
@@ -490,16 +497,4 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   g$graphAttributes$Nodes$labels <- abbreviate(nodeLabels, minlength = 3)
 
   return(g)
-}
-
-.procPlotSomething <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procPlot"]])) return()
-
-  procPlot <- createJaspPlot(title = "proc Plot", height = 320, width = 480)
-  procPlot$dependOnOptions(c("variables", "someotheroption"))
-
-  # Bind plot to jaspResults
-  jaspResults[["procPlot"]] <- procPlot
-
-  procPlot$plotObject <- plot(procResults$someObject)
 }

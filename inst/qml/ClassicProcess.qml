@@ -297,6 +297,18 @@ Form
 
 	Section
 	{
+		title: qsTr("Options")
+		columns: 2
+
+		CIField
+		{
+			name: "ciLevel"
+			label: qsTr("Confidence intervals")
+		}
+	}
+
+	Section
+	{
 		title: qsTr("Plots")
 		columns: 2
 
