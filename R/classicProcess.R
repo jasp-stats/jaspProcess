@@ -458,9 +458,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   nodeLabels <- graphNodeNames
   nodeLabels[graphIntIdx] <- ""
 
-  print("HELLL")
-  print(mainPaths)
-
   edge_color <- rep("black", nrow(mainPaths))
 
   # Hide helper edge for single moderator
@@ -476,8 +473,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (estimates) edge_labels <- round(as.numeric(edge_labels), 3)
   }
 
-  print(layout)
-
   g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
     mainPaths[, 1:2, drop = FALSE],
     layout = layout[match(graphNodeNames, nodeNames), ], # match order of layout
@@ -492,7 +487,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # There seems to be a bug in qgraph where specifying labels
   # in the initial function call does not work
-  g$graphAttributes$Nodes$labels <- nodeLabels
+  g$graphAttributes$Nodes$labels <- abbreviate(nodeLabels, minlength = 3)
 
   return(g)
 }
