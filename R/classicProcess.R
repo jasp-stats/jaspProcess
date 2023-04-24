@@ -273,16 +273,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(.procGetDependencies())
   jaspResults[["conceptPathPlot"]] <- procPathPlot
-  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", options)
+  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", estimates = FALSE, options)
 }
 
 .procStatPathPlot <- function(jaspResults, options, procResults) {
   if (!is.null(jaspResults[["statPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
-  procPathPlot$dependOn(.procGetDependencies())
+  procPathPlot$dependOn(c(.procGetDependencies(), "statisticalPathPlotsParameterEstimates"))
   jaspResults[["statPathPlot"]] <- procPathPlot
-  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", options)
+  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
 
 .procMainGraphLayoutPosHelper <- function(nNodes) {
@@ -337,9 +337,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   depIdx <- which(nodeNames == depVar)
 
   # Get all simple paths (each node only visited once) from exo nodes to dep var node
-  medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx], to = nodeNames[depIdx])
+  medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx][1], to = nodeNames[depIdx], mode = "out")
   medPathLengths <- sapply(medPaths, length)
   # Exclude X and Y from paths
+  print(medPaths)
   medPaths <- lapply(medPaths, function(path) names(path)[names(path) %in% nodeNames[-c(exoIdx, depIdx)]])
   # Sort paths according to length (longest at top)
   medPaths <- medPaths[sort(medPathLengths, decreasing = TRUE, index.return = TRUE)$ix]
@@ -354,17 +355,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   medPos <- .procMainGraphLayoutMedPosHelper(medPaths)
 
   # Combine pos
-  layout <- rbind(exoPos, depPos, medPos)
-  rownames(layout) <- c(nodeNames[c(exoIdx, depIdx)], rownames(medPos))
+  if (length(medPos) > 0) {
+    layout <- rbind(exoPos, depPos, medPos)
+    rownames(layout) <- c(nodeNames[c(exoIdx, depIdx)], rownames(medPos))
+  } else {
+    layout <- rbind(exoPos, depPos)
+    rownames(layout) <- nodeNames[c(exoIdx, depIdx)]
+  }
   return(layout)
 }
 
-.procLavToGraph <- function(procResults, type, options) {
+.procLavToGraph <- function(procResults, type, estimates, options) {
   # Get table with SEM pars from lavaan model
   parTbl <- procResults@ParTable
 
-  # Create path matrix where first col is "from" and second col is "to"
-  paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs))[parTbl$op == "~"], ncol = 2)
+  # Create path matrix where first col is "from" and second col is "to", third col is estimate
+  labelField <- ifelse(estimates, "est", "label")
+  paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs), parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
 
   # Check if "from" contains interaction term
   isIntPath <- grepl(":", paths[, 1])
@@ -381,7 +388,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create matrix with moderator paths
   if (type == "conceptual") {
     # Adds paths from moderators to helper nodes "iX" which will be invisible
-    modPaths <- matrix(c(mods, paste0("i", 1:length(mods))), ncol = 2)
+    modPaths <- matrix(c(mods, paste0("i", 1:length(mods)), ""), ncol = 3)
+
+    # Add hidden path for single moderator (fixes qgraph bug)
+    if (nrow(modPaths) == 1 && nrow(paths) == 3) {
+      modPaths <- rbind(modPaths, paths[paths[, 1] %in% mods, , drop = FALSE])
+    }
   } else {
     # Paths from moderator and interaction term to dep var node
     modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
@@ -390,13 +402,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
 
   # Get layout of main paths: matrix with x,y coordinates for each node
-  layout <- .procMainGraphLayout(mainPaths, decodeColNames(options[["dependent"]]))
+  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], decodeColNames(options[["dependent"]]))
 
   # Node names are in rownames
   nodeNames <- rownames(layout)
 
   # Combine main paths and moderator paths
   if (sum(isIntPath) > 0) mainPaths <- rbind(mainPaths, modPaths)
+
+  # Remove duplicate paths
+  mainPaths <- mainPaths[!duplicated(mainPaths), ]
 
   # Add layout of moderator nodes
   if (length(mods) > 0) {
@@ -424,32 +439,55 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   # Order of node labels as in qgraph
-  graphNodeNames <- unique(as.vector(mainPaths))
+  graphNodeNames <- unique(as.vector(mainPaths[, 1:2, drop = FALSE]))
   # Get idx of hidden helper node (to make it invisible)
   graphIntIdx <- grepl("i[[:digit:]]", graphNodeNames)
 
+  nNodes <- length(graphNodeNames)
+
   # Calc node size depending on number of nodes
-  nodeSize <- rep(round(8*exp(-nrow(layout)/80)+1), length(graphNodeNames))
+  nodeSize <- rep(round(8*exp(-nrow(layout)/80)+1), nNodes)
   # Make hidden helper node invisible step 1
   nodeSize[graphIntIdx] <- 0
 
   # Invisible node must be circle, otherwise incoming edges are omitted (qgraph bug)
-  nodeShape <- rep("square", length(graphNodeNames))
+  nodeShape <- rep("square", nNodes)
   nodeShape[graphIntIdx] <- "circle"
 
   # Make hidden helper node invisible step 2
   nodeLabels <- graphNodeNames
   nodeLabels[graphIntIdx] <- ""
 
+  print("HELLL")
+  print(mainPaths)
+
+  edge_color <- rep("black", nrow(mainPaths))
+
+  # Hide helper edge for single moderator
+  if (nrow(modPaths) == 2 && nrow(mainPaths) == 3 && type == "conceptual") {
+    edge_color[3] <- "white"
+  }
+
+  if (type == "conceptual") {
+    edge_labels <- FALSE
+  } else {
+    edge_labels <- mainPaths[, 3]
+
+    if (estimates) edge_labels <- round(as.numeric(edge_labels), 3)
+  }
+
+  print(layout)
+
   g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
-    mainPaths,
+    mainPaths[, 1:2, drop = FALSE],
     layout = layout[match(graphNodeNames, nodeNames), ], # match order of layout
     vsize = nodeSize,
     shape = nodeShape,
     labels = TRUE,
     border.width = 1.5,
     edge.label.cex = 1.2,
-    edge.color = "black"
+    edge.color = edge_color,
+    edge.labels = edge_labels
   ))
 
   # There seems to be a bug in qgraph where specifying labels

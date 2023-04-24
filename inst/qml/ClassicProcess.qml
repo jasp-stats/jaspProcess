@@ -42,7 +42,26 @@ Form
 	Section
 	{
 		title: qsTr("Models")
-		columns: 2
+		columns: 1
+
+		Group
+		{
+			title: qsTr("Set for all models")
+
+			CheckBox
+			{
+				id:			conceptualPathPlotsForAllModels
+				name: 		"conceptualPathPlotsForAllModels"
+				label: 		qsTr("Conceptual path plots")
+				checked: 	true
+			}
+			CheckBox
+			{
+				id:			statisticalPathPlotsForAllModels
+				name: 		"statisticalPathPlotsForAllModels"
+				label: 		qsTr("Statistical path plots")
+			}
+		}
 
 		TabView
 		{
@@ -60,9 +79,9 @@ Form
 					RadioButtonGroup
 					{
 						name: 					"inputType"
-						title: 					qsTr("Input type")
+						title: 					qsTr("Input type for %1").arg(rowValue)
 						radioButtonsOnSameRow: 	true
-						columns: 				3
+						columns: 				2
 
 						RadioButton{
 							id: 		variables
@@ -74,11 +93,6 @@ Form
 							id: 	modelNumber
 							value: 	"inputModelNumber"
 							label: 	qsTr("Model number")
-						}
-						RadioButton{
-							id: 	syntax
-							value: 	"inputSyntax"
-							label: 	qsTr("Syntax")
 						}
 					}
 					Group
@@ -204,23 +218,6 @@ Form
 								}
 							}
 						}
-
-						Group
-						{
-							title: qsTr("Path plots")
-							columns: 2
-							CheckBox
-							{
-								name: "conceptualPathPlot"
-								label: qsTr("Conceptual")
-								checked: true
-							}
-							CheckBox
-							{
-								name: "statisticalPathPlot"
-								label: qsTr("Statistical")
-							}
-						}
 					}
 					Group
 					{
@@ -275,15 +272,38 @@ Form
 							}
 						}
 					}
-				}
-				TextArea 
-				{
-					name: 		"syntax"
-					width: 		models.width
-					textType: 	JASP.TextTypeLavaan
-					visible: 	syntax.checked
+
+					Group
+					{
+						title: qsTr("Path plots for %1").arg(rowValue)
+						columns: 2
+						CheckBox
+						{
+							name: "conceptualPathPlot"
+							label: qsTr("Conceptual")
+							checked: conceptualPathPlotsForAllModels.checked
+						}
+						CheckBox
+						{
+							name: "statisticalPathPlot"
+							label: qsTr("Statistical")
+							checked: statisticalPathPlotsForAllModels.checked
+						}
+					}
 				}
 			}
+		}
+	}
+
+	Section
+	{
+		title: qsTr("Plots")
+		columns: 2
+
+		CheckBox
+		{
+			name: "statisticalPathPlotsParameterEstimates"
+			label: qsTr("Parameter estimates")
 		}
 	}
 }
