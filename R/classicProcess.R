@@ -30,9 +30,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   procResults <- .procComputeResults(jaspResults, dataset, options)
 
   # Output containers, tables, and plots based on the results. These functions should not return anything!
-  mainContainer <- .procContainerMain(jaspResults, options, procResults)
+  parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
+  pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
 
-  .procConceptPathPlot(jaspResults, options, procResults)
+  .procConceptPathPlot(pathPlotContainer, options, procResults)
+  .procStatPathPlot(pathPlotContainer, options, procResults)
+
+  .procPathCoefficientsTable(parEstContainer, options, procResults)
+  .procPathMediationEffectsTable(parEstContainer, options, procResults)
 
   # .procTableSomething(jaspResults, options, procResults)
   # .procTableSthElse(  jaspResults, options, procResults)
@@ -107,50 +112,49 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   regList = list()
 
   if (modelOptions[["inputType"]] == "inputVariables") {
+    for (path in modelOptions[["processRelationships"]]) {
+      dependent <- path[["processDependent"]]
+      independent <- path[["processIndependent"]]
+      type <- path[["processType"]]
+      processVariable <- path[["processVariable"]]
 
-      for (path in modelOptions[["processRelationships"]]) {
-        dependent <- path[["processDependent"]]
-        independent <- path[["processIndependent"]]
-        type <- path[["processType"]]
-        processVariable <- path[["processVariable"]]
+      # Init list for regression of new dependent var
+      # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
+      if (!dependent %in% names(regList)) {
+        regList[[dependent]] = list(vars = c(), dep = TRUE)
+      }
 
-        # Init list for regression of new dependent var
-        # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
-        if (!dependent %in% names(regList)) {
-          regList[[dependent]] = list(vars = c(), dep = TRUE)
+      # Add independent var to regression of dependent var
+      regList <- .procAddLavModVar(regList, dependent, independent)
+
+      if (type != "directs") {
+        # Add process var to regression of dependent var
+        regList <- .procAddLavModVar(regList, dependent, processVariable)
+      }
+
+      if (type == "mediators") {
+        # Init list for regression of new process var var
+        if (!processVariable %in% names(regList)) {
+          # dep = FALSE to signal this is a mediator; this is used later when assigning par names
+          regList[[processVariable]] = list(vars = c(), dep = FALSE)
         }
+        # Add independent var to regression of process var
+        regList <- .procAddLavModVar(regList, processVariable, independent)
+      }
 
-        # Add independent var to regression of dependent var
-        regList <- .procAddLavModVar(regList, dependent, independent)
+      if (type == "moderators") {
+        # Add interaction independent x moderator var to regress on dependent var
+        interVar <- paste0(independent, ":", processVariable)
+        regList <- .procAddLavModVar(regList, dependent, interVar)
+      }
 
-        if (type != "directs") {
-          # Add process var to regression of dependent var
-          regList <- .procAddLavModVar(regList, dependent, processVariable)
-        }
-
-        if (type == "mediators") {
-          # Init list for regression of new process var var
-          if (!processVariable %in% names(regList)) {
-            # dep = FALSE to signal this is a mediator; this is used later when assigning par names
-            regList[[processVariable]] = list(vars = c(), dep = FALSE)
-          }
-          # Add independent var to regression of process var
-          regList <- .procAddLavModVar(regList, processVariable, independent)
-        }
-
-        if (type == "moderators") {
-          # Add interaction independent x moderator var to regress on dependent var
-          interVar <- paste0(independent, ":", processVariable)
-          regList <- .procAddLavModVar(regList, dependent, interVar)
-        }
-
-        if (type == "confounders") {
-          # Add extra regression equation where confounder -> independent variable
-          regList[[independent]] = list(vars = c(), dep = TRUE)
-          regList <- .procAddLavModVar(regList, independent, processVariable)
-        }
+      if (type == "confounders") {
+        # Add extra regression equation where confounder -> independent variable
+        regList[[independent]] = list(vars = c(), dep = TRUE)
+        regList <- .procAddLavModVar(regList, independent, processVariable)
       }
     }
+  }
 
   if (modelOptions[["inputType"]] == "inputModelNumber") {
 
@@ -161,21 +165,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modW         <- modelOptions[["modelNumberModeratorW"]]
     modZ         <- modelOptions[["modelNumberModeratorZ"]]
     number       <- modelOptions[["modelNumber"]]
-
-    print(dependent)
-    print(independent)
-    print(mediators)
-    print(covariates)
-    print(modW)
-    print(modZ)
-    print(modelOptions[["modelNumber"]])
-
-    print(length(dependent))
-    print(length(independent))
-    print(length(mediators))
-    print(length(covariates))
-    print(length(modW))
-    print(length(modZ))
 
     # # Check Hayes model nr. 1
     # if ((dependent  == "" | independent == "" | modW == "" |  modZ != "" |
@@ -234,8 +223,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     #                  not match with the (amount of) selected variables."))
     # }
 
-
-
     # Init list for regression of new dependent var
     # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
     if (!dependent %in% names(regList)) {
@@ -247,13 +234,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # account for multiple mediators
     if(length(mediators) != 0) {
-    #if (mediators != "") {
-    #if (!is.null(mediators) && mediators != "") {
+      #if (mediators != "") {
+      #if (!is.null(mediators) && mediators != "") {
 
       for (i in 1:length(mediators)) {
         # Init list for regression of new mediator i
         if (!mediators[i] %in% names(regList)) {
-         regList[[mediators[i]]] = list(vars = c(), dep = FALSE)
+          regList[[mediators[i]]] = list(vars = c(), dep = FALSE)
         }
         # Add independent var to regression of mediator i
         regList <- .procAddLavModVar(regList, mediators[i], independent)
@@ -278,12 +265,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     #if (covariates != "") {
     if(length(covariates) != 0) {
-    #if (!is.null(covariates) && covariates != "") {
-    # Add extra regression equation where covariate -> independent variable
+      #if (!is.null(covariates) && covariates != "") {
+      # Add extra regression equation where covariate -> independent variable
       for (i in 1:length(covariates)) {
 
-          #regList[[independent]] = list(vars = c(), dep = TRUE)
-          regList <- .procAddLavModVar(regList, dependent, covariates[i])
+        #regList[[independent]] = list(vars = c(), dep = TRUE)
+        regList <- .procAddLavModVar(regList, dependent, covariates[i])
       }
     }
   }
@@ -298,17 +285,45 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     collapse = "\n"
   )
 
-  # regSyntax <- paste(
-  #    paste0(names(regList)),
-  #    sapply(regList, function(row) paste(row$parNames, row$vars, sep = "*", collapse = " + ")),
-  #    sep = " ~ ",
-  #    collapse = "\n"
-  #  )
+  medEffectSyntax <- .procMedEffects(regList)
 
-  print(regSyntax)
+  return(paste(regSyntax, medEffectSyntax, sep = "\n"))
+}
 
-  return(regSyntax)
+.procMedEffects <- function(regList) {
+  # Get dep var
+  depVar <- names(regList)[sapply(regList, function(row) row$dep)]
 
+  # Get list of paths
+  pathList <- lapply(1:length(regList), function(i) sapply(regList[[i]]$vars, function(v) c(v, names(regList)[i])))
+
+  # Convert path list to matrix
+  paths <- matrix(unlist(pathList), ncol = 2, byrow = TRUE)
+
+  # Get exogenous var
+  exoVar <- paths[!paths[, 1] %in% paths[, 2], 1]
+
+  # Create graph from paths
+  graph <- igraph::graph_from_edgelist(paths)
+
+  # Get simple paths
+  medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
+
+  # Get par names of simple paths
+  medEffectsList <- lapply(medPaths, function(path) sapply(2:length(path), function(i) {
+    regListRow <- regList[[names(path)[i]]]
+    return(regListRow$parNames[regListRow$vars == names(path)[i-1]])
+  }))
+
+  # Concatenate to mediation effects by multiplying par names of paths
+  syntax <- paste(
+    sapply(medPaths, function(path) paste(names(path), collapse = "_")),
+    sapply(medEffectsList, function(row) paste(row, collapse = " * ")),
+    sep = " := ",
+    collapse = "\n"
+  )
+
+  return(syntax)
 }
 
 .procInitOptions <- function(jaspResults, options) {
@@ -367,71 +382,140 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 # Output functions ----
 # These are not in use for now, but left here as orientation for later
-.procContainerMain <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procMainContainer"]])) {
-    mainContainer <- jaspResults[["procMainContainer"]]
+.procContainerParameterEstimates <- function(jaspResults, options) {
+  if (!is.null(jaspResults[["parEstContainer"]])) {
+    parEstContainer <- jaspResults[["parEstContainer"]]
   } else {
-    mainContainer <- createJaspContainer("Model fit tables")
-    mainContainer$dependOn(.procGetDependencies())
+    parEstContainer <- createJaspContainer("Parameter estimates")
+    parEstContainer$dependOn(.procGetDependencies())
 
-    jaspResults[["procMainContainer"]] <- mainContainer
+    jaspResults[["parEstContainer"]] <- parEstContainer
   }
 
-  return(mainContainer)
+  return(parEstContainer)
 }
 
-.procTableSomething <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procMainContainer"]][["procTable"]])) return()
+.procContainerPathPlots <- function(jaspResults, options) {
+  if (!is.null(jaspResults[["pathPlotContainer"]])) {
+    pathPlotContainer <- jaspResults[["pathPlotContainer"]]
+  } else {
+    pathPlotContainer <- createJaspContainer("Path plots")
+    pathPlotContainer$dependOn(.procGetDependencies())
+
+    jaspResults[["pathPlotContainer"]] <- pathPlotContainer
+  }
+
+  return(pathPlotContainer)
+}
+
+.procCoefficientsTable <- function(tbl, options, coefs) {
+  tbl$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  tbl$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  tbl$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  tbl$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  tbl$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                    overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+  tbl$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                    overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+
+  tbl[["est"]]      <- coefs$est
+  tbl[["se"]]       <- coefs$se
+  tbl[["z"]]        <- coefs$z
+  tbl[["pvalue"]]   <- coefs$pvalue
+  tbl[["ci.lower"]] <- coefs$ci.lower
+  tbl[["ci.upper"]] <- coefs$ci.upper
+}
+
+.procPathCoefficientsTable <- function(container, options, procResults) {
+  if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   # Below is one way of creating a table
-  procTable <- createJaspTable(title = "proc Table")
-  procTable$dependOnOptions(c("variables", "someotheroption")) # not strictly necessary because container
+  pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
+  pathCoefTable$dependOn(c(.procGetDependencies(), "parameterLabels"))
 
-  # Bind table to jaspResults
-  jaspResults[["procMainContainer"]][["procTable"]] <- procTable
+  container[["pathCoefficientsTable"]] <- pathCoefTable
 
-  # Add column info
-  procTable$addColumnInfo(name = "chisq",  title = "\u03a7\u00b2", type = "number", format = "sf:4")
-  procTable$addColumnInfo(name = "pvalue", title = "p",            type = "number", format = "dp:3;p:.001")
-  procTable$addColumnInfo(name = "BF",     title = "Bayes Factor", type = "number", format = "sf:4")
-  procTable$addColumnInfo(name = "sth",    title = "Some Title",   type = "string")
+  pathCoefs <- lavaan::parameterEstimates(procResults)
+  pathCoefs <- pathCoefs[pathCoefs$op == "~",]
 
-  # Add data per column
-  procTable[["chisq"]]  <- procResults$column1
-  procTable[["pvalue"]] <- procResults$column2
-  procTable[["BF"]]     <- procResults$column3
-  procTable[["sth"]]    <- procResults$sometext
+  pathCoefTable$addColumnInfo(name = "lhs", title = "", type = "string")
+  pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
+  pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
+
+  pathCoefTable[["lhs"]]   <- pathCoefs$rhs
+  pathCoefTable[["op"]]    <- rep("\u2192", nrow(pathCoefs))
+  pathCoefTable[["rhs"]]   <- pathCoefs$lhs
+
+  if (options$parameterLabels) {
+    pathCoefTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
+    pathCoefTable[["label"]] <- pathCoefs$label
+  }
+
+  .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
 
-.procTableSthElse <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procMainContainer"]][["procTable2"]])) return()
+.procPathMediationEffectsTable <- function(container, options, procResults) {
+  if (!is.null(container[["mediationEffectsTable"]])) return()
 
   # Below is one way of creating a table
-  procTable2 <- createJaspTable(title = "proc Table Something Else")
-  procTable2$dependOnOptions(c("variables", "someotheroption"))
+  medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
+  medEffectsTable$dependOn(c(.procGetDependencies(), "parameterLabels"))
 
-  # Bind table to jaspResults
-  jaspResults[["procMainContainer"]][["procTable2"]] <- procTable2
+  container[["mediationEffectsTable"]] <- medEffectsTable
 
-  # Add column info
-  procTable2$addColumnInfo(name = "hallo", title = "Hallo", type = "string")
-  procTable2$addColumnInfo(name = "doei",  title = "Doei",  type = "string")
+  pathCoefs <- lavaan::parameterEstimates(procResults)
+  medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  # Calculate some data from results
-  procSummary <- summary(procResults$someObject)
+  # Get paths from label of mediation effect
+  medPaths <- lapply(medEffects$lhs, function(path) strsplit(path, "_")[[1]])
+  # Get path lengths
+  medPathLengths <- sapply(medPaths, length)
+  # Sort paths to incresaing length
+  medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
+  medEffects <- medEffects[medLengthSortIdx, ]
 
-  # Add data per column. Calculations are allowed here too!
-  procTable2[["hallo"]] <- ifelse(procSummary$hallo > 1, "Hallo!", "Hello!")
-  procTable2[["doei"]]  <- procSummary$doei^2
+  # Add a column for each step of longest path
+  for (i in 1:max(medPathLengths)) {
+    # If path has step add var name otherwise empty
+    medEffect <- sapply(medPaths[medLengthSortIdx], function(path) ifelse(length(path) >= i, path[i], ""))
+
+    # Add operator columns
+    if (i > 1) {
+      # Add operator for non-empty path steps otherwise empty
+      medOp <- ifelse(medEffect == "", "", "\u2192")
+      medEffectsTable$addColumnInfo(name = paste0("op_", i), title = "", type = "string")
+      medEffectsTable[[paste0("op_", i)]] <- medOp
+    }
+
+    medEffectsTable$addColumnInfo(name = paste0("lhs_", i), title = "", type = "string")
+    medEffectsTable[[paste0("lhs_", i)]] <- medEffect
+  }
+
+  # Add column with parameter labels
+  if (options$parameterLabels) {
+    medEffectsTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
+    medEffectsTable[["label"]] <- gsub("\\*", " \u273B ", medEffects$rhs)
+  }
+
+  .procCoefficientsTable(medEffectsTable, options, medEffects)
 }
 
-.procConceptPathPlot <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["conceptPathPlot"]])) return()
+.procConceptPathPlot <- function(container, options, procResults) {
+  if (!is.null(container[["conceptPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(.procGetDependencies())
-  jaspResults[["conceptPathPlot"]] <- procPathPlot
-  procPathPlot$plotObject <- .procLavToGraph(procResults, options)
+  container[["conceptPathPlot"]] <- procPathPlot
+  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", estimates = FALSE, options)
+}
+
+.procStatPathPlot <- function(container, options, procResults) {
+  if (!is.null(container[["statPathPlot"]])) return()
+
+  procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
+  procPathPlot$dependOn(c(.procGetDependencies(), "statisticalPathPlotsParameterEstimates"))
+  container[["statPathPlot"]] <- procPathPlot
+  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
 
 .procMainGraphLayoutPosHelper <- function(nNodes) {
@@ -449,6 +533,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pos <- pos[pos != 0]
   return(rev(pos))
 }
+
+# .procModGraphLayoutPosHelper <- function(layout)
 
 .procMainGraphLayoutMedPosHelper <- function(medPaths) {
   nMedPaths <- length(medPaths)
@@ -484,7 +570,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   depIdx <- which(nodeNames == depVar)
 
   # Get all simple paths (each node only visited once) from exo nodes to dep var node
-  medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx], to = nodeNames[depIdx])
+  medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx][1], to = nodeNames[depIdx], mode = "out")
   medPathLengths <- sapply(medPaths, length)
   # Exclude X and Y from paths
   medPaths <- lapply(medPaths, function(path) names(path)[names(path) %in% nodeNames[-c(exoIdx, depIdx)]])
@@ -501,17 +587,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   medPos <- .procMainGraphLayoutMedPosHelper(medPaths)
 
   # Combine pos
-  layout <- rbind(exoPos, depPos, medPos)
-  rownames(layout) <- c(nodeNames[c(exoIdx, depIdx)], rownames(medPos))
+  if (length(medPos) > 0) {
+    layout <- rbind(exoPos, depPos, medPos)
+    rownames(layout) <- c(nodeNames[c(exoIdx, depIdx)], rownames(medPos))
+  } else {
+    layout <- rbind(exoPos, depPos)
+    rownames(layout) <- nodeNames[c(exoIdx, depIdx)]
+  }
   return(layout)
 }
 
-.procLavToGraph <- function(procResults, options) {
+.procLavToGraph <- function(procResults, type, estimates, options) {
   # Get table with SEM pars from lavaan model
-  parTbl <- procResults@ParTable
+  parTbl <- lavaan::parameterTable(procResults)
 
-  # Create path matrix where first col is "from" and second col is "to"
-  paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs))[parTbl$op == "~"], ncol = 2)
+  # Create path matrix where first col is "from" and second col is "to", third col is estimate
+  labelField <- ifelse(estimates, "est", "label")
+  paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs), parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
 
   # Check if "from" contains interaction term
   isIntPath <- grepl(":", paths[, 1])
@@ -526,20 +618,32 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   indeps <- sapply(intPathsSplit, function(path) path[1])
 
   # Create matrix with moderator paths
-  # Adds a path from moderator to helper node "iX" which will be invisible
-  modPaths <- matrix(c(mods, paste0("i", 1:length(mods))), ncol = 2)
+  if (type == "conceptual") {
+    # Adds paths from moderators to helper nodes "iX" which will be invisible
+    modPaths <- matrix(c(mods, paste0("i", 1:length(mods)), ""), ncol = 3)
 
+    # Add hidden path for single moderator (fixes qgraph bug)
+    if (nrow(modPaths) == 1 && nrow(paths) == 3) {
+      modPaths <- rbind(modPaths, paths[paths[, 1] %in% mods, , drop = FALSE])
+    }
+  } else {
+    # Paths from moderator and interaction term to dep var node
+    modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
+  }
   # Filter out non-moderation paths -> main paths
-  mainPaths <- matrix(paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], ], ncol = 2)
+  mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
 
   # Get layout of main paths: matrix with x,y coordinates for each node
-  layout <- .procMainGraphLayout(mainPaths, decodeColNames(options[["dependent"]]))
+  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], decodeColNames(options[["dependent"]]))
 
   # Node names are in rownames
   nodeNames <- rownames(layout)
 
   # Combine main paths and moderator paths
   if (sum(isIntPath) > 0) mainPaths <- rbind(mainPaths, modPaths)
+
+  # Remove duplicate paths
+  mainPaths <- mainPaths[!duplicated(mainPaths), ]
 
   # Add layout of moderator nodes
   if (length(mods) > 0) {
@@ -550,57 +654,72 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Calculate pos of hidden helper node as average between indep and dep node pos
       nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
       # Moderator pos has same x pos as hidden helper node
-      modPos <- c(nodePosI[1], max(layout[, 2]) + 1)
+      # y pos is chosen so that graph is balanced out
+      modPosY <- ifelse(abs(max(layout[, 2])) > abs(min(layout[, 2])), min(layout[, 2]) - 1, max(layout[, 2]) + 1)
+      modPos <- c(nodePosI[1], modPosY)
       # Append to node names and layout
-      nodeNames <- c(nodeNames, mods[i], paste0("i", i))
-      layout <- rbind(layout, modPos, nodePosI)
+      if (type == "conceptual") {
+        nodeNames <- c(nodeNames, mods[i], paste0("i", i))
+        layout <- rbind(layout, modPos, nodePosI)
+      } else {
+        # Place interaction term above/below moderator node
+        intPos <- c(nodePosI[1], modPosY + ifelse(modPosY > 0, 1, -1))
+        nodeNames <- c(nodeNames, mods[i], paths[isIntPath, 1][i])
+        layout <- rbind(layout, modPos, intPos)
+      }
     }
   }
 
   # Order of node labels as in qgraph
-  graphNodeNames <- unique(as.vector(mainPaths))
+  graphNodeNames <- unique(as.vector(mainPaths[, 1:2, drop = FALSE]))
   # Get idx of hidden helper node (to make it invisible)
   graphIntIdx <- grepl("i[[:digit:]]", graphNodeNames)
 
+  nNodes <- length(graphNodeNames)
+
   # Calc node size depending on number of nodes
-  nodeSize <- rep(round(8*exp(-nrow(layout)/80)+1), length(graphNodeNames))
+  nodeSize <- rep(round(8*exp(-nrow(layout)/80)+1), nNodes)
   # Make hidden helper node invisible step 1
   nodeSize[graphIntIdx] <- 0
 
   # Invisible node must be circle, otherwise incoming edges are omitted (qgraph bug)
-  nodeShape <- rep("square", length(graphNodeNames))
+  nodeShape <- rep("square", nNodes)
   nodeShape[graphIntIdx] <- "circle"
 
   # Make hidden helper node invisible step 2
   nodeLabels <- graphNodeNames
   nodeLabels[graphIntIdx] <- ""
 
+  edge_color <- rep("black", nrow(mainPaths))
+
+  # Hide helper edge for single moderator
+  if (nrow(modPaths) == 2 && nrow(mainPaths) == 3 && type == "conceptual") {
+    edge_color[3] <- "white"
+  }
+
+  if (type == "conceptual") {
+    edge_labels <- FALSE
+  } else {
+    edge_labels <- mainPaths[, 3]
+
+    if (estimates) edge_labels <- round(as.numeric(edge_labels), 3)
+  }
+
   g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
-    mainPaths,
+    mainPaths[, 1:2, drop = FALSE],
     layout = layout[match(graphNodeNames, nodeNames), ], # match order of layout
     vsize = nodeSize,
     shape = nodeShape,
     labels = TRUE,
     border.width = 1.5,
     edge.label.cex = 1.2,
-    edge.color = "black"
+    edge.color = edge_color,
+    edge.labels = edge_labels
   ))
 
   # There seems to be a bug in qgraph where specifying labels
   # in the initial function call does not work
-  g$graphAttributes$Nodes$labels <- nodeLabels
+  g$graphAttributes$Nodes$labels <- abbreviate(nodeLabels, minlength = 3)
 
   return(g)
-}
-
-.procPlotSomething <- function(jaspResults, options, procResults) {
-  if (!is.null(jaspResults[["procPlot"]])) return()
-
-  procPlot <- createJaspPlot(title = "proc Plot", height = 320, width = 480)
-  procPlot$dependOnOptions(c("variables", "someotheroption"))
-
-  # Bind plot to jaspResults
-  jaspResults[["procPlot"]] <- procPlot
-
-  procPlot$plotObject <- plot(procResults$someObject)
 }
