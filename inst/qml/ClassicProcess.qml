@@ -47,19 +47,42 @@ Form
 		Group
 		{
 			title: qsTr("Set for all models")
+			columns: 2
 
-			CheckBox
+			Group
 			{
-				id:			conceptualPathPlotsForAllModels
-				name: 		"conceptualPathPlotsForAllModels"
-				label: 		qsTr("Conceptual path plots")
-				checked: 	true
+				CheckBox
+				{
+					id:			pathcoefficientsForAllModels
+					name: 		"pathCoefficientsForAllModels"
+					label: 		qsTr("Path coefficients")
+					checked: 	true
+				}
+
+				CheckBox
+				{
+					id:			mediationEffectsForAllModels
+					name: 		"mediationEffectsForAllModels"
+					label: 		qsTr("Mediation effects")
+					checked: 	true
+				}
 			}
-			CheckBox
+
+			Group
 			{
-				id:			statisticalPathPlotsForAllModels
-				name: 		"statisticalPathPlotsForAllModels"
-				label: 		qsTr("Statistical path plots")
+				CheckBox
+				{
+					id:			conceptualPathPlotsForAllModels
+					name: 		"conceptualPathPlotsForAllModels"
+					label: 		qsTr("Conceptual path plots")
+					checked: 	true
+				}
+				CheckBox
+				{
+					id:			statisticalPathPlotsForAllModels
+					name: 		"statisticalPathPlotsForAllModels"
+					label: 		qsTr("Statistical path plots")
+				}
 			}
 		}
 
@@ -299,6 +322,12 @@ Form
 	{
 		title: qsTr("Options")
 		columns: 2
+
+		CheckBox
+		{
+			name: "parameterLabels"
+			label: qsTr("Parameter labels")
+		}
 
 		CIField
 		{

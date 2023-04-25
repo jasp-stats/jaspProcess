@@ -37,6 +37,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procStatPathPlot(pathPlotContainer, options, procResults)
 
   .procPathCoefficientsTable(parEstContainer, options, procResults)
+  .procPathMediationEffectsTable(parEstContainer, options, procResults)
 
   # .procTableSomething(jaspResults, options, procResults)
   # .procTableSthElse(  jaspResults, options, procResults)
@@ -154,7 +155,45 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     collapse = "\n"
   )
 
-  return(regSyntax)
+  medEffectSyntax <- .procMedEffects(regList)
+
+  return(paste(regSyntax, medEffectSyntax, sep = "\n"))
+}
+
+.procMedEffects <- function(regList) {
+  # Get dep var
+  depVar <- names(regList)[sapply(regList, function(row) row$dep)]
+
+  # Get list of paths
+  pathList <- lapply(1:length(regList), function(i) sapply(regList[[i]]$vars, function(v) c(v, names(regList)[i])))
+
+  # Convert path list to matrix
+  paths <- matrix(unlist(pathList), ncol = 2, byrow = TRUE)
+
+  # Get exogenous var
+  exoVar <- paths[!paths[, 1] %in% paths[, 2], 1]
+
+  # Create graph from paths
+  graph <- igraph::graph_from_edgelist(paths)
+
+  # Get simple paths
+  medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
+
+  # Get par names of simple paths
+  medEffectsList <- lapply(medPaths, function(path) sapply(2:length(path), function(i) {
+    regListRow <- regList[[names(path)[i]]]
+    return(regListRow$parNames[regListRow$vars == names(path)[i-1]])
+  }))
+  
+  # Concatenate to mediation effects by multiplying par names of paths
+  syntax <- paste(
+    sapply(medPaths, function(path) paste(names(path), collapse = "_")),
+    sapply(medEffectsList, function(row) paste(row, collapse = " * ")),
+    sep = " := ",
+    collapse = "\n"
+  )
+
+  return(syntax)
 }
 
 .procInitOptions <- function(jaspResults, options) {
@@ -238,40 +277,96 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(pathPlotContainer)
 }
 
+.procCoefficientsTable <- function(tbl, options, coefs) {
+  tbl$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  tbl$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  tbl$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  tbl$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  tbl$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+  tbl$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+
+  tbl[["est"]]      <- coefs$est
+  tbl[["se"]]       <- coefs$se
+  tbl[["z"]]        <- coefs$z
+  tbl[["pvalue"]]   <- coefs$pvalue
+  tbl[["ci.lower"]] <- coefs$ci.lower
+  tbl[["ci.upper"]] <- coefs$ci.upper
+}
+
 .procPathCoefficientsTable <- function(container, options, procResults) {
   if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   # Below is one way of creating a table
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
-  pathCoefTable$dependOn(.procGetDependencies())
+  pathCoefTable$dependOn(c(.procGetDependencies(), "parameterLabels"))
 
   container[["pathCoefficientsTable"]] <- pathCoefTable
 
   pathCoefs <- lavaan::parameterEstimates(procResults)
-
-  pathCoefTable$addColumnInfo(name = "lhs",      title = "",                    type = "string")
-  pathCoefTable$addColumnInfo(name = "op",       title = "",                    type = "string")
-  pathCoefTable$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  pathCoefTable$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  pathCoefTable$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
-  pathCoefTable$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  pathCoefTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  pathCoefTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-  pathCoefTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
   pathCoefs <- pathCoefs[pathCoefs$op == "~",]
 
-  pathCoefTable[["lhs"]]      <- pathCoefs$rhs
-  pathCoefTable[["op"]]       <- rep("\u2192", nrow(pathCoefs))
-  pathCoefTable[["rhs"]]      <- pathCoefs$lhs
-  pathCoefTable[["est"]]      <- pathCoefs$est
-  pathCoefTable[["se"]]       <- pathCoefs$se
-  pathCoefTable[["z"]]        <- pathCoefs$z
-  pathCoefTable[["pvalue"]]   <- pathCoefs$pvalue
-  pathCoefTable[["ci.lower"]] <- pathCoefs$ci.lower
-  pathCoefTable[["ci.upper"]] <- pathCoefs$ci.upper
+  pathCoefTable$addColumnInfo(name = "lhs", title = "", type = "string")
+  pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
+  pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
+
+  pathCoefTable[["lhs"]]   <- pathCoefs$rhs
+  pathCoefTable[["op"]]    <- rep("\u2192", nrow(pathCoefs))
+  pathCoefTable[["rhs"]]   <- pathCoefs$lhs
+
+  if (options$parameterLabels) {
+    pathCoefTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
+    pathCoefTable[["label"]] <- pathCoefs$label
+  }
+
+  .procCoefficientsTable(pathCoefTable, options, pathCoefs)
+}
+
+.procPathMediationEffectsTable <- function(container, options, procResults) {
+  if (!is.null(container[["mediationEffectsTable"]])) return()
+
+  # Below is one way of creating a table
+  medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
+  medEffectsTable$dependOn(c(.procGetDependencies(), "parameterLabels"))
+
+  container[["mediationEffectsTable"]] <- medEffectsTable
+
+  pathCoefs <- lavaan::parameterEstimates(procResults)
+  medEffects <- pathCoefs[pathCoefs$op == ":=",]
+
+  # Get paths from label of mediation effect
+  medPaths <- lapply(medEffects$lhs, function(path) strsplit(path, "_")[[1]])
+  # Get path lengths
+  medPathLengths <- sapply(medPaths, length)
+  # Sort paths to incresaing length
+  medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
+  medEffects <- medEffects[medLengthSortIdx, ]
+
+  # Add a column for each step of longest path
+  for (i in 1:max(medPathLengths)) {
+    # If path has step add var name otherwise empty
+    medEffect <- sapply(medPaths[medLengthSortIdx], function(path) ifelse(length(path) >= i, path[i], ""))
+
+    # Add operator columns
+    if (i > 1) {
+      # Add operator for non-empty path steps otherwise empty
+      medOp <- ifelse(medEffect == "", "", "\u2192")
+      medEffectsTable$addColumnInfo(name = paste0("op_", i), title = "", type = "string")
+      medEffectsTable[[paste0("op_", i)]] <- medOp
+    }
+
+    medEffectsTable$addColumnInfo(name = paste0("lhs_", i), title = "", type = "string")
+    medEffectsTable[[paste0("lhs_", i)]] <- medEffect
+  }
+
+  # Add column with parameter labels
+  if (options$parameterLabels) {
+    medEffectsTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
+    medEffectsTable[["label"]] <- gsub("\\*", " \u273B ", medEffects$rhs)
+  }
+
+  .procCoefficientsTable(medEffectsTable, options, medEffects)
 }
 
 .procConceptPathPlot <- function(container, options, procResults) {
@@ -347,7 +442,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx][1], to = nodeNames[depIdx], mode = "out")
   medPathLengths <- sapply(medPaths, length)
   # Exclude X and Y from paths
-  print(medPaths)
   medPaths <- lapply(medPaths, function(path) names(path)[names(path) %in% nodeNames[-c(exoIdx, depIdx)]])
   # Sort paths according to length (longest at top)
   medPaths <- medPaths[sort(medPathLengths, decreasing = TRUE, index.return = TRUE)$ix]
