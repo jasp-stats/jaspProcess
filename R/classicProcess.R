@@ -317,7 +317,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Concatenate to mediation effects by multiplying par names of paths
   syntax <- paste(
-    sapply(medPaths, function(path) paste(names(path), collapse = "_")),
+    sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_")),
     sapply(medEffectsList, function(row) paste(row, collapse = " * ")),
     sep = " := ",
     collapse = "\n"
@@ -473,7 +473,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Sort paths to incresaing length
   medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
   medEffects <- medEffects[medLengthSortIdx, ]
-
+  print(medEffects)
   # Add a column for each step of longest path
   for (i in 1:max(medPathLengths)) {
     # If path has step add var name otherwise empty
