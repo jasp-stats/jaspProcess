@@ -18,7 +18,11 @@
 # Main function ----
 ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Set title
-  jaspResults$title <- "Process Analysis"
+  jaspResults$title <- gettext("Process Analysis")
+
+  ready <- .procIsReady(options)
+
+  if (!ready) return()
   # Init options: add variables to options to be used in the remainder of the analysis
   options <- .procInitOptions(jaspResults, options)
   # read dataset
@@ -61,6 +65,42 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 # Init functions ----
+.procModelIsComplete <- function(mod) {
+  if (mod[["inputType"]] == "inputVariables") {
+    if (length(mod[["processRelationships"]]) == 0)
+      return(FALSE)
+
+    rowsComplete <- sapply(mod[["processRelationships"]], function(row) {
+      row[["processIndependent"]] != "" && row[["processDependent"]] != "" &&
+        row[["processType"]] != "" && (
+          (row[["processType"]] == "directs" && row[["processVariable"]] == "") ||
+          (row[["processType"]] != "directs" && row[["processVariable"]] != "")
+        )
+    })
+
+    return(all(rowsComplete))
+  }
+
+  return(mod[["modelNumberIndependent"]] != "" && (
+    length(mod[["modelNumberMediators"]]) > 0 ||
+    length(mod[["modelNumberCovariates"]]) > 0 ||
+    mod[["modelNumberModeratorW"]] != "" ||
+    mod[["modelNumberModeratorZ"]] != ""
+  ))
+}
+
+.procIsReady <- function(options) {
+  if (options[["dependent"]] == "" || length(options[["covariates"]]) == 0)
+    return(FALSE)
+
+  if (length(options[["processModels"]]) == 0)
+    return(FALSE)
+
+  modelsComplete <- sapply(options[["processModels"]], .procModelIsComplete)
+
+  return(all(modelsComplete))
+}
+
 .procAddLavModVar <- function(regList, dependent, variable) {
   # Add variable to list of dep var if not already there
   if (!variable %in% regList[[dependent]][["vars"]]) {
