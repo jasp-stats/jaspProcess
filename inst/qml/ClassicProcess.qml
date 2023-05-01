@@ -52,7 +52,7 @@ Form
             {
                 CheckBox
                 {
-                    id:			pathcoefficientsForAllModels
+                    id:			pathCoefficientsForAllModels
                     name: 		"pathCoefficientsForAllModels"
                     label: 		qsTr("Path coefficients")
                     checked: 	true
@@ -248,7 +248,7 @@ Form
                         IntegerField
                         {
                             name: 			"modelNumber"
-                            label: 			qsTr("Model number")
+                            label: 			qsTr("Hayes model number")
                             defaultValue: 	1
                             min: 			1
                             max: 			92
@@ -295,23 +295,47 @@ Form
                         }
                     }
 
-                    Group
-                    {
-                        title: qsTr("Path plots for %1").arg(rowValue)
-                        columns: 2
-                        CheckBox
-                        {
-                            name: "conceptualPathPlot"
-                            label: qsTr("Conceptual")
-                            checked: conceptualPathPlotsForAllModels.checked
-                        }
-                        CheckBox
-                        {
-                            name: "statisticalPathPlot"
-                            label: qsTr("Statistical")
-                            checked: statisticalPathPlotsForAllModels.checked
-                        }
-                    }
+					Group
+					{
+						title: 		qsTr("Options for %1").arg(rowValue)
+						columns: 	2
+
+						Group
+						{
+							title: 		qsTr("Parameter estimates")
+							columns: 	1
+							CheckBox
+							{
+								name: "pathCoefficients"
+								label: qsTr("Path coefficients")
+								checked: pathCoefficientsForAllModels.checked
+							}
+							CheckBox
+							{
+								name: "mediationEffects"
+								label: qsTr("Mediation effects")
+								checked: mediationEffectsForAllModels.checked
+							}
+						}
+
+						Group
+						{
+							title: 		qsTr("Path plots")
+							columns: 	1
+							CheckBox
+							{
+								name: "conceptualPathPlot"
+								label: qsTr("Conceptual")
+								checked: conceptualPathPlotsForAllModels.checked
+							}
+							CheckBox
+							{
+								name: "statisticalPathPlot"
+								label: qsTr("Statistical")
+								checked: statisticalPathPlotsForAllModels.checked
+							}
+						}
+					}
                 }
             }
         }

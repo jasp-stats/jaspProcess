@@ -33,11 +33,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
   pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
 
-  .procConceptPathPlot(pathPlotContainer, options, procResults)
-  .procStatPathPlot(pathPlotContainer, options, procResults)
+  .procParameterEstimateTables(parEstContainer, options, procResults)
+  .procPathPlots(pathPlotContainer, options, procResults)
 
-  .procPathCoefficientsTable(parEstContainer, options, procResults)
-  .procPathMediationEffectsTable(parEstContainer, options, procResults)
+  # .procConceptPathPlot(pathPlotContainer, options, procResults)
+  # .procStatPathPlot(pathPlotContainer, options, procResults)
+
+  # .procPathCoefficientsTable(parEstContainer, options, procResults)
+  # .procPathMediationEffectsTable(parEstContainer, options, procResults)
 
   # .procTableSomething(jaspResults, options, procResults)
   # .procTableSthElse(  jaspResults, options, procResults)
@@ -53,9 +56,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   #}
 
   #if (modelOptions[["inputType"]] == "inputModelNumber") {
-  return(c('dependent', 'modelNumberIndependent','modelNumberMediators',
-           'modelNumberCovariates', 'modelNumberModeratorW',
-           'modelNumberModeratorZ','processModels','covariates', 'factors'))
+  return(c('dependent', 'covariates', 'factors'))
   #}
 }
 
@@ -107,7 +108,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
-.procToLavModSingleModel <- function(modelOptions) {
+.procToLavModSingleModel <- function(modelOptions, dependent) {
 
   regList = list()
 
@@ -157,8 +158,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (modelOptions[["inputType"]] == "inputModelNumber") {
-
-    dependent    <- modelOptions[["dependent"]]
     independent  <- modelOptions[["modelNumberIndependent"]]
     mediators    <- modelOptions[["modelNumberMediators"]]
     covariates   <- modelOptions[["modelNumberCovariates"]]
@@ -312,13 +311,24 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get par names of simple paths
   medEffectsList <- lapply(medPaths, function(path) sapply(2:length(path), function(i) {
     regListRow <- regList[[names(path)[i]]]
-    return(regListRow$parNames[regListRow$vars == names(path)[i-1]])
+    isIntVar <- grepl(":", regListRow$vars)
+    regVarsSplit <- strsplit(regListRow$vars, ":")
+    indepIntVars <- sapply(regVarsSplit, function(v) v[1])
+    medVars <- regListRow$parNames[regListRow$vars == names(path)[i-1]]
+    intVars <- regListRow$parNames[indepIntVars == names(path)[i-1] & isIntVar]
+    # return(list(medVars = medVars, intVars = intVars))
+    return(medVars)
   }))
 
   # Concatenate to mediation effects by multiplying par names of paths
   syntax <- paste(
     sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_")),
     sapply(medEffectsList, function(row) paste(row, collapse = " * ")),
+    # paste(
+    #   sapply(medEffectsList, function(row) paste(row$medVars, collapse = " * ")),
+    #   sapply(medEffectsList, function(row) paste(row$intVars, collapse = " + ")),
+    #   sep = " + "
+    # ),
     sep = " := ",
     collapse = "\n"
   )
@@ -329,12 +339,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procInitOptions <- function(jaspResults, options) {
   # Determine if analysis can be run with user input
   # Calculate any options common to multiple parts of the analysis
-  model = options[["processModels"]][[1]]
-  model[["dependent"]] = options[["dependent"]]
 
-  modelSyntax <- .procToLavModSingleModel(model)
-
-  options[["modelSyntax"]] <- list(modelSyntax)
+  options[["modelSyntax"]] <- lapply(options[["processModels"]], .procToLavModSingleModel, dependent = options[["dependent"]])
 
   return(options)
 }
@@ -358,26 +364,57 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 # Results functions ----
-.procComputeResults <- function(jaspResults, dataset, options) {
-  # Function to compute and store results in container
-  if (is.null(jaspResults[["stateProcResults"]])) {
-    procResults <- .procResultsHelper(dataset, options)
-    jaspResults[["model"]] <- createJaspState(object = procResults, dependencies = .procGetDependencies())
-  } else {
-    procResults <- jaspResults[["model"]]$object
-  }
-  procResults
-}
-
-.procResultsHelper <- function(dataset, options) {
+.procResultsFitModel <- function(syntax, dataset, options) {
   # Helper function to compute actual results
-  procResult <- lavaan::sem(
-    model           = options[["modelSyntax"]][[1]],
+  fittedModel <- lavaan::sem(
+    model           = syntax,
     data            = dataset,
     se              = "standard"
   )
 
-  return(procResult)
+  return(fittedModel)
+}
+
+.procGetSingleModelsDependencies <- function(modelIdx) {
+  return(list(
+    c("processModels", modelIdx, "inputType"),
+    c("processModels", modelIdx, "processRelationships"),
+    c("processModels", modelIdx, "modelNumber"),
+    c("processModels", modelIdx, "modelNumberIndependent"),
+    c("processModels", modelIdx, "modelNumberMediators"),
+    c("processModels", modelIdx, "modelNumberCovariates"),
+    c("processModels", modelIdx, "modelNumberModeratorW"),
+    c("processModels", modelIdx, "modelNumberModeratorZ")
+  ))
+}
+
+.procComputeResults <- function(jaspResults, dataset, options) {
+  # Function to compute and store results in container
+  nModels <- length(options[["processModels"]])
+  procResults <- list()
+
+  for (i in 1:nModels) {
+    modelStateName <- options[["processModels"]][[i]][["name"]]
+    
+    if (is.null(jaspResults[[modelStateName]])) {
+      jaspResults[[modelStateName]] <- createJaspState()
+      jaspResults[[modelStateName]]$dependOn(
+        # optionContainsValue = list(processModels = options[["processModels"]][[i]]),
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      fittedModel <- .procResultsFitModel(
+        options[["modelSyntax"]][[i]],
+        dataset,
+        options
+      )
+      jaspResults[[modelStateName]]$object <- fittedModel
+      procResults[[modelStateName]] <- fittedModel
+    } else {
+      procResults[[modelStateName]] <- jaspResults[[modelStateName]]$object
+    }
+  }
+
+  return(procResults)
 }
 
 # Output functions ----
@@ -408,6 +445,48 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(pathPlotContainer)
 }
 
+.procParameterEstimateTables <- function(container, options, procResults) {
+  modelNames <- names(procResults)
+
+  for (i in 1:length(procResults)) {
+    if (is.null(container[[modelNames[i]]])) {
+      modelContainer <- createJaspContainer(title = modelNames[i], , initCollapsed = TRUE)
+      modelContainer$dependOn(
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      container[[modelNames[i]]] <- modelContainer
+    } else {
+      modelContainer <- container[[modelNames[i]]]
+    }
+    if (options[["processModels"]][[i]][["pathCoefficients"]])
+      .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
+
+    if (options[["processModels"]][[i]][["mediationEffects"]])
+      .procPathMediationEffectsTable(modelContainer, options, procResults[[i]], i)
+  }
+}
+
+.procPathPlots <- function(container, options, procResults) {
+  modelNames <- names(procResults)
+
+  for (i in 1:length(procResults)) {
+    if (is.null(container[[modelNames[i]]])) {
+      modelContainer <- createJaspContainer(title = modelNames[i])
+      modelContainer$dependOn(
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      container[[modelNames[i]]] <- modelContainer
+    } else {
+      modelContainer <- container[[modelNames[i]]]
+    }
+    if (options[["processModels"]][[i]][["conceptualPathPlot"]])
+      .procConceptPathPlot(modelContainer, options, procResults[[i]], i)
+
+    if (options[["processModels"]][[i]][["statisticalPathPlot"]])
+      .procStatPathPlot(modelContainer, options, procResults[[i]], i)
+  }
+}
+
 .procCoefficientsTable <- function(tbl, options, coefs) {
   tbl$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
   tbl$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
@@ -426,13 +505,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   tbl[["ci.upper"]] <- coefs$ci.upper
 }
 
-.procPathCoefficientsTable <- function(container, options, procResults) {
+.procPathCoefficientsTable <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   # Below is one way of creating a table
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
-  pathCoefTable$dependOn(c(.procGetDependencies(), "parameterLabels"))
-
+  pathCoefTable$dependOn(
+    options = "parameterLabels",
+    nestedOptions = list(c("processModels", as.character(modelIdx), "pathCoefficients"))
+  )
   container[["pathCoefficientsTable"]] <- pathCoefTable
 
   pathCoefs <- lavaan::parameterEstimates(procResults)
@@ -454,12 +535,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
 
-.procPathMediationEffectsTable <- function(container, options, procResults) {
+.procPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["mediationEffectsTable"]])) return()
 
   # Below is one way of creating a table
   medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
-  medEffectsTable$dependOn(c(.procGetDependencies(), "parameterLabels"))
+  medEffectsTable$dependOn(
+    options = "parameterLabels",
+    nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
+  )
 
   container[["mediationEffectsTable"]] <- medEffectsTable
 
@@ -500,20 +584,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procCoefficientsTable(medEffectsTable, options, medEffects)
 }
 
-.procConceptPathPlot <- function(container, options, procResults) {
+.procConceptPathPlot <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["conceptPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
-  procPathPlot$dependOn(.procGetDependencies())
+  procPathPlot$dependOn(nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot")))
   container[["conceptPathPlot"]] <- procPathPlot
   procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", estimates = FALSE, options)
 }
 
-.procStatPathPlot <- function(container, options, procResults) {
+.procStatPathPlot <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["statPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
-  procPathPlot$dependOn(c(.procGetDependencies(), "statisticalPathPlotsParameterEstimates"))
+  procPathPlot$dependOn(
+    options = "statisticalPathPlotsParameterEstimates",
+    nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
+  )
   container[["statPathPlot"]] <- procPathPlot
   procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
