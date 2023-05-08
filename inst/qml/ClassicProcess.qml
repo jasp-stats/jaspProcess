@@ -50,6 +50,8 @@ Form
 
             Group
             {
+				columns: 2
+
                 CheckBox
                 {
                     id:			pathCoefficientsForAllModels
@@ -57,7 +59,6 @@ Form
                     label: 		qsTr("Path coefficients")
                     checked: 	true
                 }
-
                 CheckBox
                 {
                     id:			mediationEffectsForAllModels
@@ -65,10 +66,18 @@ Form
                     label: 		qsTr("Mediation effects")
                     checked: 	true
                 }
+				CheckBox
+                {
+                    id:			totalEffectsForAllModels
+                    name: 		"totalEffectsForAllModels"
+                    label: 		qsTr("Total effects")
+                    checked: 	true
+                }
             }
 
             Group
             {
+
                 CheckBox
                 {
                     id:			conceptualPathPlotsForAllModels
@@ -303,7 +312,7 @@ Form
 						Group
 						{
 							title: 		qsTr("Parameter estimates")
-							columns: 	1
+							columns: 	2
 							CheckBox
 							{
 								name: "pathCoefficients"
@@ -315,6 +324,12 @@ Form
 								name: "mediationEffects"
 								label: qsTr("Mediation effects")
 								checked: mediationEffectsForAllModels.checked
+							}
+							CheckBox
+							{
+								name: "totalEffects"
+								label: qsTr("Total effects")
+								checked: totalEffectsForAllModels.checked
 							}
 						}
 
