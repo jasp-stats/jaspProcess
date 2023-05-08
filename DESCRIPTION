@@ -1,4 +1,4 @@
-Package: jaspModule
+Package: jaspProcess
 Type: Package
 Title: A module for JASP
 Version: 0.1.0
@@ -11,9 +11,11 @@ License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
   jaspBase,
-  jaspGraphs
+  jaspGraphs,
+  jaspSem
 Suggests:
   testthat
 Remotes:
   jasp-stats/jaspBase,
-  jasp-stats/jaspGraphs
+  jasp-stats/jaspGraphs,
+  jasp-stats/jaspSem
