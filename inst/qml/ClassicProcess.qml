@@ -46,7 +46,25 @@ Form
         Group
         {
             title: qsTr("Set for all models")
-            columns: 2
+            columns: 3
+
+			Group
+			{
+				CheckBox
+                {
+                    id:			independentCovariancesForAllModels
+                    name: 		"independentCovariancesForAllModels"
+                    label: 		qsTr("Independent covariances")
+                    checked: 	true
+                }
+				CheckBox
+                {
+                    id:			mediatorCovariancesForAllModels
+                    name: 		"mediatorCovariancesForAllModels"
+                    label: 		qsTr("Mediator covariances")
+                    checked: 	false
+                }
+			}
 
             Group
             {
@@ -72,6 +90,13 @@ Form
                     name: 		"totalEffectsForAllModels"
                     label: 		qsTr("Total effects")
                     checked: 	true
+                }
+				CheckBox
+                {
+                    id:			residualCovariancesForAllModels
+                    name: 		"residualCovariancesForAllModels"
+                    label: 		qsTr("Covariances")
+                    checked: 	false
                 }
             }
 
@@ -307,11 +332,26 @@ Form
 					Group
 					{
 						title: 		qsTr("Options for %1").arg(rowValue)
-						columns: 	2
+						columns: 	3
 
 						Group
 						{
-							title: 		qsTr("Parameter estimates")
+							CheckBox
+							{
+								name: "independentCovariances"
+								label: qsTr("Independent covariances")
+								checked: independentCovariancesForAllModels.checked
+							}
+							CheckBox
+							{
+								name: "mediatorCovariances"
+								label: qsTr("Mediator covariances")
+								checked: mediatorCovariancesForAllModels.checked
+							}
+						}
+
+						Group
+						{
 							columns: 	2
 							CheckBox
 							{
@@ -331,22 +371,27 @@ Form
 								label: qsTr("Total effects")
 								checked: totalEffectsForAllModels.checked
 							}
+							CheckBox
+							{
+								name: "residualCovariances"
+								label: qsTr("Covariances")
+								checked: residualCovariancesForAllModels.checked
+							}
 						}
 
 						Group
 						{
-							title: 		qsTr("Path plots")
 							columns: 	1
 							CheckBox
 							{
 								name: "conceptualPathPlot"
-								label: qsTr("Conceptual")
+								label: qsTr("Conceptual path plot")
 								checked: conceptualPathPlotsForAllModels.checked
 							}
 							CheckBox
 							{
 								name: "statisticalPathPlot"
-								label: qsTr("Statistical")
+								label: qsTr("Statistical path plot")
 								checked: statisticalPathPlotsForAllModels.checked
 							}
 						}
