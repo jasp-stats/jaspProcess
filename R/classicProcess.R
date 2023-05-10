@@ -766,21 +766,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       modelContainer <- container[[modelNames[i]]]
     }
 
-    valid <- .procIsValidModel(modelContainer, procResults[[i]])
+    if (is.character(procResults[[i]]))
+      modelContainer$setError(procResults[[i]])
 
-    if (valid) {
-      if (options[["processModels"]][[i]][["pathCoefficients"]])
-        .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
+    if (options[["processModels"]][[i]][["pathCoefficients"]])
+      .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
 
-      if (options[["processModels"]][[i]][["mediationEffects"]])
-        .procPathMediationEffectsTable(modelContainer, options, procResults[[i]], i)
+    if (options[["processModels"]][[i]][["mediationEffects"]])
+      .procPathMediationEffectsTable(modelContainer, options, procResults[[i]], i)
 
-      if (options[["processModels"]][[i]][["totalEffects"]])
-        .procPathTotalEffectsTable(modelContainer, options, procResults[[i]], i)
+    if (options[["processModels"]][[i]][["totalEffects"]])
+      .procPathTotalEffectsTable(modelContainer, options, procResults[[i]], i)
 
-      if (options[["processModels"]][[i]][["residualCovariances"]])
-        .procCovariancesTable(modelContainer, options, procResults[[i]], i)
-    }
+    if (options[["processModels"]][[i]][["residualCovariances"]])
+      .procCovariancesTable(modelContainer, options, procResults[[i]], i)
   }
 }
 
@@ -847,6 +846,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   container[["pathCoefficientsTable"]] <- pathCoefTable
 
+  if (container$getError()) return()
+
   bootstrapCiType <- .procGetBootstrapCiType(options)
 
   pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
@@ -884,6 +885,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
 
   container[["mediationEffectsTable"]] <- medEffectsTable
+
+  if (container$getError()) return()
 
   pathCoefs <- lavaan::parameterEstimates(procResults)
 
@@ -939,6 +942,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   container[["totalEffectsTable"]] <- totEffectsTable
 
+  if (container$getError()) return()
+
   pathCoefs <- lavaan::parameterEstimates(procResults)
 
   if (!procResults@Fit@converged) {
@@ -975,6 +980,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   container[["covariancesTable"]] <- pathCoefTable
 
+  if (container$getError()) return()
+
   bootstrapCiType <- .procGetBootstrapCiType(options)
 
   pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
@@ -1008,6 +1015,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot")))
   container[["conceptPathPlot"]] <- procPathPlot
+
+  if (container$getError()) return()
+
   procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", estimates = FALSE, options)
 }
 
@@ -1020,6 +1030,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
   container[["statPathPlot"]] <- procPathPlot
+
+  if (container$getError()) return()
+
   procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
 
