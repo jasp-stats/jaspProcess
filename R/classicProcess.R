@@ -188,6 +188,27 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (modelOptions[["inputType"]] == "inputModelNumber") {
+
+      number <- modelOptions[["modelNumber"]]
+
+      if (!is.null(number) &&
+      modelOptions[["modelNumberIndependent"]] == "" &&
+      modelOptions[["modelNumberMediators"]]   == "" &&
+      modelOptions[["modelNumberCovariates"]]  == "" &&
+      modelOptions[["modelNumberModeratorW"]]  == "" &&
+      modelOptions[["modelNumberModeratorZ"]]  == "") {
+
+          if (number == 1) {
+            processRelationships <- list(
+              list(
+                #processDependent = "Y",
+                independent = "X",
+                modW = "modW"
+              )
+            )
+          }
+        }
+
     independent  <- modelOptions[["modelNumberIndependent"]]
     mediators    <- modelOptions[["modelNumberMediators"]]
     covariates   <- modelOptions[["modelNumberCovariates"]]
@@ -337,6 +358,43 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(paste(header, regSyntax, medEffectSyntax, sep = "\n"))
 }
 
+# Hard-coded Hayes-models
+proc_hcm_ToLavMod <- function(modelOptions) {
+
+  number <- modelOptions[["modelNumber"]]
+
+  if (!is.null(number) && modelOptions[["modelNumberIndependent"]] == "" &&
+      modelOptions[["modelNumberMediators"]]   == "" &&
+      modelOptions[["modelNumberCovariates"]]  == "" &&
+      modelOptions[["modelNumberModeratorW"]]  == "" &&
+      modelOptions[["modelNumberModeratorZ"]]  == "") {
+
+    if (number == 1) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+    # if (number == 1) {regSyntax <- "Y ~ c11*X + c12*X:W + c13*W"
+    # medEffectSyntax <- "X_Y := c11"}
+    #
+    # if (number == 4) {regSyntax <- "Y ~ c11*X + b11*M\nM ~ a11*X"
+    # medEffectSyntax <- "X_Y := c11\nX_M_Y := a11 * b11"}
+    #
+    # if (number == 5) {regSyntax <- "Y ~ c11*X + b11*M+ c12*X:W + c13*W\nM ~ a11*X"
+    # medEffectSyntax <- "X_Y := c11\nX_M_Y := a11 * b11"}
+
+
+    return(paste(regSyntax, medEffectSyntax, sep = "\n"))
+  }
+}
+
+#proc_hcm_ToLavMod(modelOptions = modelOptions)
+
 .procMedEffects <- function(regList) {
   # Get dep var
   depVar <- names(regList)[sapply(regList, function(row) row$dep)]
@@ -455,7 +513,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   for (i in 1:nModels) {
     modelStateName <- options[["processModels"]][[i]][["name"]]
-    
+
     if (is.null(jaspResults[[modelStateName]])) {
       jaspResults[[modelStateName]] <- createJaspState()
       jaspResults[[modelStateName]]$dependOn(
