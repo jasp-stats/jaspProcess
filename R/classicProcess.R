@@ -472,16 +472,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       type <- path[["processType"]]
       processVariable <- path[["processVariable"]]
 
-      print("Ha Thijs")
-      print(dependent)
-      print(independent)
-      print(type)
-      print(processVariable)
 
-      if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) &&
-          modelOptions[["modelNumberIndependent"]] != "") {
-
-          independent  <- modelOptions[["modelNumberIndependent"]]}
+      # if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) &&
+      #     modelOptions[["modelNumberIndependent"]] != "") {
+      #     independent  <- modelOptions[["modelNumberIndependent"]]}
+      #
+      # if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) &&
+      #     modelOptions[["modelNumberMediators"]]  != "") {
+      #
+      #   independent  <- modelOptions[["modelNumberIndependent"]]}
+      #
 
       print("Ha Thijs")
       print(dependent)
