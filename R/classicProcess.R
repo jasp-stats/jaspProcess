@@ -192,12 +192,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
 
-  number <- modelOptions[["modelNumber"]]
+
 
   # Suppose you fill in a Hayes model number with the model number menu, first a general model pops
   # up with general names (X, Y, W etc). With each subsequently filled-in variable, the diagram
   # is updated with the variable name, until all variables are selected, after which the model
   # is actually computed
+
+  number <- modelOptions[["modelNumber"]]
 
   if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) ) {
 
@@ -470,10 +472,30 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       type <- path[["processType"]]
       processVariable <- path[["processVariable"]]
 
+      print("Ha Thijs")
       print(dependent)
       print(independent)
       print(type)
       print(processVariable)
+
+      if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) &&
+          modelOptions[["modelNumberIndependent"]] != "") {
+
+          independent  <- modelOptions[["modelNumberIndependent"]]}
+
+      print("Ha Thijs")
+      print(dependent)
+      print(independent)
+      print(type)
+      print(processVariable)
+
+        #     #modelOptions[["modelNumberIndependent"]] == "" &&
+        #     #modelOptions[["modelNumberMediators"]]   == "" &&
+        #     #modelOptions[["modelNumberCovariates"]]  == "" &&
+        #     #modelOptions[["modelNumberModeratorW"]]  == "" &&
+        #     #modelOptions[["modelNumberModeratorZ"]]  == "") {
+
+
 
       # Init list for regression of new dependent var
       # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
