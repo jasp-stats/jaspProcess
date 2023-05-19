@@ -149,6 +149,332 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       type <- path[["processType"]]
       processVariable <- path[["processVariable"]]
 
+      print(dependent)
+      print(independent)
+      print(type)
+      print(processVariable)
+
+      # Init list for regression of new dependent var
+      # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
+      if (!dependent %in% names(regList)) {
+        regList[[dependent]] = list(vars = c(), dep = TRUE)
+      }
+
+      # Add independent var to regression of dependent var
+      regList <- .procAddLavModVar(regList, dependent, independent)
+
+      if (type != "directs") {
+        # Add process var to regression of dependent var
+        regList <- .procAddLavModVar(regList, dependent, processVariable)
+      }
+
+      if (type == "mediators") {
+        # Init list for regression of new process var var
+        if (!processVariable %in% names(regList)) {
+          # dep = FALSE to signal this is a mediator; this is used later when assigning par names
+          regList[[processVariable]] = list(vars = c(), dep = FALSE)
+        }
+        # Add independent var to regression of process var
+        regList <- .procAddLavModVar(regList, processVariable, independent)
+      }
+
+      if (type == "moderators") {
+        # Add interaction independent x moderator var to regress on dependent var
+        interVar <- paste0(independent, ":", processVariable)
+        regList <- .procAddLavModVar(regList, dependent, interVar)
+      }
+
+      if (type == "confounders") {
+        # Add extra regression equation where confounder -> independent variable
+        regList[[independent]] = list(vars = c(), dep = FALSE)
+        regList <- .procAddLavModVar(regList, independent, processVariable)
+      }
+    }
+  }
+
+  number <- modelOptions[["modelNumber"]]
+
+  # Suppose you fill in a Hayes model number with the model number menu, first a general model pops
+  # up with general names (X, Y, W etc). With each subsequently filled-in variable, the diagram
+  # is updated with the variable name, until all variables are selected, after which the model
+  # is actually computed
+
+  if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) ) {
+
+    #     #modelOptions[["modelNumberIndependent"]] == "" &&
+    #     #modelOptions[["modelNumberMediators"]]   == "" &&
+    #     #modelOptions[["modelNumberCovariates"]]  == "" &&
+    #     #modelOptions[["modelNumberModeratorW"]]  == "" &&
+    #     #modelOptions[["modelNumberModeratorZ"]]  == "") {
+
+    if (number == 1) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+
+    if (number == 2) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "Z"
+        )
+      )
+    }
+
+    # if (number == 3) {
+    #   processRelationships <- list(
+    #     list(
+    #       processDependent = "Y",
+    #       processIndependent = "X",
+    #       processType = "moderators",
+    #       processVariable = "W"
+    #     ),
+    #     list(
+    #       processDependent = "Y",
+    #       processIndependent = "X",
+    #       processType = "moderators",
+    #       processVariable = "Z"
+    #     )
+    #   )
+    # }
+
+    if (number == 4) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        )
+      )
+    }
+
+    if (number == 5) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+
+    if (number == 6) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M1"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M2"
+        ),
+        list(
+          processDependent = "M2",
+          processIndependent = "M1",
+          processType = "directs"
+        )
+      )
+    }
+
+    if (number == 7) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "M",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+
+    if (number == 8) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "M",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+
+    if (number == 9) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "M",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "M",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "Z"
+        )
+      )
+    }
+
+    if (number == 10) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "M",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "M",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "Z"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "Z"
+        )
+      )
+    }
+
+
+    if (number == 14) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "M",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+
+    if (number == 15) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "M",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "moderators",
+          processVariable = "W"
+        )
+      )
+    }
+
+    if (number == 16) {
+      processRelationships <- list(
+        list(
+          processDependent = "Y",
+          processIndependent = "X",
+          processType = "mediators",
+          processVariable = "M"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "M",
+          processType = "moderators",
+          processVariable = "W"
+        ),
+        list(
+          processDependent = "Y",
+          processIndependent = "M",
+          processType = "moderators",
+          processVariable = "Z"
+        )
+      )
+    }
+
+    for (path in processRelationships) {
+      dependent <- path[["processDependent"]]
+      independent <- path[["processIndependent"]]
+      type <- path[["processType"]]
+      processVariable <- path[["processVariable"]]
+
+      print(dependent)
+      print(independent)
+      print(type)
+      print(processVariable)
+
       # Init list for regression of new dependent var
       # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
       if (!dependent %in% names(regList)) {
@@ -189,26 +515,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (modelOptions[["inputType"]] == "inputModelNumber") {
 
-      number <- modelOptions[["modelNumber"]]
-
-      if (!is.null(number) &&
-      modelOptions[["modelNumberIndependent"]] == "" &&
-      modelOptions[["modelNumberMediators"]]   == "" &&
-      modelOptions[["modelNumberCovariates"]]  == "" &&
-      modelOptions[["modelNumberModeratorW"]]  == "" &&
-      modelOptions[["modelNumberModeratorZ"]]  == "") {
-
-          if (number == 1) {
-            processRelationships <- list(
-              list(
-                #processDependent = "Y",
-                independent = "X",
-                modW = "modW"
-              )
-            )
-          }
-        }
-
     independent  <- modelOptions[["modelNumberIndependent"]]
     mediators    <- modelOptions[["modelNumberMediators"]]
     covariates   <- modelOptions[["modelNumberCovariates"]]
@@ -216,62 +522,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modZ         <- modelOptions[["modelNumberModeratorZ"]]
     number       <- modelOptions[["modelNumber"]]
 
-    # # Check Hayes model nr. 1
-    # if ((dependent  == "" | independent == "" | modW == "" |  modZ != "" |
-    #      mediators != "" | covariates != "" ) & modelOptions[["modelNumber"]] == 1) {
-    #   print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
-    #
-    #  # Check Hayes model nr. 2
-    #  if ((dependent  == "" | independent == "" | modW == "" |  modZ  == "" |
-    #       mediators != "" | covariates != "" ) & modelOptions[["modelNumber"]] == 2) {
-    #    print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
-    #
-    # # Check Hayes model nr. 3
-    #  if ((dependent  == "" | independent == "" | modW == "" |  modZ  == "" |
-    #       mediators != "" | covariates != "" ) & modelOptions[["modelNumber"]] == 3) {
-    #    print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    #  }
-    #
-    # # Check Hayes model nr. 4
-    # if ((dependent  == "" | independent == "" | modW != "" |  modZ  != "" |
-    #      mediators  == "" | length(mediators > 1) | covariates != "" ) & modelOptions[["modelNumber"]] == 4) {
-    #   print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
-    #
-    #
-    # # Check Hayes model nr. 5
-    # if ((dependent  == "" | independent == "" | modW != "" |  modZ  != "" |
-    #      mediators  == "" | length(mediators > 1) | covariates != "" ) & modelOptions[["modelNumber"]] == 5) {
-    #   print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
-    #
-    # # Check Hayes model nr. 6
-    # if ((dependent  == "" | independent == "" | modW != "" |  modZ  != "" |
-    #      mediators  == "" | (length(mediators) >= 2 & length(mediators) <= 4) | covariates != "" ) & modelOptions[["modelNumber"]] == 6) {
-    #   print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
-    #
-    # # Check Hayes model nr. 7
-    # if ((dependent  == "" | independent == "" | modW == "" |  modZ  != "" |
-    #      mediators  == "" | length(mediators) > 1 | covariates != "" ) & modelOptions[["modelNumber"]] == 7) {
-    #   print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
-    #
-    # # Check Hayes model nr. 8
-    # if ((dependent  == "" | independent == "" | modW == "" |  modZ != "" |
-    #     mediators  == "" | length(mediators) > 1 | covariates != "" ) & modelOptions[["modelNumber"]] == 8) {
-    #   print(stringr::str_glue("Error: The specified Hayes model number {number} does
-    #                  not match with the (amount of) selected variables."))
-    # }
+
 
     # Init list for regression of new dependent var
     # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
@@ -326,6 +577,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   regList <- .procAddLavModParNames(regList)
+  print(regList)
 
   # Concatenate and collapse par names and var names to regression formula
   regSyntax <- paste(
@@ -341,6 +593,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     collapse = "\n"
   )
 
+  print(regSyntax)
+
   medEffectSyntax <- .procMedEffects(regList)
 
   medEffectSyntax <- paste(
@@ -348,6 +602,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     medEffectSyntax,
     sep = "\n"
   )
+
+  print(medEffectSyntax)
 
   header <- "
   # -------------------------------------------
@@ -510,6 +766,9 @@ proc_hcm_ToLavMod <- function(modelOptions) {
 .procComputeResults <- function(jaspResults, dataset, options) {
   nModels <- length(options[["processModels"]])
   procResults <- list()
+
+  print("hoeveel modellen?")
+  print(nModels)
 
   for (i in 1:nModels) {
     modelStateName <- options[["processModels"]][[i]][["name"]]
