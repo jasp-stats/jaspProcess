@@ -35,6 +35,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # error checking
   ready <- .procErrorHandling(dataset, options)
 
+  # Create lavaan syntax
+  options <- .procToLavModAllModels(jaspResults, dataset, options)
+
   # Compute (a list of) results from which tables and plots can be created
   modelsContainer <- .procComputeResults(jaspResults, dataset, options)
 
@@ -370,6 +373,27 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Add extra regression equation where confounder -> independent variable
       regList[[independent]] = list(vars = c(), dep = FALSE)
       regList <- .procAddLavModVar(regList, independent, processVariable)
+      regList <- .procAddLavModVar(regList, dependent, modW)
+      modVars[[modW]] <- independent
+    }
+
+    if (!is.null(modZ) && modZ != "") {
+      # Add interaction independent x moderatorZ var to regress on dependent var
+      interVar <- paste0(independent, ":", modZ)
+      regList <- .procAddLavModVar(regList, dependent, interVar)
+      regList <- .procAddLavModVar(regList, dependent, modZ)
+      modVars[[modZ]] <- independent
+    }
+
+    #if (covariates != "") {
+    if(length(covariates) != 0) {
+      #if (!is.null(covariates) && covariates != "") {
+      # Add extra regression equation where covariate -> independent variable
+      for (i in 1:length(covariates)) {
+
+        #regList[[independent]] = list(vars = c(), dep = TRUE)
+        regList <- .procAddLavModVar(regList, dependent, covariates[i])
+      }
     }
   }
 
@@ -378,7 +402,42 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
-.procMedEffects <- function(regList) {
+.procModProbeValues <- function(modVars, dataset, options) {
+  probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])
+
+  return(lapply(encodeColNames(names(modVars)), function(nms) {
+    quantile(dataset[[nms]], probs = probeVals/100)
+  }))
+}
+
+.procMedEffectFromPath <- function(path, regList, modVarProbes) {
+  probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
+
+  return(lapply(2:length(path), function(i) {
+    regListRow <- regList[[names(path)[i]]]
+    isMedVar <- regListRow$vars == names(path)[i-1]
+    medPars <- regListRow$parNames[isMedVar]
+    isIntVar <- grepl(":", regListRow$vars)
+    intVarsProbeNames <- NULL
+
+    if (any(isIntVar)) {
+      regVarsSplit <- strsplit(regListRow$vars[isIntVar], ":")
+      intVarIsMed <- sapply(regVarsSplit, function(v) v[1] %in% regListRow$vars[isMedVar])
+
+      if (any(intVarIsMed)) {
+        modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
+        intPars <- regListRow$parNames[isIntVar][intVarIsMed]
+        intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], modVarProbes[[modIntVars[i]]], sep = "*"))
+        intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "_"))
+        medPars <- paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + ")
+        intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNames, collapse = ".")
+      }
+    }
+    return(list(medPars = medPars, intVars = intVarsProbeNames))
+  }))
+}
+
+.procMedEffects <- function(regList, modVars, modVarProbes) {
   # Get dep var
   depVar <- names(regList)[sapply(regList, function(row) row$dep)]
 
@@ -398,42 +457,79 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
 
   # Get par names of simple paths
-  medEffectsList <- lapply(medPaths, function(path) sapply(2:length(path), function(i) {
-    regListRow <- regList[[names(path)[i]]]
-    isIntVar <- grepl(":", regListRow$vars)
-    regVarsSplit <- strsplit(regListRow$vars, ":")
-    indepIntVars <- sapply(regVarsSplit, function(v) v[1])
-    medVars <- regListRow$parNames[regListRow$vars == names(path)[i-1]]
-    intVars <- regListRow$parNames[indepIntVars == names(path)[i-1] & isIntVar]
-    # return(list(medVars = medVars, intVars = intVars))
-    return(medVars)
-  }))
+  medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modVarProbes = modVarProbes)
+
+  medEffectsListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
+    lapply(row, function(col) col$medPars), collapse = "*"
+  ))
+  medEffectNamesListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
+    Filter(Negate(is.null), lapply(row, function(col) col$intVars)), collapse = "."
+  ))
 
   # Create coef names of mediation effects
-  medEffectCoefNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_"))
+  medEffectPathNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_"))
+
+  medEffectsCollapsed <- unlist(medEffectsListCombined)
+  medEffectNamesCollapsed <- unlist(medEffectNamesListCombined)
+
+  medEffectsCombinedLengths <- sapply(medEffectsListCombined, length)
+  medEffectIsConditional <- rep(medEffectsCombinedLengths > 1, medEffectsCombinedLengths)
+
+  medEffectPathNamesRepeated <- rep(medEffectPathNames, medEffectsCombinedLengths)
+
+  medEffectPathNamesCollapsed <- vector("character", length(medEffectsCollapsed))
+  medEffectPathNamesCollapsed[!medEffectIsConditional] <- medEffectPathNamesRepeated[!medEffectIsConditional]
+  medEffectPathNamesCollapsed[medEffectIsConditional] <- .pasteDot(medEffectPathNamesRepeated[medEffectIsConditional], medEffectNamesCollapsed)
 
   # Concatenate to mediation effects by multiplying par names of paths
   medEffectsSyntax <- paste(
-    medEffectCoefNames,
-    sapply(medEffectsList, function(row) paste(row, collapse = "*")),
-    # paste(
-    #   sapply(medEffectsList, function(row) paste(row$medVars, collapse = " * ")),
-    #   sapply(medEffectsList, function(row) paste(row$intVars, collapse = " + ")),
-    #   sep = " + "
-    # ),
+    medEffectPathNamesCollapsed,
+    medEffectsCollapsed,
     sep = " := ",
     collapse = "\n"
   )
 
   # Get total effect of X on Y
-  totEffect <- paste(medEffectCoefNames, collapse = " + ")
+  totEffect <- paste(medEffectsListCombined[[1]], .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + "), sep = " + ")
+
+  dirEffectIsConditional <- medEffectsCombinedLengths[1] > 1
+  indEffectIsConditional <- any(medEffectsCombinedLengths[-1] > 1)
+
+  indEffectNames <- .pasteExpandGrid(.doCallPaste(medEffectNamesListCombined[-1], sep = "."), collapse = ".")
+
+  totEffectLabels <- list()
+
+  if (dirEffectIsConditional) totEffectLabels <- append(totEffectLabels, list(medEffectNamesListCombined[[1]]))
+  if (indEffectIsConditional) totEffectLabels <- append(totEffectLabels, list(indEffectNames))
+  
+  totEffectNames <- .doCallPaste(totEffectLabels, sep = ".")
 
   # Get total indirect effect of X on Y
-  totIndEffect <- paste(medEffectCoefNames[-1], collapse = " + ")
+  totIndEffect <- .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + ")
 
   # Only select total effect if there are no indirect effects
-  totLabels <- if(length(medEffectCoefNames) == 1) "tot" else c("tot", "totInd")
-  totEffects <- if(length(medEffectCoefNames) == 1) totEffect else c(totEffect, totIndEffect)
+  totNames <- if(length(medEffectPathNames) == 1) rep("tot", length(totEffect)) else rep(c("tot", "totInd"), c(length(totEffect), length(totIndEffect)))
+
+  totLabels <- vector("character", length(totNames))
+
+  if(length(medEffectPathNames) == 1) {
+    totEffects <- totEffect
+    totNames <- rep("tot", length(totEffect))
+    totLabels <- .pasteDot(totNames, totEffectNames)
+  } else {
+    totEffects <- c(totEffect, totIndEffect)
+    if (indEffectIsConditional) {
+      totLabels <- .pasteDot(
+        rep(c("tot", "totInd"), c(length(totEffect), length(totIndEffect))),
+        c(totEffectNames, indEffectNames)
+      )
+    } else {
+      totLabels <- rep(
+        c(.pasteDot("tot", totEffectNames), "totInd"),
+        c(length(totEffect), length(totIndEffect))
+      )
+    }
+  }
 
   totalEffectsSyntax <- paste(
     totLabels,
@@ -875,12 +971,30 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
 
+.procEffectsTablesGetConditionalLabels <- function(paths, mods) {
+  modProbes <- list()
+
+  for (path in paths) {
+    pathMods <- sapply(path[-1], function(row) row[1])
+
+    for (condEff in path[-1]) {
+      modProbes[[condEff[1]]] <- c(modProbes[[condEff[1]]], condEff[2])
+
+      for (condEff in mods[!mods %in% pathMods]) {
+        modProbes[[condEff]] <- c(modProbes[[condEff]], "")
+      }
+    }
+  }
+
+  return(modProbes)
+}
+
 .procPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["mediationEffectsTable"]]) || !procResults@Options[["do.fit"]]) return()
 
   medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
   medEffectsTable$dependOn(
-    options = "parameterLabels",
+    options = c("parameterLabels", "moderationProbes"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
   )
 
@@ -896,15 +1010,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "_")
+
+  # Only use label splits of length > 1 to omit total effects
+  labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
+
   # Get paths from label of mediation effect
-  medPaths <- lapply(medEffects$lhs, function(path) strsplit(path, "_")[[1]])
-  # Only use paths of length > 1 to omit total effects
-  medPaths <- medPaths[sapply(medPaths, length) > 1]
+  medPaths <- lapply(labelSplit, function(path) path[[1]])
+  
   # Get path lengths
   medPathLengths <- sapply(medPaths, length)
+
   # Sort paths to incresaing length
   medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
   medEffects <- medEffects[medLengthSortIdx, ]
+
   # Add a column for each step of longest path
   for (i in 1:max(medPathLengths)) {
     # If path has step add var name otherwise empty
@@ -922,10 +1042,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     medEffectsTable[[paste0("lhs_", i)]] <- medEffect
   }
 
+  medEffectIsConditional <- sapply(labelSplit, function(path) length(path) > 1)
+
+  uniqueMods <- unique(unlist(lapply(labelSplit[medEffectIsConditional], function(path) lapply(path[-1], function(row) row[1]))))
+
+  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medEffectIsConditional], uniqueMods)
+
+  for (mod in uniqueMods) {
+    medEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = TRUE)
+    modLabels <- vector("character", length(medEffectIsConditional))
+    modLabels[medEffectIsConditional] <- modProbes[[mod]]
+    medEffectsTable[[mod]] <- modLabels
+  }
+
   # Add column with parameter labels
   if (options$parameterLabels) {
-    medEffectsTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
-    medEffectsTable[["label"]] <- gsub("\\*", " \u273B ", medEffects$rhs)
+    medEffectsTable <- .procEffectsTablesParameterLabels(medEffectsTable, medEffects)
   }
 
   .procCoefficientsTable(medEffectsTable, options, medEffects)
@@ -936,7 +1068,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
   totEffectsTable$dependOn(
-    options = "parameterLabels",
+    options = c("parameterLabels", "moderationProbes"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "totalEffects"))
   )
 
@@ -952,23 +1084,40 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffects <- pathCoefs[pathCoefs$op == ":=", ]
 
-  # Get paths from label of mediation effect
-  medPaths <- lapply(medEffects$lhs, function(path) strsplit(path, "_")[[1]])
-  # Only use paths of length == 1 to get total effects
-  totEffects <- medEffects[sapply(medPaths, length) == 1, ]
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "_")
 
-  totEffectsTable$addColumnInfo(name = "lhs", title = "", type = "string")
-  totEffectsTable[["lhs"]] <- c(gettext("Total"), gettext("Total indirect"))[1:nrow(totEffects)]
+  # Only use label splits of length > 1 to omit total effects
+  isTotEffect <- sapply(labelSplit, function(path) length(path[[1]])) == 1
+  labelSplit <- labelSplit[isTotEffect]
+
+  # Get paths from label of mediation effect
+  totEffectLabels <- sapply(labelSplit, function(path) path[[1]])
+  totEffects <- medEffects[isTotEffect, ]
+
+  totEffectsTable$addColumnInfo(name = "lhs", title = "", type = "string", combine = TRUE)
+  totEffectsTable[["lhs"]] <- ifelse(totEffectLabels == "tot", gettext("Total"), gettext("Total indirect"))
+
+  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))))
+
+  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit, uniqueMods)
+
+  for (mod in uniqueMods) {
+    totEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = TRUE)
+    totEffectsTable[[mod]] <- modProbes[[mod]]
+  }
 
   # Add column with parameter labels
   if (options$parameterLabels) {
-    totEffectsTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
-    totEffectsTable[["label"]] <- gsub("\\*", " \u273B ", sapply(strsplit(totEffects$rhs, "\\+"), function(path) {
-      return(paste(sapply(path, function(v) medEffects$rhs[medEffects$lhs == v]), collapse = " \uFF0B "))
-    }))
+    totEffectsTable <- .procEffectsTablesParameterLabels(totEffectsTable, totEffects)
   }
 
   .procCoefficientsTable(totEffectsTable, options, totEffects)
+}
+
+.procEffectsTablesParameterLabels <- function(jaspTable, effects) {
+  jaspTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
+  jaspTable[["label"]] <- gsub("\\+", " \uFF0B ", gsub("\\*", " \u273B ", effects$rhs))
+  return(jaspTable)
 }
 
 .procCovariancesTable <- function(container, options, procResults, modelIdx) {
@@ -1261,4 +1410,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       syntaxContainer[[modelName]] <- modelSyntax
     }
   }
+}
+
+# Helper functions ----
+
+.pasteExpandGrid <- function(obj, collapse) {
+  return(apply(expand.grid(obj), 1, paste, collapse = collapse))
+}
+
+.doCallPaste <- function(obj, sep) {
+  return(do.call(paste, append(obj, list(sep = sep))))
+}
+
+.pasteDot <- function(...) {
+  return(paste(..., sep = "."))
 }
