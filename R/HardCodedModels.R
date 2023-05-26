@@ -1,6 +1,4 @@
-HardCodedModels(5)
-
-HardCodedModels <- function(number) {
+.HardCodedModels <- function(number) {
 
   ## TODO: Models involving moderated moderation 3,11,12,13,18,19,20,68,69,70,71,72,73
   ## TODO: Models involving flexible amount of mediators 6,80,81
