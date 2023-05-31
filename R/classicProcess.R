@@ -429,10 +429,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
         intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], modVarProbes[[modIntVars[i]]], sep = "*"))
         intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "_"))
-        medPars <- paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + ")
+        medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + "), ")")
         intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNames, collapse = ".")
       }
     }
+
     return(list(medPars = medPars, intVars = intVarsProbeNames))
   }))
 }
@@ -465,6 +466,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   medEffectNamesListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
     Filter(Negate(is.null), lapply(row, function(col) col$intVars)), collapse = "."
   ))
+
+  print("MEDEFFECTS")
+  print(medEffectsList)
+  print("COMBINED")
+  print(medEffectsListCombined)
+  print("NAMES")
+  print(medEffectNamesListCombined)
 
   # Create coef names of mediation effects
   medEffectPathNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_"))
