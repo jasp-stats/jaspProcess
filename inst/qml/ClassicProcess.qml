@@ -504,8 +504,8 @@ Form
 			{
 				Layout.columnSpan: 3
 				name: "moderationProbes"
-				title: qsTr("Probe conditional effects")
-				values: [2.5, 25, 50, 75, 97.5]
+				title: qsTr("Probe conditional continuous effects")
+				values: [16, 50, 84]
 				minimumItems: 1
 				maximumItems: 10
 				rowComponent: DoubleField
