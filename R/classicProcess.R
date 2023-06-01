@@ -258,16 +258,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     sep = "",
     collapse = "\n"
   )
-  print(regSyntax)
 
-  medEffectSyntax <- .procMedEffects(regList)
+  modVarProbes <- .procModProbeValues(modVars, dataset, options)
+  names(modVarProbes) <- names(modVars)
 
-  medEffectSyntax <- paste(
-    "\n# Effect decomposition",
-    medEffectSyntax,
-    sep = "\n"
-  )
-  print(medEffectSyntax)
+  medEffectSyntax <- .procMedEffects(regList, modVars, modVarProbes)
 
   resCovSyntax <- .procResCov(regList, modelOptions[["independentCovariances"]], modelOptions[["mediatorCovariances"]])
 
@@ -411,8 +406,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procMedEffectFromPath <- function(path, regList, modVarProbes) {
-  probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
-
   return(lapply(2:length(path), function(i) {
     regListRow <- regList[[names(path)[i]]]
     isMedVar <- regListRow$vars == names(path)[i-1]
@@ -427,6 +420,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       if (any(intVarIsMed)) {
         modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
+        probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
         intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], modVarProbes[[modIntVars[i]]], sep = "*"))
         intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "_"))
         medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + "), ")")
@@ -460,19 +454,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get par names of simple paths
   medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modVarProbes = modVarProbes)
 
+  .pasteDuplicates <- function(row) {
+    pars <- lapply(row, function(col) col$medPars)
+    ints <- lapply(row, function(col) col$intVars)
+
+    isDup <- duplicated(ints) | duplicated(ints, fromLast = TRUE)
+
+    parsUnique <- append(list(as.vector(.doCallPaste(pars[isDup & !is.null(ints)], sep = "*"))), pars[!isDup])
+
+    return(parsUnique[sapply(parsUnique, length) > 0])
+  }
+
   medEffectsListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
-    lapply(row, function(col) col$medPars), collapse = "*"
+    .pasteDuplicates(row), collapse = "*"
   ))
   medEffectNamesListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
-    Filter(Negate(is.null), lapply(row, function(col) col$intVars)), collapse = "."
+    unique(Filter(Negate(is.null), lapply(row, function(col) col$intVars))), collapse = "."
   ))
-
-  print("MEDEFFECTS")
-  print(medEffectsList)
-  print("COMBINED")
-  print(medEffectsListCombined)
-  print("NAMES")
-  print(medEffectNamesListCombined)
 
   # Create coef names of mediation effects
   medEffectPathNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_"))
@@ -510,7 +508,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (dirEffectIsConditional) totEffectLabels <- append(totEffectLabels, list(medEffectNamesListCombined[[1]]))
   if (indEffectIsConditional) totEffectLabels <- append(totEffectLabels, list(indEffectNames))
   
-  totEffectNames <- .doCallPaste(totEffectLabels, sep = ".")
+  totEffectNames <- .doCallPaste(unique(totEffectLabels), sep = ".")
 
   # Get total indirect effect of X on Y
   totIndEffect <- .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + ")
@@ -532,10 +530,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         c(totEffectNames, indEffectNames)
       )
     } else {
-      totLabels <- rep(
-        c(.pasteDot("tot", totEffectNames), "totInd"),
-        c(length(totEffect), length(totIndEffect))
-      )
+      totLabels <- c(.pasteDot("tot", totEffectNames), "totInd")
     }
   }
 
@@ -1057,7 +1052,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medEffectIsConditional], uniqueMods)
 
   for (mod in uniqueMods) {
-    medEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = TRUE)
+    medEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = FALSE) # combine = F because empty cells indicate no moderation
     modLabels <- vector("character", length(medEffectIsConditional))
     modLabels[medEffectIsConditional] <- modProbes[[mod]]
     medEffectsTable[[mod]] <- modLabels
