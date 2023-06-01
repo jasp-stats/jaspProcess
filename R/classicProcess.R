@@ -1143,7 +1143,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     pathCoefTable$addFootnote(gettext("Model did not converge."))
   }
 
-  pathCoefs <- pathCoefs[pathCoefs$op == "~~",]
+  pathCoefs <- pathCoefs[pathCoefs$op == "~~" & !is.na(pathCoefs$z),]
 
   pathCoefTable$addColumnInfo(name = "lhs", title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
@@ -1152,11 +1152,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable[["lhs"]]   <- pathCoefs$rhs
   pathCoefTable[["op"]]    <- rep("\u2194", nrow(pathCoefs))
   pathCoefTable[["rhs"]]   <- pathCoefs$lhs
-
-  # if (options$parameterLabels) {
-  #   pathCoefTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
-  #   pathCoefTable[["label"]] <- pathCoefs$label
-  # }
 
   .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
