@@ -22,28 +22,31 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   ready <- .procIsReady(options)
 
-  if (!ready) return()
   # Init options: add variables to options to be used in the remainder of the analysis
-  options <- .procInitOptions(jaspResults, options)
+  options <- .procInitOptions(jaspResults, options, ready)
+
   # read dataset
   dataset <- .procReadData(options)
+
   # error checking
-  ready <- .procErrorHandling(dataset, options)
+  #ready <- .procErrorHandling(dataset, options)
 
   # Compute (a list of) results from which tables and plots can be created
-  procResults <- .procComputeResults(jaspResults, dataset, options)
+  procResults <- .procComputeResults(jaspResults, dataset, options, ready)
+
+  pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
+  .procPathPlots(pathPlotContainer, options, procResults, ready)
+
+  if (!ready) return()
 
   # Output containers, tables, and plots based on the results. These functions should not return anything!
   .procModelFitTable(jaspResults, options, procResults)
 
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
-  pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
 
   .procParameterEstimateTables(parEstContainer, options, procResults)
-  .procPathPlots(pathPlotContainer, options, procResults)
 
   .procPlotSyntax(jaspResults, options, procResults)
-
   return()
 }
 
@@ -138,94 +141,42 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
-.procToLavModSingleModel <- function(modelOptions, dependent) {
+.procToLavModSingleModel <- function(modelOptions, dependent, ready) {
 
   regList = list()
 
-  if (modelOptions[["inputType"]] == "inputVariables") {
-    for (path in modelOptions[["processRelationships"]]) {
-      dependent <- path[["processDependent"]]
-      independent <- path[["processIndependent"]]
-      type <- path[["processType"]]
-      processVariable <- path[["processVariable"]]
+  number <- modelOptions[["modelNumber"]]
 
-      print(dependent)
-      print(independent)
-      print(type)
-      print(processVariable)
+  # Insert function for plotting conceptual hard-coded Hayes model, in case
+  # no estimation takes place yet (because of not having filled in all necessary
+  # variables)
 
-      # Init list for regression of new dependent var
-      # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
-      if (!dependent %in% names(regList)) {
-        regList[[dependent]] = list(vars = c(), dep = TRUE)
-      }
+  # Existing Hayes models
+  Hmodels <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+               21,22,28,29,58,59,60,61,62,63,64,65,66,67,68,69,70,
+               71,72,73,75,76,80,81,82,83,84,85,86,87,88,89,90,91,92)
 
-      # Add independent var to regression of dependent var
-      regList <- .procAddLavModVar(regList, dependent, independent)
-
-      if (type != "directs") {
-        # Add process var to regression of dependent var
-        regList <- .procAddLavModVar(regList, dependent, processVariable)
-      }
-
-      if (type == "mediators") {
-        # Init list for regression of new process var var
-        if (!processVariable %in% names(regList)) {
-          # dep = FALSE to signal this is a mediator; this is used later when assigning par names
-          regList[[processVariable]] = list(vars = c(), dep = FALSE)
-        }
-        # Add independent var to regression of process var
-        regList <- .procAddLavModVar(regList, processVariable, independent)
-      }
-
-      if (type == "moderators") {
-        # Add interaction independent x moderator var to regress on dependent var
-        interVar <- paste0(independent, ":", processVariable)
-        regList <- .procAddLavModVar(regList, dependent, interVar)
-      }
-
-      if (type == "confounders") {
-        # Add extra regression equation where confounder -> independent variable
-        regList[[independent]] = list(vars = c(), dep = FALSE)
-        regList <- .procAddLavModVar(regList, independent, processVariable)
-      }
-    }
+  if (!ready && modelOptions[["inputType"]] == "inputModelNumber" && number %in% Hmodels) {
+    processRelationships <- .HardCodedModels(number)
+    ## TODO: Models involving moderated moderation 3,11,12,13,18,19,20,68,69,70,71,72,73
+    ## TODO: Models involving flexible amount of mediators 6,80,81
   }
 
-  # Suppose you fill in a Hayes model number with the model number menu, first a general model pops
-  # up with general names (X, Y, W etc). With each subsequently filled-in variable, the diagram
-  # is updated with the variable name, until all variables are selected, after which the model
-  # is actually computed
+  # if (!ready && modelOptions[["inputType"]] == "inputModelNumber" ) {
+  #   processRelationships <- .HardCodedModels(number)
+  # }
 
+  if (ready && modelOptions[["inputType"]] == "inputVariables") {
+    processRelationships <- modelOptions[["processRelationships"]]
+  }
 
-  if (modelOptions[["inputType"]] == "inputModelNumber") {
-
-   # Insert function on Hayes hard-coded models
-    number <- modelOptions[["modelNumber"]]
-    HardCodedModels(number)
-
+  if (!ready | modelOptions[["inputType"]] == "inputVariables") {
     for (path in processRelationships) {
       dependent <- path[["processDependent"]]
       independent <- path[["processIndependent"]]
       type <- path[["processType"]]
       processVariable <- path[["processVariable"]]
 
-
-      # if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) &&
-      #     modelOptions[["modelNumberIndependent"]] != "") {
-      #     independent  <- modelOptions[["modelNumberIndependent"]]}
-      #
-      # if (modelOptions[["inputType"]] == "inputModelNumber" && (!is.null(number)) &&
-      #     modelOptions[["modelNumberMediators"]]  != "") {
-      #
-      #   independent  <- modelOptions[["modelNumberIndependent"]]}
-
-      print("Ha Thijs")
-      print(dependent)
-      print(independent)
-      print(type)
-      print(processVariable)
-
       # Init list for regression of new dependent var
       # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
       if (!dependent %in% names(regList)) {
@@ -264,7 +215,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
 
-  #if (modelOptions[["inputType"]] == "inputModelNumber") {
+  if (ready && modelOptions[["inputType"]] == "inputModelNumber") {
 
   # reading variables specified in the menu, if any
     independent  <- modelOptions[["modelNumberIndependent"]]
@@ -273,24 +224,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modW         <- modelOptions[["modelNumberModeratorW"]]
     modZ         <- modelOptions[["modelNumberModeratorZ"]]
     number       <- modelOptions[["modelNumber"]]
-
-    depi    <- "dep"
-    independent  <- "indep"
-    mediators    <- "med"
-    covariates   <- "covar"
-    modW         <- "modwww"
-    modZ         <- "modzzz"
-
-    # update reglist as specified above with general variable names X,Y, M, and W with specified vars
-    # replace Y with dependent varname
-    if (dependent != "" ) {
-      names(regList) = depi
-    }
-
-    if (independent != "") {
-      regList[names(dep) == "X"] <- independent
-      #regList[[depi]]$vars = list(vars = c(), dep = TRUE)
-    }
 
     # Init list for regression of new dependent var
     # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
@@ -316,7 +249,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         regList <- .procAddLavModVar(regList, dependent, mediators[i])
       }
     }
-
 
     if (!is.null(modW) && modW != "") {
       # Add interaction independent x moderatorW var to regress on dependent var
@@ -354,20 +286,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     sep = " ~ "
   )
 
-  #testing --------------------------
-  # regSyntax <- paste(
-  #   paste0(names(regList)),
-  #   sapply(regList, function(row) paste(row$parNames, row$vars,sep = "*", collapse = " + ")),
-  #   sep = " ~ "
-  # )
-
   regSyntax <- paste(
     sapply(regList, function(row) row[["comment"]]),
     regSyntax,
     sep = "",
     collapse = "\n"
   )
-
   print(regSyntax)
 
   medEffectSyntax <- .procMedEffects(regList)
@@ -377,7 +301,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     medEffectSyntax,
     sep = "\n"
   )
-
   print(medEffectSyntax)
 
   header <- "
@@ -436,11 +359,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(syntax)
 }
 
-.procInitOptions <- function(jaspResults, options) {
+.procInitOptions <- function(jaspResults, options, ready) {
   # Determine if analysis can be run with user input
   # Calculate any options common to multiple parts of the analysis
 
-  options[["modelSyntax"]] <- lapply(options[["processModels"]], .procToLavModSingleModel, dependent = options[["dependent"]])
+  options[["modelSyntax"]] <- lapply(options[["processModels"]], .procToLavModSingleModel, dependent = options[["dependent"]],ready = ready)
 
   return(options)
 }
@@ -464,8 +387,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 # Results functions ----
-.procResultsFitModel <- function(syntax, dataset, options) {
+.procResultsFitModel <- function(syntax, dataset, options, ready) {
   # Helper function to compute actual results
+
+  if (!ready) {
+    dataset <- NULL
+  }
+
   fittedModel <- try(lavaan::sem(
     model           = syntax,
     data            = dataset,
@@ -473,7 +401,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     mimic           = options$emulation,
     estimator       = options$estimator,
     std.ov          = options$standardizedEstimate,
-    missing         = options$naAction
+    missing         = options$naAction,
+    do.fit          = ready
   ))
 
   if (inherits(fittedModel, "try-error")) {
@@ -501,7 +430,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 }
 
-.procComputeResults <- function(jaspResults, dataset, options) {
+.procComputeResults <- function(jaspResults, dataset, options, ready) {
   nModels <- length(options[["processModels"]])
   procResults <- list()
 
@@ -520,7 +449,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       fittedModel <- .procResultsFitModel(
         options[["modelSyntax"]][[i]],
         dataset,
-        options
+        options,
+        ready
       )
       jaspResults[[modelStateName]]$object <- fittedModel
       procResults[[modelStateName]] <- fittedModel
@@ -669,6 +599,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procIsValidModel <- function(modelContainer, procResult) {
   if (is.character(procResult)) {
     modelContainer$setError(procResult)
+    print(procResult)
     return(FALSE)
   }
   return(TRUE)
@@ -700,7 +631,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procPathPlots <- function(container, options, procResults) {
+.procPathPlots <- function(container, options, procResults, ready) {
   modelNames <- names(procResults)
 
   for (i in 1:length(procResults)) {
@@ -715,12 +646,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     valid <- .procIsValidModel(modelContainer, procResults[[i]])
-
+    print(valid)
     if (valid) {
       if (options[["processModels"]][[i]][["conceptualPathPlot"]])
+
+        if (!ready) options[["dependent"]] <- "Y"
         .procConceptPathPlot(modelContainer, options, procResults[[i]], i)
 
-      if (options[["processModels"]][[i]][["statisticalPathPlot"]])
+
+      if (ready && options[["processModels"]][[i]][["statisticalPathPlot"]])
         .procStatPathPlot(modelContainer, options, procResults[[i]], i)
     }
   }
