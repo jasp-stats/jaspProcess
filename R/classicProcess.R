@@ -273,6 +273,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modVarProbes <- .procModProbeValues(modVars, dataset, options)
   names(modVarProbes) <- names(modVars)
 
+  print("HELLL")
+  print(modVarProbes)
+  modProbeSyntax <- .procModEffects(modVarProbes)
+  print(modProbeSyntax)
+
   medEffectSyntax <- .procMedEffects(regList, modVars, modVarProbes)
 
   resCovSyntax <- .procResCov(regList, modelOptions[["independentCovariances"]], modelOptions[["mediatorCovariances"]])
@@ -294,6 +299,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }))
 }
 
+.procModEffects <- function(modVarProbes) {
+  modEffects <- lapply(names(modVarProbes), function(nms) {
+    labels <- paste0(nms, gsub("\\%", "", names(modVarProbes[[nms]])))
+    values <- modVarProbes[[nms]]
+    return(paste(labels, values, sep = " := ", collapse = "\n"))
+  })
+  return(paste0("\n# Moderation probes\n", paste(modEffects, collapse = "\n")))
+}
+
 .procMedEffectFromPath <- function(path, regList, modVarProbes) {
   return(lapply(2:length(path), function(i) {
     regListRow <- regList[[names(path)[i]]]
@@ -310,7 +324,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
         probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
-        intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], modVarProbes[[modIntVars[i]]], sep = "*"))
+        intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modVarProbes[[modIntVars[i]]], digits = 3), sep = "*"))
         intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "_"))
         medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + "), ")")
         intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNames, collapse = ".")
@@ -431,8 +445,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
 
   return(paste(
-    "\n## Effect decomposition",
-    "# Mediation effects",
+    "\n# Mediation effects",
     medEffectsSyntax,
     "\n# Total effects",
     totalEffectsSyntax,
@@ -843,7 +856,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     pathMods <- sapply(path[-1], function(row) row[1])
 
     for (condEff in path[-1]) {
-      modProbes[[condEff[1]]] <- c(modProbes[[condEff[1]]], condEff[2])
+      modProbes[[condEff[1]]] <- c(modProbes[[condEff[1]]], paste0(condEff[2], "th"))
 
       for (condEff in mods[!mods %in% pathMods]) {
         modProbes[[condEff]] <- c(modProbes[[condEff]], "")
