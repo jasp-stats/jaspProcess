@@ -128,6 +128,7 @@ Form
                             name: 					"processRelationships"
                             preferredWidth: 		models.width - 2 * jaspTheme.contentMargin
                             itemRectangle.color: 	jaspTheme.controlBackgroundColor
+                            minimumItems:           1
                             rowComponent: 			RowLayout
                             {
                                 id: 		rowComp
@@ -136,19 +137,41 @@ Form
                                 Layout.columnSpan: 4
                                 DropDown
                                 {
-                                    id: 				procIndep
-                                    name: 				'processIndependent'
-                                    source: 			['covariates', 'factors']
-                                    controlMinWidth: 	modelsGroup.colWidth
-                                    addEmptyValue: 		true
+                                    id: 				    procIndep
+                                    name: 				    'processIndependent'
+                                    source: 			    ['covariates', 'factors']
+                                    controlMinWidth: 	    modelsGroup.colWidth
+                                    addEmptyValue: 		    true
+                                    onCurrentValueChanged:
+                                    {
+                                        if (currentIndex > 0 && (procVar.currentValue == currentValue && procDep.currentValue == currentValue))
+                                            addControlError("Same value!")
+                                        else
+                                        {
+                                            clearControlError()
+                                            procVar.clearControlError()
+											procIndep.clearControlError()
+                                        }
+                                    }
                                 }
                                 DropDown
                                 {
                                     id: 				procDep
                                     name: 				'processDependent'
-                                    source: 			['dependent', 'processVariable']
+                                    source: 			["dependent", "processVariable"] //, {name: "processRelationships.processVariable", use: "discardIndex=" + (relations.count - 1)}]
                                     controlMinWidth: 	modelsGroup.colWidth
                                     addEmptyValue: 		true
+									onCurrentValueChanged:
+                                    {
+                                        if (currentIndex > 0 && (procVar.currentValue == currentValue || procIndep.currentValue == currentValue))
+                                            addControlError("Same value!")
+                                        else
+                                        {
+                                            clearControlError()
+                                            procVar.clearControlError()
+											procIndep.clearControlError()
+                                        }
+                                    }
                                 }
                                 DropDown
                                 {
@@ -173,12 +196,23 @@ Form
                                 }
                                 DropDown
                                 {
-                                    id: 				procVar
-                                    name: 				'processVariable'
-                                    enabled: 			procType.currentValue != "directs"
-                                    source: 			procType.currentValue == 'mediators' ? ['covariates'] : ['covariates', 'factors']
-                                    controlMinWidth: 	modelsGroup.colWidth
-                                    addEmptyValue: 		true
+                                    id: 				    procVar
+                                    name: 				    'processVariable'
+                                    enabled: 			    procType.currentValue != "directs"
+                                    source: 			    procType.currentValue == 'mediators' ? ['covariates'] : ['covariates', 'factors']
+                                    controlMinWidth: 	    modelsGroup.colWidth
+                                    addEmptyValue: 		    true
+                                    onCurrentValueChanged:
+                                    {
+                                        if (currentIndex > 0 && (procIndep.currentValue == currentValue || procDep.currentValue == currentValue))
+                                            addControlError("Same value!")
+                                        else
+                                        {
+                                            clearControlError()
+                                            procIndep.clearControlError()
+											procDep.clearControlError()
+                                        }
+                                    }
                                 }
                                 function enableAddItemManually()
                                 {
