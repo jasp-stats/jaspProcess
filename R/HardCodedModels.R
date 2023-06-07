@@ -1,3 +1,20 @@
+#
+# Copyright (C) 2023 University of Amsterdam and Netherlands eScience Center
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 .HardCodedModels <- function(number) {
 
   ## TODO: Models involving moderated moderation 3,11,12,13,18,19,20,68,69,70,71,72,73
@@ -1299,6 +1316,41 @@
       )
     )
   }
-  return(processRelationships)
-
+  return(.procEncodeProcessRelationships(processRelationships))
 } # end of function on hardcoded models
+
+.procVarEncoding <- function() {
+  # Encoding for dummy variables
+  return(list(
+    Y = "JaspProcess_Dependent_Encoded",
+    X = "JaspProcess_Independent_Encoded",
+    W = "JaspProcess_ModeratorW_Encoded",
+    Z = "JaspProcess_ModeratorZ_Encoded",
+    M = "JaspProcess_Mediator_Encoded"
+  ))
+}
+
+.procEncodePath <- function(path) {
+  # Encode all variables in a path
+  return(lapply(path, function(v) {
+    if (v %in% c("mediators", "moderators", "confounders", "directs"))
+      return(v)
+    if (grepl("M", v))
+      return(gsub("M", .procVarEncoding()[["M"]], v))
+    return(.procVarEncoding()[[v]])
+  }))
+}
+
+.procEncodeProcessRelationships <- function(processRelationships) {
+  # Encode all paths
+  return(lapply(processRelationships, .procEncodePath))
+}
+
+.procDecodeVarNames <- function(varNames) {
+  # Decode a vector of var names
+  encoding <- .procVarEncoding()
+  for (nm in names(encoding)) {
+    varNames <- gsub(encoding[[nm]], nm, varNames)
+  }
+  return(varNames)
+}
