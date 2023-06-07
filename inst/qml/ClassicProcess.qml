@@ -283,13 +283,13 @@ Form
                             AssignedVariablesList
                             {
                                 name: 				"modelNumberModeratorW"
-                                title: 				qsTr("Moderator Z")
+                                title: 				qsTr("Moderator W")
                                 singleVariable: 	true
                             }
                             AssignedVariablesList
                             {
                                 name: 				"modelNumberModeratorZ"
-                                title: 				qsTr("Moderator W")
+                                title: 				qsTr("Moderator Z")
                                 singleVariable: 	true
                             }
                         }
