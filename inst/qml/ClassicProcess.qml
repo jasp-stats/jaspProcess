@@ -144,13 +144,13 @@ Form
                                     addEmptyValue: 		    true
                                     onCurrentValueChanged:
                                     {
-                                        if (currentIndex > 0 && (procVar.currentValue == currentValue && procDep.currentValue == currentValue))
+                                        if (currentIndex > 0 && (procVar.currentValue == currentValue || procDep.currentValue == currentValue))
                                             addControlError("Same value!")
                                         else
                                         {
                                             clearControlError()
                                             procVar.clearControlError()
-											procIndep.clearControlError()
+											procDep.clearControlError()
                                         }
                                     }
                                 }
