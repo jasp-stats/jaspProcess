@@ -27,7 +27,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Init options: add variables to options to be used in the remainder of the analysis
   .procContainerModels(jaspResults, options)
   .procModelRegList(jaspResults, options)
-  .procModelSyntax(jaspResults, options)
 
   # read dataset
   dataset <- .procReadData(options)
@@ -35,8 +34,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # error checking
   ready <- .procErrorHandling(dataset, options)
 
-  # Create lavaan syntax
-  options <- .procToLavModAllModels(jaspResults, dataset, options)
+  .procModProbes(jaspResults, dataset, options)
+  .procModelSyntax(jaspResults, options)
 
   # Compute (a list of) results from which tables and plots can be created
   modelsContainer <- .procComputeResults(jaspResults, dataset, options)
@@ -225,6 +224,53 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
+.procModProbes <- function(jaspResults, dataset, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+
+    if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
+      modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]][["regList"]]$object, dataset, options)
+      state <- createJaspState(object = modProbes)
+      state$dependOn(
+        optionContainsValue = list(processModels = modelOptions),
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      modelsContainer[[modelName]][["modProbes"]] <- state
+    }
+  }
+}
+
+.procModVarsFromRegList <- function(regList) {
+  modVars <- list()
+
+  for (i in 1:length(regList)) {
+    rowSplit <- strsplit(regList[[i]][["vars"]], ":")
+
+    for (v in rowSplit[sapply(rowSplit, length) > 1]) {
+      modVars[[v[2]]] <- c(modVars[[v[2]]], v[1])
+    }
+  }
+
+  return(modVars)
+}
+
+.procModProbesSingleModel <- function(regList, dataset, options) {
+  probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
+
+  modVars <- .procModVarsFromRegList(regList)
+
+  modProbes <- lapply(encodeColNames(names(modVars)), function(nms) {
+    quantile(dataset[[nms]], probs = probeVals)
+  })
+
+  names(modProbes) <- names(modVars)
+
+  return(modProbes)
+}
+
 .procModelSyntax <- function(jaspResults, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
@@ -233,7 +279,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
   
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]][["regList"]]$object)
+      syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
       state <- createJaspState(object = syntax)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
@@ -244,32 +290,32 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procModelSyntaxSingleModel <- function(regList) {
+.procModelSyntaxSingleModel <- function(container, modelOptions) {
   # Concatenate and collapse par names and var names to regression formula
   regSyntax <- paste(
-    paste0(encodeColNames(names(regList))),
-    sapply(regList, function(row) paste(row$parNames, encodeColNames(row$vars), sep = "*", collapse = " + ")),
+    paste0(encodeColNames(names(container[["regList"]]$object))),
+    sapply(container[["regList"]]$object, function(row) paste(row$parNames, encodeColNames(row$vars), sep = "*", collapse = " + ")),
     sep = " ~ "
   )
 
   regSyntax <- paste(
-    sapply(regList, function(row) row[["comment"]]),
+    sapply(container[["regList"]]$object, function(row) row[["comment"]]),
     regSyntax,
     sep = "",
     collapse = "\n"
   )
 
-  modVarProbes <- .procModProbeValues(modVars, dataset, options)
-  names(modVarProbes) <- names(modVars)
+  modVars <- .procModVarsFromRegList(container[["regList"]]$object)
 
-  print("HELLL")
-  print(modVarProbes)
-  modProbeSyntax <- .procModEffects(modVarProbes)
-  print(modProbeSyntax)
+  # modProbeSyntax <- .procModEffects(container[["modProbes"]]$object)
 
-  medEffectSyntax <- .procMedEffects(regList, modVars, modVarProbes)
+  medEffectSyntax <- .procMedEffects(container[["regList"]]$object, modVars, container[["modProbes"]]$object)
 
-  resCovSyntax <- .procResCov(regList, modelOptions[["independentCovariances"]], modelOptions[["mediatorCovariances"]])
+  resCovSyntax <- .procResCov(
+    container[["regList"]]$object,
+    modelOptions[["independentCovariances"]],
+    modelOptions[["mediatorCovariances"]]
+  )
 
   header <- "
   # -------------------------------------------
@@ -373,41 +419,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Add extra regression equation where confounder -> independent variable
       regList[[independent]] = list(vars = c(), dep = FALSE)
       regList <- .procAddLavModVar(regList, independent, processVariable)
-      regList <- .procAddLavModVar(regList, dependent, modW)
-      modVars[[modW]] <- independent
-    }
-
-    if (!is.null(modZ) && modZ != "") {
-      # Add interaction independent x moderatorZ var to regress on dependent var
-      interVar <- paste0(independent, ":", modZ)
-      regList <- .procAddLavModVar(regList, dependent, interVar)
-      regList <- .procAddLavModVar(regList, dependent, modZ)
-      modVars[[modZ]] <- independent
-    }
-
-    #if (covariates != "") {
-    if(length(covariates) != 0) {
-      #if (!is.null(covariates) && covariates != "") {
-      # Add extra regression equation where covariate -> independent variable
-      for (i in 1:length(covariates)) {
-
-        #regList[[independent]] = list(vars = c(), dep = TRUE)
-        regList <- .procAddLavModVar(regList, dependent, covariates[i])
-      }
     }
   }
 
   regList <- .procAddLavModParNames(regList)
 
   return(regList)
-}
-
-.procModProbeValues <- function(modVars, dataset, options) {
-  probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])
-
-  return(lapply(encodeColNames(names(modVars)), function(nms) {
-    quantile(dataset[[nms]], probs = probeVals/100)
-  }))
 }
 
 .procModEffects <- function(modVarProbes) {
@@ -510,7 +527,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
 
   # Get total effect of X on Y
-  totEffect <- paste(medEffectsListCombined[[1]], .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + "), sep = " + ")
+  if (length(medEffectsListCombined) > 1) 
+    totEffect <- paste(medEffectsListCombined[[1]], .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + "), sep = " + ")
+  else
+    totEffect <- medEffectsListCombined[[1]]
 
   dirEffectIsConditional <- medEffectsCombinedLengths[1] > 1
   indEffectIsConditional <- any(medEffectsCombinedLengths[-1] > 1)
@@ -529,7 +549,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Only select total effect if there are no indirect effects
   totNames <- if(length(medEffectPathNames) == 1) rep("tot", length(totEffect)) else rep(c("tot", "totInd"), c(length(totEffect), length(totIndEffect)))
-
   totLabels <- vector("character", length(totNames))
 
   if(length(medEffectPathNames) == 1) {
@@ -878,8 +897,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       modelContainer <- container[[modelNames[i]]]
     }
 
-    if (is.character(procResults[[i]]))
+    if (is.character(procResults[[i]])) {
       modelContainer$setError(procResults[[i]])
+      return()
+    }
 
     if (options[["processModels"]][[i]][["pathCoefficients"]])
       .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
@@ -1080,7 +1101,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procPathTotalEffectsTable <- function(container, options, procResults, modelIdx) {
-  if (!is.null(container[["totalEffectsTable"]])) return()
+  if (!is.null(container[["totalEffectsTable"]]) || !procResults@Options[["do.fit"]]) return()
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
   totEffectsTable$dependOn(
@@ -1118,7 +1139,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit, uniqueMods)
 
   for (mod in uniqueMods) {
-    totEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = TRUE)
+    totEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = FALSE)
     totEffectsTable[[mod]] <- modProbes[[mod]]
   }
 
