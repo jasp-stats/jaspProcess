@@ -27,13 +27,13 @@ Form
         AssignedVariablesList
         {
             name:			"covariates"
-            title:			qsTr("Covariates")
+            title:			qsTr("Continuous Predictors")
             allowedColumns:	["ordinal", "scale"]
         }
         AssignedVariablesList
         {
             name:			"factors"
-            title:			qsTr("Factors")
+            title:			qsTr("Categorical Predictors")
             allowedColumns:	["ordinal", "nominal", "nominalText"]
         }
     }
@@ -258,13 +258,13 @@ Form
                             AssignedVariablesList
                             {
                                 name: 				"modelNumberIndependent"
-                                title: 				qsTr("Independent")
+                                title: 				qsTr("Independent X")
                                 singleVariable: 	true
                             }
                             AssignedVariablesList
                             {
                                 name: 				"modelNumberMediators"
-                                title: 				qsTr("Mediators")
+                                title: 				qsTr("Mediators M")
                                 allowedColumns: 	["scale", "ordinal"]
                             }
                             AssignedVariablesList
@@ -298,7 +298,7 @@ Form
                         
 						Group
 						{
-                            title: qsTr("Residual covariances")
+                            title: qsTr("Residual Covariances")
 
 							CheckBox
 							{
@@ -346,7 +346,7 @@ Form
 
 						Group
 						{
-                            title: qsTr("Path plots")
+                            title: qsTr("Path Plots")
 							columns: 	1
 							CheckBox
 							{
@@ -433,13 +433,13 @@ Form
 
         Group
         {
-            title: qsTr("Set for all models")
+            title: qsTr("Set for All Models")
             columns: 3
             Layout.columnSpan: 2
 
 			Group
 			{
-                title: qsTr("Residual covariances")
+                title: qsTr("Residual Covariances")
 				CheckBox
                 {
                     id:			independentCovariancesForAllModels
@@ -491,7 +491,7 @@ Form
 
             Group
             {
-                title: qsTr("Path plots")
+                title: qsTr("Path Plots")
                 CheckBox
                 {
                     id:			conceptualPathPlotsForAllModels
@@ -509,7 +509,7 @@ Form
 
             RadioButtonGroup 
             {
-                title: qsTr("Missing value handling")
+                title: qsTr("Missing Value Handling")
                 name: "naAction"
                 RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
                 RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
@@ -538,7 +538,7 @@ Form
 			{
 				Layout.columnSpan: 3
 				name: "moderationProbes"
-				title: qsTr("Probe conditional continuous effects")
+				title: qsTr("Probe Conditional Continuous Effects")
 				values: [16, 50, 84]
 				minimumItems: 1
 				maximumItems: 10
