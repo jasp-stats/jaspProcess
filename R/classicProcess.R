@@ -1153,7 +1153,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procEffectsTablesParameterLabels <- function(jaspTable, effects) {
   jaspTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
-  jaspTable[["label"]] <- gsub("\\+", " \uFF0B ", gsub("\\*", " \u273B ", effects$rhs))
+  jaspTable[["label"]] <- gsub("-", "\u2212", gsub("\\+", " \uFF0B ", gsub("\\*", " \u273B ", effects$rhs)))
   return(jaspTable)
 }
 
