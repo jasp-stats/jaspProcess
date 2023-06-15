@@ -423,7 +423,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   regList <- .procAddLavModParNames(regList)
-
+  print("HELLL")
+  print(regList)
   return(regList)
 }
 
@@ -736,8 +737,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
   procResults <- .procFilterFittedModels(procResults)
-  
-  if (length(procResults) == 0) return()
 
   fitTable <- createJaspTable(title = gettext("Model fit"))
   fitTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights"))
@@ -745,12 +744,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
   isInvalid <- sapply(procResults, is.character)
-  
-  if (any(isInvalid)) {
-    errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated: %s", modelNames[isInvalid])
-    fitTable$setError(errmsg)
-    return()
-  }
 
   fitTable$addColumnInfo(name = "Model",    title = "",                            type = "string" )
   fitTable$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
@@ -776,6 +769,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
                        overtitle = gettext("Difference test"))
 
   jaspResults[["modelFitTable"]] <- fitTable
+
+  if (length(procResults) == 0) return()
 
   if (any(isInvalid)) {
     errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated: %s", names(procResults)[isInvalid])
