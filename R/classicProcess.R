@@ -1390,9 +1390,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   nodeLabels[graphIntIdx] <- ""
 
   edge_color <- rep("black", nrow(mainPaths))
-
+  
   # Hide helper edge for single moderator
-  if (nrow(modPaths) == 2 && nrow(mainPaths) == 3 && type == "conceptual") {
+  if (length(mods) == 1 && nrow(mainPaths) == 3 && type == "conceptual") {
     edge_color[3] <- "white"
   }
 
@@ -1403,7 +1403,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (estimates) edge_labels <- round(as.numeric(edge_labels), 3)
   }
-
+  
   g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
     mainPaths[, 1:2, drop = FALSE],
     layout = layout[match(graphNodeNames, nodeNames), ], # match order of layout
