@@ -418,11 +418,27 @@ Form
     {
         title: qsTr("Plots")
 
-        CheckBox
+		Group
 		{
-			name: "statisticalPathPlotsParameterEstimates"
-			label: qsTr("Parameter estimates")
+			title: qsTr("Path Plots")
+			columns: 1
+
+			CheckBox
+			{
+				name: "statisticalPathPlotsParameterEstimates"
+				label: qsTr("Parameter estimates")
+			}
+
+			IntegerField
+			{
+				name: "pathPlotsLabelLength"
+				label: qsTr("Label length")
+				defaultValue: 3
+				min: 3
+				max: 10
+			}
 		}
+
     }
 
 	Section 
