@@ -378,6 +378,8 @@ Form
 			CheckBox { label: qsTr("Standardized estimates") ;  name: "standardizedEstimates" }
 			CheckBox { label: qsTr("Lavaan syntax")     ;       name: "syntax" }
 			CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
+			CheckBox { label: qsTr("AIC weights")         ;     name: "aicWeights" }
+			CheckBox { label: qsTr("BIC weights")         ;     name: "bicWeights" }
 		}
         GroupBox
         {
