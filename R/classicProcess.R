@@ -736,7 +736,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
   procResults <- .procFilterFittedModels(procResults)
-
+  
   if (length(procResults) == 0) return()
 
   fitTable <- createJaspTable(title = gettext("Model fit"))
@@ -745,7 +745,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
   isInvalid <- sapply(procResults, is.character)
-
+  
   if (any(isInvalid)) {
     errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated: %s", modelNames[isInvalid])
     fitTable$setError(errmsg)
@@ -785,7 +785,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     Ns <- vapply(procResults, lavaan::lavInspect, 0, what = "ntotal")
     lrtArgs <- procResults
     names(lrtArgs) <- "object" # (the first result is object, the others ...)
-    lrtArgs[["model.names"]] <- names(procResults)
+    lrtArgs[["model.names"]] <- modelNames
     lrt <- try(jaspSem:::.withWarnings(do.call(lavaan::lavTestLRT, lrtArgs)))
 
     if (inherits(lrt, "try-error")) {
