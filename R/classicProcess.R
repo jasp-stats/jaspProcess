@@ -453,7 +453,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
         probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
         intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modVarProbes[[modIntVars[i]]], digits = 3), sep = "*"))
-        intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "_"))
+        intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "__"))
         medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + "), ")")
         intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNames, collapse = ".")
       }
@@ -504,7 +504,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 
   # Create coef names of mediation effects
-  medEffectPathNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "_"))
+  medEffectPathNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "__"))
 
   medEffectsCollapsed <- unlist(medEffectsListCombined)
   medEffectNamesCollapsed <- unlist(medEffectNamesListCombined)
@@ -520,7 +520,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Concatenate to mediation effects by multiplying par names of paths
   medEffectsSyntax <- paste(
-    medEffectPathNamesCollapsed,
+    encodeColNames(medEffectPathNamesCollapsed),
     medEffectsCollapsed,
     sep = " := ",
     collapse = "\n"
@@ -1046,11 +1046,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!procResults@Fit@converged) {
     medEffectsTable$addFootnote(gettext("Model did not converge."))
   }
-
+  
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "_")
-
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
+  
   # Only use label splits of length > 1 to omit total effects
   labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
 
@@ -1123,7 +1123,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffects <- pathCoefs[pathCoefs$op == ":=", ]
 
-  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "_")
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
   # Only use label splits of length > 1 to omit total effects
   isTotEffect <- sapply(labelSplit, function(path) length(path[[1]])) == 1
