@@ -740,7 +740,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (length(procResults) == 0) return()
 
   fitTable <- createJaspTable(title = gettext("Model fit"))
-  fitTable$dependOn(c(.procGetDependencies(), "processModels"))
+  fitTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights"))
   fitTable$position <- 0
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
@@ -754,7 +754,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   fitTable$addColumnInfo(name = "Model",    title = "",                            type = "string" )
   fitTable$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
+  if (options[["aicWeights"]]) {
+    fitTable$addColumnInfo(name = "wAIC", title = gettext("AIC weight"), type = "number")
+  }
   fitTable$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
+  if (options[["bicWeights"]]) {
+    fitTable$addColumnInfo(name = "wBIC", title = gettext("BIC weight"), type = "number")
+  }
   fitTable$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
   fitTable$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
@@ -807,6 +813,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   fitTable[["dchisq"]]   <- lrt$value[["Chisq diff"]]
   fitTable[["ddf"]]      <- lrt$value[["Df diff"]]
   fitTable[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+
+  if (options[["aicWeights"]]) {
+    fitTable[["wAIC"]] <- .computeWeights(lrt$value[["AIC"]])
+  }
+  if (options[["bicWeights"]]) {
+    fitTable[["wBIC"]] <- .computeWeights(lrt$value[["BIC"]])
+  }
 
   # add warning footnote
   if (!is.null(lrt$warnings)) {
@@ -1464,4 +1477,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .pasteDot <- function(...) {
   return(paste(..., sep = "."))
+}
+
+.computeWeights <- function(vals) {
+  diffExp <- exp(-0.5*(vals - min(vals, na.rm = TRUE)))
+  return(diffExp/sum(diffExp, na.rm = TRUE))
 }
