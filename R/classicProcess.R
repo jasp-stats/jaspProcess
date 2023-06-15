@@ -1196,7 +1196,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!is.null(container[["conceptPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
-  procPathPlot$dependOn(nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot")))
+  procPathPlot$dependOn(
+    options = "pathPlotsLabelLength",
+    nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot"))
+  )
   container[["conceptPathPlot"]] <- procPathPlot
 
   if (container$getError()) return()
@@ -1209,7 +1212,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = "statisticalPathPlotsParameterEstimates",
+    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLabelLength"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
   container[["statPathPlot"]] <- procPathPlot
@@ -1418,7 +1421,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # There seems to be a bug in qgraph where specifying labels
   # in the initial function call does not work
-  g$graphAttributes$Nodes$labels <- abbreviate(.procDecodeVarNames(nodeLabels), minlength = 3)
+  g$graphAttributes$Nodes$labels <- abbreviate(
+    .procDecodeVarNames(nodeLabels),
+    minlength = options[["pathPlotsLabelLength"]]
+  )
 
   return(g)
 }
