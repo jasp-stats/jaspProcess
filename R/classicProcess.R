@@ -589,7 +589,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   exoVars <- unique(unlist(lapply(regList, function(row) row$vars[!row$vars %in% names(regList)])))
   intIdx  <- grep(":", exoVars)
   
-  if (length(exoVars) > 1 && includeExo) {
+  if (length(exoVars[-intIdx]) > 1 && includeExo) {
     exoIdxMat <- which(upper.tri(diag(length(exoVars))), arr.ind = TRUE)
     exoIdxMat <- exoIdxMat[!exoIdxMat[, 1] %in% intIdx & !exoIdxMat[, 2] %in% intIdx, , drop = FALSE]
     
