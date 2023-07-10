@@ -211,18 +211,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     pathVars <- regList[[i]][["vars"]]
 
     # Split path interactions
-    pathVarsSplit <- .strsplitColon(pathVars)
-
+    pathVarsSplit <- strsplit(pathVars, ":|__") # split according to `:` or `__`
+    isThreeWayInt <- grepl("__", pathVars)
+    
     # Replace dummy vars for each term of interactions separately
     pathVarsSplit <- lapply(pathVarsSplit, .replaceDummyVars)
 
     # Paste interaction terms back together
-    regList[[i]][["vars"]] <- sapply(pathVarsSplit, paste, collapse = ":")
+    pathVars[!isThreeWayInt] <- unlist(sapply(pathVarsSplit[!isThreeWayInt], paste, collapse = ":"))
+    pathVars[isThreeWayInt] <- unlist(sapply(pathVarsSplit[isThreeWayInt], paste, collapse = "__"))
+    regList[[i]][["vars"]] <- pathVars
   }
 
   # Replace dummy variables in dependent variables
   names(regList) <- .replaceDummyVars(names(regList))
-
+  
   return(regList)
 }
 
