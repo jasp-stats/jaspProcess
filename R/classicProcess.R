@@ -31,6 +31,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # read dataset
   dataset <- .procReadData(options)
 
+  dataset <- .procAddIntVars(jaspResults, dataset, options)
+
   # error checking
   ready <- .procErrorHandling(dataset, options)
 
@@ -209,7 +211,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     pathVars <- regList[[i]][["vars"]]
 
     # Split path interactions
-    pathVarsSplit <- strsplit(pathVars, ":")
+    pathVarsSplit <- .strsplitColon(pathVars)
 
     # Replace dummy vars for each term of interactions separately
     pathVarsSplit <- lapply(pathVarsSplit, .replaceDummyVars)
@@ -247,7 +249,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modVars <- list()
 
   for (i in 1:length(regList)) {
-    rowSplit <- strsplit(regList[[i]][["vars"]], ":")
+    rowSplit <- .strsplitColon(regList[[i]][["vars"]])
 
     for (v in rowSplit[sapply(rowSplit, length) > 1]) {
       modVars[[v[2]]] <- c(modVars[[v[2]]], v[1])
@@ -341,7 +343,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(regList)) {
     # Split interaction terms
     vSplit <- lapply(regList[[i]]$vars, function(v) {
-      unlist(strsplit(v, ":"))
+      unlist(.strsplitColon(v))
     })
     # Get non-mediator vars (-> cXX)
     isIndep <- sapply(vSplit, function(v) {
@@ -410,7 +412,34 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     if (type == "moderators") {
-      # Add interaction independent x moderator var to regress on dependent var
+      # This routine adds three-way interactions (moderated moderation) 
+      # which are not available in standard lavaan syntax. These interactions
+      # are represented as separate variables which are products of the three interacting variables.
+      # The names of these variables are the interacting variable names separated by 
+      # double underscores, e.g.: var1__var2__var3
+
+      # Get all existing interaction terms
+      isInt <- grepl(":", regList[[dependent]][["vars"]])
+      if (any(isInt)) {
+        # Split interaction terms
+        varsSplit <- .strsplitColon(regList[[dependent]][["vars"]])
+        for (v in varsSplit[isInt]) {
+          # If the second term of the interaction is the independent of current path
+          # this indicates a three-way interaction with the independent variable
+          if (v[length(v)] == independent) {
+            # Create three-way interaction variable name
+            interVar <- paste0(paste(v, collapse = "__"), "__", processVariable)
+            # Add interaction independent x moderator1 x moderator2
+            regList <- .procAddLavModVar(regList, dependent, interVar)
+
+            # Also add a two-way interaction moderator1 x moderator2,
+            # otherwise model might be underspecified
+            interVar <- paste0(v[1], ":", processVariable)
+            regList <- .procAddLavModVar(regList, dependent, interVar)
+          }
+        }
+      }
+      # Add regular interaction independent x moderator var to regress on dependent var
       interVar <- paste0(independent, ":", processVariable)
       regList <- .procAddLavModVar(regList, dependent, interVar)
     }
@@ -423,8 +452,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   regList <- .procAddLavModParNames(regList)
-  print("HELLL")
-  print(regList)
   return(regList)
 }
 
@@ -446,7 +473,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     intVarsProbeNames <- NULL
 
     if (any(isIntVar)) {
-      regVarsSplit <- strsplit(regListRow$vars[isIntVar], ":")
+      regVarsSplit <- .strsplitColon(regListRow$vars[isIntVar])
       intVarIsMed <- sapply(regVarsSplit, function(v) v[1] %in% regListRow$vars[isMedVar])
 
       if (any(intVarIsMed)) {
@@ -631,6 +658,33 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(dataset)
 }
 
+.procAddIntVars <- function(jaspResults, dataset, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+    regList <- modelsContainer[[modelName]][["regList"]]$object
+
+    for (row in regList) {
+      # Split three-way interaction variables in syntax
+      varsSplit <- strsplit(row[["vars"]], "__")
+
+      # If there is a three-way interaction in a path, create a new variable in the dataset
+      # as a product of the three interacting variables
+      for (var in varsSplit[sapply(varsSplit, length) > 1]) {
+        # Create variable name like var1__var2__var3
+        varName <- paste(encodeColNames(var), collapse = "__")
+        # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
+        # Then we evaluate the string as R code using the dataset as the environment to evaluate in
+        intVar <- eval(str2lang(paste(encodeColNames(var), collapse = "*")), envir = dataset)
+        dataset[[varName]] = intVar
+      }
+    }
+  }
+  return(dataset)
+}
+
 .procErrorHandling <- function(dataset, options) {
   # See error handling
   vars <- lapply(.procGetDependencies(), function(x) options[[x]])
@@ -645,7 +699,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 # Results functions ----
 .procCheckFitModel <- function(regList) {
   return(all(sapply(regList, function(row) {
-    varsSplit <- strsplit(row$vars, ":")
+    varsSplit <- .strsplitColon(row$vars)
     return(all(sapply(varsSplit, .procCheckRegListVars)))
   })))
 }
@@ -667,7 +721,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     missing         = options$naAction,
     do.fit          = doFit
   ))
-  
+
   if (inherits(fittedModel, "try-error")) {
     errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(fittedModel, "condition")$message)
     return(jaspSem:::.decodeVarsInMessage(names(dataset), errmsg))
@@ -1006,9 +1060,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
 
-  pathCoefTable[["lhs"]]   <- pathCoefs$rhs
-  pathCoefTable[["op"]]    <- rep("\u2192", nrow(pathCoefs))
-  pathCoefTable[["rhs"]]   <- pathCoefs$lhs
+  pathCoefTable[["lhs"]] <- gsub("__", ":", pathCoefs$rhs)
+  pathCoefTable[["op"]]  <- rep("\u2192", nrow(pathCoefs))
+  pathCoefTable[["rhs"]] <- gsub("__", ":", pathCoefs$lhs)
 
   if (options$parameterLabels) {
     pathCoefTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
@@ -1061,7 +1115,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   # Only use label splits of length > 1 to omit total effects
   labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
-
+  
   # Get paths from label of mediation effect
   medPaths <- lapply(labelSplit, function(path) path[[1]])
   
@@ -1307,9 +1361,132 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(layout)
 }
 
+.procModGraphLayoutConceptual <- function(intPathsSplitPruned, layout) {
+  # Node names are in rownames
+  nodeNames <- rownames(layout)
+
+  # Keep track of different moderators
+  j <- 1
+
+  for (path in intPathsSplitPruned) {
+    # Calc y pos for first moderator in balance to existing layout
+    modPosY <-.minMaxSubAddOne(layout[, 2])
+
+    # Iterate over moderators leaving out the first and last element (independent and dependent variables)
+    for (i in 1:(length(path)-2)) {
+      # Only add moderators (at index i+1 in path) that are not in the layout yet 
+      if (!path[i+1] %in% nodeNames) {
+        # Get index of independent and dependent node in layout
+        # Independent node is at index i and dependent is the last element in path
+        idxIndep <- which(nodeNames == path[i])
+        idxDep <- which(nodeNames == path[length(path)])
+        # Calculate pos of hidden helper node as average between indep and dep node pos
+        nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
+        modPosY <- modPosY + (i-1) * sign(modPosY)
+
+        if (i == 1) {
+          # First moderator has same x pos as hidden helper node
+          modPos <- c(nodePosI[1], modPosY)
+        } else {
+          # Moderating moderator gets pos as average between independent (at previous index in path) and first moderator
+          idxPrev <- which(nodeNames == path[i-1])
+          modPos <- apply(layout[c(idxPrev, idxIndep), ], 2, mean)
+        }
+        # Append to node names and layout
+        # Hidden helper node gets index j
+        nodeNameI <- paste0("i",  j)
+        # Name of moderator is at index i+1 in path
+        nodeNames <- c(nodeNames, path[i+1], nodeNameI)
+        layout <- rbind(layout, modPos, nodePosI)
+        # Set hidden helper node as last element in path so it becomes the dependent node in next interation
+        path[length(path)] <- nodeNameI
+        # Increase number of moderators
+        j <- j + 1
+      }
+    }
+  }
+
+  # Assign updated node names back to layout
+  rownames(layout) <- nodeNames
+
+  return(layout)
+}
+
+.procModGraphLayoutStatistical <- function(intPathsSplitPruned, layout) {
+  # Node names are in rownames
+  nodeNames <- rownames(layout)
+
+  for (path in intPathsSplitPruned) {
+    # Get index of independent and dependent node in layout
+    idxIndep <- which(nodeNames == path[1])
+    idxDep <- which(nodeNames == path[length(path)])
+
+    # Calculate pos of hidden helper node as average between indep and dep node pos
+    nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
+
+    # Calc y pos for first moderator in balance to existing layout
+    modPosY <- .minMaxSubAddOne(layout[, 2])
+
+    # Iterate over moderators leaving out the first and last element (independent and dependent variables)
+    for (i in 1:(length(path)-2)) {
+      # Update y coordinate depending on number of moderators on path
+      # Add +/- 1 for each additional moderator
+      modPosY <- modPosY + (i-1) * sign(modPosY)
+
+      # Moderator pos has same x pos as hidden helper node
+      modPos <- c(nodePosI[1], modPosY)
+
+      # Calculate all combinations of moderators that interact with each other
+      combs <- combn(path[-length(path)], length(path)-i)
+
+      # Create interaction term node labels from combinations
+      ints <- apply(combs, 2, paste, collapse = ":")
+
+      # Spread out interaction terms on the y axis (all on same x axis)
+      intsPos <- cbind(nodePosI[1], sign(modPosY) * (1:length(ints)) + modPosY)
+
+      # Append to node names and layout
+      # Name of moderator is at index i+1 in path, also add interaction terms
+      nodeNames <- c(nodeNames, path[i+1], ints)
+      layout <- rbind(layout, modPos, intsPos)
+
+      # Update starting pos of next moderator path by maximum of interaction y coordinate
+      modPosY <- intsPos[length(intsPos)]
+    }
+  }
+
+  # Assign updated node names back to layout
+  rownames(layout) <- nodeNames
+
+  return(layout)
+}
+
+.procPruneIntTerms <- function(paths, prunedPaths = list()) {
+  # This function prunes moderator paths
+  # It finds the longest path and removes all paths that are a subset of this path
+  # leaving longest unique paths
+  
+  # Find longest moderator path
+  longestPathIdx <- which.max(sapply(paths, length))
+
+  # Add it to result
+  prunedPaths <- append(prunedPaths, paths[longestPathIdx])
+
+  # Check which other paths are a subset of longest path
+  allVarsInLongestPath <- sapply(paths[-longestPathIdx], function(path) all(path %in% paths[[longestPathIdx]]))
+  
+  # If all are a subset, return only longest paths
+  if (all(allVarsInLongestPath)) return(prunedPaths)
+
+  # Apply function recursively removing the longest path and all subset paths
+  return(.procPruneIntTerms(paths[-longestPathIdx][!allVarsInLongestPath], prunedPaths))
+}
+
 .procLavToGraph <- function(procResults, type, estimates, options) {
   # Get table with SEM pars from lavaan model
   parTbl <- lavaan::parameterTable(procResults)
+  parTbl$lhs <- gsub("__", ":", parTbl$lhs)
+  parTbl$rhs <- gsub("__", ":", parTbl$rhs)
 
   # Create path matrix where first col is "from" and second col is "to", third col is estimate
   labelField <- ifelse(estimates, "est", "label")
@@ -1319,18 +1496,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   isIntPath <- grepl(":", paths[, 1])
 
   # Split interaction terms
-  intPathsSplit <- strsplit(paths[isIntPath, 1], ":")
+  intPathsSplit <- .strsplitColon(paths[isIntPath, 1])
 
   # Get moderator vars from interaction terms
-  mods <- sapply(intPathsSplit, function(path) path[2])
-
-  # Get independent vars from interaction terms
-  indeps <- sapply(intPathsSplit, function(path) path[1])
+  mods <- unique(unlist(sapply(intPathsSplit, function(path) path[-1])))
 
   # Create matrix with moderator paths
   if (type == "conceptual") {
     # Adds paths from moderators to helper nodes "iX" which will be invisible
-    modPaths <- matrix(c(mods, paste0("i", 1:length(mods)), ""), ncol = 3)
+    modPaths <- matrix(c(mods, paste0("i", 1:length(mods)), rep("", length(mods))), ncol = 3)
 
     # Add hidden path for single moderator (fixes qgraph bug)
     if (nrow(modPaths) == 1 && nrow(paths) == 3) {
@@ -1340,9 +1514,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Paths from moderator and interaction term to dep var node
     modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
   }
+  
   # Filter out non-moderation paths -> main paths
   mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
-
+  
   # Get layout of main paths: matrix with x,y coordinates for each node
   layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], decodeColNames(options[["dependent"]]))
 
@@ -1354,34 +1529,25 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Remove duplicate paths
   mainPaths <- mainPaths[!duplicated(mainPaths), ]
-
+  
   # Add layout of moderator nodes
   if (length(mods) > 0) {
-    for (i in 1:length(mods)) {
-      # Get index of independent and dependent node in layout
-      idxIndep <- which(nodeNames == indeps[i])
-      idxDep <- which(nodeNames == paths[isIntPath, 2][i])
-      # Calculate pos of hidden helper node as average between indep and dep node pos
-      nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
-      # Moderator pos has same x pos as hidden helper node
-      # y pos is chosen so that graph is balanced out
-      modPosY <- ifelse(abs(max(layout[, 2])) > abs(min(layout[, 2])), min(layout[, 2]) - 1, max(layout[, 2]) + 1)
-      modPos <- c(nodePosI[1], modPosY)
-      # Append to node names and layout
-      if (type == "conceptual") {
-        nodeNames <- c(nodeNames, mods[i], paste0("i", i))
-        layout <- rbind(layout, modPos, nodePosI)
-      } else {
-        # Place interaction term above/below moderator node
-        intPos <- c(nodePosI[1], modPosY + ifelse(modPosY > 0, 1, -1))
-        nodeNames <- c(nodeNames, mods[i], paths[isIntPath, 1][i])
-        layout <- rbind(layout, modPos, intPos)
-      }
+    # Add dependent variable to end of each moderator path
+    intPathsSplitDep <- lapply(1:length(intPathsSplit), function(i) c(intPathsSplit[[i]], paths[isIntPath, 2][i]))
+    # Prune moderator paths by only leaving the longest unique paths
+    intPathsSplitPruned <- .procPruneIntTerms(intPathsSplitDep)
+
+    # Calculate layout
+    if (type == "conceptual") {
+      layout <- .procModGraphLayoutConceptual(intPathsSplitPruned, layout)
+    } else {
+      layout <- .procModGraphLayoutStatistical(intPathsSplitPruned, layout)
     }
   }
 
   # Order of node labels as in qgraph
   graphNodeNames <- unique(as.vector(mainPaths[, 1:2, drop = FALSE]))
+
   # Get idx of hidden helper node (to make it invisible)
   graphIntIdx <- grepl("i[[:digit:]]", graphNodeNames)
 
@@ -1417,7 +1583,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
     mainPaths[, 1:2, drop = FALSE],
-    layout = layout[match(graphNodeNames, nodeNames), ], # match order of layout
+    layout = layout[match(graphNodeNames, rownames(layout)), ], # match order of layout
     vsize = nodeSize,
     shape = nodeShape,
     labels = TRUE,
@@ -1474,7 +1640,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(paste(..., sep = "."))
 }
 
-.computeWeights <- function(vals) {
-  diffExp <- exp(-0.5*(vals - min(vals, na.rm = TRUE)))
+.computeWeights <- function(x) {
+  diffExp <- exp(-0.5*(x - min(x, na.rm = TRUE)))
   return(diffExp/sum(diffExp, na.rm = TRUE))
+}
+
+.strsplitColon <- function(x) {
+  return(strsplit(x, ":"))
+}
+
+.minMaxSubAddOne <- function(x) {
+  # If max(x) is higher than min(x), return min(x) - 1, otherwise max(x) + 1
+  minMax <- range(x)
+
+  if (abs(minMax[2]) > abs(minMax[1])) return(minMax[1] - 1)
+
+  return(minMax[2] + 1)
 }
