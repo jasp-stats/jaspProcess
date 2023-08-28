@@ -48,6 +48,23 @@
     )
   }
 
+  if (number == 3) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
   if (number == 4) {
     processRelationships <- list(
       list(
@@ -197,6 +214,28 @@
     )
   }
 
+  if (number == 11) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
 
   if (number == 14) {
     processRelationships <- list(
@@ -290,6 +329,29 @@
       list(
         processDependent = "Y",
         processIndependent = "X",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
+  if (number == 18) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "M",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "W",
         processType = "moderators",
         processVariable = "Z"
       )
