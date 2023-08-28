@@ -485,16 +485,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
-.procModEffects <- function(modVarProbes) {
-  modEffects <- lapply(names(modVarProbes), function(nms) {
-    labels <- paste0(nms, gsub("\\%", "", names(modVarProbes[[nms]])))
-    values <- modVarProbes[[nms]]
+.procModEffects <- function(modProbes) {
+  modEffects <- lapply(names(modProbes), function(nms) {
+    labels <- paste0(nms, gsub("\\%", "", names(modProbes[[nms]])))
+    values <- modProbes[[nms]]
     return(paste(labels, values, sep = " := ", collapse = "\n"))
   })
   return(paste0("\n# Moderation probes\n", paste(modEffects, collapse = "\n")))
 }
 
-.procMedEffectFromPath <- function(path, regList, modVarProbes, contrasts) {
+.procMedEffectFromPath <- function(path, regList, modProbes, contrasts) {
   contrastsConc <- lapply(names(contrasts), function(nm) paste0(nm, colnames(contrasts[[nm]])))
   
   return(lapply(2:length(path), function(i) {
@@ -513,9 +513,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         modIntFacsIdx <- lapply(modIntVars, function(v) which(sapply(contrastsConc, function(w) v %in% w)))
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
 
-        probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
+        probeLevels <- gsub("\\%", "", names(modProbes[[1]]))
 
-        intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modVarProbes[[modIntVars[i]]], digits = 3), sep = "*"))
+        intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modProbes[[modIntVars[i]]], digits = 3), sep = "*"))
         intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "__"))
         intVarsProbesOut <- intVarsProbes
         intVarsProbeNamesOut <- intVarsProbeNames
@@ -537,7 +537,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }))
 }
 
-.procMedEffects <- function(regList, modVars, modVarProbes, contrasts) {
+.procMedEffects <- function(regList, modVars, modProbes, contrasts) {
   # Get dep var
   depVar <- names(regList)[sapply(regList, function(row) row$dep)]
 
@@ -557,7 +557,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
   
   # Get par names of simple paths
-  medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modVarProbes = modVarProbes, contrasts = contrasts)
+  medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modProbes = modProbes, contrasts = contrasts)
 
   .pasteDuplicates <- function(row) {
     pars <- lapply(row, function(col) col$medPars)
