@@ -33,6 +33,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   dataset <- .procAddIntVars(jaspResults, dataset, options)
 
+  dataset <- .procAddFactorDummyVars(jaspResults, dataset, options)
+
+  .procAddLavModParNames(jaspResults, options)
+
   # error checking
   ready <- .procErrorHandling(dataset, options)
 
@@ -236,7 +240,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
-      modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]][["regList"]]$object, dataset, options)
+      modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
       state <- createJaspState(object = modProbes)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
@@ -261,17 +265,28 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(modVars)
 }
 
-.procModProbesSingleModel <- function(regList, dataset, options) {
+.procModProbesSingleModel <- function(container, dataset, options) {
   probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
+
+  regList <- container[["regList"]]$object
 
   modVars <- .procModVarsFromRegList(regList)
 
-  modProbes <- lapply(encodeColNames(names(modVars)), function(nms) {
-    quantile(dataset[[nms]], probs = probeVals)
+  contrasts <- container[["contrasts"]]$object
+
+  modProbes <- lapply(names(modVars), function(nms) {
+    whichFac <- options[["factors"]][sapply(options[["factors"]], grepl, x = nms)]
+    if (length(whichFac) > 0) {
+      conMat <- contrasts[[whichFac]]
+      colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
+      row.names(conMat) <- as.character(conMat[, colIdx])
+      return(conMat[, colIdx])
+    }
+    return(quantile(dataset[[nms]], probs = probeVals))
   })
 
   names(modProbes) <- names(modVars)
-
+  
   return(modProbes)
 }
 
@@ -297,8 +312,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procModelSyntaxSingleModel <- function(container, modelOptions) {
   # Concatenate and collapse par names and var names to regression formula
   regSyntax <- paste(
-    paste0(encodeColNames(names(container[["regList"]]$object))),
-    sapply(container[["regList"]]$object, function(row) paste(row$parNames, encodeColNames(row$vars), sep = "*", collapse = " + ")),
+    paste0(names(container[["regList"]]$object)),
+    sapply(container[["regList"]]$object, function(row) paste(row$parNames, row$vars, sep = "*", collapse = " + ")),
     sep = " ~ "
   )
 
@@ -311,9 +326,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   modVars <- .procModVarsFromRegList(container[["regList"]]$object)
 
-  # modProbeSyntax <- .procModEffects(container[["modProbes"]]$object)
-
-  medEffectSyntax <- .procMedEffects(container[["regList"]]$object, modVars, container[["modProbes"]]$object)
+  medEffectSyntax <- .procMedEffects(container[["regList"]]$object, modVars, container[["modProbes"]]$object, container[["contrasts"]]$object)
 
   resCovSyntax <- .procResCov(
     container[["regList"]]$object,
@@ -432,7 +445,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
-.procAddLavModParNames <- function(regList) {
+.procAddLavModParNames <- function(jaspResults, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+  
+    if (is.null(modelsContainer[[modelName]][["syntax"]])) {
+      regList <- .procAddLavModParNamesSingleModel(modelsContainer[[modelName]][["regList"]]$object)
+      modelsContainer[[modelName]][["regList"]]$object <- regList
+    }
+  }
+}
+
+.procAddLavModParNamesSingleModel <- function(regList) {
   # Get names of dependent vars
   depVars <- names(regList)
 
@@ -478,10 +505,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   regList <- list()
 
   for (path in processRelationships) {
-    dependent <- path[["processDependent"]]
-    independent <- path[["processIndependent"]]
-    type <- path[["processType"]]
-    processVariable <- path[["processVariable"]]
+    # Variable names need to be encoded because JASP does not automatically encode for dropdowns
+    dependent <- encodeColNames(path[["processDependent"]])
+    independent <- encodeColNames(path[["processIndependent"]])
+    type <- encodeColNames(path[["processType"]])
+    processVariable <- encodeColNames(path[["processVariable"]])
 
     # Init list for regression of new dependent var
     # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
@@ -547,7 +575,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
 
-  regList <- .procAddLavModParNames(regList)
   return(regList)
 }
 
@@ -560,7 +587,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(paste0("\n# Moderation probes\n", paste(modEffects, collapse = "\n")))
 }
 
-.procMedEffectFromPath <- function(path, regList, modVarProbes) {
+.procMedEffectFromPath <- function(path, regList, modVarProbes, contrasts) {
+  contrastsConc <- lapply(names(contrasts), function(nm) paste0(nm, colnames(contrasts[[nm]])))
+  
   return(lapply(2:length(path), function(i) {
     regListRow <- regList[[names(path)[i]]]
     isMedVar <- regListRow$vars == names(path)[i-1]
@@ -574,12 +603,26 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
       if (any(intVarIsMed)) {
         modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
+        modIntFacsIdx <- lapply(modIntVars, function(v) which(sapply(contrastsConc, function(w) v %in% w)))
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
+
         probeLevels <- gsub("\\%", "", names(modVarProbes[[1]]))
+
         intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modVarProbes[[modIntVars[i]]], digits = 3), sep = "*"))
         intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "__"))
-        medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbes, collapse = " + "), sep = " + "), ")")
-        intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNames, collapse = ".")
+        intVarsProbesOut <- intVarsProbes
+        intVarsProbeNamesOut <- intVarsProbeNames
+
+        for (i in 1:length(modIntFacsIdx)) {
+          if (length(modIntFacsIdx[[i]]) > 0) {
+            isSameFac <- sapply(modIntFacsIdx, function(j) isTRUE(j == modIntFacsIdx[[i]]))
+            intVarsProbesOut[[i]] <- .doCallPaste(intVarsProbes[isSameFac], sep = " + ")
+            intVarsProbeNamesOut[[i]] <- .doCallPaste(intVarsProbeNames[isSameFac], sep = ".")
+          }
+        }
+
+        medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbesOut[!duplicated(intVarsProbesOut)], collapse = " + "), sep = " + "), ")")
+        intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNamesOut[!duplicated(intVarsProbeNamesOut)], collapse = ".")
       }
     }
 
@@ -587,7 +630,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }))
 }
 
-.procMedEffects <- function(regList, modVars, modVarProbes) {
+.procMedEffects <- function(regList, modVars, modVarProbes, contrasts) {
   # Get dep var
   depVar <- names(regList)[sapply(regList, function(row) row$dep)]
 
@@ -605,9 +648,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Get simple paths
   medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
-
+  
   # Get par names of simple paths
-  medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modVarProbes = modVarProbes)
+  medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modVarProbes = modVarProbes, contrasts = contrasts)
 
   .pasteDuplicates <- function(row) {
     pars <- lapply(row, function(col) col$medPars)
@@ -644,7 +687,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Concatenate to mediation effects by multiplying par names of paths
   medEffectsSyntax <- paste(
-    encodeColNames(medEffectPathNamesCollapsed),
+    medEffectPathNamesCollapsed,
     medEffectsCollapsed,
     sep = " := ",
     collapse = "\n"
@@ -739,8 +782,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(paste0(
     "\n# Residual covariances\n",
     paste(
-      encodeColNames(names(resCovList)),
-      sapply(resCovList, function(row) paste(encodeColNames(row), collapse = " + ")),
+      names(resCovList),
+      sapply(resCovList, function(row) paste(row, collapse = " + ")),
       sep = " ~~ ",
       collapse = "\n"
     )
@@ -770,14 +813,55 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # as a product of the three interacting variables
       for (var in varsSplit[sapply(varsSplit, length) > 1]) {
         # Create variable name like var1__var2__var3
-        varName <- paste(encodeColNames(var), collapse = "__")
+        varName <- paste(var, collapse = "__")
         # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
         # Then we evaluate the string as R code using the dataset as the environment to evaluate in
-        intVar <- eval(str2lang(paste(encodeColNames(var), collapse = "*")), envir = dataset)
+        intVar <- eval(str2lang(paste(var, collapse = "*")), envir = dataset)
         dataset[[varName]] = intVar
       }
     }
   }
+  return(dataset)
+}
+
+.procAddFactorDummyVars <- function(jaspResults, dataset, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+    regList <- modelsContainer[[modelName]][["regList"]]$object
+
+    contrastList <- list()
+
+    for (i in 1:length(regList)) {
+      pathVars <- regList[[i]][["vars"]]
+      # Convert regression variables to formula
+      pathFormula <- formula(paste("~", paste(pathVars, collapse = "+"))) # Remove intercept
+
+      # Create dummy variables for factors
+      pathDummyMat <- model.matrix(pathFormula, data = dataset)
+
+      # Add dummy variables to dataset
+      dataset <- merge(dataset, pathDummyMat)
+      contrasts <- attr(pathDummyMat, "contrasts")
+
+      # Replace dummy-coded variables in regList
+      for (f in names(contrasts)) {
+        # Get indices of dummy-coded variables (including interaction terms)
+        idx <- grep(f, pathVars)
+        # Replace dummy-coded variables with dummy variables
+        pathVars <- c(pathVars[-idx], colnames(pathDummyMat)[grepl(f, colnames(pathDummyMat))])
+        
+        contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
+      }
+      regList[[i]][["vars"]] <- pathVars
+    }
+    
+    modelsContainer[[modelName]][["contrasts"]] <- createJaspState(contrastList)
+    modelsContainer[[modelName]][["regList"]]$object <- regList
+  }
+
   return(dataset)
 }
 
@@ -1267,7 +1351,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medEffectIsConditional], uniqueMods)
 
   for (mod in uniqueMods) {
-    medEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = FALSE) # combine = F because empty cells indicate no moderation
+    medEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE) # combine = F because empty cells indicate no moderation
     modLabels <- vector("character", length(medEffectIsConditional))
     modLabels[medEffectIsConditional] <- modProbes[[mod]]
     medEffectsTable[[mod]] <- modLabels
@@ -1320,7 +1404,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit, uniqueMods)
 
   for (mod in uniqueMods) {
-    totEffectsTable$addColumnInfo(name = mod, title = encodeColNames(mod), type = "string", combine = FALSE)
+    totEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
     totEffectsTable[[mod]] <- modProbes[[mod]]
   }
 
@@ -1608,6 +1692,47 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create path matrix where first col is "from" and second col is "to", third col is estimate
   labelField <- ifelse(estimates, "est", "label")
   paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs), parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
+
+  if (type == "conceptual") {
+    # Remove nodes for factor levels and replace them by factor name, removing levels (e.g., factorLevel1 -> factor)
+    paths[,1:2] <- apply(paths[, 1:2], 2, function(col) {
+      # Init output vector
+      out <- numeric(length(col))
+      # For each row in column
+      for (i in 1:length(col)) {
+        # Split variable name according to interactions
+        v_split <- .strsplitColon(col[i])[[1]]
+        # Init output vector
+        v_out <- numeric(length(v_split))
+        # For each term of interaction
+        for (j in 1:length(v_split)) {
+          # Check if variable name is a factor
+          v_fac <- options[["factors"]][sapply(options[["factors"]], grepl, x = v_split[j])]
+          # If it is replace by factor name otherwise keep original variable name
+          if (length(v_fac) > 0) {
+            v_out[j] <- v_fac
+          } else {
+            v_out[j] <- v_split[j]
+          }
+        }
+
+        # Paste interactions back together
+        whichFac <- paste(v_out, collapse = ":")
+
+        # If any term was factor replace otherwise keep original variable name
+        if (whichFac != "") {
+          out[i] <- whichFac
+        } else {
+          out[i] <- col[i]
+        }
+      }
+
+      return(out)
+    })
+
+    # Remove duplicated paths
+    paths <- paths[!duplicated(paths[, 1:2]), ]
+  }
 
   # Check if "from" contains interaction term
   isIntPath <- grepl(":", paths[, 1])
