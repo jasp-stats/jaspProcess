@@ -591,7 +591,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procMedEffectFromPath <- function(path, regList, modProbes, contrasts) {
   contrastsConc <- lapply(names(contrasts), function(nm) paste0(nm, colnames(contrasts[[nm]])))
-  
+
   return(lapply(2:length(path), function(i) {
     regListRow <- regList[[names(path)[i]]]
     isMedVar <- regListRow$vars == names(path)[i-1]
@@ -607,10 +607,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
 
-        probeLevels <- gsub("\\%", "", names(modProbes[[1]]))
-
         intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modProbes[[modIntVars[i]]], digits = 3), sep = "*"))
-        intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, probeLevels, sep = "__"))
+        intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, gsub("\\%", "", names(modProbes[[v]])), sep = "__"))
         intVarsProbesOut <- intVarsProbes
         intVarsProbeNamesOut <- intVarsProbeNames
 
@@ -842,25 +840,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     for (i in 1:length(regList)) {
       pathVars <- regList[[i]][["vars"]]
       # Convert regression variables to formula
-      pathFormula <- formula(paste("~", paste(pathVars, collapse = "+"))) # Remove intercept
+      pathFormula <- formula(paste("~", paste(pathVars, collapse = "+")))
 
       # Create dummy variables for factors
       pathDummyMat <- model.matrix(pathFormula, data = dataset)
 
       # Add dummy variables to dataset
       dataset <- merge(dataset, pathDummyMat)
+
+      # Get dummy coding for contrasts
       contrasts <- attr(pathDummyMat, "contrasts")
 
-      # Replace dummy-coded variables in regList
       for (f in names(contrasts)) {
-        # Get indices of dummy-coded variables (including interaction terms)
-        idx <- grep(f, pathVars)
-        # Replace dummy-coded variables with dummy variables
-        pathVars <- c(pathVars[-idx], colnames(pathDummyMat)[grepl(f, colnames(pathDummyMat))])
-        
         contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
       }
-      regList[[i]][["vars"]] <- pathVars
+
+      # Replace dummy-coded variables in regList
+      regList[[i]][["vars"]] <- colnames(pathDummyMat)[-1]
     }
     
     modelsContainer[[modelName]][["contrasts"]] <- createJaspState(contrastList)
@@ -1280,12 +1276,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procEffectsTablesGetConditionalLabels <- function(paths, mods) {
   modProbes <- list()
-
+  
   for (path in paths) {
     pathMods <- sapply(path[-1], function(row) row[1])
 
     for (condEff in path[-1]) {
-      modProbes[[condEff[1]]] <- c(modProbes[[condEff[1]]], paste0(condEff[2], "th"))
+      modProbes[[condEff[1]]] <- c(modProbes[[condEff[1]]], condEff[2])
 
       for (condEff in mods[!mods %in% pathMods]) {
         modProbes[[condEff]] <- c(modProbes[[condEff]], "")
