@@ -276,8 +276,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   contrasts <- container[["contrasts"]]$object
 
   modProbes <- lapply(names(modVars), function(nms) {
-    whichFac <- options[["factors"]][sapply(options[["factors"]], grepl, x = nms)]
-    if (length(whichFac) > 0) {
+    matchFac <- sapply(options[["factors"]], grepl, x = nms)
+    
+    if (length(matchFac) > 0 && any(matchFac)) {
+      whichFac <- options[["factors"]][matchFac]
       conMat <- contrasts[[whichFac]]
       colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
       row.names(conMat) <- as.character(conMat[, colIdx])
@@ -510,7 +512,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
       if (any(intVarIsMed)) {
         modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
-        modIntFacsIdx <- lapply(modIntVars, function(v) which(sapply(contrastsConc, function(w) v %in% w)))
         intPars <- regListRow$parNames[isIntVar][intVarIsMed]
 
         probeLevels <- gsub("\\%", "", names(modProbes[[1]]))
@@ -520,11 +521,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         intVarsProbesOut <- intVarsProbes
         intVarsProbeNamesOut <- intVarsProbeNames
 
-        for (i in 1:length(modIntFacsIdx)) {
-          if (length(modIntFacsIdx[[i]]) > 0) {
-            isSameFac <- sapply(modIntFacsIdx, function(j) isTRUE(j == modIntFacsIdx[[i]]))
-            intVarsProbesOut[[i]] <- .doCallPaste(intVarsProbes[isSameFac], sep = " + ")
-            intVarsProbeNamesOut[[i]] <- .doCallPaste(intVarsProbeNames[isSameFac], sep = ".")
+        if (length(contrastsConc) > 0) {
+          modIntFacsIdx <- lapply(modIntVars, function(v) which(sapply(contrastsConc, function(w) v %in% w)))
+
+          for (i in 1:length(modIntFacsIdx)) {
+            if (length(modIntFacsIdx[[i]]) > 0) {
+              isSameFac <- sapply(modIntFacsIdx, function(j) isTRUE(j == modIntFacsIdx[[i]]))
+              intVarsProbesOut[[i]] <- .doCallPaste(intVarsProbes[isSameFac], sep = " + ")
+              intVarsProbeNamesOut[[i]] <- .doCallPaste(intVarsProbeNames[isSameFac], sep = ".")
+            }
           }
         }
 
@@ -1593,10 +1598,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         # For each term of interaction
         for (j in 1:length(v_split)) {
           # Check if variable name is a factor
-          v_fac <- options[["factors"]][sapply(options[["factors"]], grepl, x = v_split[j])]
+          matchFac <- sapply(options[["factors"]], grepl, x = v_split[j])
+          
           # If it is replace by factor name otherwise keep original variable name
-          if (length(v_fac) > 0) {
-            v_out[j] <- v_fac
+          if (length(matchFac) > 0 && any(matchFac)) {
+            v_out[j] <- options[["factors"]][matchFac]
           } else {
             v_out[j] <- v_split[j]
           }
