@@ -223,11 +223,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Paste interaction terms back together
     pathVars[!isThreeWayInt] <- unlist(sapply(pathVarsSplit[!isThreeWayInt], paste, collapse = ":"))
     pathVars[isThreeWayInt] <- unlist(sapply(pathVarsSplit[isThreeWayInt], paste, collapse = "__"))
-    regList[[i]][["vars"]] <- pathVars
+    regList[[i]][["vars"]] <- encodeColNames(pathVars)
   }
 
   # Replace dummy variables in dependent variables
-  names(regList) <- .procReplaceDummyVars(names(regList), modelOptions, globalDependent)
+  names(regList) <- encodeColNames(.procReplaceDummyVars(names(regList), modelOptions, globalDependent))
   
   return(regList)
 }
@@ -789,6 +789,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
     regList <- modelsContainer[[modelName]][["regList"]]$object
 
+    if (!.procCheckFitModel(regList)) next
+
     for (row in regList) {
       # Split three-way interaction variables in syntax
       varsSplit <- strsplit(row[["vars"]], "__")
@@ -800,8 +802,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         varName <- paste(var, collapse = "__")
         # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
         # Then we evaluate the string as R code using the dataset as the environment to evaluate in
-        intVar <- eval(str2lang(paste(var, collapse = "*")), envir = dataset)
-        dataset[[varName]] = intVar
+        intVar <- eval(str2lang(paste(encodeColNames(var), collapse = "*")), envir = dataset)
+        dataset[[encodeColNames(varName)]] = intVar
       }
     }
   }
@@ -816,10 +818,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
     regList <- modelsContainer[[modelName]][["regList"]]$object
 
+    if (!.procCheckFitModel(regList)) next
+
     contrastList <- list()
 
     for (i in 1:length(regList)) {
-      pathVars <- regList[[i]][["vars"]]
+      pathVars <- encodeColNames(regList[[i]][["vars"]])
       # Convert regression variables to formula
       pathFormula <- formula(paste("~", paste(pathVars, collapse = "+")))
 
@@ -892,7 +896,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (options$errorCalculationMethod == "bootstrap") {
     medResult <- jaspSem:::lavBootstrap(fittedModel, options$bootstrapSamples) # FIXME
   }
-
+  
   return(fittedModel)
 }
 
