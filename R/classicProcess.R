@@ -604,49 +604,30 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
 
   # Get total effect of X on Y
-  if (length(medEffectsListCombined) > 1) 
-    totEffect <- paste(medEffectsListCombined[[1]], .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + "), sep = " + ")
-  else
-    totEffect <- medEffectsListCombined[[1]]
+  totEffect <- .pasteExpandGrid(medEffectsListCombined, collapse = " + ")
 
-  dirEffectIsConditional <- medEffectsCombinedLengths[1] > 1
-  indEffectIsConditional <- any(medEffectsCombinedLengths[-1] > 1)
-
-  indEffectNames <- .pasteExpandGrid(.doCallPaste(medEffectNamesListCombined[-1], sep = "."), collapse = ".")
-
-  totEffectLabels <- list()
-
-  if (dirEffectIsConditional) totEffectLabels <- append(totEffectLabels, list(medEffectNamesListCombined[[1]]))
-  if (indEffectIsConditional) totEffectLabels <- append(totEffectLabels, list(indEffectNames))
+  totEffectNames <- .pasteExpandGrid(Filter(function(x) length(x) > 0, medEffectNamesListCombined), collapse = ".")
   
-  totEffectNames <- .doCallPaste(unique(totEffectLabels), sep = ".")
-
   # Get total indirect effect of X on Y
   totIndEffect <- .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + ")
+  
+  indEffectNames <- .pasteExpandGrid(Filter(function(x) length(x) > 0, medEffectNamesListCombined[-1]), collapse = ".")
 
   # Only select total effect if there are no indirect effects
-  totNames <- if(length(medEffectPathNames) == 1) rep("tot", length(totEffect)) else rep(c("tot", "totInd"), c(length(totEffect), length(totIndEffect)))
-  totLabels <- vector("character", length(totNames))
-
-  if(length(medEffectPathNames) == 1) {
-    totEffects <- totEffect
-    totNames <- rep("tot", length(totEffect))
-    totLabels <- .pasteDot(totNames, totEffectNames)
+  if (length(totEffectNames) == 0) {
+    totLabels <- "tot"
   } else {
-    totEffects <- c(totEffect, totIndEffect)
-    if (indEffectIsConditional) {
-      totLabels <- .pasteDot(
-        rep(c("tot", "totInd"), c(length(totEffect), length(totIndEffect))),
-        c(totEffectNames, indEffectNames)
-      )
-    } else {
-      totLabels <- c(.pasteDot("tot", totEffectNames), "totInd")
-    }
-  }
+    totLabels <- .pasteDot(rep("tot", length(totEffect)), totEffectNames)
+  } 
+  if (length(indEffectNames) == 0) {
+    indLabels <- "totInd"
+  } else {
+    indLabels <- .pasteDot(rep("totInd", length(totIndEffect)), indEffectNames)
+  } 
 
   totalEffectsSyntax <- paste(
-    totLabels,
-    totEffects,
+    c(totLabels, indLabels),
+    c(totEffect, totIndEffect),
     sep = " := ",
     collapse = "\n"
   )
