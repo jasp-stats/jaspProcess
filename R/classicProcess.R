@@ -1677,8 +1677,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Create path matrix where first col is "from" and second col is "to", third col is estimate
   labelField <- ifelse(estimates, "est", "label")
-  paths <- matrix(c(decodeColNames(parTbl$rhs), decodeColNames(parTbl$lhs), parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
-
+  paths <- matrix(c(parTbl$rhs, parTbl$lhs, parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
+  
   if (type == "conceptual") {
     # Remove nodes for factor levels and replace them by factor name, removing levels (e.g., factorLevel1 -> factor)
     paths[,1:2] <- apply(paths[, 1:2], 2, function(col) {
@@ -1748,7 +1748,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
   
   # Get layout of main paths: matrix with x,y coordinates for each node
-  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], decodeColNames(options[["dependent"]]))
+  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], options[["dependent"]])
 
   # Node names are in rownames
   nodeNames <- rownames(layout)
@@ -1792,7 +1792,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   nodeShape[graphIntIdx] <- "circle"
 
   # Make hidden helper node invisible step 2
-  nodeLabels <- graphNodeNames
+  nodeLabels <- decodeColNames(graphNodeNames) # TODO: Remove decodeColNames in future
   nodeLabels[graphIntIdx] <- ""
 
   edge_color <- rep("black", nrow(mainPaths))
