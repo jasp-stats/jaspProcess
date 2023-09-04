@@ -17,7 +17,7 @@
 
 .HardCodedModels <- function(number) {
 
-  ## TODO: Models involving moderated moderation 3,11,12,13,18,19,20,68,69,70,71,72,73
+  ## TODO: Models involving moderated moderation 19,20,69,71,73
   ## TODO: Models involving flexible amount of mediators 6,80,81
 
   if (number == 1) {
@@ -237,6 +237,71 @@
     )
   }
 
+  if (number == 12) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
+  if (number == 13) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
+
   if (number == 14) {
     processRelationships <- list(
       list(
@@ -357,6 +422,72 @@
       )
     )
   }
+
+  # Enable once multiple moderated moderation is working
+  #
+  # if (number == 19) {
+  #   processRelationships <- list(
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "X",
+  #       processType = "mediators",
+  #       processVariable = "M"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "M",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "X",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "W",
+  #       processType = "moderators",
+  #       processVariable = "Z"
+  #     )#,
+  #      # list(
+  #      #   processDependent = "Y",
+  #      #   processIndependent = "W",
+  #      #   processType = "moderators",
+  #      #   processVariable = "Z"
+  #      # )
+  #   )
+  # }
+  #
+  # if (number == 20) {
+  #   processRelationships <- list(
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "X",
+  #       processType = "mediators",
+  #       processVariable = "M"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "M",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "X",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "W",
+  #       processType = "moderators",
+  #       processVariable = "Z"
+  #     )
+  #   )
+  # }
 
   if (number == 21) {
     processRelationships <- list(
@@ -800,6 +931,140 @@
       list(
         processDependent = "Y",
         processIndependent = "X",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
+  if (number == 68) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "M",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
+  # if (number == 69) {
+  #   processRelationships <- list(
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "X",
+  #       processType = "mediators",
+  #       processVariable = "M"
+  #     ),
+  #     list(
+  #       processDependent = "M",
+  #       processIndependent = "X",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "M",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "X",
+  #       processType = "moderators",
+  #       processVariable = "W"
+  #     ),
+  #     list(
+  #       processDependent = "M",
+  #       processIndependent = "W",
+  #       processType = "moderators",
+  #       processVariable = "Z"
+  #     ),
+  #     list(
+  #       processDependent = "Y",
+  #       processIndependent = "W",
+  #       processType = "moderators",
+  #       processVariable = "Z"
+  #     )
+  #   )
+  # }
+
+  if (number == 70) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "M",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      )
+    )
+  }
+
+  if (number == 72) {
+    processRelationships <- list(
+      list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = "M"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "X",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "M",
+        processType = "moderators",
+        processVariable = "W"
+      ),
+      list(
+        processDependent = "Y",
+        processIndependent = "W",
+        processType = "moderators",
+        processVariable = "Z"
+      ),
+      list(
+        processDependent = "M",
+        processIndependent = "W",
         processType = "moderators",
         processVariable = "Z"
       )
