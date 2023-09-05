@@ -46,6 +46,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procPathPlots(pathPlotContainer, options, modelsContainer)
 
   # Output containers, tables, and plots based on the results. These functions should not return anything!
+  .procModelNumberTable(jaspResults, options, modelsContainer)
+
   .procModelFitTable(jaspResults, options, modelsContainer)
 
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
@@ -158,55 +160,52 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(!any(c(encoding[["X"]], encoding[["W"]], encoding[["Z"]]) %in% vars) && !any(grepl(encoding[["M"]], vars)))
 }
 
-.procRegListInputModelNumber <- function(regList, modelOptions, globalDependent) {
-  # reading variables specified in the menu, if any
+.procReplaceDummyVars <- function(vars, modelOptions, globalDependent) {
+  # Get encoding
+  encoding <- .procVarEncoding()
+
   independent  <- modelOptions[["modelNumberIndependent"]]
   mediators    <- modelOptions[["modelNumberMediators"]]
-  covariates   <- modelOptions[["modelNumberCovariates"]]
   modW         <- modelOptions[["modelNumberModeratorW"]]
   modZ         <- modelOptions[["modelNumberModeratorZ"]]
-  number       <- modelOptions[["modelNumber"]]
 
-  .replaceDummyVars <- function(vars) {
-    # Get encoding
-    encoding <- .procVarEncoding()
+  # Replace encoded X, W, Z with user variables
+  if (independent != "")
+    vars[vars == encoding[["X"]]] <- independent
+  if (modW != "")
+    vars[vars == encoding[["W"]]] <- modW
+  if (modZ != "")
+    vars[vars == encoding[["Z"]]] <- modZ
 
-    # Replace encoded X, W, Z with user variables
-    if (independent != "")
-      vars[vars == encoding[["X"]]] <- independent
-    if (modW != "")
-      vars[vars == encoding[["W"]]] <- modW
-    if (modZ != "")
-      vars[vars == encoding[["Z"]]] <- modZ
+  # Replace encoded M with user variables
+  # Is var a mediator?
+  isMed <- grepl(encoding[["M"]], vars)
+  # Which mediator index?
+  medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
+  medIdx <- as.integer(medIdx[!is.na(medIdx)])
 
-    # Replace encoded M with user variables
-    # Is var a mediator?
-    isMed <- grepl(encoding[["M"]], vars)
-    # Which mediator index?
-    medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
-    medIdx <- as.integer(medIdx[!is.na(medIdx)])
-
-    if (length(medIdx) > 0) {
-      for (i in 1:length(medIdx)) {
-        if (length(mediators) >= medIdx[i])
-          vars[isMed][i] <- mediators[medIdx[i]]
-      }
+  if (length(medIdx) > 0) {
+    for (i in 1:length(medIdx)) {
+      if (length(mediators) >= medIdx[i])
+        vars[isMed][i] <- mediators[medIdx[i]]
     }
-
-    # If mediator has no index still replace
-    if ((length(medIdx) == 0) && sum(isMed) > 0) {
-      for (i in 1:length(vars[isMed])) {
-        if (length(mediators) >= i)
-          vars[isMed][i] <- mediators[i]
-      }
-    }
-
-    # Replace encoded Y with user variable
-    vars[vars == encoding[["Y"]]] <- globalDependent
-
-    return(vars)
   }
 
+  # If mediator has no index still replace
+  if ((length(medIdx) == 0) && sum(isMed) > 0) {
+    for (i in 1:length(vars[isMed])) {
+      if (length(mediators) >= i)
+        vars[isMed][i] <- mediators[i]
+    }
+  }
+
+  # Replace encoded Y with user variable
+  vars[vars == encoding[["Y"]]] <- globalDependent
+
+  return(vars)
+}
+
+.procRegListInputModelNumber <- function(regList, modelOptions, globalDependent) {
   for (i in 1:length(regList)) {
     pathVars <- regList[[i]][["vars"]]
 
@@ -215,7 +214,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     isThreeWayInt <- grepl("__", pathVars)
     
     # Replace dummy vars for each term of interactions separately
-    pathVarsSplit <- lapply(pathVarsSplit, .replaceDummyVars)
+    pathVarsSplit <- lapply(pathVarsSplit, .procReplaceDummyVars, modelOptions = modelOptions, globalDependent = globalDependent)
 
     # Paste interaction terms back together
     pathVars[!isThreeWayInt] <- unlist(sapply(pathVarsSplit[!isThreeWayInt], paste, collapse = ":"))
@@ -224,7 +223,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   # Replace dummy variables in dependent variables
-  names(regList) <- .replaceDummyVars(names(regList))
+  names(regList) <- .procReplaceDummyVars(names(regList), modelOptions, globalDependent)
   
   return(regList)
 }
@@ -328,7 +327,101 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # -------------------------------------------
   "
 
-  return(paste(header, regSyntax, resCovSyntax, medEffectSyntax, sep = "\n"))
+  return(paste(header, regSyntax, medEffectSyntax, sep = "\n"))
+}
+
+.procCompareRegLists <- function(regListA, regListB) {
+  if (length(regListA) != regListB) return(FALSE)
+
+  for (i in 1:length(regListA)) {
+    if (length(regListA[[i]][["vars"]]) != length(regListB[[i]][["vars"]]))
+      return(FALSE)
+    
+    if (regListA[[i]][["dep"]] != regListB[[i]][["dep"]])
+      return(FALSE)
+  }
+
+  return(TRUE)
+}
+
+.procRegListToGraph <- function(regList) {
+  # Get list of paths
+  pathList <- lapply(1:length(regList),
+                      function(i) sapply(regList[[i]]$vars,
+                                        function(v) c(v, names(regList)[i])))
+  
+  # Convert path list to matrix
+  paths <- matrix(unlist(pathList), ncol = 2, byrow = TRUE)
+
+  # Create graph from paths
+  # Order according to first column to ensure same order between user and hard-coded graphs
+  graph <- igraph::graph_from_edgelist(paths[order(paths[, 1]), ])
+
+  return(graph)
+}
+
+.procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
+  # Create regList from hard-coded model
+  regList <- .procProcessRelationshipsToRegList(.HardCodedModels(modelNumber))
+  # Replace dummy variables in regList
+  regList <- .procRegListInputModelNumber(regList, modelOptions, globalDependent)
+  # Convert hard-coded regList to graph
+  modelNumberGraph <- .procRegListToGraph(regList)
+  # Check if user graph and hard-coded graph are identical (except for order of vertices)
+  isIdentical <- igraph::identical_graphs(modelNumberGraph, graph)
+  
+  return(isIdentical)
+}
+
+.procRecognizeModelNumber <- function(regList) {
+  # Create graph from regList specified by user
+  graphM <- .procRegListToGraph(regList)
+
+  # Hayes models currently specified in HardCodedModels
+  Hmodels <- c(1,2,4,5,6,7,8,9,10,14,15,16,17,
+               21,22,28,29,58,59,60,61,62,63,
+               64,65,66,67,75,76,80,81,82,83,
+               84,85,86,87,88,89,90,91,92)
+
+  # Get global dependent variable
+  isDep <- sapply(regList, function(row) row$dep)
+  globalDependent <- names(regList)[isDep]
+  # Get all predictor terms
+  allVars <- unique(unlist(lapply(regList, function(row) row$vars)))
+  # Check which terms are interactions
+  isIntVar <- grepl(":|__", allVars)
+
+  # Get mediator terms
+  mediators   <- allVars[allVars %in% names(regList) & !isIntVar]
+  # Get moderator terms by splitting interaction terms
+  moderators  <- unique(unlist(sapply(strsplit(allVars[isIntVar], ":|__"), function(v) v[length(v)])))
+  # First moderator is W
+  modW        <- if (length(moderators) > 0)  moderators[1] else ""
+  # Second moderator is Z
+  modZ        <- if (length(moderators) > 1)  moderators[2] else ""
+  # First non-mediator or moderator term is independent
+  independent <- allVars[!allVars %in% c(mediators, moderators)][1]
+
+  # Create model options dummy object
+  modelOptions <- list(
+    modelNumberIndependent = independent,
+    modelNumberMediators = mediators,
+    modelNumberModeratorW = modW,
+    modelNumberModeratorZ = modZ
+  )
+
+  # Check which hard-coded model matches user model
+  modelMatch <- sapply(Hmodels, .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
+
+  # If no match swap W and Z and check again
+  if (!any(modelMatch)) {
+    modelOptions[["modelNumberModeratorW"]] <- modZ
+    modelOptions[["modelNumberModeratorZ"]] <- modW
+
+    modelMatch <- sapply(Hmodels, .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
+  }
+
+  return(Hmodels[modelMatch])
 }
 
 .procAddLavModVar <- function(regList, dependent, variable) {
@@ -789,6 +882,27 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(procResults[isFitted])
 }
 
+.procModelNumberTable <- function(jaspResults, options, modelsContainer) {
+  if (!is.null(jaspResults[["modelNumberTable"]])) return()
+
+  regLists <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["regList"]]$object)
+  modelNumbers <- sapply(regLists, .procRecognizeModelNumber)
+  
+  modelNumberTable <- createJaspTable(title = gettext("Model numbers"))
+  modelNumberTable$dependOn(c(.procGetDependencies(), "processModels"))
+  modelNumberTable$position <- 0
+
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
+
+  modelNumberTable$addColumnInfo(name = "model",       title = "Model", type = "string" )
+  modelNumberTable$addColumnInfo(name = "modelNumber", title = "Model number", type = "integer" )
+
+  modelNumberTable[["model"]] <- modelNames
+  modelNumberTable[["modelNumber"]] <- modelNumbers
+
+  jaspResults[["modelNumberTable"]] <- modelNumberTable
+}
+
 .procModelFitTable <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["modelFitTable"]])) return()
 
@@ -797,7 +911,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   fitTable <- createJaspTable(title = gettext("Model fit"))
   fitTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights"))
-  fitTable$position <- 0
+  fitTable$position <- 1
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
   isInvalid <- sapply(procResults, is.character)
