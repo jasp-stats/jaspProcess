@@ -52,6 +52,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   .procParameterEstimateTables(parEstContainer, options, modelsContainer)
 
+  localTestContainer <- .procContainerLocalTests(jaspResults, options)
+
+  .procLocalTestTables(localTestContainer, dataset, options, modelsContainer)
+
   .procPlotSyntax(jaspResults, options, modelsContainer)
 
   return()
@@ -1256,6 +1260,159 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
+
+.procContainerLocalTests <- function(jaspResults, options) {
+  if (!is.null(jaspResults[["localTestContainer"]])) {
+    localTestContainer <- jaspResults[["localTestContainer"]]
+  } else {
+    localTestContainer <- createJaspContainer(gettext("Local tests"))
+    localTestContainer$dependOn(.procGetDependencies())
+
+    jaspResults[["localTestContainer"]] <- localTestContainer
+  }
+
+  return(localTestContainer)
+}
+
+.procLocalTestTables <- function(container, dataset, options, modelsContainer) {
+  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
+
+  for (i in 1:length(procResults)) {
+    if (is.null(container[[modelNames[i]]])) {
+      modelContainer <- createJaspContainer(title = modelNames[i], , initCollapsed = TRUE)
+      modelContainer$dependOn(
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      container[[modelNames[i]]] <- modelContainer
+    } else {
+      modelContainer <- container[[modelNames[i]]]
+    }
+
+    if (is.character(procResults[[i]])) {
+      modelContainer$setError(procResults[[i]])
+      return()
+    }
+    if (options[["processModels"]][[i]][["localTests"]])
+      .procLocalTestTable(modelContainer, dataset, options, procResults[[i]], i)
+  }
+}
+
+.procLocalTestTable <- function(container, dataset, options, procResults, modelIdx) {
+  if (!is.null(container[["localTestTable"]])) return()
+
+  localTestTable <- createJaspTable(title = gettext("Conditional independence tests"))
+  localTestTable$dependOn(
+    c("ciLevel", "localTestCorrectionForAllModels"),
+    nestedOptions = list(
+      c("processModels", as.character(modelIdx), "localTests"),
+      c("processModels", as.character(modelIdx), "localTestType"),
+      c("processModels", as.character(modelIdx), "localTestBootstrap"),
+      c("processModels", as.character(modelIdx), "localTestBootstrapSamples")
+    )
+  )
+  container[["localTestTable"]] <- localTestTable
+
+  if (container$getError()) return()
+
+  if (!procResults@Fit@converged) {
+    localTestTable$addFootnote(gettext("Model did not converge."))
+  }
+
+  testType <- options[["processModels"]][[modelIdx]][["localTestType"]]
+
+  localTestTable$addColumnInfo(name = "lhs",  title = "", type = "string")
+  localTestTable$addColumnInfo(name = "op1",  title = "", type = "string")
+  localTestTable$addColumnInfo(name = "rhs",  title = "", type = "string")
+  localTestTable$addColumnInfo(name = "op2",  title = "", type = "string")
+  localTestTable$addColumnInfo(name = "cond", title = "", type = "string")
+
+  keyEst <- "estimate"
+
+  if (testType == "cis.chisq") {
+    keyEst <- "rmsea"
+    localTestTable$addColumnInfo(name = keyEst, title = gettext("RMSEA"),         type = "number", format = "sf:4;dp:3" )
+    localTestTable$addColumnInfo(name = "x2",   title = gettext("&#967;&sup2;"),  type = "number", format = "sf:4;dp:3" )
+    localTestTable$addColumnInfo(name = "df",   title = gettext("df"),            type = "integer"                      )
+  } else {
+    localTestTable$addColumnInfo(name = keyEst, title = gettext("Estimate"),      type = "number", format = "sf:4;dp:3" )
+  }
+
+  adjustMethod <- options[["localTestCorrectionForAllModels"]]
+
+  if (adjustMethod != "none") {
+    adjustMethodRef <- list(
+      "holm" = "Holm",
+      "hochberg" = "Hochberg",
+      "hommel" = "Hommel",
+      "bonferroni" = "Bonferroni",
+      "BH" = "Benjamini-Hochberg",
+      "BY" = "Benjamini-Yekuteli"
+    )
+    localTestTable$addFootnote(gettextf("<em>p</em>-values adjusted for multiple comparisons with the %s method.", adjustMethodRef[[adjustMethod]]))
+  }
+
+  nReps  <- NULL
+  keyErr <- "p.value"
+
+  if (options[["processModels"]][[modelIdx]][["localTestBootstrap"]] || testType == "cis.loess") {
+    keyErr <- "std.error"
+    adjustMethod <- "none"
+    nReps <- options[["processModels"]][[modelIdx]][["localTestBootstrapSamples"]]
+    localTestTable$addColumnInfo(name = keyErr,   title = gettext("Std. error"),   type = "number", format = "sf:4;dp:3")
+  } else {
+    localTestTable$addColumnInfo(name = keyErr,   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  }
+
+  localTestTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                    overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+  localTestTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                    overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+
+  parTable <- lavaan::parTable(procResults)
+  parTable <- parTable[parTable$op != ":=" & !grepl(":|__", parTable$rhs) & !grepl(":|__", parTable$lhs),]
+  
+  arrows <- apply(parTable, 1, function(row) {
+    op <- switch(row[["op"]],
+      "~" = " <- ",
+      "~~" = " <-> "
+    )
+    return(paste(row[["lhs"]], op, row[["rhs"]]))
+  })
+
+  parNamesAbbr <- abbreviate(unique(unlist(parTable[c("lhs", "rhs")])))
+
+  graph <- dagitty::dagitty(paste("dag {", paste(arrows, collapse = "\n")," } "))
+
+  localTestResult <- dagitty::localTests(
+    graph, dataset,
+    type = testType,
+    conf.level = options$ciLevel,
+    R = nReps
+  )
+  
+  if (nrow(localTestResult) > 0) { 
+    implicationSplit <- strsplit(row.names(localTestResult), "\\s+(\\|+|_+\\|+_+)\\s+")
+    localTestTable[["lhs"]]  <- sapply(implicationSplit, function(row) names(parNamesAbbr)[parNamesAbbr == row[1]])
+    localTestTable[["op1"]]  <- rep("\u2AEB", length(implicationSplit))
+    localTestTable[["rhs"]]  <- sapply(implicationSplit, function(row) names(parNamesAbbr)[parNamesAbbr == row[2]])
+    localTestTable[["cond"]] <- sapply(implicationSplit, function(row) { if (length(row) == 3) names(parNamesAbbr)[parNamesAbbr == row[3]] else "" })
+    localTestTable[["op2"]]  <- sapply(implicationSplit, function(row) { if (length(row) == 3) "\u2223" else "" })
+    localTestTable[[keyEst]] <- localTestResult[[keyEst]]
+    localTestTable[[keyErr]] <- p.adjust(localTestResult[[keyErr]], method = adjustMethod)
+    if (testType == "cis.chisq") {
+      localTestTable[["x2"]] <- localTestResult[["x2"]]
+      localTestTable[["df"]] <- localTestResult[["df"]]
+      localTestTable[["ci.lower"]] <- localTestResult[[paste0("rmsea ", ((1-options$ciLevel)/2)*100, "%")]]
+      localTestTable[["ci.upper"]] <- localTestResult[[paste0("rmsea ", (1-(1-options$ciLevel)/2)*100, "%")]]
+    } else {
+      localTestTable[["ci.lower"]] <- localTestResult[[paste0(((1-options$ciLevel)/2)*100, "%")]]
+      localTestTable[["ci.upper"]] <- localTestResult[[paste0((1-(1-options$ciLevel)/2)*100, "%")]]
+    }
+  }
+}
+
+# Plotting functions ----
 
 .procConceptPathPlot <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["conceptPathPlot"]])) return()
