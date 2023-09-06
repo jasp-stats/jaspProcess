@@ -294,7 +294,7 @@ Form
 					{
                         id: opts
 						title: 		qsTr("Options for %1").arg(rowValue)
-						columns: 	3
+						columns: 	4
                         
 						Group
 						{
@@ -359,6 +359,57 @@ Form
 								name: "statisticalPathPlot"
 								label: qsTr("Statistical")
 								checked: statisticalPathPlotsForAllModels.checked
+							}
+						}
+
+						Group
+						{
+                            title: qsTr("Tests")
+							columns: 	1
+							CheckBox
+							{
+								name: "localTests"
+								label: qsTr("Local tests")
+								checked: localTestsForAllModels.checked
+
+								Label
+								{
+									text: qsTr("Test type")
+								}
+								DropDown
+								{
+									id: localTestType
+									name: "localTestType"
+									label: ""
+									values: 
+									[ 
+										{ label: qsTr("Linear"), 			value: "cis" 				},
+										{ label: qsTr("Loess"), 			value: "cis.loess" 			},
+										{ label: qsTr("Chi-square"), 		value: "cis.chisq" 			},
+										{ label: qsTr("Tetrad"), 			value: "tetrads" 			},
+										{ label: qsTr("Tetrad within"), 	value: "tetrads.within" 	},
+										{ label: qsTr("Tetrad between"), 	value: "tetrads.between" 	},
+										{ label: qsTr("Tetrad epistemic"), 	value: "tetrads.epistemic" 	}
+									]
+									currentValue: localTestTypeForAllModels.currentValue
+								}
+								CheckBox 
+								{
+									label: qsTr("Bootstrap")
+									name: "localTestBootstrap"
+									checked: localTestType.currentValue == "cis.loess" || localTestBootstrapForAllModels.checked
+									Label
+									{
+										text: qsTr("Replications")
+									}
+									IntegerField
+									{
+										name: "localTestBootstrapSamples"
+										defaultValue: localTestBootstrapSamplesForAllModels.defaultValue
+										min: 500
+										max: 100000
+									}
+								}
 							}
 						}
 					}
@@ -447,13 +498,12 @@ Form
     {
         id: advanced
         title: qsTr("Advanced")
-        columns: 2
+        columns: 1
 
         Group
         {
             title: qsTr("Set for All Models")
-            columns: 3
-            Layout.columnSpan: 2
+            columns: 4
 
 			Group
 			{
@@ -525,6 +575,82 @@ Form
                 }
             }
 
+			Group
+			{
+				title: qsTr("Tests")
+				columns: 	1
+				CheckBox
+				{
+					id: localTestsForAllModels
+					name: "localTestsForAllModels"
+					label: qsTr("Local tests")
+
+					Label
+					{
+						text: qsTr("Test type")
+					}
+					DropDown
+					{
+						id: localTestTypeForAllModels
+						name: "localTestTypeForAllModels"
+						label: ""
+						values: 
+						[ 
+							{ label: qsTr("Linear"), 			value: "cis" 				},
+							{ label: qsTr("Loess"), 			value: "cis.loess" 			},
+							{ label: qsTr("Chi-square"), 		value: "cis.chisq" 			},
+							{ label: qsTr("Tetrad"), 			value: "tetrads" 			},
+							{ label: qsTr("Tetrad within"), 	value: "tetrads.within" 	},
+							{ label: qsTr("Tetrad between"), 	value: "tetrads.between" 	},
+							{ label: qsTr("Tetrad epistemic"), 	value: "tetrads.epistemic" 	}
+						]
+					}
+				}
+				CheckBox 
+				{
+					id: localTestBootstrapForAllModels
+					label: qsTr("Bootstrap")
+					name: "localTestBootstrapForAllModels"
+					checked: localTestTypeForAllModels.currentValue == "cis.loess"
+					Label
+					{
+						text: qsTr("Replications")
+					}
+					IntegerField 
+					{
+						id: localTestBootstrapSamplesForAllModels
+						name: "localTestBootstrapSamplesForAllModels"
+						defaultValue: 1000
+						min: 500
+						max: 100000
+					}
+				}
+				Label
+				{
+					text: qsTr("Adjustment method")
+				}
+				DropDown
+				{
+					name: "localTestCorrectionForAllModels"
+					label: ""
+					values: 
+					[ 
+						{ label: qsTr("None"), 					value: "none" 		},
+						{ label: qsTr("Holm"), 					value: "holm" 		},
+						{ label: qsTr("Hochberg"), 				value: "hochberg" 	},
+						{ label: qsTr("Hommel"), 				value: "hommel" 	},
+						{ label: qsTr("Bonferroni"), 			value: "bonferroni" },
+						{ label: qsTr("Benjamini-Hochberg"), 	value: "BH" 		},
+						{ label: qsTr("Benjamini-Yekuteli"), 	value: "BY" 		}
+					]
+				}
+			}
+		}
+
+		Group
+		{
+			columns: 3
+
             RadioButtonGroup 
             {
                 title: qsTr("Missing Value Handling")
@@ -551,24 +677,24 @@ Form
                 RadioButton { text: qsTr("ULS")  ; name: "uls"      }
                 RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
             }
+		}
 
-			ComponentsList
+		ComponentsList
+		{
+			name: "moderationProbes"
+			title: qsTr("Probe Conditional Continuous Effects")
+			preferredWidth: parent.width/2
+			values: [16, 50, 84]
+			minimumItems: 1
+			maximumItems: 10
+			rowComponent: DoubleField
 			{
-				Layout.columnSpan: 3
-				name: "moderationProbes"
-				title: qsTr("Probe Conditional Continuous Effects")
-				values: [16, 50, 84]
-				minimumItems: 1
-				maximumItems: 10
-				rowComponent: DoubleField
-				{
-					name: "probePercentile"
-					afterLabel: qsTr("th percentile")
-					defaultValue: rowValue
-					min: 0
-					max: 100
-				}
+				name: "probePercentile"
+				afterLabel: qsTr("th percentile")
+				defaultValue: rowValue
+				min: 0
+				max: 100
 			}
-        }
+		}
     }
 }
