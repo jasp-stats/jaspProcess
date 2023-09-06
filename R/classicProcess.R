@@ -1556,8 +1556,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   nNodes <- length(graphNodeNames)
 
-  # Calc node size depending on number of nodes
-  nodeSize <- rep(round(8*exp(-nrow(layout)/80)+1), nNodes)
+  # Calc node size depending on number of visible nodes
+  nodeSize <- rep(50/(sum(!graphIntIdx)), nNodes)
   # Make hidden helper node invisible step 1
   nodeSize[graphIntIdx] <- 0
 
@@ -1590,8 +1590,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     vsize = nodeSize,
     shape = nodeShape,
     labels = TRUE,
-    border.width = 1.5,
-    edge.label.cex = 1.2,
+    border.width = 2,
+    edge.width = 5,
+    edge.label.cex = 1+2/nNodes,
     edge.color = edge_color,
     edge.labels = edge_labels
   ))
