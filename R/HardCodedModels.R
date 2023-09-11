@@ -15,10 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-.HardCodedModels <- function(number) {
+.HardCodedModels <- function(number, k) {
+
+  # k = number of mediators
 
   ## TODO: Models involving moderated moderation 19,20,69,71,73
-  ## TODO: Models involving flexible amount of mediators 6,80,81
 
   if (number == 1) {
     processRelationships <- list(
@@ -94,26 +95,7 @@
   }
 
   if (number == 6) {
-    processRelationships <- list(
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M1"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M2"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "M1",
-        processType = "mediators",
-        processVariable = "M2"
-      )
-    )
+    processRelationships <- .generateProcessRelationships_6(k)
   }
 
   if (number == 7) {
@@ -966,6 +948,8 @@
     )
   }
 
+  # Enable once multiple moderated moderation is working
+  #
   # if (number == 69) {
   #   processRelationships <- list(
   #     list(
@@ -1154,85 +1138,11 @@
   }
 
   if (number == 80) {
-    processRelationships <- list(
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M1"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "Mk"
-      ),
-      list(
-        processDependent = "Mk",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M1"
-      ),
-      list(
-        processDependent = "Mk",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "Mk-1"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "M1",
-        processType = "mediators",
-        processVariable = "Mk"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "Mk-1",
-        processType = "mediators",
-        processVariable = "Mk"
-      )
-    )
+    processRelationships <- .generateProcessRelationships_80(k)
   }
 
   if (number == 81) {
-    processRelationships <- list(
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M1"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "Mk"
-      ),
-      list(
-        processDependent = "M2",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M1"
-      ),
-      list(
-        processDependent = "Mk",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M1"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "M1",
-        processType = "mediators",
-        processVariable = "M2"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "M1",
-        processType = "mediators",
-        processVariable = "Mk"
-      )
-    )
+    processRelationships <- .generateProcessRelationships_81(k)
   }
 
   if (number == 82) {
@@ -1643,6 +1553,7 @@
       )
     )
   }
+
   return(.procEncodeProcessRelationships(processRelationships))
 } # end of function on hardcoded models
 
@@ -1680,4 +1591,144 @@
     varNames <- gsub(encoding[[nm]], nm, varNames)
   }
   return(varNames)
+}
+
+# model 6
+.generateProcessRelationships_6 <- function(k) {
+
+  processRelationships <- list(
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = "M1"
+    ),
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = "M2"
+    ),
+    list(
+      processDependent = "M2",
+      processIndependent = "M1",
+      processType = "directs",
+      processVariable = ""
+    )
+  )
+
+  if (k > 2) {
+    for (i in 3:k) {
+      path <- list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = paste0("M", i)
+      )
+      processRelationships <- append(processRelationships, list(path))
+      
+      for (j in 1:(i-1)) {
+        path <- list(
+          processDependent = paste0("M", i),
+          processIndependent = paste0("M", j),
+          processType = "directs",
+          processVariable = ""
+        )
+        processRelationships <- append(processRelationships, list(path))
+      }
+    }
+  }
+
+  return(processRelationships)
+}
+
+# model 80
+.generateProcessRelationships_80 <- function(k) {
+
+  processRelationships <- list(
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = "M1"
+    ),
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = paste0("M", k)
+    ),
+    list(
+      processDependent = paste0("M", k),
+      processIndependent = "M1",
+      processType = "directs",
+      processVariable = ""
+    )
+  )
+
+  if (k > 2) {
+    for (i in 2:(k-1)) {
+      pathY <- list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = paste0("M", i)
+      )
+      pathMk <- list(
+        processDependent = paste0("M", k),
+        processIndependent = paste0("M", i),
+        processType = "directs",
+        processVariable = ""
+      )
+      processRelationships <- append(processRelationships, list(pathY, pathMk))
+    }
+  }
+
+  return(processRelationships)
+}
+
+
+# model 81
+.generateProcessRelationships_81 <- function(k) {
+
+  processRelationships <- list(
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = "M1"
+    ),
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = "M2"
+    ),
+    list(
+      processDependent = "M2",
+      processIndependent = "M1",
+      processType = "directs",
+      processVariable = ""
+    )
+  )
+
+  if (k > 2) {
+    for (i in 3:k) {
+      pathY <- list(
+        processDependent = "Y",
+        processIndependent = "X",
+        processType = "mediators",
+        processVariable = paste0("M", i)
+      )
+      pathMk <- list(
+        processDependent = paste0("M", i),
+        processIndependent = "M1",
+        processType = "directs",
+        processVariable = ""
+      )
+      processRelationships <- append(processRelationships, list(pathY, pathMk))
+    }
+  }
+
+  return(processRelationships)
 }

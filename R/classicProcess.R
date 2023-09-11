@@ -126,7 +126,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
-  
+
     if (is.null(modelsContainer[[modelName]][["regList"]])) {
       regList <- .procModelRegListSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]])
       state <- createJaspState(object = regList)
@@ -139,7 +139,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procModelRegListSingleModel <- function(modelOptions, globalDependent) {
+.procModelRegListSingleModel <- function(modelOptions, globalDependent,options) {
   # Existing Hayes models
   # Hmodels <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
   #              21,22,28,29,58,59,60,61,62,63,64,65,66,67,68,69,70,
@@ -149,10 +149,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Insert function for plotting conceptual hard-coded Hayes model, in case
     # no estimation takes place yet (because of not having filled in all necessary
     # variables)
-    inputModelNumber = .HardCodedModels(modelOptions[["modelNumber"]])
+    inputModelNumber = .HardCodedModels(modelOptions[["modelNumber"]], length(modelOptions[["modelNumberMediators"]]))
   )
-  ## TODO: Models involving moderated moderation 3,11,12,13,18,19,20,68,69,70,71,72,73
-  ## TODO: Models involving flexible amount of mediators 6,80,81
+  ## TODO: Models involving moderated moderation 19,20,69,71,73
 
   regList <- .procProcessRelationshipsToRegList(processRelationships)
 
@@ -191,11 +190,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Which mediator index?
   medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
   medIdx <- as.integer(medIdx[!is.na(medIdx)])
-
-  if (length(medIdx) > 0) {
+  
+  if (length(medIdx) > 0 && length(mediators) > 0) {
     for (i in 1:length(medIdx)) {
-      if (length(mediators) >= medIdx[i])
+      if (length(mediators) >= medIdx[i]) {
         vars[isMed][i] <- mediators[medIdx[i]]
+      }
     }
   }
 
@@ -220,7 +220,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Split path interactions
     pathVarsSplit <- strsplit(pathVars, ":|__") # split according to `:` or `__`
     isThreeWayInt <- grepl("__", pathVars)
-    
+
     # Replace dummy vars for each term of interactions separately
     pathVarsSplit <- lapply(pathVarsSplit, .procReplaceDummyVars, modelOptions = modelOptions, globalDependent = globalDependent)
 
@@ -302,7 +302,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
-  
+
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
       syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
       state <- createJaspState(object = syntax)
@@ -350,7 +350,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procCompareRegLists <- function(regListA, regListB) {
-  if (length(regListA) != regListB) return(FALSE)
+  if (length(regListA) != length(regListB)) return(FALSE)
 
   for (i in 1:length(regListA)) {
     if (length(regListA[[i]][["vars"]]) != length(regListB[[i]][["vars"]]))
@@ -381,7 +381,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
   # Create regList from hard-coded model
-  regList <- .procProcessRelationshipsToRegList(.HardCodedModels(modelNumber))
+  regList <- .procProcessRelationshipsToRegList(.HardCodedModels(modelNumber, length(modelOptions[["modelNumberMediators"]])))
+  
   # Replace dummy variables in regList
   regList <- .procRegListInputModelNumber(regList, modelOptions, globalDependent)
   # Convert hard-coded regList to graph
@@ -542,10 +543,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     if (type == "moderators") {
-      # This routine adds three-way interactions (moderated moderation) 
+      # This routine adds three-way interactions (moderated moderation)
       # which are not available in standard lavaan syntax. These interactions
       # are represented as separate variables which are products of the three interacting variables.
-      # The names of these variables are the interacting variable names separated by 
+      # The names of these variables are the interacting variable names separated by
       # double underscores, e.g.: var1__var2__var3
 
       # Get all existing interaction terms
@@ -749,7 +750,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if ((length(exoVars) - length(intIdx)) > 1 && includeExo) {
     exoIdxMat <- which(upper.tri(diag(length(exoVars))), arr.ind = TRUE)
     exoIdxMat <- exoIdxMat[!exoIdxMat[, 1] %in% intIdx & !exoIdxMat[, 2] %in% intIdx, , drop = FALSE]
-    
+
     for (i in 1:nrow(exoIdxMat)) {
       if (!exoVars[exoIdxMat[i, 2]] %in% regList[[exoVars[exoIdxMat[i, 1]]]][["vars"]]) {
         resCovList[[exoVars[exoIdxMat[i, 1]]]] <- c(resCovList[[exoVars[exoIdxMat[i, 1]]]], exoVars[exoIdxMat[i, 2]])
@@ -879,7 +880,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procResultsFitModel <- function(container, dataset, options) {
   # Should model be fitted?
   doFit <- .procCheckFitModel(container[["regList"]]$object)
-  
+
   if (!doFit)
     dataset <- NULL
 
@@ -962,6 +963,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!is.null(jaspResults[["modelNumberTable"]])) return()
 
   regLists <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["regList"]]$object)
+  if (length(regLists) == 0) return()
   modelNumbers <- sapply(regLists, .procRecognizeModelNumber)
   
   modelNumberTable <- createJaspTable(title = gettext("Model numbers"))
@@ -1301,17 +1303,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!procResults@Fit@converged) {
     medEffectsTable$addFootnote(gettext("Model did not converge."))
   }
-  
+
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
-  
+
   # Only use label splits of length > 1 to omit total effects
   labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
-  
+
   # Get paths from label of mediation effect
   medPaths <- lapply(labelSplit, function(path) path[[1]])
-  
+
   # Get path lengths
   medPathLengths <- sapply(medPaths, length)
 
@@ -1726,7 +1728,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # Iterate over moderators leaving out the first and last element (independent and dependent variables)
     for (i in 1:(length(path)-2)) {
-      # Only add moderators (at index i+1 in path) that are not in the layout yet 
+      # Only add moderators (at index i+1 in path) that are not in the layout yet
       if (!path[i+1] %in% nodeNames) {
         # Get index of independent and dependent node in layout
         # Independent node is at index i and dependent is the last element in path
@@ -1817,7 +1819,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # This function prunes moderator paths
   # It finds the longest path and removes all paths that are a subset of this path
   # leaving longest unique paths
-  
+
   # Find longest moderator path
   longestPathIdx <- which.max(sapply(paths, length))
 
@@ -1826,7 +1828,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Check which other paths are a subset of longest path
   allVarsInLongestPath <- sapply(paths[-longestPathIdx], function(path) all(path %in% paths[[longestPathIdx]]))
-  
+
   # If all are a subset, return only longest paths
   if (all(allVarsInLongestPath)) return(prunedPaths)
 
@@ -1908,10 +1910,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Paths from moderator and interaction term to dep var node
     modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
   }
-  
+
   # Filter out non-moderation paths -> main paths
   mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
-  
+
   # Get layout of main paths: matrix with x,y coordinates for each node
   layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], options[["dependent"]])
 
@@ -1920,7 +1922,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Remove duplicate paths
   mainPaths <- mainPaths[!duplicated(mainPaths), ]
-  
+
   # Add layout of moderator nodes
   if (length(mods) > 0) {
     # Add dependent variable to end of each moderator path
