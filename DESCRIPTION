@@ -10,6 +10,9 @@ Description: This module offers analyses.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
+  ggplot2,
+  ggraph,
+  grid,
   jaspBase,
   jaspGraphs,
   jaspSem

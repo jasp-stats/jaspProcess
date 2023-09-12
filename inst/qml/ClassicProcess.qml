@@ -423,12 +423,18 @@ Form
 		Group
 		{
 			title: qsTr("Path Plots")
-			columns: 1
+			columns: 3
 
 			CheckBox
 			{
 				name: "statisticalPathPlotsParameterEstimates"
 				label: qsTr("Parameter estimates")
+			}
+
+			CheckBox
+			{
+				name: "pathPlotsLegend"
+				label: qsTr("Legend")
 			}
 
 			IntegerField
