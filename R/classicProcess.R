@@ -1603,7 +1603,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = c("pathPlotsLegend", "pathPlotsLabelLength"),
+    options = c("pathPlotsLegend", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot"))
   )
   container[["conceptPathPlot"]] <- procPathPlot
@@ -1618,7 +1618,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLegend", "pathPlotsLabelLength"),
+    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLegend", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
   container[["statPathPlot"]] <- procPathPlot
@@ -1878,6 +1878,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     paths <- paths[!duplicated(paths[, 1:2]), ]
   }
 
+  # Get terms
+  mediators <- paths[paths[, 1] %in% paths[, 2], 1]
+  independent <- paths[!paths[, 1] %in% paths[, 2], 1]
+  dependent <- paths[!paths[, 2] %in% paths[, 1], 2]
+
   # Check if "from" contains interaction term
   isIntPath <- grepl(":", paths[, 1])
 
@@ -1962,6 +1967,30 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create dummy alpha variable for nodes (nessecary for creating the legend)
   nodeAlpha <- if (options[["pathPlotsLegend"]]) nodeLabels else NULL
 
+  # Create node type variable for coloring
+  nodeType <- as.factor(ifelse(nodeLabels %in% mediators, 0,
+    ifelse(nodeLabels %in% mods | grepl(":", nodeLabels), 1,
+      ifelse(nodeLabels %in% independent, 2,
+        ifelse(nodeLabels %in% dependent, 3, 4)
+      )
+    )
+  ))
+
+  # Create function from color palette
+  colorFun <- jaspGraphs::JASPcolors(options[["pathPlotsColorPalette"]], asFunction = TRUE)
+
+  if (options[["pathPlotsColor"]]) {
+    if (type == "conceptual" && sum(isIntPath) > 0) {
+      # Make helper nodes transparent
+      colorPalette <- c(colorFun(length(unique(nodeType))-1), "transparent")
+    } else {
+      colorPalette <- colorFun(length(unique(nodeType)))
+    }
+  } else {
+    nodeType <- NULL
+    colorPalette <- rep("transparent", length(unique(nodeType)))
+  }
+
   # Sort layout according to order of unique node names
   layout <- layout[match(nodeNames, rownames(layout)), ]
 
@@ -1975,7 +2004,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     ) +
     # Add square nodes
     ggraph::geom_node_tile(
-      ggplot2::aes(color = as.factor(nodeVis)),
+      ggplot2::aes(color = as.factor(nodeVis), fill = nodeType),
       height = nodeSize,
       width = nodeSize,
       size = 0.9 # Width of border
@@ -1998,7 +2027,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       size = 30/(sum(!graphIntIdx) + options[["pathPlotsLabelLength"]] - 3)
     ) +
     # Make helper nodes transparent and hide color from legend
-    ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL)
+    ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
+    ggplot2::scale_fill_manual(values = colorPalette, guide = NULL)
   
   if (options[["pathPlotsLegend"]]) {
     nodeLabelUnique <- unique(nodeLabels)
