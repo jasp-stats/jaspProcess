@@ -1603,7 +1603,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = "pathPlotsLabelLength",
+    options = c("pathPlotsLegend", "pathPlotsLabelLength"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot"))
   )
   container[["conceptPathPlot"]] <- procPathPlot
@@ -1618,7 +1618,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLabelLength"),
+    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLegend", "pathPlotsLabelLength"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
   container[["statPathPlot"]] <- procPathPlot
@@ -1891,11 +1891,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (type == "conceptual") {
     # Adds paths from moderators to helper nodes "iX" which will be invisible
     modPaths <- matrix(c(mods, paste0("i", 1:length(mods)), rep("", length(mods))), ncol = 3)
-
-    # Add hidden path for single moderator (fixes qgraph bug)
-    if (nrow(modPaths) == 1 && nrow(paths) == 3) {
-      modPaths <- rbind(modPaths, paths[paths[, 1] %in% mods, , drop = FALSE])
-    }
   } else {
     # Paths from moderator and interaction term to dep var node
     modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
@@ -1905,10 +1900,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
   
   # Get layout of main paths: matrix with x,y coordinates for each node
-  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], options[["dependent"]])
-
-  # Node names are in rownames
-  nodeNames <- rownames(layout)
+  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], decodeColNames(options[["dependent"]]))
 
   # Combine main paths and moderator paths
   if (sum(isIntPath) > 0) mainPaths <- rbind(mainPaths, modPaths)
@@ -1931,63 +1923,113 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
 
-  # Order of node labels as in qgraph
-  graphNodeNames <- unique(as.vector(mainPaths[, 1:2, drop = FALSE]))
+  # Order of node labels as in layout
+  nodeNames <- unique(rownames(layout))
 
   # Get idx of hidden helper node (to make it invisible)
-  graphIntIdx <- grepl("i[[:digit:]]", graphNodeNames)
-
-  nNodes <- length(graphNodeNames)
-
-  # Calc node size depending on number of visible nodes
-  nodeSize <- rep(50/(sum(!graphIntIdx)), nNodes)
-  # Make hidden helper node invisible step 1
-  nodeSize[graphIntIdx] <- 0
-
-  # Invisible node must be circle, otherwise incoming edges are omitted (qgraph bug)
-  nodeShape <- rep("square", nNodes)
-  nodeShape[graphIntIdx] <- "circle"
+  graphIntIdx <- grepl("i[[:digit:]]", nodeNames)
 
   # Make hidden helper node invisible step 2
-  nodeLabels <- decodeColNames(graphNodeNames) # TODO: Remove decodeColNames in future
+  nodeLabels <- decodeColNames(nodeNames) # TODO: Remove decodeColNames in future
   nodeLabels[graphIntIdx] <- ""
 
-  edge_color <- rep("black", nrow(mainPaths))
-  
-  # Hide helper edge for single moderator
-  if (length(mods) == 1 && nrow(mainPaths) == 3 && type == "conceptual") {
-    edge_color[3] <- "white"
-  }
-
-  if (type == "conceptual") {
-    edge_labels <- FALSE
-  } else {
-    edge_labels <- mainPaths[, 3]
-
-    if (estimates) edge_labels <- round(as.numeric(edge_labels), 3)
-  }
-  
-  g <- jaspBase:::.suppressGrDevice(qgraph::qgraph(
-    mainPaths[, 1:2, drop = FALSE],
-    layout = layout[match(graphNodeNames, rownames(layout)), ], # match order of layout
-    vsize = nodeSize,
-    shape = nodeShape,
-    labels = TRUE,
-    border.width = 2,
-    edge.width = 5,
-    edge.label.cex = 1+2/nNodes,
-    edge.color = edge_color,
-    edge.labels = edge_labels
-  ))
-
-  # There seems to be a bug in qgraph where specifying labels
-  # in the initial function call does not work
-  g$graphAttributes$Nodes$labels <- abbreviate(
+  # Create abbreviated node labels to plot in nodes
+  nodeLabelsAbbr <- abbreviate(
     .procDecodeVarNames(nodeLabels),
     minlength = options[["pathPlotsLabelLength"]]
   )
 
-  return(g)
+  # Get edge labels for statistical plot
+  if (type == "conceptual") {
+    edgeLabels <- ""
+  } else {
+    edgeLabels <- mainPaths[, 3]
+
+    if (estimates) edgeLabels <- round(as.numeric(edgeLabels), 3)
+  }
+
+  # Node size (scales with number of nodes automatically)
+  nodeSize <- 0.625
+
+  # Create variable for margin around edge ends (no margin for helper nodes)
+  endCaps <- rep(ggraph::square(nodeSize, unit = "native"), nrow(mainPaths))
+  endCaps[grepl("i[[:digit:]]", mainPaths[, 2])] <- ggraph::square(0, unit = "native")
+
+  # Create visibility variable to make helper nodes transparent
+  nodeVis <- rep(0, length(nodeLabels))
+  nodeVis[nodeLabels == ""] = 1
+
+  # Create dummy alpha variable for nodes (nessecary for creating the legend)
+  nodeAlpha <- if (options[["pathPlotsLegend"]]) nodeLabels else NULL
+
+  # Sort layout according to order of unique node names
+  layout <- layout[match(nodeNames, rownames(layout)), ]
+
+  # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
+  layout[, 1] <- (layout[, 1]) * (max(layout[, 2]) - min(layout[, 2])) / (max(layout[, 1]) - min(layout[, 1]))
+  
+  p <- ggraph::ggraph(
+      # Create edge list from paths
+      igraph::graph_from_edgelist(mainPaths[, 1:2, drop = FALSE]),
+      layout = layout
+    ) +
+    # Add square nodes
+    ggraph::geom_node_tile(
+      ggplot2::aes(color = as.factor(nodeVis)),
+      height = nodeSize,
+      width = nodeSize,
+      size = 0.9 # Width of border
+    ) +
+    # Add edges between nodes
+    ggraph::geom_edge_link(
+      ggplot2::aes(
+        label = edgeLabels,
+        end_cap = endCaps
+      ),
+      color = "black",
+      arrow = ggplot2::arrow(length = grid::unit(0.05, "native")),
+      start_cap = ggraph::square(nodeSize, unit = "native"), # Arrow start has always margin
+      angle_calc = "along",
+      label_dodge = grid::unit(0.025, "native")
+    ) +
+    # Add abbreviated node lables with dummy alpha variable to display them in legend
+    ggraph::geom_node_text(
+      ggplot2::aes(label = nodeLabelsAbbr, alpha = nodeAlpha),
+      size = 30/(sum(!graphIntIdx) + options[["pathPlotsLabelLength"]] - 3)
+    ) +
+    # Make helper nodes transparent and hide color from legend
+    ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL)
+  
+  if (options[["pathPlotsLegend"]]) {
+    nodeLabelUnique <- unique(nodeLabels)
+    nodeLabelUniqueSorted <- sort(nodeLabelUnique, index.return = TRUE)
+    # Add legend for label abbreviations by manually overiding dummy alpha variable
+    p <- p + ggplot2::scale_alpha_manual(
+      name = "",
+      # Make all labels fully visible
+      values = rep(1, length(unique(nodeLabels))),
+      breaks = sort(nodeLabelUnique),
+      guide = ggplot2::guide_legend(
+        # Sort abbreviated labels according to sort index of full labels
+        override.aes = list(label = unique(nodeLabelsAbbr)[nodeLabelUniqueSorted[["ix"]]])
+      )
+    )
+  }
+  
+  p <- p +
+    ggplot2::coord_fixed() +
+    jaspGraphs::getEmptyTheme() +
+    ggplot2::theme(
+      # Remove grey background in legend key
+      legend.key = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(
+        size = 16,
+        # Increase spacing dynamically between legend key and labels
+        margin = ggplot2::margin(0, 0, 0, 2*options[["pathPlotsLabelLength"]])
+      )
+    )
+
+  return(p)
 }
 
 .procPlotSyntax <- function(container, options, modelsContainer) {
