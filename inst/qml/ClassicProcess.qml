@@ -474,7 +474,7 @@ Form
 		Group
 		{
 			title: qsTr("Path Plots")
-			columns: 3
+			columns: 4
 
 			CheckBox
 			{
@@ -495,6 +495,20 @@ Form
 				defaultValue: 3
 				min: 3
 				max: 10
+			}
+
+			CheckBox
+			{
+				name: 		"pathPlotsColor"
+				label: 		qsTr("Color palette")
+				checked: 	true
+				childrenOnSameRow: true
+
+				ColorPalette
+				{
+					name: "pathPlotsColorPalette"
+					label: ""
+				}
 			}
 		}
 
