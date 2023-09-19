@@ -1913,7 +1913,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
   
   # Get layout of main paths: matrix with x,y coordinates for each node
-  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], decodeColNames(options[["dependent"]]))
+  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], options[["dependent"]])
 
   # Combine main paths and moderator paths
   if (sum(isIntPath) > 0) mainPaths <- rbind(mainPaths, modPaths)
