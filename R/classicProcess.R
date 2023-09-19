@@ -576,11 +576,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (type == "confounders") {
       # Add extra regression equation where confounder -> independent variable
-      regList[[independent]] = list(vars = c(), dep = FALSE)
+      if (!independent %in% names(regList)) {
+        regList[[independent]] = list(vars = c(), dep = FALSE)
+      }
       regList <- .procAddLavModVar(regList, independent, processVariable)
     }
   }
-
+  
   return(regList)
 }
 
