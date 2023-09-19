@@ -1935,15 +1935,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       layout <- .procModGraphLayoutStatistical(intPathsSplitPruned, layout)
     }
   }
+  
+  # Create edge list from paths
+  graph <- igraph::graph_from_edgelist(mainPaths[, 1:2, drop = FALSE])
 
-  # Order of node labels as in layout
-  nodeNames <- unique(rownames(layout))
+  # Order of node labels as in graph
+  nodeNames <- igraph::vertex.attributes(graph)[["name"]]
 
   # Get idx of hidden helper node (to make it invisible)
   graphIntIdx <- grepl("i[[:digit:]]", nodeNames)
 
   # Make hidden helper node invisible step 2
-  nodeLabels <- decodeColNames(nodeNames) # TODO: Remove decodeColNames in future
+  nodeLabels <- decodeColNames(nodeNames)
   nodeLabels[graphIntIdx] <- ""
 
   # Create abbreviated node labels to plot in nodes
@@ -1976,10 +1979,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   nodeAlpha <- if (options[["pathPlotsLegend"]]) nodeLabels else NULL
 
   # Create node type variable for coloring
-  nodeType <- as.factor(ifelse(nodeLabels %in% mediators, 0,
-    ifelse(nodeLabels %in% mods | grepl(":", nodeLabels), 1,
-      ifelse(nodeLabels %in% independent, 2,
-        ifelse(nodeLabels %in% dependent, 3, 4)
+  nodeType <- as.factor(ifelse(nodeLabels %in% decodeColNames(mediators), 0,
+    ifelse(nodeLabels %in% decodeColNames(mods) | grepl(":", nodeLabels), 1,
+      ifelse(nodeLabels %in% decodeColNames(independent), 2,
+        ifelse(nodeLabels %in% decodeColNames(dependent), 3, 4)
       )
     )
   ))
@@ -1999,15 +2002,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     colorPalette <- rep("transparent", length(unique(nodeType)))
   }
 
-  # Sort layout according to order of unique node names
+  # Sort layout according to order of nodes in graph
   layout <- layout[match(nodeNames, rownames(layout)), ]
 
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
   layout[, 1] <- (layout[, 1]) * (max(layout[, 2]) - min(layout[, 2])) / (max(layout[, 1]) - min(layout[, 1]))
   
   p <- ggraph::ggraph(
-      # Create edge list from paths
-      igraph::graph_from_edgelist(mainPaths[, 1:2, drop = FALSE]),
+      graph,
       layout = layout
     ) +
     # Add square nodes
