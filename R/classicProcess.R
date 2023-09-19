@@ -346,7 +346,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # -------------------------------------------
   "
 
-  return(paste(header, regSyntax, medEffectSyntax, sep = "\n"))
+  return(paste(header, regSyntax, resCovSyntax, medEffectSyntax, sep = "\n"))
 }
 
 .procCompareRegLists <- function(regListA, regListB) {
@@ -743,8 +743,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   exoVars <- unique(unlist(lapply(regList, function(row) row$vars[!row$vars %in% names(regList)])))
   intIdx  <- grep(":", exoVars)
-  
-  if (length(exoVars[-intIdx]) > 1 && includeExo) {
+
+  if ((length(exoVars) - length(intIdx)) > 1 && includeExo) {
     exoIdxMat <- which(upper.tri(diag(length(exoVars))), arr.ind = TRUE)
     exoIdxMat <- exoIdxMat[!exoIdxMat[, 1] %in% intIdx & !exoIdxMat[, 2] %in% intIdx, , drop = FALSE]
     
