@@ -1555,6 +1555,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   localTestTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
                     overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
+  if (testType == "cis" && any(sapply(dataset, is.factor))) {
+    localTestTable$setError(gettext("Linear test type cannot be applied to factor variables. Choose a different test type."))
+    return()
+  }
+
   parTable <- lavaan::parTable(procResults)
   parTable <- parTable[parTable$op != ":=" & !grepl(":|__", parTable$rhs) & !grepl(":|__", parTable$lhs),]
   
