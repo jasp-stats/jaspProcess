@@ -1561,7 +1561,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   parTable <- lavaan::parTable(procResults)
-  parTable <- parTable[parTable$op != ":=" & !grepl(":|__", parTable$rhs) & !grepl(":|__", parTable$lhs),]
+  # Only include free parameters in DAG
+  parTable <- parTable[parTable$op != ":=" & parTable$free > 0 & !grepl(":|__", parTable$rhs) & !grepl(":|__", parTable$lhs),]
   
   arrows <- apply(parTable, 1, function(row) {
     op <- switch(row[["op"]],
