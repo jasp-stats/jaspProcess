@@ -140,16 +140,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procModelRegListSingleModel <- function(modelOptions, globalDependent,options) {
-  # Existing Hayes models
-  # Hmodels <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
-  #              21,22,28,29,58,59,60,61,62,63,64,65,66,67,68,69,70,
-  #              71,72,73,75,76,80,81,82,83,84,85,86,87,88,89,90,91,92)
   processRelationships <- switch(modelOptions[["inputType"]],
     inputVariables = modelOptions[["processRelationships"]],
     # Insert function for plotting conceptual hard-coded Hayes model, in case
     # no estimation takes place yet (because of not having filled in all necessary
     # variables)
-    inputModelNumber = .HardCodedModels(modelOptions[["modelNumber"]], length(modelOptions[["modelNumberMediators"]]))
+    inputModelNumber = .procGetHardCodedModel(modelOptions[["modelNumber"]], length(modelOptions[["modelNumberMediators"]]))
   )
   ## TODO: Models involving moderated moderation 19,20,69,71,73
 
@@ -417,27 +413,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
   # Create regList from hard-coded model
-  regList <- .procProcessRelationshipsToRegList(.HardCodedModels(modelNumber, length(modelOptions[["modelNumberMediators"]])))
-  
+  regList <- .procProcessRelationshipsToRegList(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]])))
+
   # Replace dummy variables in regList
   regList <- .procRegListInputModelNumber(regList, modelOptions, globalDependent)
   # Convert hard-coded regList to graph
   modelNumberGraph <- .procRegListToGraph(regList)
   # Check if user graph and hard-coded graph are identical (except for order of vertices)
   isIdentical <- igraph::identical_graphs(modelNumberGraph, graph)
-  
+
   return(isIdentical)
 }
 
 .procRecognizeModelNumber <- function(regList) {
   # Create graph from regList specified by user
   graphM <- .procRegListToGraph(regList)
-
-  # Hayes models currently specified in HardCodedModels
-  Hmodels <- c(1,2,4,5,6,7,8,9,10,14,15,16,17,
-               21,22,28,29,58,59,60,61,62,63,
-               64,65,66,67,75,76,80,81,82,83,
-               84,85,86,87,88,89,90,91,92)
 
   # Get global dependent variable
   isDep <- sapply(regList, function(row) row$dep)
@@ -467,17 +457,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
 
   # Check which hard-coded model matches user model
-  modelMatch <- sapply(Hmodels, .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
+  modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
 
   # If no match swap W and Z and check again
   if (!any(modelMatch)) {
     modelOptions[["modelNumberModeratorW"]] <- modZ
     modelOptions[["modelNumberModeratorZ"]] <- modW
 
-    modelMatch <- sapply(Hmodels, .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
+    modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
   }
 
-  return(Hmodels[modelMatch])
+  return(.procHardCodedModelNumbers()[modelMatch])
 }
 
 .procAddLavModVar <- function(regList, dependent, variable) {
