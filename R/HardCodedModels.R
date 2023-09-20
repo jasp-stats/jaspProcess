@@ -15,7 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-.HardCodedModels <- function(number, k) {
+# Existing Hayes models
+.procHardCodedModelNumbers <- function() {
+  return(c(
+  1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,
+  21,22,28,29,58,59,60,61,62,63,64,65,66,67,68,70,
+  72,75,76,80,81,82,83,84,85,86,87,88,89,90,91,92
+  ))
+}
+
+.procGetHardCodedModel <- function(number, k) {
 
   # k = number of mediators
 
