@@ -161,6 +161,42 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(regList)
 }
 
+.procVarEncoding <- function() {
+  # Encoding for dummy variables
+  return(list(
+    Y = "JaspProcess_Dependent_Encoded",
+    X = "JaspProcess_Independent_Encoded",
+    W = "JaspProcess_ModeratorW_Encoded",
+    Z = "JaspProcess_ModeratorZ_Encoded",
+    M = "JaspProcess_Mediator_Encoded"
+  ))
+}
+
+.procEncodePath <- function(path) {
+  # Encode all variables in a path
+  return(lapply(path, function(v) {
+    if (v %in% c("mediators", "moderators", "confounders", "directs"))
+      return(v)
+    if (grepl("M", v))
+      return(gsub("M", .procVarEncoding()[["M"]], v))
+    return(.procVarEncoding()[[v]])
+  }))
+}
+
+.procEncodeProcessRelationships <- function(processRelationships) {
+  # Encode all paths
+  return(lapply(processRelationships, .procEncodePath))
+}
+
+.procDecodeVarNames <- function(varNames) {
+  # Decode a vector of var names
+  encoding <- .procVarEncoding()
+  for (nm in names(encoding)) {
+    varNames <- gsub(encoding[[nm]], nm, varNames)
+  }
+  return(varNames)
+}
+
 .procCheckRegListVars <- function(vars) {
   # Check if vector of var names contains encoded X, W, Z, or M (not Y!!)
   encoding <- .procVarEncoding()
