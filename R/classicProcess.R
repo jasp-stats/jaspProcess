@@ -222,7 +222,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Which mediator index?
   medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
   medIdx <- as.integer(medIdx[!is.na(medIdx)])
-  
+
   if (length(medIdx) > 0 && length(mediators) > 0) {
     for (i in 1:length(medIdx)) {
       if (length(mediators) >= medIdx[i]) {
@@ -264,7 +264,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Replace dummy variables in dependent variables
   names(regList) <- encodeColNames(.procReplaceDummyVars(names(regList), modelOptions, globalDependent))
-  
+
   return(regList)
 }
 
@@ -312,7 +312,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   modProbes <- lapply(names(modVars), function(nms) {
     matchFac <- sapply(options[["factors"]], grepl, x = nms)
-    
+
     if (length(matchFac) > 0 && any(matchFac)) {
       whichFac <- options[["factors"]][matchFac]
       conMat <- contrasts[[whichFac]]
@@ -324,7 +324,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   })
 
   names(modProbes) <- names(modVars)
-  
+
   return(modProbes)
 }
 
@@ -387,7 +387,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(regListA)) {
     if (length(regListA[[i]][["vars"]]) != length(regListB[[i]][["vars"]]))
       return(FALSE)
-    
+
     if (regListA[[i]][["dep"]] != regListB[[i]][["dep"]])
       return(FALSE)
   }
@@ -400,7 +400,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathList <- lapply(1:length(regList),
                       function(i) sapply(regList[[i]]$vars,
                                         function(v) c(v, names(regList)[i])))
-  
+
   # Convert path list to matrix
   paths <- matrix(unlist(pathList), ncol = 2, byrow = TRUE)
 
@@ -484,7 +484,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
-  
+
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
       regList <- .procAddLavModParNamesSingleModel(modelsContainer[[modelName]][["regList"]]$object)
       modelsContainer[[modelName]][["regList"]]$object <- regList
@@ -609,7 +609,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       regList <- .procAddLavModVar(regList, independent, processVariable)
     }
   }
-  
+
   return(regList)
 }
 
@@ -684,7 +684,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Get simple paths
   medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
-  
+
   # Get par names of simple paths
   medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modProbes = modProbes, contrasts = contrasts)
 
@@ -733,10 +733,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   totEffect <- .pasteExpandGrid(medEffectsListCombined, collapse = " + ")
 
   totEffectNames <- .pasteExpandGrid(Filter(function(x) length(x) > 0, medEffectNamesListCombined), collapse = ".")
-  
+
   # Get total indirect effect of X on Y
   totIndEffect <- .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + ")
-  
+
   indEffectNames <- .pasteExpandGrid(Filter(function(x) length(x) > 0, medEffectNamesListCombined[-1]), collapse = ".")
 
   # Only select total effect if there are no indirect effects
@@ -744,12 +744,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     totLabels <- "tot"
   } else {
     totLabels <- .pasteDot(rep("tot", length(totEffect)), totEffectNames)
-  } 
+  }
   if (length(indEffectNames) == 0) {
     indLabels <- "totInd"
   } else {
     indLabels <- .pasteDot(rep("totInd", length(totIndEffect)), indEffectNames)
-  } 
+  }
 
   totalEffectsSyntax <- paste(
     c(totLabels, indLabels),
@@ -876,7 +876,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Replace dummy-coded variables in regList
       regList[[i]][["vars"]] <- colnames(pathDummyMat)[-1]
     }
-    
+
     modelsContainer[[modelName]][["contrasts"]] <- createJaspState(contrastList)
     modelsContainer[[modelName]][["regList"]]$object <- regList
   }
@@ -929,7 +929,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (options$errorCalculationMethod == "bootstrap") {
     medResult <- jaspSem:::lavBootstrap(fittedModel, options$bootstrapSamples) # FIXME
   }
-  
+
   return(fittedModel)
 }
 
@@ -991,7 +991,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   regLists <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["regList"]]$object)
   if (length(regLists) == 0) return()
   modelNumbers <- sapply(regLists, .procRecognizeModelNumber)
-  
+
   modelNumberTable <- createJaspTable(title = gettext("Model numbers"))
   modelNumberTable$dependOn(c(.procGetDependencies(), "processModels"))
   modelNumberTable$position <- 0
@@ -1295,7 +1295,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procEffectsTablesGetConditionalLabels <- function(paths, mods) {
   modProbes <- list()
-  
+
   for (path in paths) {
     pathMods <- sapply(path[-1], function(row) row[1])
 
@@ -1591,7 +1591,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   parTable <- lavaan::parTable(procResults)
   # Only include free parameters in DAG
   parTable <- parTable[parTable$op != ":=" & parTable$free > 0 & !grepl(":|__", parTable$rhs) & !grepl(":|__", parTable$lhs),]
-  
+
   arrows <- apply(parTable, 1, function(row) {
     op <- switch(row[["op"]],
       "~" = " <- ",
@@ -1610,8 +1610,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     conf.level = options$ciLevel,
     R = nReps
   )
-  
-  if (nrow(localTestResult) > 0) { 
+
+  if (nrow(localTestResult) > 0) {
     implicationSplit <- strsplit(row.names(localTestResult), "\\s+(\\|+|_+\\|+_+)\\s+")
     localTestTable[["lhs"]]  <- sapply(implicationSplit, function(row) names(parNamesAbbr)[parNamesAbbr == row[1]])
     localTestTable[["op1"]]  <- rep("\u2AEB", length(implicationSplit))
@@ -1871,7 +1871,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create path matrix where first col is "from" and second col is "to", third col is estimate
   labelField <- ifelse(estimates, "est", "label")
   paths <- matrix(c(parTbl$rhs, parTbl$lhs, parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
-  
+
   if (type == "conceptual") {
     # Remove nodes for factor levels and replace them by factor name, removing levels (e.g., factorLevel1 -> factor)
     paths[,1:2] <- apply(paths[, 1:2], 2, function(col) {
@@ -1887,7 +1887,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         for (j in 1:length(v_split)) {
           # Check if variable name is a factor
           matchFac <- sapply(options[["factors"]], grepl, x = v_split[j])
-          
+
           # If it is replace by factor name otherwise keep original variable name
           if (length(matchFac) > 0 && any(matchFac)) {
             v_out[j] <- options[["factors"]][matchFac]
@@ -1963,7 +1963,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       layout <- .procModGraphLayoutStatistical(intPathsSplitPruned, layout)
     }
   }
-  
+
   # Create edge list from paths
   graph <- igraph::graph_from_edgelist(mainPaths[, 1:2, drop = FALSE])
 
@@ -2035,7 +2035,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
   layout[, 1] <- (layout[, 1]) * (max(layout[, 2]) - min(layout[, 2])) / (max(layout[, 1]) - min(layout[, 1]))
-  
+
   p <- ggraph::ggraph(
       graph,
       layout = layout
@@ -2067,7 +2067,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Make helper nodes transparent and hide color from legend
     ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
     ggplot2::scale_fill_manual(values = colorPalette, guide = NULL)
-  
+
   if (options[["pathPlotsLegend"]]) {
     nodeLabelUnique <- unique(nodeLabels)
     nodeLabelUniqueSorted <- sort(nodeLabelUnique, index.return = TRUE)
@@ -2083,7 +2083,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       )
     )
   }
-  
+
   p <- p +
     ggplot2::coord_fixed() +
     jaspGraphs::getEmptyTheme() +
