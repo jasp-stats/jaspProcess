@@ -30,6 +30,8 @@
 
   ## TODO: Models involving moderated moderation 19,20,69,71,73
 
+  processRelationships <- NULL
+
   if (number == 1) {
     processRelationships <- list(
       list(
@@ -1702,6 +1704,8 @@
       processRelationships <- append(processRelationships, list(pathY, pathMk))
     }
   }
+
+  stopifnot(!is.null(processRelationships))
 
   return(processRelationships)
 }

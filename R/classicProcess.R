@@ -128,7 +128,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     if (is.null(modelsContainer[[modelName]][["regList"]])) {
-      regList <- .procModelRegListSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]])
+      regList <- try(.procModelRegListSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
       state <- createJaspState(object = regList)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
@@ -139,7 +139,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procModelRegListSingleModel <- function(modelOptions, globalDependent,options) {
+.procModelRegListSingleModel <- function(modelOptions, globalDependent, options) {
   processRelationships <- switch(modelOptions[["inputType"]],
     inputVariables = modelOptions[["processRelationships"]],
     # Insert function for plotting conceptual hard-coded Hayes model, in case
@@ -275,6 +275,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
+    if (inherits(modelsContainer[[modelName]][["regList"]]$object, "try-error")) next
+
     if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
       modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
       state <- createJaspState(object = modProbes)
@@ -334,6 +336,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
+
+    if (inherits(modelsContainer[[modelName]][["regList"]]$object, "try-error")) next
 
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
       syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
@@ -413,7 +417,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
   # Create regList from hard-coded model
-  regList <- .procProcessRelationshipsToRegList(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]])))
+  regList <- try(.procProcessRelationshipsToRegList(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]]))))
+
+  if (inherits(regList, "try-error")) return(FALSE)
 
   # Replace dummy variables in regList
   regList <- .procRegListInputModelNumber(regList, modelOptions, globalDependent)
@@ -485,8 +491,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
+    regList <- modelsContainer[[modelName]][["regList"]]$object
+    if (inherits(regList, "try-error")) next
+
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      regList <- .procAddLavModParNamesSingleModel(modelsContainer[[modelName]][["regList"]]$object)
+      regList <- .procAddLavModParNamesSingleModel(regList)
       modelsContainer[[modelName]][["regList"]]$object <- regList
     }
   }
@@ -897,6 +906,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 # Results functions ----
 .procCheckFitModel <- function(regList) {
+  if (inherits(regList, "try-error")) return(FALSE)
   return(all(sapply(regList, function(row) {
     varsSplit <- .strsplitColon(row$vars)
     return(all(sapply(varsSplit, .procCheckRegListVars)))
@@ -977,9 +987,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 # Output functions ----
 .procFilterFittedModels <- function(procResults) {
   isFitted <- sapply(procResults, function(mod) {
-    if (!is.character(mod))
+    if (!is.null(mod) && !is.character(mod))
       return(mod@Options[["do.fit"]])
-    return(TRUE)
+    return(FALSE)
   })
 
   return(procResults[isFitted])
@@ -988,13 +998,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procModelNumberTable <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["modelNumberTable"]])) return()
 
-  regLists <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["regList"]]$object)
-  if (length(regLists) == 0) return()
-  modelNumbers <- sapply(regLists, .procRecognizeModelNumber)
-
   modelNumberTable <- createJaspTable(title = gettext("Model numbers"))
   modelNumberTable$dependOn(c(.procGetDependencies(), "processModels"))
   modelNumberTable$position <- 0
+
+  modelNumbers <- lapply(options[["processModels"]], function(mod) {
+      if (mod[["inputType"]] == "inputModelNumber") {
+        if (!mod[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
+          modelNumberTable$setError(gettextf("Hayes model number %s for %s not implemented", mod[["modelNumber"]], mod[["name"]]))
+        }
+        return(mod[["modelNumber"]])
+      }
+
+      return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["regList"]]$object))
+    }
+  )
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
@@ -1216,6 +1234,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     valid <- .procIsValidModel(pathPlotsContainer, modelsContainer[[modelName]][["fittedModel"]]$object)
+    print("HELLL")
+    print(modelsContainer[[modelName]][["regList"]]$object)
+    print(modelsContainer[[modelName]][["syntax"]]$object)
+    print(modelsContainer[[modelName]][["fittedModel"]]$object)
 
     if (valid) {
       if (options[["processModels"]][[i]][["conceptualPathPlot"]]) {
