@@ -94,7 +94,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procIsReady <- function(options) {
-  if (options[["dependent"]] == "" || length(options[["covariates"]]) == 0)
+  if (options[["dependent"]] == "" || (length(options[["covariates"]]) == 0 && length(options[["factors"]]) == 0))
     return(FALSE)
 
   if (length(options[["processModels"]]) == 0)
