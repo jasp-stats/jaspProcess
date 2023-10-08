@@ -20,53 +20,55 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Set title
   jaspResults$title <- gettext("Process Analysis")
 
+  # Check if all models are ready to compute something
   ready <- .procIsReady(options)
 
   if (!ready) return()
-
-  # Init options: add variables to options to be used in the remainder of the analysis
-  .procContainerModels(jaspResults, options)
-  .procModelRegList(jaspResults, options)
-
-  # read dataset
+  # Read dataset
   dataset <- .procReadData(options)
-
-  dataset <- .procAddIntVars(jaspResults, dataset, options)
-
-  dataset <- .procAddFactorDummyVars(jaspResults, dataset, options)
-
-  .procAddLavModParNames(jaspResults, options)
-
-  # error checking
+  # Check for errors in dataset
   ready <- .procErrorHandling(dataset, options)
-
+  # Create a container for each model
+  .procContainerModels(jaspResults, options)
+  # Transform input for each model into a graph for further processing
+  .procModelGraph(jaspResults, options)
+  # Add three-way interaction variables manually to dataset 
+  # because lavaan does not allow threeway interaction regression terms
+  dataset <- .procAddIntVars(jaspResults, dataset, options)
+  # Add factor dummy variables manually to dataset
+  # because lavaan does not do it automatically
+  dataset <- .procAddFactorDummyVars(jaspResults, dataset, options)
+  # Add parameter names to graph of each model
+  .procAddLavModParNames(jaspResults, options)
+  # Compute quantiles at which to probe moderators for each model
   .procModProbes(jaspResults, dataset, options)
+  # Create lavaan syntax for each model from graph
   .procModelSyntax(jaspResults, options)
-
-  # Compute (a list of) results from which tables and plots can be created
+  # Fit lavaan models based on syntax and dataset
   modelsContainer <- .procComputeResults(jaspResults, dataset, options)
-
+  # Create container for path plots for each model
   pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
+  # Create path plots for each model and add to container
   .procPathPlots(pathPlotContainer, options, modelsContainer)
-
-  # Output containers, tables, and plots based on the results. These functions should not return anything!
+  # Create table with Hayes model numbers
   .procModelNumberTable(jaspResults, options, modelsContainer)
-
+  # Create table with model fit indices (AIC, ...)
   .procModelFitTable(jaspResults, options, modelsContainer)
-
+  # Create container for parameter estimates for each model
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
-
+  # Create tables for parameter estimates
   .procParameterEstimateTables(parEstContainer, options, modelsContainer)
-
+  # Create container for local test results for each model
   localTestContainer <- .procContainerLocalTests(jaspResults, options)
-
+  # Create tables with local test results
   .procLocalTestTables(localTestContainer, dataset, options, modelsContainer)
-
+  # Create html output with lavaan syntax for each model
   .procPlotSyntax(jaspResults, options, modelsContainer)
 
   return()
 }
 
+# Helper function for generic dependencies of all models
 .procGetDependencies <- function() {
   return(c('dependent', 'covariates', 'factors', "naAction", "emulation", "estimator", "standardizedEstimates"))
 }
@@ -120,26 +122,27 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   jaspResults[["modelsContainer"]] <- modelsContainer
 }
 
-.procModelRegList <- function(jaspResults, options) {
+.procModelGraph <- function(jaspResults, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (is.null(modelsContainer[[modelName]][["regList"]])) {
-      regList <- try(.procModelRegListSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
-      state <- createJaspState(object = regList)
+    if (is.null(modelsContainer[[modelName]][["graph"]])) {
+      graph <- try(procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
+      state <- createJaspState(object = graph)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
-      modelsContainer[[modelName]][["regList"]] <- state
+      
+      modelsContainer[[modelName]][["graph"]] <- state
     }
   }
 }
 
-.procModelRegListSingleModel <- function(modelOptions, globalDependent, options) {
+procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   processRelationships <- switch(modelOptions[["inputType"]],
     inputVariables = modelOptions[["processRelationships"]],
     # Insert function for plotting conceptual hard-coded Hayes model, in case
@@ -149,12 +152,157 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   ## TODO: Models involving moderated moderation 19,20,69,71,73
 
-  regList <- .procProcessRelationshipsToRegList(processRelationships)
+  graph <- .procProcessRelationshipsToGraph(processRelationships)
 
   if (modelOptions[["inputType"]] == "inputModelNumber")
-    regList <- .procRegListInputModelNumber(regList, modelOptions, globalDependent)
+    graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
+  
+  return(graph)
+}
 
-  return(regList)
+.procProcessRelationshipsToGraph <- function(processRelationships) {
+  graph <- igraph::make_empty_graph()
+  
+  for (path in processRelationships) {
+    dependent <- path[["processDependent"]]
+    independent <- path[["processIndependent"]]
+    type <- path[["processType"]]
+    processVariable <- path[["processVariable"]]
+
+    # Add vertices for independent and dependent var
+    verticesToAdd <- c(independent, dependent)
+    # Add edge from independent to dependent
+    edgesToAdd <- verticesToAdd
+
+    if (type != "directs") {
+      # Add vertice for processVariable
+      verticesToAdd <- c(verticesToAdd, processVariable)
+      # Add edge from processVariable to dependent
+      edgesToAdd <- c(edgesToAdd, processVariable, dependent)
+    }
+    # Only add vertices that are not in graph yet
+    verticesToAdd <- verticesToAdd[!verticesToAdd %in% igraph::V(graph)$name]
+
+    # Add vertices with name attribute
+    graph <- igraph::add_vertices(graph, length(verticesToAdd), name = verticesToAdd)
+    # Add edges with source and target attribute
+    graph <- igraph::add_edges(graph,
+      edges = edgesToAdd,
+      # Add source and target for each edge for simple querying
+      source = edgesToAdd[seq(1, length(edgesToAdd), 2)], # Odd indices
+      target = edgesToAdd[seq(2, length(edgesToAdd), 2)] # Even indices
+    )
+
+    if (type == "mediators") {
+      # Add edges from independent to processVariable
+      graph <- igraph::add_edges(graph,
+        edges = c(independent, processVariable),
+        source = independent,
+        target = processVariable
+      )
+    }
+    
+    if (type == "confounders") {
+      # Add extra edge from processVariable to independent
+      graph <- igraph::add_edges(graph, edges = c(processVariable, independent), source = processVariable, target = independent)
+    }
+
+    if (type == "moderators") {
+      # This routine adds three-way interactions (moderated moderation)
+      # which are not available in standard lavaan syntax. These interactions
+      # are represented as separate variables which are products of the three interacting variables.
+      # The names of these variables are the interacting variable names separated by
+      # double underscores, e.g.: var1__var2__var3
+
+      # Get all existing interaction terms
+      sourceVars <- igraph::E(graph)[.to(dependent)]$source
+      isInt <- grepl(":", sourceVars)
+      if (any(isInt)) {
+        # Split interaction terms
+        varsSplit <- .strsplitColon(sourceVars)
+        for (v in varsSplit[isInt]) {
+          # If the second term of the interaction is the independent of current path
+          # this indicates a three-way interaction with the independent variable
+          if (v[length(v)] == independent) {
+            # Create three-way interaction variable name: independent x moderator1 x moderator2
+            interVarThree <- paste0(paste(v, collapse = "__"), "__", processVariable)
+            # Also add a two-way interaction moderator1 x moderator2,
+            # otherwise model might be underspecified
+            interVarTwo <- paste0(v[1], ":", processVariable)
+            # Add vertices and edges for interaction terms if not in graph yet
+            intVerticesToAdd <- c(interVarTwo, interVarThree)[!c(interVarTwo, interVarThree) %in% igraph::V(graph)$name]
+
+            graph <- igraph::add_vertices(graph, length(intVerticesToAdd), name = intVerticesToAdd)
+            graph <- igraph::add_edges(graph,
+                edges = c(interVarTwo, dependent, interVarThree, dependent),
+                source = c(interVarTwo, interVarThree),
+                target = c(dependent, dependent)
+              )
+          }
+        }
+      }
+      # Add regular interaction independent x moderator var to regress on dependent var
+      interVar <- paste0(independent, ":", processVariable)
+
+      # Add vertices and edges for two-way interaction
+      if (!interVar %in% igraph::V(graph)$name) {
+        graph <- igraph::add_vertices(graph, 1, name = interVar)
+      }
+      graph <- igraph::add_edges(graph,
+        edges = c(interVar, dependent),
+        source = interVar, target = dependent
+      )
+    }
+  }
+
+  return(.procGraphAddAttributes(igraph::simplify(graph, edge.attr.comb = "first")))
+}
+
+.procGraphAddAttributes <- function(graph) {
+  # Is node an interaction term
+  igraph::V(graph)$isInt <- grepl(":|__", igraph::V(graph)$name)
+  # Which are the node interaction vars
+  igraph::V(graph)$intVars <- strsplit(igraph::V(graph)$name, ":|__")
+  # How many interaction vars are there
+  igraph::V(graph)$intLength <- sapply(igraph::V(graph)$intVars, length)
+  # Is global dependent
+  igraph::V(graph)$isDep <- igraph::degree(graph, mode = "out") == 0
+  # Is exogenous
+  igraph::V(graph)$isExo <- igraph::degree(graph, mode = "in") == 0
+  # Is mediator
+  igraph::V(graph)$isMed <- !igraph::V(graph)$isDep & !igraph::V(graph)$isExo
+  # Is part of interaction term
+  igraph::V(graph)$isPartOfInt <- sapply(igraph::V(graph)$name, function(v) {
+    # Is node name part of any interaction term
+    any(sapply(igraph::V(graph)$intVars, function(vars) v %in% vars[-1]))
+  })
+  # Is treatment variable (i.e., X): When exo, not int, and not part of int
+  igraph::V(graph)$isTreat <- igraph::V(graph)$isExo & !igraph::V(graph)$isInt & !igraph::V(graph)$isPartOfInt
+  # Is edge moderated
+  igraph::E(graph)$isMod <- FALSE
+
+  # Which are moderation variables for each edge; NULL if none
+  for (i in 1:length(igraph::E(graph))) {
+    sourceNode <- igraph::V(graph)[igraph::E(graph)$source[i]]
+
+    if (sourceNode$isInt) {
+      sourceNodeIntVars <- unlist(sourceNode$intVars)
+      
+      for (v in sourceNodeIntVars) {
+        # Set all edges from var interacting with sourceNode to target as isMod
+        igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$isMod <- TRUE
+        # Store unique moderating variables
+        igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- list(
+          unique(c(
+            igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars[[1]],
+            sourceNodeIntVars[sourceNodeIntVars != v]
+          ))
+        )
+      }
+    }
+  }
+
+  return(graph)
 }
 
 .procVarEncoding <- function() {
@@ -210,23 +358,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Replace encoded X, W, Z with user variables
   if (independent != "")
-    vars[vars == encoding[["X"]]] <- independent
+    vars <- gsub(encoding[["X"]], independent, vars)
   if (modW != "")
-    vars[vars == encoding[["W"]]] <- modW
+    vars <- gsub(encoding[["W"]], modW, vars)
   if (modZ != "")
-    vars[vars == encoding[["Z"]]] <- modZ
+    vars <- gsub(encoding[["Z"]], modZ, vars)
 
-  # Replace encoded M with user variables
   # Is var a mediator?
   isMed <- grepl(encoding[["M"]], vars)
   # Which mediator index?
   medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
   medIdx <- as.integer(medIdx[!is.na(medIdx)])
-
+  
   if (length(medIdx) > 0 && length(mediators) > 0) {
     for (i in 1:length(medIdx)) {
       if (length(mediators) >= medIdx[i]) {
-        vars[isMed][i] <- mediators[medIdx[i]]
+        vars <- gsub(vars[isMed][i], mediators[medIdx[i]], vars)
       }
     }
   }
@@ -234,586 +381,37 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # If mediator has no index still replace
   if ((length(medIdx) == 0) && sum(isMed) > 0) {
     for (i in 1:length(vars[isMed])) {
-      if (length(mediators) >= i)
-        vars[isMed][i] <- mediators[i]
+      if (length(mediators) >= i) {
+        vars <- gsub(vars[isMed][i], mediators[i], vars)
+      }
     }
   }
-
+  
   # Replace encoded Y with user variable
-  vars[vars == encoding[["Y"]]] <- globalDependent
+  vars <- gsub(encoding[["Y"]], globalDependent, vars)
 
   return(vars)
 }
 
-.procRegListInputModelNumber <- function(regList, modelOptions, globalDependent) {
-  for (i in 1:length(regList)) {
-    pathVars <- regList[[i]][["vars"]]
+.procModelGraphInputModelNumber <- function(graph, modelOptions, globalDependent) {
+  # Replace dummy vars in graph attributes
+  igraph::V(graph)$name <- .procReplaceDummyVars(igraph::V(graph)$name, modelOptions = modelOptions, globalDependent = globalDependent)
+  igraph::E(graph)$source <- .procReplaceDummyVars(igraph::E(graph)$source, modelOptions = modelOptions, globalDependent = globalDependent)
+  igraph::E(graph)$target <- .procReplaceDummyVars(igraph::E(graph)$target, modelOptions = modelOptions, globalDependent = globalDependent)
+  
+  if (!is.null(igraph::E(graph)$modVars))
+    igraph::E(graph)$modVars <- sapply(igraph::E(graph)$modVars, function(x) if (!is.null(x)) .procReplaceDummyVars(x, modelOptions = modelOptions, globalDependent = globalDependent)) # Returns a list!
+  
+  igraph::V(graph)$intVars <- sapply(igraph::V(graph)$intVars, .procReplaceDummyVars, modelOptions = modelOptions, globalDependent = globalDependent)
 
-    # Split path interactions
-    pathVarsSplit <- strsplit(pathVars, ":|__") # split according to `:` or `__`
-    isThreeWayInt <- grepl("__", pathVars)
-
-    # Replace dummy vars for each term of interactions separately
-    pathVarsSplit <- lapply(pathVarsSplit, .procReplaceDummyVars, modelOptions = modelOptions, globalDependent = globalDependent)
-
-    # Paste interaction terms back together
-    pathVars[!isThreeWayInt] <- unlist(sapply(pathVarsSplit[!isThreeWayInt], paste, collapse = ":"))
-    pathVars[isThreeWayInt] <- unlist(sapply(pathVarsSplit[isThreeWayInt], paste, collapse = "__"))
-    regList[[i]][["vars"]] <- encodeColNames(pathVars)
+  if (any(igraph::V(graph)$intLength == 2)) {
+    igraph::V(graph)[intLength == 2]$name <- unlist(sapply(igraph::V(graph)[intLength == 2]$intVars, paste, collapse = ":"))
   }
-
-  # Replace dummy variables in dependent variables
-  names(regList) <- encodeColNames(.procReplaceDummyVars(names(regList), modelOptions, globalDependent))
-
-  return(regList)
-}
-
-.procModProbes <- function(jaspResults, dataset, options) {
-  modelsContainer <- jaspResults[["modelsContainer"]]
-
-  for (i in 1:length(options[["processModels"]])) {
-    modelOptions <- options[["processModels"]][[i]]
-    modelName <- modelOptions[["name"]]
-
-    if (inherits(modelsContainer[[modelName]][["regList"]]$object, "try-error")) next
-
-    if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
-      modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
-      state <- createJaspState(object = modProbes)
-      state$dependOn(
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
-      modelsContainer[[modelName]][["modProbes"]] <- state
-    }
+  if (any(igraph::V(graph)$intLength == 3)) {
+    igraph::V(graph)[intLength == 3]$name <- unlist(sapply(igraph::V(graph)[intLength == 3]$intVars, paste, collapse = "__"))
   }
-}
-
-.procModVarsFromRegList <- function(regList) {
-  modVars <- list()
-
-  for (i in 1:length(regList)) {
-    rowSplit <- .strsplitColon(regList[[i]][["vars"]])
-
-    for (v in rowSplit[sapply(rowSplit, length) > 1]) {
-      modVars[[v[2]]] <- c(modVars[[v[2]]], v[1])
-    }
-  }
-
-  return(modVars)
-}
-
-.procModProbesSingleModel <- function(container, dataset, options) {
-  probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
-
-  regList <- container[["regList"]]$object
-
-  modVars <- .procModVarsFromRegList(regList)
-
-  contrasts <- container[["contrasts"]]$object
-
-  modProbes <- lapply(names(modVars), function(nms) {
-    matchFac <- sapply(options[["factors"]], grepl, x = nms)
-
-    if (length(matchFac) > 0 && any(matchFac)) {
-      whichFac <- options[["factors"]][matchFac]
-      conMat <- contrasts[[whichFac]]
-      colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
-      row.names(conMat) <- as.character(conMat[, colIdx])
-      return(conMat[, colIdx])
-    }
-    return(quantile(dataset[[nms]], probs = probeVals))
-  })
-
-  names(modProbes) <- names(modVars)
-
-  return(modProbes)
-}
-
-.procModelSyntax <- function(jaspResults, options) {
-  modelsContainer <- jaspResults[["modelsContainer"]]
-
-  for (i in 1:length(options[["processModels"]])) {
-    modelOptions <- options[["processModels"]][[i]]
-    modelName <- modelOptions[["name"]]
-
-    if (inherits(modelsContainer[[modelName]][["regList"]]$object, "try-error")) next
-
-    if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
-      state <- createJaspState(object = syntax)
-      state$dependOn(
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
-      modelsContainer[[modelName]][["syntax"]] <- state
-    }
-  }
-}
-
-.procModelSyntaxSingleModel <- function(container, modelOptions) {
-  # Concatenate and collapse par names and var names to regression formula
-  regSyntax <- paste(
-    paste0(names(container[["regList"]]$object)),
-    sapply(container[["regList"]]$object, function(row) paste(row$parNames, row$vars, sep = "*", collapse = " + ")),
-    sep = " ~ "
-  )
-
-  regSyntax <- paste(
-    sapply(container[["regList"]]$object, function(row) row[["comment"]]),
-    regSyntax,
-    sep = "",
-    collapse = "\n"
-  )
-
-  modVars <- .procModVarsFromRegList(container[["regList"]]$object)
-
-  medEffectSyntax <- .procMedEffects(container[["regList"]]$object, modVars, container[["modProbes"]]$object, container[["contrasts"]]$object)
-
-  resCovSyntax <- .procResCov(
-    container[["regList"]]$object,
-    modelOptions[["independentCovariances"]],
-    modelOptions[["mediatorCovariances"]]
-  )
-
-  header <- "
-  # -------------------------------------------
-  # Conditional process model generated by JASP
-  # -------------------------------------------
-  "
-
-  return(paste(header, regSyntax, resCovSyntax, medEffectSyntax, sep = "\n"))
-}
-
-.procCompareRegLists <- function(regListA, regListB) {
-  if (length(regListA) != length(regListB)) return(FALSE)
-
-  for (i in 1:length(regListA)) {
-    if (length(regListA[[i]][["vars"]]) != length(regListB[[i]][["vars"]]))
-      return(FALSE)
-
-    if (regListA[[i]][["dep"]] != regListB[[i]][["dep"]])
-      return(FALSE)
-  }
-
-  return(TRUE)
-}
-
-.procRegListToGraph <- function(regList) {
-  # Get list of paths
-  pathList <- lapply(1:length(regList),
-                      function(i) sapply(regList[[i]]$vars,
-                                        function(v) c(v, names(regList)[i])))
-
-  # Convert path list to matrix
-  paths <- matrix(unlist(pathList), ncol = 2, byrow = TRUE)
-
-  # Create graph from paths
-  # Order according to first column to ensure same order between user and hard-coded graphs
-  graph <- igraph::graph_from_edgelist(paths[order(paths[, 1]), ])
-
+  
   return(graph)
-}
-
-.procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
-  # Create regList from hard-coded model
-  regList <- try(.procProcessRelationshipsToRegList(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]]))))
-
-  if (inherits(regList, "try-error")) return(FALSE)
-
-  # Replace dummy variables in regList
-  regList <- .procRegListInputModelNumber(regList, modelOptions, globalDependent)
-  # Convert hard-coded regList to graph
-  modelNumberGraph <- .procRegListToGraph(regList)
-  # Check if user graph and hard-coded graph are identical (except for order of vertices)
-  isIdentical <- igraph::identical_graphs(modelNumberGraph, graph)
-
-  return(isIdentical)
-}
-
-.procRecognizeModelNumber <- function(regList) {
-  # Create graph from regList specified by user
-  graphM <- .procRegListToGraph(regList)
-
-  # Get global dependent variable
-  isDep <- sapply(regList, function(row) row$dep)
-  globalDependent <- names(regList)[isDep]
-  # Get all predictor terms
-  allVars <- unique(unlist(lapply(regList, function(row) row$vars)))
-  # Check which terms are interactions
-  isIntVar <- grepl(":|__", allVars)
-
-  # Get mediator terms
-  mediators   <- allVars[allVars %in% names(regList) & !isIntVar]
-  # Get moderator terms by splitting interaction terms
-  moderators  <- unique(unlist(sapply(strsplit(allVars[isIntVar], ":|__"), function(v) v[length(v)])))
-  # First moderator is W
-  modW        <- if (length(moderators) > 0)  moderators[1] else ""
-  # Second moderator is Z
-  modZ        <- if (length(moderators) > 1)  moderators[2] else ""
-  # First non-mediator or moderator term is independent
-  independent <- allVars[!allVars %in% c(mediators, moderators)][1]
-
-  # Create model options dummy object
-  modelOptions <- list(
-    modelNumberIndependent = independent,
-    modelNumberMediators = mediators,
-    modelNumberModeratorW = modW,
-    modelNumberModeratorZ = modZ
-  )
-
-  # Check which hard-coded model matches user model
-  modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
-
-  # If no match swap W and Z and check again
-  if (!any(modelMatch)) {
-    modelOptions[["modelNumberModeratorW"]] <- modZ
-    modelOptions[["modelNumberModeratorZ"]] <- modW
-
-    modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphM, modelOptions = modelOptions, globalDependent = globalDependent)
-  }
-
-  return(.procHardCodedModelNumbers()[modelMatch])
-}
-
-.procAddLavModVar <- function(regList, dependent, variable) {
-  # Add variable to list of dep var if not already there
-  if (!variable %in% regList[[dependent]][["vars"]]) {
-    regList[[dependent]][["vars"]] <- c(regList[[dependent]][["vars"]], variable)
-  }
-  return(regList)
-}
-
-.procAddLavModParNames <- function(jaspResults, options) {
-  modelsContainer <- jaspResults[["modelsContainer"]]
-
-  for (i in 1:length(options[["processModels"]])) {
-    modelOptions <- options[["processModels"]][[i]]
-    modelName <- modelOptions[["name"]]
-
-    regList <- modelsContainer[[modelName]][["regList"]]$object
-    if (inherits(regList, "try-error")) next
-
-    if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      regList <- .procAddLavModParNamesSingleModel(regList)
-      modelsContainer[[modelName]][["regList"]]$object <- regList
-    }
-  }
-}
-
-.procAddLavModParNamesSingleModel <- function(regList) {
-  # Get names of dependent vars
-  depVars <- names(regList)
-
-  for (i in 1:length(regList)) {
-    # Split interaction terms
-    vSplit <- lapply(regList[[i]]$vars, function(v) {
-      unlist(.strsplitColon(v))
-    })
-    # Get non-mediator vars (-> cXX)
-    isIndep <- sapply(vSplit, function(v) {
-      return(any(!v %in% depVars))
-    })
-    # Get first var of every term
-    vars <- sapply(vSplit, function(v) {
-      return(v[1])
-    })
-    # Init par idx vector
-    parIdx <- rep(0, length(isIndep))
-    # Non-mediator vars get idx 1, .., X
-    parIdx[isIndep] <- 1:sum(isIndep)
-    # Mediator vars get reversed idx of mediator var in names of dependent vars
-    # +1 to skip first dependent var (not a mediator)
-    medIdx <- length(regList) - match(vars[!isIndep], depVars) + 1
-    parIdx[!isIndep] <- medIdx
-    if (regList[[i]]$dep) { # If dependent but not a mediator
-      depIdx <- i
-      parSym <- ifelse(isIndep, "c", "b")
-      comment <- "\n# Dependent regression\n"
-    } else { # If dependent and mediator
-      depIdx <- length(regList) - i + 1
-      parSym <- ifelse(isIndep, "a", "d")
-      comment <- ifelse(depIdx == length(regList) - 1, "\n# Mediator regression\n", "")
-    }
-    # Concatenate par symbols with idx
-    regList[[i]][["parNames"]] <- paste0(parSym, paste0(depIdx, parIdx))
-    regList[[i]][["comment"]]  <- comment
-  }
-
-  return(regList)
-}
-
-.procProcessRelationshipsToRegList <- function(processRelationships) {
-  regList <- list()
-
-  for (path in processRelationships) {
-    # Variable names need to be encoded because JASP does not automatically encode for dropdowns
-    dependent <- encodeColNames(path[["processDependent"]])
-    independent <- encodeColNames(path[["processIndependent"]])
-    type <- encodeColNames(path[["processType"]])
-    processVariable <- encodeColNames(path[["processVariable"]])
-
-    # Init list for regression of new dependent var
-    # dep = TRUE to signal this is NOT a mediator; this is used later when assigning par names
-    if (!dependent %in% names(regList)) {
-      regList[[dependent]] = list(vars = c(), dep = TRUE)
-    }
-
-    # Add independent var to regression of dependent var
-    regList <- .procAddLavModVar(regList, dependent, independent)
-
-    if (type != "directs") {
-      # Add process var to regression of dependent var
-      regList <- .procAddLavModVar(regList, dependent, processVariable)
-    }
-
-    if (type == "mediators") {
-      # Init list for regression of new process var var
-      if (!processVariable %in% names(regList)) {
-        # dep = FALSE to signal this is a mediator; this is used later when assigning par names
-        regList[[processVariable]] = list(vars = c(), dep = FALSE)
-      }
-      # Add independent var to regression of process var
-      regList <- .procAddLavModVar(regList, processVariable, independent)
-    }
-
-    if (type == "moderators") {
-      # This routine adds three-way interactions (moderated moderation)
-      # which are not available in standard lavaan syntax. These interactions
-      # are represented as separate variables which are products of the three interacting variables.
-      # The names of these variables are the interacting variable names separated by
-      # double underscores, e.g.: var1__var2__var3
-
-      # Get all existing interaction terms
-      isInt <- grepl(":", regList[[dependent]][["vars"]])
-      if (any(isInt)) {
-        # Split interaction terms
-        varsSplit <- .strsplitColon(regList[[dependent]][["vars"]])
-        for (v in varsSplit[isInt]) {
-          # If the second term of the interaction is the independent of current path
-          # this indicates a three-way interaction with the independent variable
-          if (v[length(v)] == independent) {
-            # Create three-way interaction variable name
-            interVar <- paste0(paste(v, collapse = "__"), "__", processVariable)
-            # Add interaction independent x moderator1 x moderator2
-            regList <- .procAddLavModVar(regList, dependent, interVar)
-
-            # Also add a two-way interaction moderator1 x moderator2,
-            # otherwise model might be underspecified
-            interVar <- paste0(v[1], ":", processVariable)
-            regList <- .procAddLavModVar(regList, dependent, interVar)
-          }
-        }
-      }
-      # Add regular interaction independent x moderator var to regress on dependent var
-      interVar <- paste0(independent, ":", processVariable)
-      regList <- .procAddLavModVar(regList, dependent, interVar)
-    }
-
-    if (type == "confounders") {
-      # Add extra regression equation where confounder -> independent variable
-      if (!independent %in% names(regList)) {
-        regList[[independent]] = list(vars = c(), dep = FALSE)
-      }
-      regList <- .procAddLavModVar(regList, independent, processVariable)
-    }
-  }
-
-  return(regList)
-}
-
-.procModEffects <- function(modProbes) {
-  modEffects <- lapply(names(modProbes), function(nms) {
-    labels <- paste0(nms, gsub("\\%", "", names(modProbes[[nms]])))
-    values <- modProbes[[nms]]
-    return(paste(labels, values, sep = " := ", collapse = "\n"))
-  })
-  return(paste0("\n# Moderation probes\n", paste(modEffects, collapse = "\n")))
-}
-
-.procMedEffectFromPath <- function(path, regList, modProbes, contrasts) {
-  contrastsConc <- lapply(names(contrasts), function(nm) paste0(nm, colnames(contrasts[[nm]])))
-
-  return(lapply(2:length(path), function(i) {
-    regListRow <- regList[[names(path)[i]]]
-    isMedVar <- regListRow$vars == names(path)[i-1]
-    medPars <- regListRow$parNames[isMedVar]
-    isIntVar <- grepl(":", regListRow$vars)
-    intVarsProbeNames <- NULL
-
-    if (any(isIntVar)) {
-      regVarsSplit <- .strsplitColon(regListRow$vars[isIntVar])
-      intVarIsMed <- sapply(regVarsSplit, function(v) v[1] %in% regListRow$vars[isMedVar])
-
-      if (any(intVarIsMed)) {
-        modIntVars <- sapply(regVarsSplit[intVarIsMed], function(v) v[2])
-        intPars <- regListRow$parNames[isIntVar][intVarIsMed]
-
-        intVarsProbes <- lapply(1:length(modIntVars), function(i) paste(intPars[i], format(modProbes[[modIntVars[i]]], digits = 3), sep = "*"))
-        intVarsProbeNames <- lapply(modIntVars, function(v) paste(v, gsub("\\%", "", names(modProbes[[v]])), sep = "__"))
-        intVarsProbesOut <- intVarsProbes
-        intVarsProbeNamesOut <- intVarsProbeNames
-
-        if (length(contrastsConc) > 0) {
-          modIntFacsIdx <- lapply(modIntVars, function(v) which(sapply(contrastsConc, function(w) v %in% w)))
-
-          for (i in 1:length(modIntFacsIdx)) {
-            if (length(modIntFacsIdx[[i]]) > 0) {
-              isSameFac <- sapply(modIntFacsIdx, function(j) isTRUE(j == modIntFacsIdx[[i]]))
-              intVarsProbesOut[[i]] <- .doCallPaste(intVarsProbes[isSameFac], sep = " + ")
-              intVarsProbeNamesOut[[i]] <- .doCallPaste(intVarsProbeNames[isSameFac], sep = ".")
-            }
-          }
-        }
-
-        medPars <- paste0("(", paste(medPars, .pasteExpandGrid(intVarsProbesOut[!duplicated(intVarsProbesOut)], collapse = " + "), sep = " + "), ")")
-        intVarsProbeNames <- .pasteExpandGrid(intVarsProbeNamesOut[!duplicated(intVarsProbeNamesOut)], collapse = ".")
-      }
-    }
-
-    return(list(medPars = medPars, intVars = intVarsProbeNames))
-  }))
-}
-
-.procMedEffects <- function(regList, modVars, modProbes, contrasts) {
-  # Get dep var
-  depVar <- names(regList)[sapply(regList, function(row) row$dep)]
-
-  # Get list of paths
-  pathList <- lapply(1:length(regList), function(i) sapply(regList[[i]]$vars, function(v) c(v, names(regList)[i])))
-
-  # Convert path list to matrix
-  paths <- matrix(unlist(pathList), ncol = 2, byrow = TRUE)
-
-  # Get exogenous var
-  exoVar <- paths[!paths[, 1] %in% paths[, 2], 1]
-
-  # Create graph from paths
-  graph <- igraph::graph_from_edgelist(paths)
-
-  # Get simple paths
-  medPaths <- igraph::all_simple_paths(graph, from = exoVar, to = depVar, mode = "out")
-
-  # Get par names of simple paths
-  medEffectsList <- lapply(medPaths, .procMedEffectFromPath, regList = regList, modProbes = modProbes, contrasts = contrasts)
-
-  .pasteDuplicates <- function(row) {
-    pars <- lapply(row, function(col) col$medPars)
-    ints <- lapply(row, function(col) col$intVars)
-
-    isDup <- duplicated(ints) | duplicated(ints, fromLast = TRUE)
-
-    parsUnique <- append(list(as.vector(.doCallPaste(pars[isDup & !is.null(ints)], sep = "*"))), pars[!isDup])
-
-    return(parsUnique[sapply(parsUnique, length) > 0])
-  }
-
-  medEffectsListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
-    .pasteDuplicates(row), collapse = "*"
-  ))
-  medEffectNamesListCombined <- lapply(medEffectsList, function(row) .pasteExpandGrid(
-    unique(Filter(Negate(is.null), lapply(row, function(col) col$intVars))), collapse = "."
-  ))
-
-  # Create coef names of mediation effects
-  medEffectPathNames <- sapply(medPaths, function(path) paste(decodeColNames(names(path)), collapse = "__"))
-
-  medEffectsCollapsed <- unlist(medEffectsListCombined)
-  medEffectNamesCollapsed <- unlist(medEffectNamesListCombined)
-
-  medEffectsCombinedLengths <- sapply(medEffectsListCombined, length)
-  medEffectIsConditional <- rep(medEffectsCombinedLengths > 1, medEffectsCombinedLengths)
-
-  medEffectPathNamesRepeated <- rep(medEffectPathNames, medEffectsCombinedLengths)
-
-  medEffectPathNamesCollapsed <- vector("character", length(medEffectsCollapsed))
-  medEffectPathNamesCollapsed[!medEffectIsConditional] <- medEffectPathNamesRepeated[!medEffectIsConditional]
-  medEffectPathNamesCollapsed[medEffectIsConditional] <- .pasteDot(medEffectPathNamesRepeated[medEffectIsConditional], medEffectNamesCollapsed)
-
-  # Concatenate to mediation effects by multiplying par names of paths
-  medEffectsSyntax <- paste(
-    medEffectPathNamesCollapsed,
-    medEffectsCollapsed,
-    sep = " := ",
-    collapse = "\n"
-  )
-
-  # Get total effect of X on Y
-  totEffect <- .pasteExpandGrid(medEffectsListCombined, collapse = " + ")
-
-  totEffectNames <- .pasteExpandGrid(Filter(function(x) length(x) > 0, medEffectNamesListCombined), collapse = ".")
-
-  # Get total indirect effect of X on Y
-  totIndEffect <- .pasteExpandGrid(.doCallPaste(medEffectsListCombined[-1], sep = " + "), collapse = " + ")
-
-  indEffectNames <- .pasteExpandGrid(Filter(function(x) length(x) > 0, medEffectNamesListCombined[-1]), collapse = ".")
-
-  # Only select total effect if there are no indirect effects
-  if (length(totEffectNames) == 0) {
-    totLabels <- "tot"
-  } else {
-    totLabels <- .pasteDot(rep("tot", length(totEffect)), totEffectNames)
-  }
-  if (length(indEffectNames) == 0) {
-    indLabels <- "totInd"
-  } else {
-    indLabels <- .pasteDot(rep("totInd", length(totIndEffect)), indEffectNames)
-  }
-
-  totalEffectsSyntax <- paste(
-    c(totLabels, indLabels),
-    c(totEffect, totIndEffect),
-    sep = " := ",
-    collapse = "\n"
-  )
-
-  return(paste(
-    "\n# Mediation effects",
-    medEffectsSyntax,
-    "\n# Total effects",
-    totalEffectsSyntax,
-    sep = "\n"
-  ))
-}
-
-.procResCov <- function(regList, includeExo, includeMed) {
-  resCovList <- list()
-
-  exoVars <- unique(unlist(lapply(regList, function(row) row$vars[!row$vars %in% names(regList)])))
-  intIdx  <- grep(":", exoVars)
-
-  if ((length(exoVars) - length(intIdx)) > 1 && includeExo) {
-    exoIdxMat <- which(upper.tri(diag(length(exoVars))), arr.ind = TRUE)
-    exoIdxMat <- exoIdxMat[!exoIdxMat[, 1] %in% intIdx & !exoIdxMat[, 2] %in% intIdx, , drop = FALSE]
-
-    for (i in 1:nrow(exoIdxMat)) {
-      if (!exoVars[exoIdxMat[i, 2]] %in% regList[[exoVars[exoIdxMat[i, 1]]]][["vars"]]) {
-        resCovList[[exoVars[exoIdxMat[i, 1]]]] <- c(resCovList[[exoVars[exoIdxMat[i, 1]]]], exoVars[exoIdxMat[i, 2]])
-      }
-    }
-  }
-
-  medVars <- names(regList)[!sapply(regList, function(row) row$dep)]
-
-  if (length(medVars) > 1 && includeMed) {
-    medIdxMat <- which(upper.tri(diag(length(medVars))), arr.ind = TRUE)
-
-    for (i in 1:nrow(medIdxMat)) {
-      if (!medVars[medIdxMat[i, 2]] %in% regList[[medVars[medIdxMat[i, 1]]]][["vars"]]) {
-        resCovList[[medVars[medIdxMat[i, 1]]]] <- c(resCovList[[medVars[medIdxMat[i, 1]]]], medVars[medIdxMat[i, 2]])
-      }
-    }
-  }
-
-  return(paste0(
-    "\n# Residual covariances\n",
-    paste(
-      names(resCovList),
-      sapply(resCovList, function(row) paste(row, collapse = " + ")),
-      sep = " ~~ ",
-      collapse = "\n"
-    )
-  ))
 }
 
 .procReadData <- function(options) {
@@ -829,24 +427,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
-    regList <- modelsContainer[[modelName]][["regList"]]$object
+    graph <- modelsContainer[[modelName]][["graph"]]$object
 
-    if (!.procCheckFitModel(regList)) next
-
-    for (row in regList) {
-      # Split three-way interaction variables in syntax
-      varsSplit <- strsplit(row[["vars"]], "__")
-
-      # If there is a three-way interaction in a path, create a new variable in the dataset
-      # as a product of the three interacting variables
-      for (var in varsSplit[sapply(varsSplit, length) > 1]) {
-        # Create variable name like var1__var2__var3
-        varName <- paste(var, collapse = "__")
-        # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
-        # Then we evaluate the string as R code using the dataset as the environment to evaluate in
-        intVar <- eval(str2lang(paste(encodeColNames(var), collapse = "*")), envir = dataset)
-        dataset[[encodeColNames(varName)]] = intVar
-      }
+    if (!.procCheckFitModel(graph)) next
+    
+    for (v in igraph::V(graph)[intLength == 3]$intVars) {
+      # Create variable name like var1__var2__var3
+      varName <- paste(encodeColNames(v), collapse = "__")
+      # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
+      # Then we evaluate the string as R code using the dataset as the environment to evaluate in
+      intVar <- eval(str2lang(paste(encodeColNames(v), collapse = "*")), envir = dataset)
+      dataset[[varName]] = intVar
+      names(dataset)
     }
   }
   return(dataset)
@@ -858,39 +450,97 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
-    regList <- modelsContainer[[modelName]][["regList"]]$object
+    graph <- modelsContainer[[modelName]][["graph"]]$object
 
-    if (!.procCheckFitModel(regList)) next
+    if (!.procCheckFitModel(graph)) next
 
     contrastList <- list()
 
-    for (i in 1:length(regList)) {
-      pathVars <- encodeColNames(regList[[i]][["vars"]])
-      # Convert regression variables to formula
-      pathFormula <- formula(paste("~", paste(pathVars, collapse = "+")))
+    sourceVars <- unique(igraph::E(graph)$source)
+    
+    # Convert regression variables to formula
+    sourceFormula <- formula(paste("~", paste(encodeColNames(sourceVars), collapse = "+")))
 
-      # Create dummy variables for factors
-      pathDummyMat <- model.matrix(pathFormula, data = dataset)
+    # Create dummy variables for factors
+    sourceDummyMat <- model.matrix(sourceFormula, data = dataset)
 
-      # Add dummy variables to dataset
-      dataset <- merge(dataset, pathDummyMat)
+    # Add dummy variables to dataset
+    dataset <- merge(dataset, sourceDummyMat)
 
-      # Get dummy coding for contrasts
-      contrasts <- attr(pathDummyMat, "contrasts")
+    # Get dummy coding for contrasts
+    contrasts <- attr(sourceDummyMat, "contrasts")
 
-      for (f in names(contrasts)) {
-        contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
-      }
-
-      # Replace dummy-coded variables in regList
-      regList[[i]][["vars"]] <- colnames(pathDummyMat)[-1]
+    for (f in names(contrasts)) {
+      contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
     }
 
+    # Replace dummy-coded variables in graph
+    for (v in names(contrastList)) {
+      newNodeNames <- paste0(v, colnames(contrastList[[v]]))
+      
+      # If dummy coding needs additional variables add them as nodes with same edges to target variable
+      if (length(newNodeNames) > 1) {
+        graph <- igraph::add_vertices(graph, length(newNodeNames[-1]), name = newNodeNames[-1])
+        graph <- igraph::add_edges(graph,
+          edges = as.vector(rbind(newNodeNames[-1], igraph::E(graph)[.from(v)]$source)),
+          source = newNodeNames[-1],
+          target = igraph::E(graph)[.from(v)]$source
+        )
+      }
+      
+      # Update graph attributes with dummy variables
+      igraph::V(graph)$name <- gsub(v, newNodeNames[1], igraph::V(graph)$name)
+      igraph::V(graph)$intVars <- sapply(igraph::V(graph)$intVars, function(x) if (!is.null(x)) gsub(v, newNodeNames[1], x)) # Returns a list!
+      igraph::E(graph)$source <- gsub(v, newNodeNames[1], igraph::E(graph)$source)
+      igraph::E(graph)$target <- gsub(v, newNodeNames[1], igraph::E(graph)$target)
+      if (!is.null(igraph::E(graph)$modVars)) {
+        igraph::E(graph)$modVars <- sapply(igraph::E(graph)$modVars, function(x) if (!is.null(x)) gsub(v, newNodeNames[1], x)) # Returns a list!
+      }
+    }
+    
     modelsContainer[[modelName]][["contrasts"]] <- createJaspState(contrastList)
-    modelsContainer[[modelName]][["regList"]]$object <- regList
+    modelsContainer[[modelName]][["graph"]]$object <- graph
   }
 
   return(dataset)
+}
+
+.procAddLavModParNames <- function(jaspResults, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+
+    graph <- modelsContainer[[modelName]][["graph"]]$object
+    if (inherits(graph, "try-error")) next
+
+    if (is.null(modelsContainer[[modelName]][["syntax"]])) {
+      graph <- .procAddLavModParNamesSingleModel(graph)
+      modelsContainer[[modelName]][["graph"]]$object <- graph
+    }
+  }
+}
+
+.procAddLavModParNamesSingleModel <- function(graph) {
+  igraph::E(graph)$parSymbol <- ifelse(
+    # If source is mediator and target is global dependent -> b
+    igraph::V(graph)[igraph::E(graph)$source]$isMed & igraph::V(graph)[igraph::E(graph)$target]$isDep, "b",
+    # If source is mediator and target is not global dependent (i.e., other mediator) -> d
+    ifelse(igraph::V(graph)[igraph::E(graph)$source]$isMed & !igraph::V(graph)[igraph::E(graph)$target]$isDep, "d",
+      # If source is exogenous and target is mediator -> a; else -> c
+      ifelse(igraph::V(graph)[igraph::E(graph)$source]$isExo & igraph::V(graph)[igraph::E(graph)$target]$isMed, "a", "c"))
+  )
+  # Get occurence of each symbol
+  parSymbolTable <- table(igraph::E(graph)$parSymbol)
+  # Enumerate each symbol as parIndex
+  for (nm in names(parSymbolTable)) {
+    igraph::E(graph)[parSymbol == nm]$parIndex <- 1:parSymbolTable[nm]
+  }
+  # Combine parSymbol and parIndex as parName
+  igraph::E(graph)$parName <- paste0(igraph::E(graph)$parSymbol, igraph::E(graph)$parIndex)
+
+  return(graph)
 }
 
 .procErrorHandling <- function(dataset, options) {
@@ -904,18 +554,298 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(TRUE)
 }
 
+.procModProbes <- function(jaspResults, dataset, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+
+    if (inherits(modelsContainer[[modelName]][["graph"]]$object, "try-error")) next
+
+    if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
+      modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
+      state <- createJaspState(object = modProbes)
+      state$dependOn(
+        optionContainsValue = list(processModels = modelOptions),
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      modelsContainer[[modelName]][["modProbes"]] <- state
+    }
+  }
+}
+
+.procModVarsFromGraph <- function(graph) {
+  modVars <- list()
+
+  for (vars in igraph::V(graph)$intVars) {
+    for (v in vars[-1]) {
+      modVars[[v]] <- c(modVars[[v]], v[1])
+    }
+  }
+  
+  return(modVars)
+}
+
+.procModProbesSingleModel <- function(container, dataset, options) {
+  probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
+
+  graph <- container[["graph"]]$object
+  # Get list of which moderators moderate which independent variables
+  modVars <- .procModVarsFromGraph(graph)
+
+  contrasts <- container[["contrasts"]]$object
+
+  modProbes <- lapply(encodeColNames(names(modVars)), function(nms) {
+    # Is moderator factor
+    matchFac <- sapply(options[["factors"]], grepl, x = nms)
+
+    if (length(matchFac) > 0 && any(matchFac)) { # If is factor
+      whichFac <- options[["factors"]][matchFac]
+      conMat <- contrasts[[whichFac]]
+      colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
+      row.names(conMat) <- as.character(conMat[, colIdx])
+      # Return matrix with dummy coding for each factor
+      return(conMat[, colIdx])
+    }
+    # If not factor return quantiles of continuous moderator
+    return(quantile(dataset[[nms]], probs = probeVals))
+  })
+  
+  names(modProbes) <- names(modVars)
+  return(modProbes)
+}
+
+.procModelSyntax <- function(jaspResults, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+
+    if (
+      inherits(modelsContainer[[modelName]][["graph"]]$object, "try-error")
+    ) next
+
+    if (is.null(modelsContainer[[modelName]][["syntax"]])) {
+      syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
+      state <- createJaspState(object = syntax)
+      state$dependOn(
+        optionContainsValue = list(processModels = modelOptions),
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      modelsContainer[[modelName]][["syntax"]] <- state
+    }
+  }
+}
+
+.procModelSyntaxSingleModel <- function(container, modelOptions) {
+  graph <- container[["graph"]]$object
+  
+  regSyntax <- .procRegSyntax(graph)
+  
+  medEffectSyntax <- .procMedEffectsSyntax(graph,
+    container[["modProbes"]]$object,
+    container[["contrasts"]]$object
+  )
+
+  resCovSyntax <- .procResCovSyntax(
+    container[["graph"]]$object,
+    modelOptions[["independentCovariances"]],
+    modelOptions[["mediatorCovariances"]]
+  )
+
+  headerJasp <- "
+  # -------------------------------------------
+  # Conditional process model generated by JASP
+  # -------------------------------------------
+  "
+
+  headerResCov <- "
+  # Residual covariances"
+
+  headerMedEffects <- "
+  # Mediation, indirect, and total effects"
+
+  return(encodeColNames(paste(
+    headerJasp,
+    regSyntax,
+    headerResCov,
+    resCovSyntax,
+    headerMedEffects,
+    medEffectSyntax,
+    sep = "\n")
+  ))
+}
+
+.procRegSyntax <- function(graph) {
+  # Concatenate graph to regression equations
+  # e.g., target ~ source1 + source2 + ...
+  uniqueTargets <- unique(igraph::E(graph)$target)
+  regLines <- sapply(uniqueTargets, function(e) {
+    rhs <- paste(
+      igraph::E(graph)[.to(e)]$parName,
+      igraph::E(graph)[.to(e)]$source,
+      sep = "*", collapse = " + "
+    )
+    return(paste(e, rhs, sep = "~"))
+  })
+  return(paste(regLines, collapse = "\n"))
+}
+
+.procMedEffectsSyntax <- function(graph, modProbs, contrasts) {
+  # Get all simple paths from X to Y
+  medPaths <- igraph::all_simple_paths(graph,
+    from = igraph::V(graph)[isTreat]$name,
+    to = igraph::V(graph)[isDep]$name,
+    mode = "out"
+  )
+  
+  medEffects <- lapply(medPaths, function(path) {
+    # Left hand side of lavaan syntax
+    lhs <- paste(names(path), collapse = "__")
+    
+    # Get moderators on path
+    modName <- unlist(Filter(Negate(is.null), sapply(2:length(path), function(i) {
+      return(igraph::E(graph)[.from(names(path)[i-1]) & .to(names(path)[i])]$modVars)
+    })))
+    
+    # Right hand side of lavaan syntax
+    rhs <- lapply(2:length(path), function(i) {
+      # Get edge from path[-1] to path[i]
+      pathEdge <- igraph::E(graph)[.from(names(path)[i-1]) & .to(names(path)[i])]
+
+      # If no moderators on edge, return only parName
+      if(is.null(pathEdge$modVars[[1]])) return(pathEdge$parName)
+      
+      modPars <- lapply(pathEdge$modVars[[1]], function(v) { # If moderators 
+        # Get edge for two way interaction between X and M
+        twoWayEdge <- igraph::E(graph)[
+          .from(paste(names(path)[i-1], v, sep = ":")) & 
+          .to(names(path)[i])
+        ]$parName
+
+        # Concatenate two way edge parName with moderator probes
+        return(paste(
+          twoWayEdge,
+          format(modProbs[[v]], digits = 3),
+          sep = "*"
+        ))
+      })
+      # Get all possible combinations of probes from different moderators
+      modPars <- apply(expand.grid(modPars), 1, paste, collapse = "+")
+
+      # Get name of potential three-way interaction
+      threeWayInt <- paste(c(pathEdge$source, pathEdge$modVars[[1]]), collapse = "__")
+
+      if (threeWayInt %in% igraph::E(graph)$source) { # If three-way int
+        # Get edge of three way interaction X x M1 x M2
+        threeWayEdge <- igraph::E(graph)[.from(threeWayInt) & .to(names(path)[i])]
+        # Combine three way int parName with moderator probes
+        threeWayModPars <- paste(
+          threeWayEdge$parName,
+          apply(
+            expand.grid(lapply(pathEdge$modVars[[1]], function(v) format(modProbs[[v]], digits = 3))),
+            1, paste, collapse = "*"
+          ),
+          sep = "*"
+        )
+        # Add to previous moderator probes
+        modPars <- paste(modPars, threeWayModPars, sep = "+")
+      } 
+      
+      # If indirect path add parentheses
+      if (i > 1) {
+        return(paste0("(", pathEdge$parName, " + ", modPars, ")"))
+      }
+      # Concanenate path edge parName with moderator probes
+      return(paste(pathEdge$parName, modPars, sep = " + "))
+    })
+    # If indirect paths, multiply their steps
+    rhs <- .doCallPaste(rhs, sep = "*")
+    
+    if (!is.null(modName) && length(modName) > 0) { # If path is moderated
+      # Get combinations of moderators
+      modName <- lapply(modName, function(v) {
+        return(apply(
+          expand.grid(v, gsub("\\%", "", names(modProbs[[v]]))), # Remove `%` from quantile name strings
+          1, paste, collapse = "__"
+        ))
+      })
+      # Add moderator combinations to left hand side
+      lhs <- apply(expand.grid(lhs, apply(expand.grid(modName), 1, paste, collapse = ".")), 1, paste, collapse = ".")
+    }
+
+    return(list(lhs = lhs, rhs = rhs, modName = modName))
+  })
+  # All rhs effects
+  totRhs <- lapply(medEffects, function(path) path$rhs)
+  # All moderators of total effects
+  totLhsMods <- lapply(medEffects, function(path) apply(expand.grid(path$modName), 1, paste, collapse = "."))
+  # Add rhs effects
+  totEffects <- .doCallPaste(totRhs, sep = " + ")
+  # Concatenate rhs and lhs effects
+  medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
+  # Concatenate total effects
+  totEffectsLabeled <- paste(.pasteDot("tot", unlist(totLhsMods)), totEffects, sep = " := ")
+  # Only return total effects when no indirect path
+  if (length(medEffects) < 2) {
+    return(paste(c(medEffectsLabeled, totEffectsLabeled), collapse = "\n"))
+  }
+  # Add rhs indirect effects
+  totIndEffects <- .doCallPaste(totRhs[-1], sep = " + ")
+  # Concatenate indirect effects
+  totIndEffectsLabeled <- paste(.pasteDot("totInd", unlist(totLhsMods[-1])), totIndEffects, sep = " := ")
+
+  return(paste(c(medEffectsLabeled, totEffectsLabeled, totIndEffectsLabeled), collapse = "\n"))
+}
+
+.procCombVars <- function(graph, vars) {
+  graph <- igraph::add_vertices(graph, length(vars), name = vars)
+  edgesToAdd <- as.vector(combn(vars, 2))
+  graph <- igraph::add_edges(graph,
+    edges = edgesToAdd,
+    source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
+    target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
+  )
+  return(graph)
+}
+
+.procResCovSyntax <- function(graph, includeExo, includeMed) {
+  # Create new graph for covariances because we don't care about direction
+  resCovGraph <- igraph::make_empty_graph()
+
+  # Get all exogenous vars that are not interaction terms
+  exoVars <- igraph::V(graph)[isExo & !isInt]$name
+
+  if (length(exoVars) > 1 && includeExo) {
+    # Add vertices and edges for all combinations
+    resCovGraph <- .procCombVars(resCovGraph, exoVars)
+  }
+
+  # Get all mediator vars that are not interaction terms
+  medVars <- igraph::V(graph)[isMed & !isInt]$name
+
+  if (length(medVars) > 1 && includeMed) {
+    # Add vertices and edges for all combinations
+    resCovGraph <- .procCombVars(resCovGraph, medVars)
+  }
+
+  # Concatenate covariances: source ~~ target
+  return(paste(igraph::E(resCovGraph)$source, igraph::E(resCovGraph)$target, sep = " ~~ ", collapse = "\n"))
+}
+
 # Results functions ----
-.procCheckFitModel <- function(regList) {
-  if (inherits(regList, "try-error")) return(FALSE)
-  return(all(sapply(regList, function(row) {
-    varsSplit <- .strsplitColon(row$vars)
-    return(all(sapply(varsSplit, .procCheckRegListVars)))
+.procCheckFitModel <- function(graph) {
+  if (inherits(graph, "try-error")) return(FALSE)
+  return(all(sapply(igraph::V(graph)$intVars, function(v) {
+    return(all(sapply(v, .procCheckRegListVars)))
   })))
 }
 
 .procResultsFitModel <- function(container, dataset, options) {
   # Should model be fitted?
-  doFit <- .procCheckFitModel(container[["regList"]]$object)
+  doFit <- .procCheckFitModel(container[["graph"]]$object)
 
   if (!doFit)
     dataset <- NULL
@@ -995,6 +925,63 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(procResults[isFitted])
 }
 
+.procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
+  # Create regList from hard-coded model
+  modelNumberGraph <- try(.procProcessRelationshipsToGraph(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]]))))
+
+  if (inherits(modelNumberGraph, "try-error")) return(FALSE)
+
+  # Replace dummy variables in regList
+  modelNumberGraph <- .procModelGraphInputModelNumber(modelNumberGraph, modelOptions, globalDependent)
+  
+  # Check if user graph and hard-coded graph are isomorphic
+  # (same number of edges and vertices and edge connectivity)
+  isIdentical <- igraph::is_isomorphic_to(modelNumberGraph, graph)
+
+  return(isIdentical)
+}
+
+.procRecognizeModelNumber <- function(graph) {
+  # Get global dependent variable
+  globalDependent <- igraph::V(graph)[isDep]$name
+  # Get mediator terms
+  mediators   <- igraph::V(graph)[isMed]$name
+  # Get moderator terms by splitting interaction terms
+  moderators  <- unique(unlist(sapply(igraph::V(graph)[isInt]$intVars, function(v) v[length(v)])))
+  # First moderator is W
+  modW        <- if (length(moderators) > 0)  moderators[1] else ""
+  # Second moderator is Z
+  modZ        <- if (length(moderators) > 1)  moderators[2] else ""
+  # First treatment term is independent
+  independent <- igraph::V(graph)[isTreat]$name[1]
+  
+  # Create model options dummy object
+  modelOptions <- list(
+    modelNumberIndependent = independent,
+    modelNumberMediators = mediators,
+    modelNumberModeratorW = modW,
+    modelNumberModeratorZ = modZ
+  )
+
+  graphWithOnlyNames <- graph
+  graphWithOnlyNames <- igraph::delete_edge_attr(graphWithOnlyNames, "parIndex")
+  graphWithOnlyNames <- igraph::delete_edge_attr(graphWithOnlyNames, "parSymbol")
+  graphWithOnlyNames <- igraph::delete_edge_attr(graphWithOnlyNames, "parName")
+
+  # Check which hard-coded model matches user model
+  modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphWithOnlyNames, modelOptions = modelOptions, globalDependent = globalDependent)
+  
+  # If no match swap W and Z and check again
+  if (!any(modelMatch)) {
+    modelOptions[["modelNumberModeratorW"]] <- modZ
+    modelOptions[["modelNumberModeratorZ"]] <- modW
+
+    modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphWithOnlyNames, modelOptions = modelOptions, globalDependent = globalDependent)
+  }
+
+  return(.procHardCodedModelNumbers()[modelMatch])
+}
+
 .procModelNumberTable <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["modelNumberTable"]])) return()
 
@@ -1010,7 +997,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         return(mod[["modelNumber"]])
       }
 
-      return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["regList"]]$object))
+      return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["graph"]]$object))
     }
   )
 
@@ -1202,7 +1189,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (is.character(procResults[[i]])) {
       modelContainer$setError(procResults[[i]])
-      return()
+      next
+    }
+  
+    if (!procResults[[i]]@Options[["do.fit"]]) {
+      next
     }
 
     if (options[["processModels"]][[i]][["pathCoefficients"]])
