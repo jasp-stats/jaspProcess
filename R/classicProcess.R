@@ -2084,19 +2084,27 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
         title = NULL
       ) else NULL
     )
+  
+  globalLabelSize <- 16
 
   if (options[["pathPlotsLegendLabels"]]) {
     nodeLabelUnique <- unique(nodeLabels)
+    nodeLabelUnique[nodeLabelUnique == ""] <- NA
     nodeLabelUniqueSorted <- sort(nodeLabelUnique, index.return = TRUE)
     # Add legend for label abbreviations by manually overiding dummy alpha variable
     p <- p + ggplot2::scale_alpha_manual(
       name = "",
+      na.translate = FALSE,
       # Make all labels fully visible
-      values = rep(1, length(unique(nodeLabels))),
-      breaks = sort(nodeLabelUnique),
+      values = rep(1, length(nodeLabelUnique)),
+      limits = .procDecodeVarNames(sort(nodeLabelUnique)),
       guide = ggplot2::guide_legend(
         # Sort abbreviated labels according to sort index of full labels
-        override.aes = list(label = unique(nodeLabelsAbbr)[nodeLabelUniqueSorted[["ix"]]])
+        override.aes = list(
+          label = unique(nodeLabelsAbbr)[nodeLabelUniqueSorted[["ix"]]],
+          # Make legend labels same size as legend text
+          size = globalLabelSize/ggplot2::.pt
+        )
       )
     )
   }
@@ -2108,7 +2116,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
       # Remove grey background in legend key
       legend.key = ggplot2::element_blank(),
       legend.text = ggplot2::element_text(
-        size = 16,
+        size = globalLabelSize,
         # Increase spacing dynamically between legend key and labels
         margin = ggplot2::margin(0, 0, 0, 2*options[["pathPlotsLabelLength"]])
       )
