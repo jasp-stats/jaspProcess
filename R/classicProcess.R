@@ -1648,7 +1648,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = c("pathPlotsLegend", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
+    options = c("pathPlotsLegendLabels", "pathPlotsLegendColor", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot"))
   )
   container[["conceptPathPlot"]] <- procPathPlot
@@ -1663,7 +1663,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLegend", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
+    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLegendLabels", "pathPlotsLegendColor", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
   container[["statPathPlot"]] <- procPathPlot
@@ -2013,13 +2013,13 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   nodeVis[nodeLabels == ""] = 1
 
   # Create dummy alpha variable for nodes (nessecary for creating the legend)
-  nodeAlpha <- if (options[["pathPlotsLegend"]]) nodeLabels else NULL
+  nodeAlpha <- if (options[["pathPlotsLegendLabels"]]) nodeLabels else NULL
 
   # Create node type variable for coloring
-  nodeType <- as.factor(ifelse(nodeLabels %in% decodeColNames(mediators), 0,
-    ifelse(nodeLabels %in% decodeColNames(mods) | grepl(":", nodeLabels), 1,
-      ifelse(nodeLabels %in% decodeColNames(independent), 2,
-        ifelse(nodeLabels %in% decodeColNames(dependent), 3, 4)
+  nodeType <- as.factor(ifelse(nodeLabels %in% decodeColNames(mediators), "Mediator",
+    ifelse(nodeLabels %in% decodeColNames(mods) | grepl(":", nodeLabels), "Moderator",
+      ifelse(nodeLabels %in% decodeColNames(independent), "Independent",
+        ifelse(nodeLabels %in% decodeColNames(dependent), "Dependent", NA)
       )
     )
   ))
@@ -2076,9 +2076,16 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     ) +
     # Make helper nodes transparent and hide color from legend
     ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
-    ggplot2::scale_fill_manual(values = colorPalette, guide = NULL)
+    ggplot2::scale_fill_manual(
+      values = colorPalette,
+      # Remove helper node fill color (transparent) from legend
+      na.translate = FALSE,
+      guide = if (options[["pathPlotsLegendColor"]]) ggplot2::guide_legend(
+        title = NULL
+      ) else NULL
+    )
 
-  if (options[["pathPlotsLegend"]]) {
+  if (options[["pathPlotsLegendLabels"]]) {
     nodeLabelUnique <- unique(nodeLabels)
     nodeLabelUniqueSorted <- sort(nodeLabelUnique, index.return = TRUE)
     # Add legend for label abbreviations by manually overiding dummy alpha variable
