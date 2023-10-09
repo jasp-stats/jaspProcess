@@ -474,18 +474,12 @@ Form
 		Group
 		{
 			title: qsTr("Path Plots")
-			columns: 4
+			columns: 3
 
 			CheckBox
 			{
 				name: "statisticalPathPlotsParameterEstimates"
 				label: qsTr("Parameter estimates")
-			}
-
-			CheckBox
-			{
-				name: "pathPlotsLegend"
-				label: qsTr("Legend")
 			}
 
 			IntegerField
@@ -508,6 +502,23 @@ Form
 				{
 					name: "pathPlotsColorPalette"
 					label: ""
+				}
+			}
+
+			Group
+			{
+				title: qsTr("Legend")
+				columns: 2
+
+				CheckBox
+				{
+					name: "pathPlotsLegendLabels"
+					label: qsTr("Labels")
+				}
+				CheckBox
+				{
+					name: "pathPlotsLegendColor"
+					label: qsTr("Color")
 				}
 			}
 		}
