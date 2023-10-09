@@ -673,6 +673,7 @@ Form
 						{ label: qsTr("Benjamini-Hochberg"), 	value: "BH" 		},
 						{ label: qsTr("Benjamini-Yekuteli"), 	value: "BY" 		}
 					]
+					startValue: "bonferroni"
 				}
 			}
 		}
