@@ -1004,7 +1004,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   modelNumberTable$addColumnInfo(name = "model",       title = "Model", type = "string" )
-  modelNumberTable$addColumnInfo(name = "modelNumber", title = "Model number", type = "integer" )
+  modelNumberTable$addColumnInfo(name = "modelNumber", title = "Hayes model number", type = "integer" )
 
   modelNumberTable[["model"]] <- modelNames
   modelNumberTable[["modelNumber"]] <- modelNumbers
