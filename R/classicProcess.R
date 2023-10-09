@@ -319,7 +319,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 .procEncodePath <- function(path) {
   # Encode all variables in a path
   return(lapply(path, function(v) {
-    if (v %in% c("mediators", "moderators", "confounders", "directs"))
+    if (v %in% c("mediators", "moderators", "confounders", "directs", ""))
       return(v)
     if (grepl("M", v))
       return(gsub("M", .procVarEncoding()[["M"]], v))
