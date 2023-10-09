@@ -1593,7 +1593,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
                     overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   if (testType == "cis" && any(sapply(dataset, is.factor))) {
-    localTestTable$setError(gettext("Linear test type cannot be applied to factor variables. Choose a different test type."))
+    localTestTable$setError(gettext("Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."))
     return()
   }
 
@@ -1638,6 +1638,9 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
       localTestTable[["ci.lower"]] <- localTestResult[[paste0(((1-options$ciLevel)/2)*100, "%")]]
       localTestTable[["ci.upper"]] <- localTestResult[[paste0((1-(1-options$ciLevel)/2)*100, "%")]]
     }
+  } else {
+    localTestTable$setError(gettext("The specified model does not imply any (conditional) independencies that can be tested."))
+  
   }
 }
 
