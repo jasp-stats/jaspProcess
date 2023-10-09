@@ -544,7 +544,6 @@ Form
                     id:			independentCovariancesForAllModels
                     name: 		"independentCovariancesForAllModels"
                     label: 		qsTr("Independent variables")
-                    checked: 	true
                 }
 				CheckBox
                 {
