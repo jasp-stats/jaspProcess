@@ -2062,6 +2062,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
         label = edgeLabels,
         end_cap = endCaps
       ),
+      edge_width = 0.9,
       color = "black",
       arrow = ggplot2::arrow(length = grid::unit(0.05, "native")),
       start_cap = ggraph::square(nodeSize, unit = "native"), # Arrow start has always margin
