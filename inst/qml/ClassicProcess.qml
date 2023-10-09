@@ -316,7 +316,7 @@ Form
 
 						Group
 						{
-                            title: qsTr("Effects")
+                            title: qsTr("Parameter Estimates")
 							columns: 	1
 							CheckBox
 							{
@@ -556,7 +556,7 @@ Form
 
             Group
             {
-                title: qsTr("Effects")
+                title: qsTr("Parameter Estimates")
 				columns: 1
 
                 CheckBox
