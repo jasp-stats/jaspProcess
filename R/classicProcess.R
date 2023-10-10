@@ -50,10 +50,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
   # Create path plots for each model and add to container
   .procPathPlots(pathPlotContainer, options, modelsContainer)
-  # Create table with Hayes model numbers
-  .procModelNumberTable(jaspResults, options, modelsContainer)
   # Create table with model fit indices (AIC, ...)
-  .procModelFitTable(jaspResults, options, modelsContainer)
+  .procModelSummaryTable(jaspResults, options, modelsContainer)
   # Create container for parameter estimates for each model
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
   # Create tables for parameter estimates
@@ -982,12 +980,15 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   return(.procHardCodedModelNumbers()[modelMatch])
 }
 
-.procModelNumberTable <- function(jaspResults, options, modelsContainer) {
-  if (!is.null(jaspResults[["modelNumberTable"]])) return()
+.procModelSummaryTable <- function(jaspResults, options, modelsContainer) {
+  if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
-  modelNumberTable <- createJaspTable(title = gettext("Model numbers"))
-  modelNumberTable$dependOn(c(.procGetDependencies(), "processModels"))
-  modelNumberTable$position <- 0
+  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  procResults <- .procFilterFittedModels(procResults)
+
+  summaryTable <- createJaspTable(title = gettext("Model summary"))
+  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
+  summaryTable$position <- 1
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
       if (mod[["inputType"]] == "inputModelNumber") {
@@ -1002,139 +1003,57 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   )
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
-
-  modelNumberTable$addColumnInfo(name = "model",       title = "Model", type = "string" )
-  modelNumberTable$addColumnInfo(name = "modelNumber", title = "Hayes model number", type = "integer" )
-
-  modelNumberTable[["model"]] <- modelNames
-  modelNumberTable[["modelNumber"]] <- modelNumbers
-
-  jaspResults[["modelNumberTable"]] <- modelNumberTable
-}
-
-.procModelFitTable <- function(jaspResults, options, modelsContainer) {
-  if (!is.null(jaspResults[["modelFitTable"]])) return()
-
-  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
-  procResults <- .procFilterFittedModels(procResults)
-
-  fitTable <- createJaspTable(title = gettext("Model fit"))
-  fitTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights"))
-  fitTable$position <- 1
-
-  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
   isInvalid <- sapply(procResults, is.character)
 
-  fitTable$addColumnInfo(name = "Model",    title = "",                            type = "string" )
-  fitTable$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
+  summaryTable$addColumnInfo(name = "Model",        title = "",                         type = "string" )
+  summaryTable$addColumnInfo(name = "modelNumber",  title = "Hayes model number",       type = "integer" )
+  summaryTable$addColumnInfo(name = "AIC",          title = gettext("AIC"),             type = "number" )
   if (options[["aicWeights"]]) {
-    fitTable$addColumnInfo(name = "wAIC", title = gettext("AIC weight"), type = "number")
+    summaryTable$addColumnInfo(name = "wAIC",       title = gettext("AIC weight"),      type = "number")
   }
-  fitTable$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
+  summaryTable$addColumnInfo(name = "BIC",          title = gettext("BIC"),             type = "number" )
   if (options[["bicWeights"]]) {
-    fitTable$addColumnInfo(name = "wBIC", title = gettext("BIC weight"), type = "number")
+    summaryTable$addColumnInfo(name = "wBIC",       title = gettext("BIC weight"),      type = "number")
   }
-  fitTable$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
-  fitTable$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
-                       overtitle = gettext("Baseline test"))
-  fitTable$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
-                       overtitle = gettext("Baseline test"))
-  fitTable$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
-                       overtitle = gettext("Baseline test"))
-  fitTable$addColumnInfo(name = "dchisq",   title = gettext("&#916;&#967;&sup2;"), type = "number" ,
-                       overtitle = gettext("Difference test"))
-  fitTable$addColumnInfo(name = "ddf",      title = gettext("&#916;df"),           type = "integer",
-                       overtitle = gettext("Difference test"))
-  fitTable$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
-                       overtitle = gettext("Difference test"))
+  summaryTable$addColumnInfo(name = "logLik",       title = gettext("Log-likelihood"),  type = "number" )
+  summaryTable$addColumnInfo(name = "N",            title = gettext("n"),               type = "integer")
+  summaryTable$addColumnInfo(name = "Df",           title = gettext("df"),              type = "integer")
 
-  jaspResults[["modelFitTable"]] <- fitTable
+  jaspResults[["modelSummaryTable"]] <- summaryTable
 
   if (length(procResults) == 0) return()
 
   if (any(isInvalid)) {
     errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated: %s", names(procResults)[isInvalid])
-    fitTable$setError(errmsg)
+    summaryTable$setError(errmsg)
     return()
   }
 
-  if (length(procResults) == 1) {
-    lrt <- jaspSem:::.withWarnings(lavaan::lavTestLRT(procResults[[1]])[-1, ])
-    rownames(lrt$value) <- names(procResults)
-    Ns <- lavaan::lavInspect(procResults[[1]], "ntotal")
-  } else {
-    Ns <- vapply(procResults, lavaan::lavInspect, 0, what = "ntotal")
-    lrtArgs <- procResults
-    names(lrtArgs) <- "object" # (the first result is object, the others ...)
-    lrtArgs[["model.names"]] <- modelNames
-    lrt <- try(jaspSem:::.withWarnings(do.call(lavaan::lavTestLRT, lrtArgs)))
+  aic <- sapply(procResults, AIC)
+  bic <- sapply(procResults, BIC)
+  df  <- sapply(procResults, lavaan::fitMeasures, fit.measures = "df")
 
-    if (inherits(lrt, "try-error")) {
-      errmsg <- gettext("Model comparison failed likely because one or more models did not converge")
-      fitTable$setError(errmsg)
-      return()
-    }
-
-    lrt$value[1,5:7] <- NA
-  }
-
-  fitTable[["Model"]]    <- rownames(lrt$value)
-  fitTable[["AIC"]]      <- lrt$value[["AIC"]]
-  fitTable[["BIC"]]      <- lrt$value[["BIC"]]
-  fitTable[["N"]]        <- Ns
-  fitTable[["Chisq"]]    <- lrt$value[["Chisq"]]
-  fitTable[["Df"]]       <- lrt$value[["Df"]]
-  fitTable[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
-  fitTable[["dchisq"]]   <- lrt$value[["Chisq diff"]]
-  fitTable[["ddf"]]      <- lrt$value[["Df diff"]]
-  fitTable[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  summaryTable[["Model"]]    <- modelNames
+  summaryTable[["modelNumber"]] <- modelNumbers
+  summaryTable[["AIC"]]      <- aic
+  summaryTable[["BIC"]]      <- bic
+  summaryTable[["logLik"]]   <- sapply(procResults, lavaan::logLik)
+  summaryTable[["N"]]        <- sapply(procResults, lavaan::lavInspect, what = "nobs")
+  summaryTable[["Df"]]       <- df
 
   if (options[["aicWeights"]]) {
-    fitTable[["wAIC"]] <- .computeWeights(lrt$value[["AIC"]])
+    summaryTable[["wAIC"]] <- .computeWeights(aic)
   }
   if (options[["bicWeights"]]) {
-    fitTable[["wBIC"]] <- .computeWeights(lrt$value[["BIC"]])
+    summaryTable[["wBIC"]] <- .computeWeights(bic)
   }
 
-  # add warning footnote
-  if (!is.null(lrt$warnings)) {
-    fitTable$addFootnote(paste0(stringr::str_to_sentence(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message)), "."))
-  }
-
-  if(options$naAction == "listwise"){
-    nrm <- lavaan::lavInspect(procResults[[1]], "norig") - lavaan::lavInspect(procResults[[1]], "ntotal")
-    if (nrm != 0) {
-      missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
-                                  nrm)
-      fitTable$addFootnote(message = missingFootnote)
-    }
-  }
-
-  # add test statistic correction footnote
-  test <- lavaan::lavInspect(procResults[[1]], "options")[["test"]]
-  if(length(test) > 1)
-    test <- test[[2]]
-
-  if (test != "standard") {
-    LUT <- tibble::tribble(
-      ~option,              ~name,
-      "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
-      "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
-      "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
-      "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
-      "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
-      "scaled.shifted",     gettext("scaled and shifted test-statistic"),
-      "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
-      "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
-      "boot",               gettext("bootstrap (Bollen-Stine) probability value")
-    )
-    testname <- LUT[test == tolower(LUT$option), "name"][[1]]
-    ftext <- gettextf("Model tests based on %s.", testname)
-    fitTable$addFootnote(message = ftext)
+  if (any(df == 0)) {
+    summaryTable$addFootnote(message = gettext("At least one model is saturated (df = 0)."))
   }
 
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fitTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
+    summaryTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
   }
 }
 
