@@ -985,7 +985,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
   summaryTable$position <- 1
 
-  if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("auto", "ml")) {
+  if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
     summaryTable$setError("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
   }
 
