@@ -990,20 +990,9 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
   summaryTable$position <- 1
 
-  modelNumbers <- lapply(options[["processModels"]], function(mod) {
-      if (mod[["inputType"]] == "inputModelNumber") {
-        if (!mod[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
-          modelNumberTable$setError(gettextf("Hayes model number %s for %s not implemented", mod[["modelNumber"]], mod[["name"]]))
-        }
-        return(mod[["modelNumber"]])
-      }
-
-      return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["graph"]]$object))
-    }
-  )
-
-  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
-  isInvalid <- sapply(procResults, is.character)
+  if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("auto", "ml")) {
+    summaryTable$setError("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
+  }
 
   summaryTable$addColumnInfo(name = "Model",        title = "",                         type = "string" )
   summaryTable$addColumnInfo(name = "modelNumber",  title = "Hayes model number",       type = "integer" )
@@ -1021,13 +1010,27 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   jaspResults[["modelSummaryTable"]] <- summaryTable
 
-  if (length(procResults) == 0) return()
+  isInvalid <- sapply(procResults, is.character)
 
   if (any(isInvalid)) {
     errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated: %s", names(procResults)[isInvalid])
     summaryTable$setError(errmsg)
-    return()
   }
+
+  if (length(procResults) == 0) return()
+
+  modelNumbers <- lapply(options[["processModels"]], function(mod) {
+    if (mod[["inputType"]] == "inputModelNumber") {
+      if (!mod[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
+        modelNumberTable$setError(gettextf("Hayes model number %s for %s not implemented", mod[["modelNumber"]], mod[["name"]]))
+      }
+      return(mod[["modelNumber"]])
+    }
+
+    return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["graph"]]$object))
+  })
+
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   aic <- sapply(procResults, AIC)
   bic <- sapply(procResults, BIC)
@@ -1053,7 +1056,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   }
 
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    summaryTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
+    summaryTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators."))
   }
 }
 

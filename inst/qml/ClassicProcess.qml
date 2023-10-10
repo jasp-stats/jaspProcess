@@ -686,8 +686,8 @@ Form
             {
                 title: qsTr("Missing Value Handling")
                 name: "naAction"
-                RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
-                RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
+                RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise" ; checked: true 	}
+				RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml"  					}
             }
             RadioButtonGroup 
             {
