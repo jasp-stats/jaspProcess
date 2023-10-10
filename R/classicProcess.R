@@ -961,20 +961,15 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     modelNumberModeratorZ = modZ
   )
 
-  graphWithOnlyNames <- graph
-  graphWithOnlyNames <- igraph::delete_edge_attr(graphWithOnlyNames, "parIndex")
-  graphWithOnlyNames <- igraph::delete_edge_attr(graphWithOnlyNames, "parSymbol")
-  graphWithOnlyNames <- igraph::delete_edge_attr(graphWithOnlyNames, "parName")
-
   # Check which hard-coded model matches user model
-  modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphWithOnlyNames, modelOptions = modelOptions, globalDependent = globalDependent)
+  modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graph, modelOptions = modelOptions, globalDependent = globalDependent)
   
   # If no match swap W and Z and check again
   if (!any(modelMatch)) {
     modelOptions[["modelNumberModeratorW"]] <- modZ
     modelOptions[["modelNumberModeratorZ"]] <- modW
 
-    modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graphWithOnlyNames, modelOptions = modelOptions, globalDependent = globalDependent)
+    modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graph, modelOptions = modelOptions, globalDependent = globalDependent)
   }
 
   return(.procHardCodedModelNumbers()[modelMatch])
