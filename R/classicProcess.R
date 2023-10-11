@@ -809,12 +809,20 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
 .procCombVars <- function(graph, vars) {
   graph <- igraph::add_vertices(graph, length(vars), name = vars)
-  edgesToAdd <- as.vector(combn(vars, 2))
-  graph <- igraph::add_edges(graph,
-    edges = edgesToAdd,
-    source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
-    target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
-  )
+  if (length(vars) > 1) {
+    edgesToAdd <- c(combn(vars, 2))
+    graph <- igraph::add_edges(graph,
+      edges = edgesToAdd,
+      source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
+      target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
+    )
+  } else {
+    graph <- igraph::add_edges(graph,
+      edges = c(vars, vars),
+      source = vars,
+      target = vars
+    )
+  }
   return(graph)
 }
 
@@ -825,7 +833,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   # Get all exogenous vars that are not interaction terms
   exoVars <- igraph::V(graph)[isExo & !isInt]$name
 
-  if (length(exoVars) > 1 && includeExo) {
+  if (includeExo) {
     # Add vertices and edges for all combinations
     resCovGraph <- .procCombVars(resCovGraph, exoVars)
   }
@@ -1010,14 +1018,6 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   summaryTable$position <- 1
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
-  
-  converged <- sapply(procResults, function(mod) mod@Fit@converged)
-
-  if (!all(converged)) {
-    summaryTable$addFootnote(message = gettext("At least one model did not converge."))
-  }
-
-  procResults <- .procFilterFittedModels(procResults)
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
     summaryTable$setError("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
@@ -1042,9 +1042,18 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   isInvalid <- sapply(procResults, is.character)
 
   if (any(isInvalid)) {
-    errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated: %s", names(procResults)[isInvalid])
+    errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated")
     summaryTable$setError(errmsg)
+    return()
   }
+
+  converged <- sapply(procResults, function(mod) mod@Fit@converged)
+
+  if (!all(converged)) {
+    summaryTable$addFootnote(message = gettext("At least one model did not converge."))
+  }
+
+  procResults <- .procFilterFittedModels(procResults)
 
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
