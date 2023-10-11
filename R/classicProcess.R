@@ -153,7 +153,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   graph <- .procProcessRelationshipsToGraph(processRelationships)
 
   if (modelOptions[["inputType"]] == "inputModelNumber")
-    graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
+    graph <- .procModelGraphInputModelNumber(graph, modelOptions, decodeColNames(globalDependent))
   
   return(graph)
 }
@@ -263,6 +263,15 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   igraph::V(graph)$intVars <- strsplit(igraph::V(graph)$name, ":|__")
   # How many interaction vars are there
   igraph::V(graph)$intLength <- sapply(igraph::V(graph)$intVars, length)
+  # Is nested interaction term (fully included in higher-order interaction)
+  igraph::V(graph)$isNestedInt <- igraph::V(graph)$isInt & sapply(igraph::V(graph)$intVars, function(vars1) {
+    return(any(sapply(igraph::V(graph)$intVars, function(vars2) {
+      # If interaction is fully included in higher-order interaction
+      return(length(vars1) < length(vars2) && all(vars1 %in% vars2))
+    })))
+  })
+  # Is not not nested interaction term
+  igraph::V(graph)$isHigherOrderInt <- igraph::V(graph)$isInt & !igraph::V(graph)$isNestedInt
   # Is global dependent
   igraph::V(graph)$isDep <- igraph::degree(graph, mode = "out") == 0
   # Is exogenous
@@ -841,12 +850,26 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   })))
 }
 
+.procGraphAddEstimates <- function(graph, fittedModel) {
+  parTbl <- lavaan::parameterTable(fittedModel)
+  est <- parTbl[parTbl$op == "~", ]
+
+  igraph::E(graph)$parEst <- NA
+  
+  for (i in 1:nrow(est)) {
+    igraph::E(graph)[.from(decodeColNames(est$rhs[i])) & .to(decodeColNames(est$lhs[i]))]$parEst <- est$est[i]
+  }
+  
+  return(graph)
+}
+
 .procResultsFitModel <- function(container, dataset, options) {
   # Should model be fitted?
   doFit <- .procCheckFitModel(container[["graph"]]$object)
 
-  if (!doFit)
+  if (!doFit) {
     dataset <- NULL
+  }
 
   fittedModel <- try(lavaan::sem(
     model           = container[["syntax"]]$object,
@@ -866,6 +889,10 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   if (options$errorCalculationMethod == "bootstrap") {
     medResult <- jaspSem:::lavBootstrap(fittedModel, options$bootstrapSamples) # FIXME
+  }
+
+  if (doFit) {
+    container[["graph"]]$object <- .procGraphAddEstimates(container[["graph"]]$object, fittedModel)
   }
 
   return(fittedModel)
@@ -1132,33 +1159,6 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
     if (options[["processModels"]][[i]][["residualCovariances"]])
       .procCovariancesTable(modelContainer, options, procResults[[i]], i)
-  }
-}
-
-.procPathPlots <- function(container, options, modelsContainer) {
-  for (i in 1:length(options[["processModels"]])) {
-    modelOptions <- options[["processModels"]][[i]]
-    modelName <- modelOptions[["name"]]
-    if (is.null(container[[modelName]])) {
-      pathPlotsContainer <- createJaspContainer(title = modelName)
-      pathPlotsContainer$dependOn(
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
-      container[[modelName]] <- pathPlotsContainer
-    } else {
-      pathPlotsContainer <- container[[modelName]]
-    }
-
-    valid <- .procIsValidModel(pathPlotsContainer, modelsContainer[[modelName]][["fittedModel"]]$object)
-
-    if (valid) {
-      if (options[["processModels"]][[i]][["conceptualPathPlot"]]) {
-        .procConceptPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]][["fittedModel"]]$object, i)
-      }
-
-      if (options[["processModels"]][[i]][["statisticalPathPlot"]])
-        .procStatPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]][["fittedModel"]]$object, i)
-    }
   }
 }
 
@@ -1571,7 +1571,34 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
 # Plotting functions ----
 
-.procConceptPathPlot <- function(container, options, procResults, modelIdx) {
+.procPathPlots <- function(container, options, modelsContainer) {
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+    if (is.null(container[[modelName]])) {
+      pathPlotsContainer <- createJaspContainer(title = modelName)
+      pathPlotsContainer$dependOn(
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      container[[modelName]] <- pathPlotsContainer
+    } else {
+      pathPlotsContainer <- container[[modelName]]
+    }
+
+    valid <- .procIsValidModel(pathPlotsContainer, modelsContainer[[modelName]][["fittedModel"]]$object)
+
+    if (valid) {
+      if (options[["processModels"]][[i]][["conceptualPathPlot"]]) {
+        .procConceptPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]][["graph"]]$object, i)
+      }
+
+      if (options[["processModels"]][[i]][["statisticalPathPlot"]])
+        .procStatPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]][["graph"]]$object, i)
+    }
+  }
+}
+
+.procConceptPathPlot <- function(container, options, graph, modelIdx) {
   if (!is.null(container[["conceptPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
@@ -1583,11 +1610,12 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   if (container$getError()) return()
 
-  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "conceptual", estimates = FALSE, options)
+  procPathPlot$plotObject <- .procLavToGraph(graph, type = "conceptual", estimates = FALSE, options)
 }
 
-.procStatPathPlot <- function(container, options, procResults, modelIdx) {
-  if (!is.null(container[["statPathPlot"]]) || !procResults@Options[["do.fit"]]) return()
+.procStatPathPlot <- function(container, options, graph, modelIdx) {
+  # if (!is.null(container[["statPathPlot"]]) || !procResults@Options[["do.fit"]]) return()
+  if (!is.null(container[["statPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
@@ -1598,321 +1626,178 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   if (container$getError()) return()
 
-  procPathPlot$plotObject <- .procLavToGraph(procResults, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
+  procPathPlot$plotObject <- .procLavToGraph(graph, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
 
-.procMainGraphLayoutPosHelper <- function(nNodes) {
+.procMainGraphLayoutPosHelper <- function(nodes) {
   # This function positions nodes alternatingly above and below zero with increasing distance
-  # Positions a single node a zero
-  if (nNodes == 1) return(0)
+  nUniqueNodes <- length(unique(nodes))
 
-  if (nNodes %% 2 == 0) {
-    nNodesHalf <- nNodes/2
-    pos <- -nNodesHalf:nNodesHalf
+  if (nUniqueNodes %% 2 == 0) {
+    nUniqueNodesHalf <- nUniqueNodes/2
+    pos <- -nUniqueNodesHalf:nUniqueNodesHalf
   } else {
-    nNodesHalf <- floor(nNodes/2)
-    pos <- -nNodesHalf:(nNodesHalf+1)
+    nUniqueNodesHalf <- floor(nUniqueNodes/2)
+    pos <- -nUniqueNodesHalf:(nUniqueNodesHalf+1)
   }
   pos <- pos[pos != 0]
-  return(rev(pos))
+
+  # If node is outside of pos range, replace with max of node
+  adjustedNodes <- pmatch(nodes, 1:nUniqueNodes, nomatch = nUniqueNodes, duplicates.ok = TRUE)
+
+  # Reverse to start with positive pos
+  return(rev(pos)[adjustedNodes])
 }
 
-.procMainGraphLayoutMedPosHelper <- function(medPaths) {
-  nMedPaths <- length(medPaths)
-
-  medPos <- list()
-  # Calc y pos of mediator nodes
-  medPosY <- .procMainGraphLayoutPosHelper(nMedPaths)
-
-  if (nMedPaths > 0) {
-    # Only set pos for nodes that have no pos yet
-    for (i in 1:nMedPaths) {
-      meds <- medPaths[[i]]
-      meds <- meds[!meds %in% names(medPos)]
-      nMeds <- length(meds)
-      if (nMeds > 0) {
-        for (j in 1:nMeds) {
-          medPos[[meds[j]]] <- c(j, medPosY[i])
-        }
-      }
-    }
-  }
-
-  return(t(sapply(medPos, function(x) x)))
-}
-
-.procMainGraphLayout <- function(mainPaths, depVar) {
-  # Create graph from path matrix
-  graph <- igraph::graph_from_edgelist(mainPaths)
-  nodeNames <- igraph::get.vertex.attribute(graph, "name")
-
-  # Get indices of exogeneous nodes (no incoming paths)
-  exoIdx <- which(!nodeNames %in% mainPaths[, 2])
-  depIdx <- which(nodeNames == depVar)
-
+.procMedGraphLayout <- function(graph) {
   # Get all simple paths (each node only visited once) from exo nodes to dep var node
-  medPaths <- igraph::all_simple_paths(graph, from = nodeNames[exoIdx][1], to = nodeNames[depIdx], mode = "out")
+  medPaths <- igraph::all_simple_paths(graph, from = igraph::V(graph)[isTreat]$name[1], to = igraph::V(graph)[isDep]$name, mode = "out")
   medPathLengths <- sapply(medPaths, length)
-  # Exclude X and Y from paths
-  medPaths <- lapply(medPaths, function(path) names(path)[names(path) %in% nodeNames[-c(exoIdx, depIdx)]])
+
   # Sort paths according to length (longest at top)
   medPaths <- medPaths[sort(medPathLengths, decreasing = TRUE, index.return = TRUE)$ix]
-
-  # Calc pos of exo nodes
-  exoPos <- matrix(c(rep(0, length(exoIdx)), .procMainGraphLayoutPosHelper(length(exoIdx))), ncol = 2)
-  # Set y pos of first exo node to 0
-  exoPos[1, 2] <- 0
-  depPos <- c(max(medPathLengths)-1, 0)
-
+  
   # Calc pos of mediator nodes
-  medPos <- .procMainGraphLayoutMedPosHelper(medPaths)
-
-  # Combine pos
-  if (length(medPos) > 0) {
-    layout <- rbind(exoPos, depPos, medPos)
-    rownames(layout) <- c(nodeNames[c(exoIdx, depIdx)], rownames(medPos))
-  } else {
-    layout <- rbind(exoPos, depPos)
-    rownames(layout) <- nodeNames[c(exoIdx, depIdx)]
+  if (any(igraph::V(graph)$isMed)) {
+    igraph::V(graph)[isMed]$posX <- sapply(igraph::V(graph)[isMed]$name, function(v) {
+      # Which position has mediator in first occuring path
+      return(na.omit(sapply(medPaths, function(path) match(v, names(path))))[1])
+    }) - 1
+    igraph::V(graph)[isMed]$posY <- .procMainGraphLayoutPosHelper(sapply(igraph::V(graph)[isMed]$name, function(v) {
+      # Which index has first occuring path
+      return(max(which(sapply(medPaths, function(path) v %in% names(path))), na.rm = TRUE))
+    }))
   }
-  return(layout)
+  # Adjust pos of dependent according to longest med path
+  igraph::V(graph)[isDep]$posX <- max(medPathLengths) - 1
+
+  return(graph)
 }
 
-.procModGraphLayoutConceptual <- function(intPathsSplitPruned, layout) {
-  # Node names are in rownames
-  nodeNames <- rownames(layout)
+.procModGraphLayoutConceptual <- function(graph) {
+  # Calc pos of moderator nodes
+  if (any(igraph::E(graph)$isMod)) {
+    # Calc pos based on higher order interactions
+    for (i in 1:length(igraph::V(graph)[isHigherOrderInt])) {
+      # Get vars of interaction
+      modIntVars <- igraph::V(graph)[isHigherOrderInt][i]$intVars[[1]]
+      nMods <- length(modIntVars)-1
+      # Get target var of interaction
+      target <- igraph::E(graph)[.from(igraph::V(graph)[isHigherOrderInt][i]$name)]$target
+      # Add helper nodes ("i"ij)
+      helperNodeNames <- paste0("i", i, 1:nMods)
+      graph <- igraph::add_vertices(graph, 
+        nMods,
+        name = helperNodeNames,
+        posX = NA, posY = NA, isHigherOrderInt = FALSE
+      )
+      # Add edges from moderators to helper nodes
+      graph <- igraph::add_edges(graph,
+        edges = c(rbind(modIntVars[-1], helperNodeNames)),
+        source = modIntVars[-1],
+        target = helperNodeNames
+      )
+      # Delete edges from moderators to target variable
+      graph <- igraph::delete_edges(graph,
+        paste(modIntVars[-1], target, sep = "|")
+      )
 
-  # Keep track of different moderators
-  j <- 1
-
-  for (path in intPathsSplitPruned) {
-    # Calc y pos for first moderator in balance to existing layout
-    modPosY <-.minMaxSubAddOne(layout[, 2])
-
-    # Iterate over moderators leaving out the first and last element (independent and dependent variables)
-    for (i in 1:(length(path)-2)) {
-      # Only add moderators (at index i+1 in path) that are not in the layout yet
-      if (!path[i+1] %in% nodeNames) {
-        # Get index of independent and dependent node in layout
-        # Independent node is at index i and dependent is the last element in path
-        idxIndep <- which(nodeNames == path[i])
-        idxDep <- which(nodeNames == path[length(path)])
-        # Calculate pos of hidden helper node as average between indep and dep node pos
-        nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
-        modPosY <- modPosY + (i-1) * sign(modPosY)
-
-        if (i == 1) {
-          # First moderator has same x pos as hidden helper node
-          modPos <- c(nodePosI[1], modPosY)
+      for (j in 2:length(modIntVars)) {
+        # Pos of helper nodes is mean of source and target nodes
+        helperNodePosX <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posX, igraph::V(graph)[target]$posX))
+        helperNodePosY <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posY, igraph::V(graph)[target]$posY))
+        igraph::V(graph)[paste0("i", i, j-1)]$posX <- helperNodePosX
+        igraph::V(graph)[paste0("i", i, j-1)]$posY <- helperNodePosY
+        # Pos of moderator depends on index
+        if (j %% 2 == 0) {
+          # Place first moderator above source and target
+          igraph::V(graph)[modIntVars[j]]$posX <- helperNodePosX
+          igraph::V(graph)[modIntVars[j]]$posY <- .minMaxSubAddOne(igraph::V(graph)$posY)
         } else {
-          # Moderating moderator gets pos as average between independent (at previous index in path) and first moderator
-          idxPrev <- which(nodeNames == path[i-1])
-          modPos <- apply(layout[c(idxPrev, idxIndep), ], 2, mean)
+          # Place second moderator to the right of source and target
+          igraph::V(graph)[modIntVars[j]]$posX <- .minMaxSubAddOne(helperNodePosX)
+          igraph::V(graph)[modIntVars[j]]$posY <- helperNodePosY
         }
-        # Append to node names and layout
-        # Hidden helper node gets index j
-        nodeNameI <- paste0("i",  j)
-        # Name of moderator is at index i+1 in path
-        nodeNames <- c(nodeNames, path[i+1], nodeNameI)
-        layout <- rbind(layout, modPos, nodePosI)
-        # Set hidden helper node as last element in path so it becomes the dependent node in next interation
-        path[length(path)] <- nodeNameI
-        # Increase number of moderators
-        j <- j + 1
+        # Set helper node as next target
+        target <- paste0("i", i, j-1)
       }
     }
   }
 
-  # Assign updated node names back to layout
-  rownames(layout) <- nodeNames
-
-  return(layout)
+  return(graph)
 }
 
-.procModGraphLayoutStatistical <- function(intPathsSplitPruned, layout) {
-  # Node names are in rownames
-  nodeNames <- rownames(layout)
+.procModGraphLayoutStatistical <- function(graph) {
+  if (any(igraph::E(graph)$isMod)) {
+    # Calc pos based on higher order interactions
+    for (i in 1:sum(igraph::V(graph)$isHigherOrderInt)) {
+      # Get vars of interaction
+      modIntVars <- igraph::V(graph)[isHigherOrderInt][i]$intVars[[1]]
+      # Get target var of interaction
+      target <- igraph::E(graph)[.from(igraph::V(graph)[isHigherOrderInt][i]$name)]$target
 
-  for (path in intPathsSplitPruned) {
-    # Get index of independent and dependent node in layout
-    idxIndep <- which(nodeNames == path[1])
-    idxDep <- which(nodeNames == path[length(path)])
-
-    # Calculate pos of hidden helper node as average between indep and dep node pos
-    nodePosI <- apply(layout[c(idxIndep, idxDep), ], 2, mean)
-
-    # Calc y pos for first moderator in balance to existing layout
-    modPosY <- .minMaxSubAddOne(layout[, 2])
-
-    # Iterate over moderators leaving out the first and last element (independent and dependent variables)
-    for (i in 1:(length(path)-2)) {
-      # Update y coordinate depending on number of moderators on path
-      # Add +/- 1 for each additional moderator
-      modPosY <- modPosY + (i-1) * sign(modPosY)
-
-      # Moderator pos has same x pos as hidden helper node
-      modPos <- c(nodePosI[1], modPosY)
-
-      # Calculate all combinations of moderators that interact with each other
-      combs <- combn(path[-length(path)], length(path)-i)
-
-      # Create interaction term node labels from combinations
-      ints <- apply(combs, 2, paste, collapse = ":")
-
-      # Spread out interaction terms on the y axis (all on same x axis)
-      intsPos <- cbind(nodePosI[1], sign(modPosY) * (1:length(ints)) + modPosY)
-
-      # Append to node names and layout
-      # Name of moderator is at index i+1 in path, also add interaction terms
-      nodeNames <- c(nodeNames, path[i+1], ints)
-      layout <- rbind(layout, modPos, intsPos)
-
-      # Update starting pos of next moderator path by maximum of interaction y coordinate
-      modPosY <- intsPos[length(intsPos)]
-    }
-  }
-
-  # Assign updated node names back to layout
-  rownames(layout) <- nodeNames
-
-  return(layout)
-}
-
-.procPruneIntTerms <- function(paths, prunedPaths = list()) {
-  # This function prunes moderator paths
-  # It finds the longest path and removes all paths that are a subset of this path
-  # leaving longest unique paths
-
-  # Find longest moderator path
-  longestPathIdx <- which.max(sapply(paths, length))
-
-  # Add it to result
-  prunedPaths <- append(prunedPaths, paths[longestPathIdx])
-
-  # Check which other paths are a subset of longest path
-  allVarsInLongestPath <- sapply(paths[-longestPathIdx], function(path) all(path %in% paths[[longestPathIdx]]))
-
-  # If all are a subset, return only longest paths
-  if (all(allVarsInLongestPath)) return(prunedPaths)
-
-  # Apply function recursively removing the longest path and all subset paths
-  return(.procPruneIntTerms(paths[-longestPathIdx][!allVarsInLongestPath], prunedPaths))
-}
-
-.procLavToGraph <- function(procResults, type, estimates, options) {
-  # Get table with SEM pars from lavaan model
-  parTbl <- lavaan::parameterTable(procResults)
-  parTbl$lhs <- gsub("__", ":", parTbl$lhs)
-  parTbl$rhs <- gsub("__", ":", parTbl$rhs)
-
-  # Create path matrix where first col is "from" and second col is "to", third col is estimate
-  labelField <- ifelse(estimates, "est", "label")
-  paths <- matrix(c(parTbl$rhs, parTbl$lhs, parTbl[[labelField]])[parTbl$op == "~"], ncol = 3)
-
-  if (type == "conceptual") {
-    # Remove nodes for factor levels and replace them by factor name, removing levels (e.g., factorLevel1 -> factor)
-    paths[,1:2] <- apply(paths[, 1:2], 2, function(col) {
-      # Init output vector
-      out <- numeric(length(col))
-      # For each row in column
-      for (i in 1:length(col)) {
-        # Split variable name according to interactions
-        v_split <- .strsplitColon(col[i])[[1]]
-        # Init output vector
-        v_out <- numeric(length(v_split))
-        # For each term of interaction
-        for (j in 1:length(v_split)) {
-          # Check if variable name is a factor
-          matchFac <- sapply(options[["factors"]], grepl, x = v_split[j])
-
-          # If it is replace by factor name otherwise keep original variable name
-          if (length(matchFac) > 0 && any(matchFac)) {
-            v_out[j] <- options[["factors"]][matchFac]
+      for (j in 1:length(igraph::V(graph)[isInt | isPartOfInt])) {
+        # Update all interaction terms nested in current higher order interaction
+        if (all(igraph::V(graph)[isInt | isPartOfInt]$intVars[j][[1]] %in% modIntVars)) {
+          # x pos is mean of source and target
+          igraph::V(graph)[isInt | isPartOfInt]$posX[j] <- mean(c(igraph::V(graph)[modIntVars[1]]$posX, igraph::V(graph)[target]$posX))
+          # y pos depends on index 
+          if (i %% 2 == 0) {
+            # Place second higher-order terms below min pos
+            igraph::V(graph)[isInt | isPartOfInt]$posY[j] <- min(igraph::V(graph)$posY, na.rm = TRUE) - 1
           } else {
-            v_out[j] <- v_split[j]
+            # Place first higher-order terms above max pos
+            igraph::V(graph)[isInt | isPartOfInt]$posY[j] <- max(igraph::V(graph)$posY, na.rm = TRUE) + 1
           }
         }
-
-        # Paste interactions back together
-        whichFac <- paste(v_out, collapse = ":")
-
-        # If any term was factor replace otherwise keep original variable name
-        if (whichFac != "") {
-          out[i] <- whichFac
-        } else {
-          out[i] <- col[i]
-        }
       }
-
-      return(out)
-    })
-
-    # Remove duplicated paths
-    paths <- paths[!duplicated(paths[, 1:2]), ]
-  }
-
-  # Get terms
-  mediators <- paths[paths[, 1] %in% paths[, 2], 1]
-  independent <- paths[!paths[, 1] %in% paths[, 2], 1]
-  dependent <- paths[!paths[, 2] %in% paths[, 1], 2]
-
-  # Check if "from" contains interaction term
-  isIntPath <- grepl(":", paths[, 1])
-
-  # Split interaction terms
-  intPathsSplit <- .strsplitColon(paths[isIntPath, 1])
-
-  # Get moderator vars from interaction terms
-  mods <- unique(unlist(sapply(intPathsSplit, function(path) path[-1])))
-
-  # Create matrix with moderator paths
-  if (type == "conceptual") {
-    # Adds paths from moderators to helper nodes "iX" which will be invisible
-    modPaths <- matrix(c(mods, paste0("i", 1:length(mods)), rep("", length(mods))), ncol = 3)
-  } else {
-    # Paths from moderator and interaction term to dep var node
-    modPaths <- paths[isIntPath | paths[, 1] %in% mods, , drop = FALSE]
-  }
-
-  # Filter out non-moderation paths -> main paths
-  mainPaths <- paths[!isIntPath & !paths[, 1] %in% mods[!mods %in% paths[, 2]], , drop = FALSE]
-
-  # Get layout of main paths: matrix with x,y coordinates for each node
-  layout <- .procMainGraphLayout(mainPaths[, 1:2, drop = FALSE], options[["dependent"]])
-
-  # Combine main paths and moderator paths
-  if (sum(isIntPath) > 0) mainPaths <- rbind(mainPaths, modPaths)
-
-  # Remove duplicate paths
-  mainPaths <- mainPaths[!duplicated(mainPaths), ]
-
-  # Add layout of moderator nodes
-  if (length(mods) > 0) {
-    # Add dependent variable to end of each moderator path
-    intPathsSplitDep <- lapply(1:length(intPathsSplit), function(i) c(intPathsSplit[[i]], paths[isIntPath, 2][i]))
-    # Prune moderator paths by only leaving the longest unique paths
-    intPathsSplitPruned <- .procPruneIntTerms(intPathsSplitDep)
-
-    # Calculate layout
-    if (type == "conceptual") {
-      layout <- .procModGraphLayoutConceptual(intPathsSplitPruned, layout)
-    } else {
-      layout <- .procModGraphLayoutStatistical(intPathsSplitPruned, layout)
     }
   }
+  return(graph)
+}
 
-  # Create edge list from paths
-  graph <- igraph::graph_from_edgelist(mainPaths[, 1:2, drop = FALSE])
+.procMainGraphLayout <- function(graph) {
+  igraph::V(graph)$posX <- NA
+  igraph::V(graph)$posY <- NA
+
+  nodeNames <- igraph::V(graph)$name
+
+  # Calc pos of treat nodes
+  igraph::V(graph)[isTreat]$posX <- 0
+  igraph::V(graph)[isTreat]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isTreat))
+  
+  # Set y pos of first treat node to 0
+  igraph::V(graph)[isTreat]$posY[1] <- 0
+
+  igraph::V(graph)[isDep]$posX <- 1
+  igraph::V(graph)[isDep]$posY <- 0
+  
+  return(graph)
+}
+
+.procLavToGraph <- function(graph, type, estimates, options) {
+  # Get layout of main paths: matrix with x,y coordinates for each node
+  graph <- .procMainGraphLayout(graph)
+  graph <- .procMedGraphLayout(graph)
+  
+  if (type == "conceptual") {
+    graph <- .procModGraphLayoutConceptual(graph)
+  } else {
+    graph <- .procModGraphLayoutStatistical(graph)
+  }
+
+  layout <- cbind(igraph::V(graph)$posX, igraph::V(graph)$posY)
+  rownames(layout) <- igraph::V(graph)$name
 
   # Order of node labels as in graph
-  nodeNames <- igraph::vertex.attributes(graph)[["name"]]
+  nodeNames <- igraph::V(graph)$name
 
   # Get idx of hidden helper node (to make it invisible)
-  graphIntIdx <- grepl("i[[:digit:]]", nodeNames)
+  nodeIsHelper <- grepl("i[[:digit:]]", nodeNames)
 
   # Make hidden helper node invisible step 2
   nodeLabels <- decodeColNames(nodeNames)
-  nodeLabels[graphIntIdx] <- ""
+  nodeLabels[nodeIsHelper] <- ""
 
   # Create abbreviated node labels to plot in nodes
   nodeLabelsAbbr <- abbreviate(
@@ -1924,17 +1809,15 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   if (type == "conceptual") {
     edgeLabels <- ""
   } else {
-    edgeLabels <- mainPaths[, 3]
-
-    if (estimates) edgeLabels <- round(as.numeric(edgeLabels), 3)
+    edgeLabels <- if (estimates && !is.null(igraph::E(graph)$parEst)) round(as.numeric(igraph::E(graph)$parEst), 3) else igraph::E(graph)$parName 
   }
 
   # Node size (scales with number of nodes automatically)
   nodeSize <- 0.625
 
   # Create variable for margin around edge ends (no margin for helper nodes)
-  endCaps <- rep(ggraph::square(nodeSize, unit = "native"), nrow(mainPaths))
-  endCaps[grepl("i[[:digit:]]", mainPaths[, 2])] <- ggraph::square(0, unit = "native")
+  endCaps <- rep(ggraph::square(nodeSize, unit = "native"), length(igraph::E(graph)))
+  endCaps[grepl("i[[:digit:]]", igraph::E(graph)$target)] <- ggraph::square(0, unit = "native")
 
   # Create visibility variable to make helper nodes transparent
   nodeVis <- rep(0, length(nodeLabels))
@@ -1944,10 +1827,10 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   nodeAlpha <- if (options[["pathPlotsLegendLabels"]]) nodeLabels else NULL
 
   # Create node type variable for coloring
-  nodeType <- as.factor(ifelse(nodeLabels %in% decodeColNames(mediators), "Mediator",
-    ifelse(nodeLabels %in% decodeColNames(mods) | grepl(":", nodeLabels), "Moderator",
-      ifelse(nodeLabels %in% decodeColNames(independent), "Independent",
-        ifelse(nodeLabels %in% decodeColNames(dependent), "Dependent", NA)
+  nodeType <- as.factor(ifelse(igraph::V(graph)$isMed, "Mediator",
+    ifelse(igraph::V(graph)$isInt | igraph::V(graph)$isPartOfInt, "Moderator",
+      ifelse(igraph::V(graph)$isExo, "Independent",
+        ifelse(igraph::V(graph)$isDep, "Dependent", NA)
       )
     )
   ))
@@ -1956,7 +1839,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   colorFun <- jaspGraphs::JASPcolors(options[["pathPlotsColorPalette"]], asFunction = TRUE)
 
   if (options[["pathPlotsColor"]]) {
-    if (type == "conceptual" && sum(isIntPath) > 0) {
+    if (type == "conceptual" && any(igraph::V(graph)$isInt)) {
       # Make helper nodes transparent
       colorPalette <- c(colorFun(length(unique(nodeType))-1), "transparent")
     } else {
@@ -1967,11 +1850,17 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     colorPalette <- rep("transparent", length(unique(nodeType)))
   }
 
-  # Sort layout according to order of nodes in graph
-  layout <- layout[match(nodeNames, rownames(layout)), ]
+  decimalPos <- layout[!nodeIsHelper,] %% 1
+
+  if (any(na.omit(decimalPos[,1]) > 0)) {
+    layout[,1] <- layout[,1] * (1/min(decimalPos[,1][decimalPos[,1] > 0], na.rm = TRUE))
+  }
+  if (any(na.omit(decimalPos[,2]) > 0)) {
+    layout[,2] <- layout[,2] * (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
+  }
 
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
-  layout[, 1] <- (layout[, 1]) * (max(layout[, 2]) - min(layout[, 2])) / (max(layout[, 1]) - min(layout[, 1]))
+  layout[, 1] <- (layout[, 1]) * (max(layout[, 2], na.rm = TRUE) - min(layout[, 2], na.rm = TRUE)) / (max(layout[, 1], na.rm = TRUE) - min(layout[, 1], na.rm = TRUE))
 
   p <- ggraph::ggraph(
       graph,
@@ -2000,7 +1889,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     # Add abbreviated node lables with dummy alpha variable to display them in legend
     ggraph::geom_node_text(
       ggplot2::aes(label = nodeLabelsAbbr, alpha = nodeAlpha),
-      size = 30/(sum(!graphIntIdx) + options[["pathPlotsLabelLength"]] - 3)
+      size = 30/(sum(!nodeIsHelper) + options[["pathPlotsLabelLength"]] - 3)
     ) +
     # Make helper nodes transparent and hide color from legend
     ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
@@ -2101,7 +1990,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
 .minMaxSubAddOne <- function(x) {
   # If max(x) is higher than min(x), return min(x) - 1, otherwise max(x) + 1
-  minMax <- range(x)
+  minMax <- range(x, na.rm = TRUE)
 
   if (abs(minMax[2]) > abs(minMax[1])) return(minMax[1] - 1)
 
