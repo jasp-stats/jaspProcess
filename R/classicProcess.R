@@ -915,7 +915,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 # Output functions ----
 .procFilterFittedModels <- function(procResults) {
   isFitted <- sapply(procResults, function(mod) {
-    if (!is.null(mod) && !is.character(mod))
+    if (!is.null(mod) && !is.character(mod) && mod@Fit@converged)
       return(mod@Options[["do.fit"]])
     return(FALSE)
   })
@@ -978,12 +978,19 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 .procModelSummaryTable <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
-  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
-  procResults <- .procFilterFittedModels(procResults)
-
   summaryTable <- createJaspTable(title = gettext("Model summary"))
   summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
   summaryTable$position <- 1
+
+  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  
+  converged <- sapply(procResults, function(mod) mod@Fit@converged)
+
+  if (!all(converged)) {
+    summaryTable$addFootnote(message = gettext("At least one model did not converge."))
+  }
+
+  procResults <- .procFilterFittedModels(procResults)
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
     summaryTable$setError("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
@@ -1012,7 +1019,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     summaryTable$setError(errmsg)
   }
 
-  if (length(procResults) == 0) return()
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
     if (mod[["inputType"]] == "inputModelNumber") {
@@ -1025,14 +1032,15 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["graph"]]$object))
   })
 
-  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
+  summaryTable[["Model"]]       <- modelNames
+  summaryTable[["modelNumber"]] <- modelNumbers
+
+  if (length(procResults) == 0) return()
 
   aic <- sapply(procResults, AIC)
   bic <- sapply(procResults, BIC)
   df  <- sapply(procResults, lavaan::fitMeasures, fit.measures = "df")
 
-  summaryTable[["Model"]]    <- modelNames
-  summaryTable[["modelNumber"]] <- modelNumbers
   summaryTable[["AIC"]]      <- aic
   summaryTable[["BIC"]]      <- bic
   summaryTable[["logLik"]]   <- sapply(procResults, lavaan::logLik)
