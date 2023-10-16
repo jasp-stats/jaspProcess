@@ -42,6 +42,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procAddLavModParNames(jaspResults, options)
   # Compute quantiles at which to probe moderators for each model
   .procModProbes(jaspResults, dataset, options)
+  # Add undirected graph for variances and covariances
+  .procResCovGraph(jaspResults, options)
   # Create lavaan syntax for each model from graph
   .procModelSyntax(jaspResults, options)
   # Fit lavaan models based on syntax and dataset
@@ -623,6 +625,77 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   return(modProbes)
 }
 
+.procResCovGraph <- function(jaspResults, options) {
+  modelsContainer <- jaspResults[["modelsContainer"]]
+
+  for (i in 1:length(options[["processModels"]])) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+
+    if (
+      inherits(modelsContainer[[modelName]][["graph"]]$object, "try-error")
+    ) next
+
+    if (is.null(modelsContainer[[modelName]][["resCovGraph"]])) {
+      resCovGraph <- .procResCovGraphSingleModel(modelsContainer[[modelName]], modelOptions)
+      state <- createJaspState(object = resCovGraph)
+      state$dependOn(
+        optionContainsValue = list(processModels = modelOptions),
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      modelsContainer[[modelName]][["resCovGraph"]] <- state
+    }
+  }
+}
+
+.procCombVars <- function(graph, vars) {
+  varsNotInGraph <- vars[!vars %in% igraph::V(graph)$name]
+  graph <- igraph::add_vertices(graph, length(varsNotInGraph), name = varsNotInGraph)
+  if (length(vars) > 1) {
+    edgesToAdd <- c(combn(vars, 2), rep(vars, each = 2))
+    graph <- igraph::add_edges(graph,
+      edges = edgesToAdd,
+      source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
+      target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
+    )
+  } else {
+    graph <- igraph::add_edges(graph,
+      edges = c(vars, vars),
+      source = vars,
+      target = vars
+    )
+  }
+  return(graph)
+}
+
+.procResCovGraphSingleModel <- function(container, modelOptions) {
+  graph <- container[["graph"]]$object
+  # Create new graph for covariances because we don't care about direction
+  resCovGraph <- igraph::make_empty_graph(directed = FALSE)
+
+  # Get all exogenous vars that are not interaction terms
+  exoVars <- igraph::V(graph)[isExo & !isInt]$name
+
+  if (modelOptions[["independentCovariances"]]) {
+    # Add vertices and edges for all combinations
+    resCovGraph <- .procCombVars(resCovGraph, exoVars)
+  }
+
+  # Get all mediator vars that are not interaction terms
+  medVars <- igraph::V(graph)[isMed & !isInt]$name
+
+  if (modelOptions[["mediatorCovariances"]]) {
+    # Add vertices and edges for all combinations
+    resCovGraph <- .procCombVars(resCovGraph, medVars)
+  }
+
+  # Add vertices and edges for first dependent var
+  depVars <- igraph::V(graph)[isDep]$name
+  resCovGraph <- .procCombVars(resCovGraph, depVars[1])
+
+  return(resCovGraph)
+}
+
 .procModelSyntax <- function(jaspResults, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
@@ -656,11 +729,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     container[["contrasts"]]$object
   )
 
-  resCovSyntax <- .procResCovSyntax(
-    container[["graph"]]$object,
-    modelOptions[["independentCovariances"]],
-    modelOptions[["mediatorCovariances"]]
-  )
+  resCovSyntax <- .procResCovSyntax(container[["resCovGraph"]]$object)
 
   headerJasp <- "
   # -------------------------------------------
@@ -807,47 +876,9 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   return(paste(c(medEffectsLabeled, totEffectsLabeled, totIndEffectsLabeled), collapse = "\n"))
 }
 
-.procCombVars <- function(graph, vars) {
-  graph <- igraph::add_vertices(graph, length(vars), name = vars)
-  if (length(vars) > 1) {
-    edgesToAdd <- c(combn(vars, 2))
-    graph <- igraph::add_edges(graph,
-      edges = edgesToAdd,
-      source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
-      target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
-    )
-  } else {
-    graph <- igraph::add_edges(graph,
-      edges = c(vars, vars),
-      source = vars,
-      target = vars
-    )
-  }
-  return(graph)
-}
-
-.procResCovSyntax <- function(graph, includeExo, includeMed) {
-  # Create new graph for covariances because we don't care about direction
-  resCovGraph <- igraph::make_empty_graph()
-
-  # Get all exogenous vars that are not interaction terms
-  exoVars <- igraph::V(graph)[isExo & !isInt]$name
-
-  if (includeExo) {
-    # Add vertices and edges for all combinations
-    resCovGraph <- .procCombVars(resCovGraph, exoVars)
-  }
-
-  # Get all mediator vars that are not interaction terms
-  medVars <- igraph::V(graph)[isMed & !isInt]$name
-
-  if (length(medVars) > 1 && includeMed) {
-    # Add vertices and edges for all combinations
-    resCovGraph <- .procCombVars(resCovGraph, medVars)
-  }
-
+.procResCovSyntax <- function(graph) {
   # Concatenate covariances: source ~~ target
-  return(paste(igraph::E(resCovGraph)$source, igraph::E(resCovGraph)$target, sep = " ~~ ", collapse = "\n"))
+  return(paste(igraph::E(graph)$source, igraph::E(graph)$target, sep = " ~~ ", collapse = "\n"))
 }
 
 # Results functions ----
@@ -858,16 +889,22 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   })))
 }
 
-.procGraphAddEstimates <- function(graph, fittedModel) {
+.procGraphAddEstimates <- function(graph, fittedModel, type = "effects") {
   parTbl <- lavaan::parameterTable(fittedModel)
-  est <- parTbl[parTbl$op == "~", ]
+  if (type == "effects") {
+    est <- parTbl[parTbl$op == "~", ]
+  } else {
+    est <- parTbl[parTbl$op == "~~", ]
+  }
 
   igraph::E(graph)$parEst <- NA
   
   for (i in 1:nrow(est)) {
-    igraph::E(graph)[.from(decodeColNames(est$rhs[i])) & .to(decodeColNames(est$lhs[i]))]$parEst <- est$est[i]
+    if (all(decodeColNames(c(est$rhs[i], est$lhs[i])) %in% igraph::V(graph)$name)) {
+      igraph::E(graph)[decodeColNames(est$rhs[i]) %--% decodeColNames(est$lhs[i])]$parEst <- est$est[i]
+    }
   }
-  
+
   return(graph)
 }
 
@@ -901,6 +938,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   if (doFit) {
     container[["graph"]]$object <- .procGraphAddEstimates(container[["graph"]]$object, fittedModel)
+    container[["resCovGraph"]]$object <- .procGraphAddEstimates(container[["resCovGraph"]]$object, fittedModel, type = "variances")
   }
 
   return(fittedModel)
@@ -1598,16 +1636,16 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
     if (valid) {
       if (options[["processModels"]][[i]][["conceptualPathPlot"]]) {
-        .procConceptPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]][["graph"]]$object, i)
+        .procConceptPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]], i)
       }
 
       if (options[["processModels"]][[i]][["statisticalPathPlot"]])
-        .procStatPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]][["graph"]]$object, i)
+        .procStatPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]], i)
     }
   }
 }
 
-.procConceptPathPlot <- function(container, options, graph, modelIdx) {
+.procConceptPathPlot <- function(container, options, modelContainer, modelIdx) {
   if (!is.null(container[["conceptPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
@@ -1619,23 +1657,31 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
 
   if (container$getError()) return()
 
-  procPathPlot$plotObject <- .procLavToGraph(graph, type = "conceptual", estimates = FALSE, options)
+  procPathPlot$plotObject <- .procLavToGraph(modelContainer, type = "conceptual", estimates = FALSE, options)
 }
 
-.procStatPathPlot <- function(container, options, graph, modelIdx) {
-  # if (!is.null(container[["statPathPlot"]]) || !procResults@Options[["do.fit"]]) return()
+.procStatPathPlot <- function(container, options, modelContainer, modelIdx) {
   if (!is.null(container[["statPathPlot"]])) return()
 
   procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
   procPathPlot$dependOn(
-    options = c("statisticalPathPlotsParameterEstimates", "pathPlotsLegendLabels", "pathPlotsLegendColor", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
+    options = c(
+      "statisticalPathPlotsParameterEstimates",
+      "statisticalPathPlotsCovariances",
+      "statisticalPathPlotsResidualVariances",
+      "pathPlotsLegendLabels",
+      "pathPlotsLegendColor",
+      "pathPlotsLabelLength",
+      "pathPlotsColor",
+      "pathPlotsColorPalette"
+    ),
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
   container[["statPathPlot"]] <- procPathPlot
 
   if (container$getError()) return()
 
-  procPathPlot$plotObject <- .procLavToGraph(graph, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
+  procPathPlot$plotObject <- .procLavToGraph(modelContainer, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
 }
 
 .procMainGraphLayoutPosHelper <- function(nodes) {
@@ -1784,7 +1830,8 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   return(graph)
 }
 
-.procLavToGraph <- function(graph, type, estimates, options) {
+.procLavToGraph <- function(container, type, estimates, options) {
+  graph <- container[["graph"]]$object
   # Get layout of main paths: matrix with x,y coordinates for each node
   graph <- .procMainGraphLayout(graph)
   graph <- .procMedGraphLayout(graph)
@@ -1818,7 +1865,9 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   if (type == "conceptual") {
     edgeLabels <- ""
   } else {
-    edgeLabels <- if (estimates && !is.null(igraph::E(graph)$parEst)) round(as.numeric(igraph::E(graph)$parEst), 3) else igraph::E(graph)$parName 
+    edgeLabels <- if (estimates && !is.null(igraph::E(graph)$parEst)) round(as.numeric(igraph::E(graph)$parEst), 3) else igraph::E(graph)$parName
+    
+    resCovGraph <- igraph::as.directed(container[["resCovGraph"]]$object, mode = "arbitrary")
   }
 
   # Node size (scales with number of nodes automatically)
@@ -1871,6 +1920,12 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
   layout[, 1] <- (layout[, 1]) * (max(layout[, 2], na.rm = TRUE) - min(layout[, 2], na.rm = TRUE)) / (max(layout[, 1], na.rm = TRUE) - min(layout[, 1], na.rm = TRUE))
 
+  plotLayout <- ggraph::create_layout(graph, layout = layout[match(igraph::V(graph)$name, rownames(layout)), ])
+
+  if (type == "statistical") {
+    graph <- graph + resCovGraph
+  }
+
   p <- ggraph::ggraph(
       graph,
       layout = layout
@@ -1884,6 +1939,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     ) +
     # Add edges between nodes
     ggraph::geom_edge_link(
+      data = ggraph::get_edges()(plotLayout),
       ggplot2::aes(
         label = edgeLabels,
         end_cap = endCaps
@@ -1911,6 +1967,45 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
       ) else NULL
     )
   
+  if (type == "statistical" && length(igraph::V(resCovGraph)) > 0) {
+    covEdgeLabels <- if (estimates && !is.null(igraph::E(resCovGraph)$parEst)) round(as.numeric(igraph::E(resCovGraph)$parEst), 3) else ""
+    covLayout <- layout[rownames(layout) %in% igraph::V(resCovGraph)$name, , drop = FALSE]
+    covPlotLayout <- ggraph::create_layout(resCovGraph, layout = covLayout[match(igraph::V(resCovGraph)$name, rownames(covLayout)), ])
+    
+    if (options[["statisticalPathPlotsCovariances"]]) {
+      p <- p + 
+        ggraph::geom_edge_arc(
+          data = ggraph::get_edges()(covPlotLayout),
+          mapping = ggplot2::aes(label = covEdgeLabels),
+          fold = TRUE,
+          edge_width = 0.9,
+          color = "black",
+          alpha = 0.5,
+          arrow = ggplot2::arrow(ends = "both", length = grid::unit(0.025, "native")),
+          start_cap = ggraph::square(nodeSize, unit = "native"),
+          end_cap = ggraph::square(nodeSize, unit = "native"),
+          angle_calc = "along",
+          label_dodge = grid::unit(0.025, "native")
+        )
+    }
+
+    if (options[["statisticalPathPlotsResidualVariances"]]) {
+      p <- p + 
+        ggraph::geom_edge_loop(
+          data = ggraph::get_edges()(covPlotLayout),
+          mapping = ggplot2::aes(label = covEdgeLabels, direction = ifelse(igraph::V(graph)[source]$isDep, 45, 135)),
+          edge_width = 0.9,
+          color = "black",
+          alpha = 0.5,
+          arrow = ggplot2::arrow(ends = "both", length = grid::unit(0.025, "native")),
+          start_cap = ggraph::square(nodeSize, unit = "native"),
+          end_cap = ggraph::square(nodeSize, unit = "native"),
+          angle_calc = "along",
+          label_dodge = grid::unit(-0.025, "native")
+        )
+    }
+  }
+
   globalLabelSize <- 16
 
   if (options[["pathPlotsLegendLabels"]]) {

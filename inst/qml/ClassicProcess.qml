@@ -474,51 +474,69 @@ Form
 		Group
 		{
 			title: qsTr("Path Plots")
-			columns: 3
-
-			CheckBox
-			{
-				name: "statisticalPathPlotsParameterEstimates"
-				label: qsTr("Parameter estimates")
-			}
-
-			IntegerField
-			{
-				name: "pathPlotsLabelLength"
-				label: qsTr("Label length")
-				defaultValue: 3
-				min: 3
-				max: 10
-			}
-
-			CheckBox
-			{
-				name: 		"pathPlotsColor"
-				label: 		qsTr("Color palette")
-				checked: 	true
-				childrenOnSameRow: true
-
-				ColorPalette
-				{
-					name: "pathPlotsColorPalette"
-					label: ""
-				}
-			}
+			columns: 1
 
 			Group
 			{
-				title: qsTr("Legend")
-				columns: 2
+				columns: 3
+				CheckBox
+				{
+					name: "statisticalPathPlotsCovariances"
+					label: qsTr("Covariances")
+				}
 
 				CheckBox
 				{
-					name: "pathPlotsLegendLabels"
-					label: qsTr("Labels")
+					name: "statisticalPathPlotsResidualVariances"
+					label: qsTr("Residual variances")
 				}
+
 				CheckBox
 				{
-					name: "pathPlotsLegendColor"
-					label: qsTr("Color")
+					name: "statisticalPathPlotsParameterEstimates"
+					label: qsTr("Parameter estimates")
+				}
+			}
+
+			Group {
+				CheckBox
+				{
+					name: 		"pathPlotsColor"
+					label: 		qsTr("Color palette")
+					checked: 	true
+					childrenOnSameRow: true
+
+					ColorPalette
+					{
+						name: "pathPlotsColorPalette"
+						label: ""
+					}
+				}
+
+				Group
+				{
+					title: qsTr("Legend")
+					columns: 2
+
+					CheckBox
+					{
+						name: "pathPlotsLegendLabels"
+						label: qsTr("Labels")
+					}
+					CheckBox
+					{
+						name: "pathPlotsLegendColor"
+						label: qsTr("Color")
+					}
+				}
+
+				IntegerField
+				{
+					name: "pathPlotsLabelLength"
+					label: qsTr("Label length")
+					defaultValue: 3
+					min: 3
+					max: 10
 				}
 			}
 		}
