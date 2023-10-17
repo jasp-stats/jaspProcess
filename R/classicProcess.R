@@ -130,7 +130,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     if (is.null(modelsContainer[[modelName]][["graph"]])) {
-      graph <- try(procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
+      graph <- try(.procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
       state <- createJaspState(object = graph)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
@@ -142,7 +142,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
+.procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   processRelationships <- switch(modelOptions[["inputType"]],
     inputVariables = modelOptions[["processRelationships"]],
     # Insert function for plotting conceptual hard-coded Hayes model, in case
