@@ -625,7 +625,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     ) next
 
     if (is.null(modelsContainer[[modelName]][["resCovGraph"]])) {
-      resCovGraph <- .procResCovGraphSingleModel(modelsContainer[[modelName]], modelOptions)
+      resCovGraph <- .procResCovGraphSingleModel(modelsContainer[[modelName]][["graph"]]$object, modelOptions)
       state <- createJaspState(object = resCovGraph)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
@@ -656,8 +656,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   return(graph)
 }
 
-.procResCovGraphSingleModel <- function(container, modelOptions) {
-  graph <- container[["graph"]]$object
+.procResCovGraphSingleModel <- function(graph, modelOptions) {
   # Create new graph for covariances because we don't care about direction
   resCovGraph <- igraph::make_empty_graph(directed = FALSE)
 
