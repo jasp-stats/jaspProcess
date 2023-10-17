@@ -751,7 +751,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
       igraph::E(graph)[.to(e)]$source,
       sep = "*", collapse = " + "
     )
-    return(paste(e, rhs, sep = "~"))
+    return(paste(e, rhs, sep = " ~ "))
   })
   return(paste(regLines, collapse = "\n"))
 }
