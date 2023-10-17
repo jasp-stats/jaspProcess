@@ -584,28 +584,16 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   }
 }
 
-.procModVarsFromGraph <- function(graph) {
-  modVars <- list()
-
-  for (vars in igraph::V(graph)$intVars) {
-    for (v in vars[-1]) {
-      modVars[[v]] <- c(modVars[[v]], v[1])
-    }
-  }
-  
-  return(modVars)
-}
-
 .procModProbesSingleModel <- function(container, dataset, options) {
   probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
 
   graph <- container[["graph"]]$object
-  # Get list of which moderators moderate which independent variables
-  modVars <- .procModVarsFromGraph(graph)
+  # Get list of moderators
+  modVars <- unique(unlist(lapply(igraph::V(graph)$intVars, function(vars) vars[-1])))
 
   contrasts <- container[["contrasts"]]$object
 
-  modProbes <- lapply(encodeColNames(names(modVars)), function(nms) {
+  modProbes <- lapply(encodeColNames(modVars), function(nms) {
     # Is moderator factor
     matchFac <- sapply(options[["factors"]], grepl, x = nms)
 
@@ -621,7 +609,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     return(quantile(dataset[[nms]], probs = probeVals))
   })
   
-  names(modProbes) <- names(modVars)
+  names(modProbes) <- modVars
   return(modProbes)
 }
 
