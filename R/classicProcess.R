@@ -472,9 +472,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # Create dummy variables for factors
     sourceDummyMat <- model.matrix(sourceFormula, data = dataset)
-
+    
     # Add dummy variables to dataset
-    dataset <- merge(dataset, sourceDummyMat)
+    dataset <- cbind(dataset, sourceDummyMat)
 
     # Get dummy coding for contrasts
     contrasts <- attr(sourceDummyMat, "contrasts")
@@ -482,6 +482,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     for (f in names(contrasts)) {
       contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
     }
+    # Decode names to match with graph node names (FIXME)
+    names(contrastList) <- decodeColNames(names(contrastList))
 
     # Replace dummy-coded variables in graph
     for (v in names(contrastList)) {
@@ -599,7 +601,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (length(matchFac) > 0 && any(matchFac)) { # If is factor
       whichFac <- options[["factors"]][matchFac]
-      conMat <- contrasts[[whichFac]]
+      conMat <- contrasts[[decodeColNames(whichFac)]]
       colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
       row.names(conMat) <- as.character(conMat[, colIdx])
       # Return matrix with dummy coding for each factor
@@ -1907,7 +1909,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
   layout[, 1] <- (layout[, 1]) * (max(layout[, 2], na.rm = TRUE) - min(layout[, 2], na.rm = TRUE)) / (max(layout[, 1], na.rm = TRUE) - min(layout[, 1], na.rm = TRUE))
 
-  plotLayout <- ggraph::create_layout(graph, layout = layout[match(igraph::V(graph)$name, rownames(layout)), ])
+  plotLayout <- ggraph::create_layout(graph, layout = layout[match(igraph::V(graph)$name, rownames(layout)), , drop = FALSE])
 
   if (type == "statistical") {
     graph <- graph + resCovGraph
@@ -1957,7 +1959,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (type == "statistical" && length(igraph::V(resCovGraph)) > 0) {
     covEdgeLabels <- if (estimates && !is.null(igraph::E(resCovGraph)$parEst)) round(as.numeric(igraph::E(resCovGraph)$parEst), 3) else ""
     covLayout <- layout[rownames(layout) %in% igraph::V(resCovGraph)$name, , drop = FALSE]
-    covPlotLayout <- ggraph::create_layout(resCovGraph, layout = covLayout[match(igraph::V(resCovGraph)$name, rownames(covLayout)), ])
+    covPlotLayout <- ggraph::create_layout(resCovGraph, layout = covLayout[match(igraph::V(resCovGraph)$name, rownames(covLayout)), , drop = FALSE])
     
     if (options[["statisticalPathPlotsCovariances"]]) {
       p <- p + 
