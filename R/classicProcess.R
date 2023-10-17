@@ -39,7 +39,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # because lavaan does not do it automatically
   dataset <- .procAddFactorDummyVars(jaspResults, dataset, options)
   # Add parameter names to graph of each model
-  .procAddLavModParNames(jaspResults, options)
+  .procGraphAddParNames(jaspResults, options)
   # Compute quantiles at which to probe moderators for each model
   .procModProbes(jaspResults, dataset, options)
   # Add undirected graph for variances and covariances
@@ -514,7 +514,7 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
   return(dataset)
 }
 
-.procAddLavModParNames <- function(jaspResults, options) {
+.procGraphAddParNames <- function(jaspResults, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
   for (i in 1:length(options[["processModels"]])) {
@@ -525,13 +525,13 @@ procModelGraphSingleModel <- function(modelOptions, globalDependent, options) {
     if (inherits(graph, "try-error")) next
 
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      graph <- .procAddLavModParNamesSingleModel(graph)
+      graph <- .procGraphAddParNamesSingleModel(graph)
       modelsContainer[[modelName]][["graph"]]$object <- graph
     }
   }
 }
 
-.procAddLavModParNamesSingleModel <- function(graph) {
+.procGraphAddParNamesSingleModel <- function(graph) {
   igraph::E(graph)$parSymbol <- ifelse(
     # If source is mediator and target is global dependent -> b
     igraph::V(graph)[igraph::E(graph)$source]$isMed & igraph::V(graph)[igraph::E(graph)$target]$isDep, "b",
