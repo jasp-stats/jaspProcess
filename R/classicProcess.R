@@ -32,12 +32,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procContainerModels(jaspResults, options)
   # Transform input for each model into a graph for further processing
   .procModelGraph(jaspResults, options)
-  # Add three-way interaction variables manually to dataset 
-  # because lavaan does not allow threeway interaction regression terms
-  dataset <- .procAddIntVars(jaspResults, dataset, options)
   # Add factor dummy variables manually to dataset
-  # because lavaan does not do it automatically
-  dataset <- .procAddFactorDummyVars(jaspResults, dataset, options)
+  # because lavaan does not do it automatically;
+  # also add three-way interaction variables manually to dataset 
+  # because lavaan does not allow threeway interaction regression terms
+  dataset <- .procAddFactorDummyIntVars(jaspResults, dataset, options)
   # Add parameter names to graph of each model
   .procGraphAddParNames(jaspResults, options)
   # Compute quantiles at which to probe moderators for each model
@@ -430,30 +429,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(dataset)
 }
 
-.procAddIntVars <- function(jaspResults, dataset, options) {
-  modelsContainer <- jaspResults[["modelsContainer"]]
-
-  for (i in 1:length(options[["processModels"]])) {
-    modelOptions <- options[["processModels"]][[i]]
-    modelName <- modelOptions[["name"]]
-    graph <- modelsContainer[[modelName]][["graph"]]$object
-
-    if (!.procCheckFitModel(graph)) next
-    
-    for (v in igraph::V(graph)[intLength == 3]$intVars) {
-      # Create variable name like var1__var2__var3
-      varName <- paste(encodeColNames(v), collapse = "__")
-      # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
-      # Then we evaluate the string as R code using the dataset as the environment to evaluate in
-      intVar <- eval(str2lang(paste(encodeColNames(v), collapse = "*")), envir = dataset)
-      dataset[[varName]] = intVar
-      names(dataset)
-    }
-  }
-  return(dataset)
-}
-
-.procAddFactorDummyVars <- function(jaspResults, dataset, options) {
+.procAddFactorDummyIntVars <- function(jaspResults, dataset, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
   for (i in 1:length(options[["processModels"]])) {
@@ -463,10 +439,26 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (!.procCheckFitModel(graph)) next
 
-    contrastList <- list()
-
+    # Get all predictor vars
     sourceVars <- unique(igraph::E(graph)$source)
     
+    # Create new variable for three-way interactions (moderated moderation)
+    for (v in igraph::V(graph)[intLength == 3]$intVars) {
+      # Compute factor dummy variables involved in interaction
+      varFormula <- formula(paste("~", paste(encodeColNames(v), collapse = "+")))
+      varDummyMat <- model.matrix(varFormula, data = dataset)
+      # Create variable name like var1__var2__var3
+      varName <- paste(colnames(varDummyMat[, -1]), collapse = "__")
+      # Bind factor dummy variables to temporary dataset (will be added to actual data set later)
+      tempDataset <- cbind(dataset, varDummyMat[, -1])
+      # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
+      # Then we evaluate the string as R code using the dataset as the environment to evaluate in
+      intVar <- eval(str2lang(paste(colnames(varDummyMat[, -1]), collapse = "*")), envir = tempDataset)
+      dataset[[varName]] = intVar
+      # Replace old three way interaction term with dummy coded interaction term (only for factors)
+      sourceVars[sourceVars == paste(v, collapse = "__")] <- varName
+    }
+
     # Convert regression variables to formula
     sourceFormula <- formula(paste("~", paste(encodeColNames(sourceVars), collapse = "+")))
 
@@ -479,9 +471,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Get dummy coding for contrasts
     contrasts <- attr(sourceDummyMat, "contrasts")
 
+    contrastList <- list()
+
     for (f in names(contrasts)) {
       contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
     }
+
     # Decode names to match with graph node names (FIXME)
     names(contrastList) <- decodeColNames(names(contrastList))
 
