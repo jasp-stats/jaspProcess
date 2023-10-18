@@ -1836,7 +1836,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   nodeIsHelper <- grepl("i[[:digit:]]", nodeNames)
 
   # Make hidden helper node invisible step 2
-  nodeLabels <- decodeColNames(nodeNames)
+  nodeLabels <- gsub("__", ":", decodeColNames(nodeNames))
   nodeLabels[nodeIsHelper] <- ""
 
   # Create abbreviated node labels to plot in nodes
@@ -1893,12 +1893,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   decimalPos <- layout[!nodeIsHelper,] %% 1
+  labelScale <- 30
 
   if (any(na.omit(decimalPos[,1]) > 0)) {
     layout[,1] <- layout[,1] * (1/min(decimalPos[,1][decimalPos[,1] > 0], na.rm = TRUE))
   }
   if (any(na.omit(decimalPos[,2]) > 0)) {
-    layout[,2] <- layout[,2] * (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
+    yScale <- (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
+    layout[,2] <- layout[,2] * yScale
+    labelScale <- labelScale * yScale
   }
 
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
@@ -1938,7 +1941,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Add abbreviated node lables with dummy alpha variable to display them in legend
     ggraph::geom_node_text(
       ggplot2::aes(label = nodeLabelsAbbr, alpha = nodeAlpha),
-      size = 30/(sum(!nodeIsHelper) + options[["pathPlotsLabelLength"]] - 3)
+      size = labelScale/(sum(!nodeIsHelper) + options[["pathPlotsLabelLength"]] - 3)
     ) +
     # Make helper nodes transparent and hide color from legend
     ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
@@ -1952,9 +1955,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     )
   
   if (type == "statistical" && length(igraph::V(resCovGraph)) > 0) {
-    covEdgeLabels <- if (estimates && !is.null(igraph::E(resCovGraph)$parEst)) round(as.numeric(igraph::E(resCovGraph)$parEst), 3) else ""
+    if (estimates && !is.null(igraph::E(resCovGraph)$parEst)) {
+    covEdgeLabels <- round(as.numeric(igraph::E(resCovGraph)$parEst), 3)
+    } else {
+      covEdgeLabels <- ""
+    }
+    # drop = FALSE is important here to keep matrix for 2 elements!
     covLayout <- layout[rownames(layout) %in% igraph::V(resCovGraph)$name, , drop = FALSE]
-    covPlotLayout <- ggraph::create_layout(resCovGraph, layout = covLayout[match(igraph::V(resCovGraph)$name, rownames(covLayout)), , drop = FALSE])
+    covPlotLayout <- ggraph::create_layout(
+      resCovGraph, layout = covLayout[match(igraph::V(resCovGraph)$name, rownames(covLayout)), , drop = FALSE]
+    )
     
     if (options[["statisticalPathPlotsCovariances"]]) {
       p <- p + 
@@ -1993,7 +2003,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   globalLabelSize <- 16
 
   if (options[["pathPlotsLegendLabels"]]) {
-    nodeLabelUnique <- unique(nodeLabels)
+    # Get labels of nodes that are in visbile in plot
+    nodeLabelUnique <- unique(nodeLabels[!is.na(igraph::V(graph)$posX)])
     nodeLabelUnique[nodeLabelUnique == ""] <- NA
     nodeLabelUniqueSorted <- sort(nodeLabelUnique, index.return = TRUE)
     # Add legend for label abbreviations by manually overiding dummy alpha variable
@@ -2002,11 +2013,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       na.translate = FALSE,
       # Make all labels fully visible
       values = rep(1, length(nodeLabelUnique)),
-      limits = .procDecodeVarNames(sort(nodeLabelUnique)),
+      limits = abbreviate(.procDecodeVarNames(sort(nodeLabelUnique)), minlength = 15),
       guide = ggplot2::guide_legend(
         # Sort abbreviated labels according to sort index of full labels
         override.aes = list(
-          label = unique(nodeLabelsAbbr)[nodeLabelUniqueSorted[["ix"]]],
+          label = unique(nodeLabelsAbbr[!is.na(igraph::V(graph)$posX)])[nodeLabelUniqueSorted[["ix"]]],
           # Make legend labels same size as legend text
           size = globalLabelSize/ggplot2::.pt
         )
@@ -2023,7 +2034,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       legend.text = ggplot2::element_text(
         size = globalLabelSize,
         # Increase spacing dynamically between legend key and labels
-        margin = ggplot2::margin(0, 0, 0, 2*options[["pathPlotsLabelLength"]])
+        margin = ggplot2::margin(0, 0, 0, 4*options[["pathPlotsLabelLength"]])
       )
     )
 
