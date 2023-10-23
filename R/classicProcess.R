@@ -349,12 +349,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(varNames)
 }
 
-.procCheckRegListVars <- function(vars) {
-  # Check if vector of var names contains encoded X, W, Z, or M (not Y!!)
-  encoding <- .procVarEncoding()
-  return(!any(c(encoding[["X"]], encoding[["W"]], encoding[["Z"]]) %in% vars) && !any(grepl(encoding[["M"]], vars)))
-}
-
 .procReplaceDummyVars <- function(vars, modelOptions, globalDependent) {
   # Get encoding
   encoding <- .procVarEncoding()
@@ -866,11 +860,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 # Results functions ----
+.procCheckFitModelVars <- function(vars) {
+  # Check if vector of var names contains encoded X, W, Z, or M (not Y!!)
+  encoding <- .procVarEncoding()
+  return(!any(unlist(encoding) %in% vars) && !any(grepl(encoding[["M"]], vars)))
+}
+
 .procCheckFitModel <- function(graph) {
   if (inherits(graph, "try-error")) return(FALSE)
-  return(all(sapply(igraph::V(graph)$intVars, function(v) {
-    return(all(sapply(v, .procCheckRegListVars)))
-  })))
+  allSourcesValid <- .procCheckFitModelVars(igraph::E(graph)$source)
+  allTargetsValid <- .procCheckFitModelVars(igraph::E(graph)$target)
+  return(allSourcesValid && allTargetsValid)
 }
 
 .procGraphAddEstimates <- function(graph, fittedModel, type = "effects") {
