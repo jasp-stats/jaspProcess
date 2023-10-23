@@ -1894,7 +1894,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   decimalPos <- layout[!nodeIsHelper,] %% 1
   labelScale <- 30
-
+  
   if (any(na.omit(decimalPos[,1]) > 0)) {
     layout[,1] <- layout[,1] * (1/min(decimalPos[,1][decimalPos[,1] > 0], na.rm = TRUE))
   }
@@ -1903,10 +1903,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     layout[,2] <- layout[,2] * yScale
     labelScale <- labelScale * yScale
   }
-
+  
   # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
-  layout[, 1] <- (layout[, 1]) * (max(layout[, 2], na.rm = TRUE) - min(layout[, 2], na.rm = TRUE)) / (max(layout[, 1], na.rm = TRUE) - min(layout[, 1], na.rm = TRUE))
-
+  xRange <- range(layout[, 1], na.rm = TRUE)
+  yRange <- range(layout[, 2], na.rm = TRUE)
+  
+  if ((yRange[2] - yRange[1]) > 1) {
+    layout[, 1] <- (layout[, 1]) * (yRange[2] - yRange[1]) / (xRange[2] - xRange[1])
+  }
+  
   plotLayout <- ggraph::create_layout(graph, layout = layout[match(igraph::V(graph)$name, rownames(layout)), , drop = FALSE])
 
   if (type == "statistical") {
