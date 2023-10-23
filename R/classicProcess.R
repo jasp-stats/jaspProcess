@@ -1936,7 +1936,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       arrow = ggplot2::arrow(length = grid::unit(0.05, "native")),
       start_cap = ggraph::square(nodeSize, unit = "native"), # Arrow start has always margin
       angle_calc = "along",
-      label_dodge = grid::unit(0.025, "native")
+      label_dodge = grid::unit(0.025, "native"),
+      label_push = grid::unit(-0.025, "native")
     ) +
     # Add abbreviated node lables with dummy alpha variable to display them in legend
     ggraph::geom_node_text(
