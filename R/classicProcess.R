@@ -1632,7 +1632,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procConceptPathPlot <- function(container, options, modelContainer, modelIdx) {
   if (!is.null(container[["conceptPathPlot"]])) return()
 
-  procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 320, width = 480)
+  procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 480, width = 480)
   procPathPlot$dependOn(
     options = c("pathPlotsLegendLabels", "pathPlotsLegendColor", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot"))
@@ -1647,7 +1647,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procStatPathPlot <- function(container, options, modelContainer, modelIdx) {
   if (!is.null(container[["statPathPlot"]])) return()
 
-  procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 320, width = 480)
+  procPathPlot <- createJaspPlot(title = gettext("Statistical path plot"), height = 480, width = 480)
   procPathPlot$dependOn(
     options = c(
       "statisticalPathPlotsParameterEstimates",
@@ -1738,7 +1738,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
   # Adjust pos of dependent according to longest med path
   igraph::V(graph)[isDep]$posX <- max(medPathLengths) - 1
-
+  
   return(graph)
 }
 
@@ -1912,24 +1912,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     colorPalette <- rep("transparent", length(unique(nodeType)))
   }
 
+  # Scale layout so that there is always one full step between each pos
   decimalPos <- layout[!nodeIsHelper,] %% 1
   labelScale <- 30
   
-  if (any(na.omit(decimalPos[,1]) > 0)) {
-    layout[,1] <- layout[,1] * (1/min(decimalPos[,1][decimalPos[,1] > 0], na.rm = TRUE))
-  }
+  # Path plots look better without scaling x-axis
+  # if (any(na.omit(decimalPos[,1]) > 0)) {
+  #   layout[,1] <- layout[,1] * (1/min(decimalPos[,1][decimalPos[,1] > 0], na.rm = TRUE))
+  # }
   if (any(na.omit(decimalPos[,2]) > 0)) {
     yScale <- (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
     layout[,2] <- layout[,2] * yScale
     labelScale <- labelScale * yScale
-  }
-  
-  # Scale x-axis to 4/3 (x/y) ratio of y-axis to make plot wider
-  xRange <- range(layout[, 1], na.rm = TRUE)
-  yRange <- range(layout[, 2], na.rm = TRUE)
-  
-  if ((yRange[2] - yRange[1]) > 1) {
-    layout[, 1] <- (layout[, 1]) * (yRange[2] - yRange[1]) / (xRange[2] - xRange[1])
   }
   
   plotLayout <- ggraph::create_layout(graph, layout = layout[match(igraph::V(graph)$name, rownames(layout)), , drop = FALSE])
