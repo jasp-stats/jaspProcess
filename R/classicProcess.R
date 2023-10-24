@@ -1688,9 +1688,34 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(rev(pos)[adjustedNodes])
 }
 
+.procMainGraphLayout <- function(graph) {
+  igraph::V(graph)$posX <- NA
+  igraph::V(graph)$posY <- NA
+
+  # Calc pos of treat nodes
+  igraph::V(graph)[isTreat]$posX <- 0
+  igraph::V(graph)[isTreat]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isTreat))
+  
+  # Set y pos of first treat node to 0
+  igraph::V(graph)[isTreat]$posY[1] <- 0
+
+  igraph::V(graph)[isDep]$posX <- 1
+  igraph::V(graph)[isDep]$posY <- 0
+  
+  return(graph)
+}
+
 .procMedGraphLayout <- function(graph) {
+  # Add basic layout to graph
+  graph <- .procMainGraphLayout(graph)
+
   # Get all simple paths (each node only visited once) from exo nodes to dep var node
-  medPaths <- igraph::all_simple_paths(graph, from = igraph::V(graph)[isTreat]$name[1], to = igraph::V(graph)[isDep]$name, mode = "out")
+  medPaths <- igraph::all_simple_paths(
+    graph,
+    from = igraph::V(graph)[isTreat]$name[1],
+    to = igraph::V(graph)[isDep]$name,
+    mode = "out"
+  )
   medPathLengths <- sapply(medPaths, length)
 
   # Sort paths according to length (longest at top)
@@ -1702,10 +1727,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Which position has mediator in first occuring path
       return(na.omit(sapply(medPaths, function(path) match(v, names(path))))[1])
     }) - 1
-    igraph::V(graph)[isMed]$posY <- .procMainGraphLayoutPosHelper(sapply(igraph::V(graph)[isMed]$name, function(v) {
-      # Which index has first occuring path
-      return(max(which(sapply(medPaths, function(path) v %in% names(path))), na.rm = TRUE))
-    }))
+    igraph::V(graph)[isMed]$posY <- .procMainGraphLayoutPosHelper(
+      sapply(igraph::V(graph)[isMed]$name, 
+        function(v) {
+          # Which index has first occuring path
+          return(max(which(sapply(medPaths, function(path) v %in% names(path))), na.rm = TRUE))
+        }
+      )
+    )
   }
   # Adjust pos of dependent according to longest med path
   igraph::V(graph)[isDep]$posX <- max(medPathLengths) - 1
@@ -1713,7 +1742,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procModGraphLayoutConceptual <- function(graph) {
+.procGraphLayoutConceptual <- function(graph) {
+  # Add mediator layout to graph
+  graph <- .procMedGraphLayout(graph)
+
   # Calc pos of moderator nodes
   if (any(igraph::E(graph)$isMod)) {
     # Calc pos based on higher order interactions
@@ -1766,7 +1798,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procModGraphLayoutStatistical <- function(graph) {
+.procGraphLayoutStatistical <- function(graph) {
+  # Add mediator layout to graph
+  graph <- .procMedGraphLayout(graph)
+
   if (any(igraph::E(graph)$isMod)) {
     # Calc pos based on higher order interactions
     for (i in 1:sum(igraph::V(graph)$isHigherOrderInt)) {
@@ -1795,35 +1830,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procMainGraphLayout <- function(graph) {
-  igraph::V(graph)$posX <- NA
-  igraph::V(graph)$posY <- NA
-
-  nodeNames <- igraph::V(graph)$name
-
-  # Calc pos of treat nodes
-  igraph::V(graph)[isTreat]$posX <- 0
-  igraph::V(graph)[isTreat]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isTreat))
-  
-  # Set y pos of first treat node to 0
-  igraph::V(graph)[isTreat]$posY[1] <- 0
-
-  igraph::V(graph)[isDep]$posX <- 1
-  igraph::V(graph)[isDep]$posY <- 0
-  
-  return(graph)
-}
-
 .procLavToGraph <- function(container, type, estimates, options) {
   graph <- container[["graph"]]$object
-  # Get layout of main paths: matrix with x,y coordinates for each node
-  graph <- .procMainGraphLayout(graph)
-  graph <- .procMedGraphLayout(graph)
   
   if (type == "conceptual") {
-    graph <- .procModGraphLayoutConceptual(graph)
+    graph <- .procGraphLayoutConceptual(graph)
   } else {
-    graph <- .procModGraphLayoutStatistical(graph)
+    graph <- .procGraphLayoutStatistical(graph)
   }
 
   layout <- cbind(igraph::V(graph)$posX, igraph::V(graph)$posY)
