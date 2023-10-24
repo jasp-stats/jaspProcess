@@ -1755,6 +1755,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       nMods <- length(modIntVars)-1
       # Get target var of interaction
       target <- igraph::E(graph)[.from(igraph::V(graph)[isHigherOrderInt][i]$name)]$target
+
+      # Delete edges from moderators to target variable
+      modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target))
+
+      if (any(modIntVarHasEdgeToTarget)) {
+        graph <- igraph::delete_edges(graph,
+          paste(modIntVars[-1][modIntVarHasEdgeToTarget], target, sep = "|")
+        )
+      }
+
       # Add helper nodes ("i"ij)
       helperNodeNames <- paste0("i", i, 1:nMods)
       graph <- igraph::add_vertices(graph, 
@@ -1762,15 +1772,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         name = helperNodeNames,
         posX = NA, posY = NA, isHigherOrderInt = FALSE
       )
+
       # Add edges from moderators to helper nodes
       graph <- igraph::add_edges(graph,
         edges = c(rbind(modIntVars[-1], helperNodeNames)),
         source = modIntVars[-1],
         target = helperNodeNames
-      )
-      # Delete edges from moderators to target variable
-      graph <- igraph::delete_edges(graph,
-        paste(modIntVars[-1], target, sep = "|")
       )
 
       for (j in 2:length(modIntVars)) {
