@@ -218,7 +218,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       isInt <- grepl(":", sourceVars)
       if (any(isInt)) {
         # Split interaction terms
-        varsSplit <- .strsplitColon(sourceVars)
+        varsSplit <- strsplit(sourceVars, ":")
         for (v in varsSplit[isInt]) {
           # If the second term of the interaction is the independent of current path
           # this indicates a three-way interaction with the independent variable
@@ -841,7 +841,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Concatenate rhs and lhs effects
   medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
   # Concatenate total effects
-  totEffectsLabeled <- paste(.pasteDot("tot", unlist(totLhsMods)), totEffects, sep = " := ")
+  totEffectsLabeled <- paste(paste("tot", unlist(totLhsMods), sep = "."), totEffects, sep = " := ")
   # Only return total effects when no indirect path
   if (length(medEffects) < 2) {
     return(paste(c(medEffectsLabeled, totEffectsLabeled), collapse = "\n"))
@@ -849,7 +849,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Add rhs indirect effects
   totIndEffects <- .doCallPaste(totRhs[-1], sep = " + ")
   # Concatenate indirect effects
-  totIndEffectsLabeled <- paste(.pasteDot("totInd", unlist(totLhsMods[-1])), totIndEffects, sep = " := ")
+  totIndEffectsLabeled <- paste(paste("totInd", unlist(totLhsMods[-1]), sep = "."), totIndEffects, sep = " := ")
 
   return(paste(c(medEffectsLabeled, totEffectsLabeled, totIndEffectsLabeled), collapse = "\n"))
 }
@@ -2092,25 +2092,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 # Helper functions ----
 
-.pasteExpandGrid <- function(obj, collapse) {
-  return(apply(expand.grid(obj), 1, paste, collapse = collapse))
-}
-
 .doCallPaste <- function(obj, sep) {
   return(do.call(paste, append(obj, list(sep = sep))))
-}
-
-.pasteDot <- function(...) {
-  return(paste(..., sep = "."))
 }
 
 .computeWeights <- function(x) {
   diffExp <- exp(-0.5*(x - min(x, na.rm = TRUE)))
   return(diffExp/sum(diffExp, na.rm = TRUE))
-}
-
-.strsplitColon <- function(x) {
-  return(strsplit(x, ":"))
 }
 
 .minMaxSubAddOne <- function(x) {
