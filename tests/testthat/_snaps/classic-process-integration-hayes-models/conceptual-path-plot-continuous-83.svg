@@ -56,11 +56,11 @@
 <polyline points='567.67,378.26 574.42,353.08 549.24,359.83 ' style='stroke-width: 1.92; stroke-linecap: butt;' />
 <polyline points='179.44,172.51 179.44,173.54 179.44,176.28 179.44,179.01 179.44,181.75 179.44,184.48 179.44,187.22 179.44,189.95 179.44,192.69 179.44,195.43 179.44,198.16 179.44,200.90 179.44,203.63 179.44,206.37 179.44,209.11 179.44,211.84 179.44,214.58 179.44,217.31 179.44,220.05 179.44,222.78 179.44,225.52 179.44,228.26 179.44,230.99 179.44,233.73 179.44,236.46 179.44,239.20 179.44,241.94 179.44,244.67 179.44,247.41 179.44,250.14 179.44,252.88 179.44,255.61 179.44,258.35 179.44,261.09 179.44,263.82 179.44,266.56 179.44,269.29 179.44,272.03 179.44,274.77 179.44,277.50 179.44,280.24 179.44,282.97 179.44,285.71 179.44,288.44 179.44,291.18 179.44,293.92 179.44,296.65 179.44,299.39 179.44,302.12 179.44,304.86 179.44,307.60 179.44,310.33 179.44,313.07 179.44,315.80 179.44,318.54 179.44,321.27 179.44,324.01 179.44,326.75 179.44,329.48 179.44,332.22 179.44,334.95 179.44,337.69 179.44,340.43 179.44,343.16 179.44,345.90 179.44,348.63 179.44,351.37 179.44,354.10 179.44,356.84 179.44,359.58 179.44,362.31 179.44,365.05 179.44,367.78 179.44,370.52 179.44,373.26 179.44,375.99 179.44,378.73 179.44,381.46 179.44,384.20 179.44,386.93 ' style='stroke-width: 1.92; stroke-linecap: butt;' />
 <polyline points='166.40,364.36 179.44,386.93 192.47,364.36 ' style='stroke-width: 1.92; stroke-linecap: butt;' />
-<text x='89.15' y='301.55' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='26.10px' lengthAdjust='spacingAndGlyphs'>cnG</text>
-<text x='630.85' y='301.55' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>cnN</text>
-<text x='269.72' y='482.11' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='19.77px' lengthAdjust='spacingAndGlyphs'>M1</text>
-<text x='450.28' y='482.11' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='19.77px' lengthAdjust='spacingAndGlyphs'>M2</text>
-<text x='179.44' y='120.98' text-anchor='middle' style='font-size: 14.23px; font-family: sans;' textLength='22.94px' lengthAdjust='spacingAndGlyphs'>cn1</text>
+<text x='89.15' y='303.18' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='34.80px' lengthAdjust='spacingAndGlyphs'>cnG</text>
+<text x='630.85' y='303.18' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='33.74px' lengthAdjust='spacingAndGlyphs'>cnN</text>
+<text x='269.72' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='26.36px' lengthAdjust='spacingAndGlyphs'>M1</text>
+<text x='450.28' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='26.36px' lengthAdjust='spacingAndGlyphs'>M2</text>
+<text x='179.44' y='122.61' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='30.59px' lengthAdjust='spacingAndGlyphs'>cn1</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='0.00' y='27.74' style='font-size: 13.20px; font-family: sans;' textLength='206.96px' lengthAdjust='spacingAndGlyphs'>conceptual-path-plot-continuous-83</text>
