@@ -1914,7 +1914,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Scale layout so that there is always one full step between each pos
   decimalPos <- layout[!nodeIsHelper,] %% 1
-  labelScale <- 30
   
   # Path plots look better without scaling x-axis
   # if (any(na.omit(decimalPos[,1]) > 0)) {
@@ -1923,9 +1922,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (any(na.omit(decimalPos[,2]) > 0)) {
     yScale <- (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
     layout[,2] <- layout[,2] * yScale
-    labelScale <- labelScale * yScale
   }
   
+  xRange <- diff(range(layout[,1], na.rm = TRUE))
+  yRange <- diff(range(layout[,2], na.rm = TRUE))
+
+  labelScale <- pmax(xRange, yRange)
+
   plotLayout <- ggraph::create_layout(graph, layout = layout[match(igraph::V(graph)$name, rownames(layout)), , drop = FALSE])
 
   if (type == "statistical") {
@@ -1955,13 +1958,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       arrow = ggplot2::arrow(length = grid::unit(0.05, "native")),
       start_cap = ggraph::square(nodeSize, unit = "native"), # Arrow start has always margin
       angle_calc = "along",
+      label_size = 7/sqrt(labelScale),
       label_dodge = grid::unit(0.025, "native"),
-      label_push = grid::unit(-0.025, "native")
+      label_push = grid::unit(-0.01, "native")
     ) +
     # Add abbreviated node lables with dummy alpha variable to display them in legend
     ggraph::geom_node_text(
       ggplot2::aes(label = nodeLabelsAbbr, alpha = nodeAlpha),
-      size = labelScale/(sum(!nodeIsHelper) + options[["pathPlotsLabelLength"]] - 3)
+      size = 20/(labelScale + options[["pathPlotsLabelLength"]] - 3)
     ) +
     # Make helper nodes transparent and hide color from legend
     ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
