@@ -1752,52 +1752,59 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     for (i in 1:length(igraph::V(graph)[isHigherOrderInt])) {
       # Get vars of interaction
       modIntVars <- igraph::V(graph)[isHigherOrderInt][i]$intVars[[1]]
+      
       nMods <- length(modIntVars)-1
-      # Get target var of interaction
+      # Get target vars of interaction
       target <- igraph::E(graph)[.from(igraph::V(graph)[isHigherOrderInt][i]$name)]$target
-
-      # Delete edges from moderators to target variable
-      modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target))
-
-      if (any(modIntVarHasEdgeToTarget)) {
-        graph <- igraph::delete_edges(graph,
-          paste(modIntVars[-1][modIntVarHasEdgeToTarget], target, sep = "|")
-        )
-      }
-
-      # Add helper nodes ("i"ij)
-      helperNodeNames <- paste0("i", i, 1:nMods)
-      graph <- igraph::add_vertices(graph, 
-        nMods,
-        name = helperNodeNames,
-        posX = NA, posY = NA, isHigherOrderInt = FALSE
-      )
-
-      # Add edges from moderators to helper nodes
-      graph <- igraph::add_edges(graph,
-        edges = c(rbind(modIntVars[-1], helperNodeNames)),
-        source = modIntVars[-1],
-        target = helperNodeNames
-      )
-
-      for (j in 2:length(modIntVars)) {
-        # Pos of helper nodes is mean of source and target nodes
-        helperNodePosX <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posX, igraph::V(graph)[target]$posX))
-        helperNodePosY <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posY, igraph::V(graph)[target]$posY))
-        igraph::V(graph)[paste0("i", i, j-1)]$posX <- helperNodePosX
-        igraph::V(graph)[paste0("i", i, j-1)]$posY <- helperNodePosY
-        # Pos of moderator depends on index
-        if (j %% 2 == 0) {
-          # Place first moderator above source and target
-          igraph::V(graph)[modIntVars[j]]$posX <- helperNodePosX
-          igraph::V(graph)[modIntVars[j]]$posY <- .minMaxSubAddOne(igraph::V(graph)$posY)
-        } else {
-          # Place second moderator to the right of source and target
-          igraph::V(graph)[modIntVars[j]]$posX <- .minMaxSubAddOne(helperNodePosX)
-          igraph::V(graph)[modIntVars[j]]$posY <- helperNodePosY
+      
+      for (l in 1:length(target)) {
+        # Delete edges from moderators to target variable
+        modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]))
+        
+        if (any(modIntVarHasEdgeToTarget)) {
+          graph <- igraph::delete_edges(graph,
+            paste(modIntVars[-1][modIntVarHasEdgeToTarget], target[l], sep = "|")
+          )
         }
-        # Set helper node as next target
-        target <- paste0("i", i, j-1)
+
+        # Add helper nodes ("i"lj)
+        helperNodeNames <- paste0("i", i, l, 1:nMods)
+        graph <- igraph::add_vertices(graph, 
+          nMods,
+          name = helperNodeNames,
+          posX = NA, posY = NA, isHigherOrderInt = FALSE
+        )
+
+        # Add edges from moderators to helper nodes
+        graph <- igraph::add_edges(graph,
+          edges = c(rbind(modIntVars[-1], helperNodeNames)),
+          source = modIntVars[-1],
+          target = helperNodeNames
+        )
+        
+        # Create new target variable to modify later
+        helperTarget <- target[l]
+
+        for (j in 2:length(modIntVars)) {
+          helperNodeName <- paste0("i", i, l, j-1)
+          # Pos of helper nodes is mean of source and target nodes
+          helperNodePosX <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posX, igraph::V(graph)[helperTarget]$posX))
+          helperNodePosY <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posY, igraph::V(graph)[helperTarget]$posY))
+          igraph::V(graph)[helperNodeName]$posX <- helperNodePosX
+          igraph::V(graph)[helperNodeName]$posY <- helperNodePosY
+          # Pos of moderator depends on index
+          if (j %% 2 == 0) {
+            # Place first moderator above source and target
+            igraph::V(graph)[modIntVars[j]]$posX <- helperNodePosX
+            igraph::V(graph)[modIntVars[j]]$posY <- .minMaxSubAddOne(igraph::V(graph)$posY)
+          } else {
+            # Place second moderator to the right of source and target
+            igraph::V(graph)[modIntVars[j]]$posX <- .minMaxSubAddOne(helperNodePosX)
+            igraph::V(graph)[modIntVars[j]]$posY <- helperNodePosY
+          }
+          # Set helper node as next target
+          helperTarget <- helperNodeName
+        }
       }
     }
   }
@@ -1923,7 +1930,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     yScale <- (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
     layout[,2] <- layout[,2] * yScale
   }
-  
+
   xRange <- diff(range(layout[,1], na.rm = TRUE))
   yRange <- diff(range(layout[,2], na.rm = TRUE))
 
