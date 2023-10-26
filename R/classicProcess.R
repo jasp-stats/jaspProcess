@@ -1790,17 +1790,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
           # Pos of helper nodes is mean of source and target nodes
           helperNodePosX <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posX, igraph::V(graph)[helperTarget]$posX))
           helperNodePosY <- mean(c(igraph::V(graph)[modIntVars[j-1]]$posY, igraph::V(graph)[helperTarget]$posY))
+          
           igraph::V(graph)[helperNodeName]$posX <- helperNodePosX
           igraph::V(graph)[helperNodeName]$posY <- helperNodePosY
-          # Pos of moderator depends on index
-          if (j %% 2 == 0) {
-            # Place first moderator above source and target
-            igraph::V(graph)[modIntVars[j]]$posX <- helperNodePosX
-            igraph::V(graph)[modIntVars[j]]$posY <- .minMaxSubAddOne(igraph::V(graph)$posY)
-          } else {
-            # Place second moderator to the right of source and target
-            igraph::V(graph)[modIntVars[j]]$posX <- .minMaxSubAddOne(helperNodePosX)
-            igraph::V(graph)[modIntVars[j]]$posY <- helperNodePosY
+
+          # Only assign pos of nodes that do not have pos yet
+          if (is.na(igraph::V(graph)[modIntVars[j]]$posX) && is.na(igraph::V(graph)[modIntVars[j]]$posY)) {
+            # Pos of moderator depends on index
+            if (j %% 2 == 0) {
+              # Place first moderator above source and target
+              igraph::V(graph)[modIntVars[j]]$posX <- helperNodePosX
+              igraph::V(graph)[modIntVars[j]]$posY <- .minMaxSubAddOne(igraph::V(graph)$posY)
+            } else {
+              # Place second moderator to the right of source and target
+              igraph::V(graph)[modIntVars[j]]$posX <- .minMaxSubAddOne(helperNodePosX)
+              igraph::V(graph)[modIntVars[j]]$posY <- helperNodePosY
+            }
           }
           # Set helper node as next target
           helperTarget <- helperNodeName
@@ -1930,7 +1935,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     yScale <- (1/min(decimalPos[,2][decimalPos[,2] > 0], na.rm = TRUE))
     layout[,2] <- layout[,2] * yScale
   }
-
+  
   xRange <- diff(range(layout[,1], na.rm = TRUE))
   yRange <- diff(range(layout[,2], na.rm = TRUE))
 
