@@ -291,26 +291,32 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::E(graph)$isMod <- FALSE
 
   # Which are moderation variables for each edge; NULL if none
+  igraph::E(graph)$modVars <- NA
+
   for (i in 1:length(igraph::E(graph))) {
     sourceNode <- igraph::V(graph)[igraph::E(graph)$source[i]]
 
     if (sourceNode$isInt) {
       sourceNodeIntVars <- unlist(sourceNode$intVars)
-      
+
       for (v in sourceNodeIntVars) {
         # Set all edges from var interacting with sourceNode to target as isMod
         igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$isMod <- TRUE
         # Store unique moderating variables
-        igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- list(
-          unique(c(
-            igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars[[1]],
-            sourceNodeIntVars[sourceNodeIntVars != v]
-          ))
-        )
+        if (any(is.na(igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars))) {
+          igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- sourceNodeIntVars[sourceNodeIntVars != v]
+        } else {
+          igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- list(
+            unique(c(
+              igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars[[1]],
+              sourceNodeIntVars[sourceNodeIntVars != v]
+            ))
+          )
+        }
       }
     }
   }
-
+  
   return(graph)
 }
 
@@ -472,35 +478,69 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       contrastList[[f]] <- do.call(contrasts[[f]], list(levels(as.factor(dataset[[f]]))))
     }
 
+    # We need to make a new graph, otherwise igraph messes up the order of nodes
+    facGraph <- igraph::make_empty_graph()
+
     # Decode names to match with graph node names (FIXME)
     names(contrastList) <- decodeColNames(names(contrastList))
+    
+    # Split terms of predictor vars
+    sourcVarsSplit <- strsplit(unique(igraph::E(graph)$source), ":|__")
 
     # Replace dummy-coded variables in graph
-    for (v in names(contrastList)) {
-      newNodeNames <- paste0(v, colnames(contrastList[[v]]))
-      
-      # If dummy coding needs additional variables add them as nodes with same edges to target variable
-      if (length(newNodeNames) > 1) {
-        graph <- igraph::add_vertices(graph, length(newNodeNames[-1]), name = newNodeNames[-1])
-        graph <- igraph::add_edges(graph,
-          edges = as.vector(rbind(newNodeNames[-1], igraph::E(graph)[.from(v)]$source)),
-          source = newNodeNames[-1],
-          target = igraph::E(graph)[.from(v)]$source
+    # Goes through all source variables and replaces them with dummy coded variable names
+    # if necessary
+    for (vars in sourcVarsSplit) {
+      # Concatenate variable with factor levels from contrast list to get dummy variable name
+      contr <- lapply(vars, function(v) {
+        if (v %in% names(contrastList)) {
+          return(paste0(v, colnames(contrastList[[v]])))
+        } else {
+          return(v)
+        }
+      })
+  
+      # Concatenate source var and interaction terms in dummy coded variable
+      if (length(vars) < 3) {
+        contr <- .doCallPaste(contr, sep = ":")
+        sourceName <- paste(vars, collapse = ":")
+      } else {
+        contr <- .doCallPaste(contr, sep = "__")
+        sourceName <- paste(vars, collapse = "__")
+      }
+
+      # Add nodes for source variables not in graph
+      contrNotInGraph <- contr[!contr %in% igraph::V(facGraph)$name]
+
+      if (length(contrNotInGraph) > 0) {
+        facGraph <- igraph::add_vertices(facGraph, length(contrNotInGraph), name = contrNotInGraph)
+      }
+
+      # Get target variable
+      target <- igraph::E(graph)[.from(sourceName)]$target
+
+      # Add nodes for targets not in graph
+      targetNotInGraph <- target[!target %in% igraph::V(facGraph)$name]
+
+      if (length(targetNotInGraph) > 0) {
+        facGraph <- igraph::add_vertices(facGraph, length(targetNotInGraph), name = targetNotInGraph)
+      }
+
+      # Add edges between source and target variables
+      for (t in target) {
+        facGraph <- igraph::add_edges(facGraph,
+          edges = as.vector(rbind(contr, t)),
+          source = contr,
+          target = t
         )
       }
-      
-      # Update graph attributes with dummy variables
-      igraph::V(graph)$name <- gsub(v, newNodeNames[1], igraph::V(graph)$name)
-      igraph::V(graph)$intVars <- sapply(igraph::V(graph)$intVars, function(x) if (!is.null(x)) gsub(v, newNodeNames[1], x)) # Returns a list!
-      igraph::E(graph)$source <- gsub(v, newNodeNames[1], igraph::E(graph)$source)
-      igraph::E(graph)$target <- gsub(v, newNodeNames[1], igraph::E(graph)$target)
-      if (!is.null(igraph::E(graph)$modVars)) {
-        igraph::E(graph)$modVars <- sapply(igraph::E(graph)$modVars, function(x) if (!is.null(x)) gsub(v, newNodeNames[1], x)) # Returns a list!
-      }
     }
-    
+
+    # Add attributes to graph
+    facGraph <- .procGraphAddAttributes(facGraph)
+
     modelsContainer[[modelName]][["contrasts"]] <- createJaspState(contrastList)
-    modelsContainer[[modelName]][["graph"]]$object <- graph
+    modelsContainer[[modelName]][["graph"]]$object <- facGraph
   }
 
   return(dataset)
@@ -563,7 +603,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     ),
     exitAnalysisIfErrors = TRUE
   )
-  if (length(options[["covariates"]]) > 0) {
+  if (length(options[["covariates"]]) > 1) {
     .hasErrors(dataset, "run",
       type = "varCovData",
       varCovData.target = options[["covariates"]],
@@ -779,7 +819,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     lhs <- paste(names(path), collapse = "__")
     
     # Get moderators on path
-    modName <- unlist(Filter(Negate(is.null), sapply(2:length(path), function(i) {
+    modName <- na.omit(unlist(sapply(2:length(path), function(i) {
       return(igraph::E(graph)[.from(names(path)[i-1]) & .to(names(path)[i])]$modVars)
     })))
     
@@ -789,9 +829,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       pathEdge <- igraph::E(graph)[.from(names(path)[i-1]) & .to(names(path)[i])]
 
       # If no moderators on edge, return only parName
-      if(is.null(pathEdge$modVars[[1]])) return(pathEdge$parName)
+      if(any(is.na(pathEdge$modVars[[1]]))) return(pathEdge$parName)
       
-      modPars <- lapply(pathEdge$modVars[[1]], function(v) { # If moderators 
+      modPars <- lapply(pathEdge$modVars[[1]], function(v) { # If moderators
         # Get edge for two way interaction between X and M
         twoWayEdge <- igraph::E(graph)[
           .from(paste(names(path)[i-1], v, sep = ":")) & 
