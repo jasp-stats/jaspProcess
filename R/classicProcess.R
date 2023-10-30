@@ -19,15 +19,16 @@
 ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Set title
   jaspResults$title <- gettext("Process Analysis")
-
-  # Check if all models are ready to compute something
-  ready <- .procIsReady(options)
-
-  if (!ready) return()
+  # Check if analysis has any variables to read in
+  if (options[["dependent"]] == "" || (length(options[["covariates"]]) == 0 && length(options[["factors"]]) == 0)) {
+    return()
+  }
   # Read dataset
   dataset <- .procReadData(options)
   # Check for errors in dataset
-  ready <- .procErrorHandling(dataset, options)
+  .procErrorHandling(dataset, options)
+  # Check if all models are ready to compute something
+  if (!.procIsReady(options)) return()
   # Create a container for each model
   .procContainerModels(jaspResults, options)
   # Transform input for each model into a graph for further processing
@@ -544,14 +545,32 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procErrorHandling <- function(dataset, options) {
-  # See error handling
-  vars <- lapply(.procGetDependencies(), function(x) options[[x]])
-  .hasErrors(dataset, "run", type = c('observations', 'variance', 'infinity'),
-             all.target = vars,
-             observations.amount = '< 2',
-             exitAnalysisIfErrors = TRUE)
-
-  return(TRUE)
+  .hasErrors(dataset, "run",
+    type = c('observations', 'variance', 'infinity'),
+    observations.target = c(
+      options[["dependent"]],
+      options[["covariates"]],
+      options[["factors"]]
+    ),
+    observations.amount = '< 2',
+    variance.target = c(
+      options[["dependent"]],
+      options[["covariates"]]
+    ),
+    infinity.target = c(
+      options[["dependent"]],
+      options[["covariates"]]
+    ),
+    exitAnalysisIfErrors = TRUE
+  )
+  if (length(options[["covariates"]]) > 0) {
+    .hasErrors(dataset, "run",
+      type = "varCovData",
+      varCovData.target = options[["covariates"]],
+      varCovData.corFun = stats::cov,
+      exitAnalysisIfErrors = TRUE
+    )
+  }
 }
 
 .procModProbes <- function(jaspResults, dataset, options) {
