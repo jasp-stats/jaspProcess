@@ -2,7 +2,7 @@
 
 
 test_that("Test that model number one_confounder - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -13,19 +13,19 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "contcor1")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "contcor1")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -77,9 +77,9 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.0338982352403213, 0.370786700700972, 0.168444232730325, "Total",
-			 0.102761008338914, 0.10323785006597, 1.63161314016795, -0.0420059521826613,
-			 0.367482204548676, 0.162738126183007, "Total indirect", 0.11926845840203,
-			 0.1044631840078, 1.55785148355095))
+			 0.102761008338914, 0.10323785006597, 1.63161314016795, -0.027115002941041,
+			 0.0385272160356765, 0.00570610654731776, "Total indirect", 0.733292476299653,
+			 0.0167457717321581, 0.34074909407489))
 
 
 
@@ -95,7 +95,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number one_confounder - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -106,19 +106,19 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "facExperim")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "facExperim")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -147,10 +147,10 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.329844405685614, 0.496024877188678, 0.0830902357515322, "facExperimexperimental",
-			 "contNormal", "", "<unicode>", "", 0.693299245993837, 0.210684810891589,
-			 0.394381708865987, -0.0500653809891558, 0.0303840547660915,
-			 -0.00984066311153218, "facExperimexperimental", "contGamma",
+		list(-0.329844405685614, 0.496024877188678, 0.0830902357515322, "experimental",
+			 "facExperim", "contNormal", "", "<unicode>", "", 0.693299245993837,
+			 0.210684810891589, 0.394381708865987, -0.0500653809891558, 0.0303840547660915,
+			 -0.00984066311153218, "experimental", "facExperim", "contGamma",
 			 "contNormal", "<unicode>", "<unicode>", 0.63159016355888, 0.0205231923621613,
 			 -0.479489883341709))
 
@@ -170,10 +170,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.339311551617825, 0.485810696897825, 0.07324957264, "Total",
-			 0.727848824673947, 0.210494237400306, 0.347988493864076, -0.329844405685614,
-			 0.496024877188678, 0.0830902357515322, "Total indirect", 0.693299245993837,
-			 0.210684810891589, 0.394381708865987))
+		list(-0.339311551617825, 0.485810696897825, 0.07324957264, "experimental",
+			 "Total", 0.727848824673947, 0.210494237400306, 0.347988493864076,
+			 -0.339311551617825, 0.485810696897825, 0.07324957264, "experimental",
+			 "Total", 0.727848824673947, 0.210494237400306, 0.347988493864076,
+			 -0.0500653809891558, 0.0303840547660915, -0.00984066311153218,
+			 "experimental", "Total indirect", 0.63159016355888, 0.0205231923621613,
+			 -0.479489883341709))
 
 
 
@@ -189,7 +192,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number one_direct - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -200,19 +203,19 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "directs",
-        processVariable = "")), residualCovariances = TRUE, statisticalPathPlot = TRUE,
-    totalEffects = TRUE, localTests = FALSE, localTestType = "cis",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "directs", 
+        processVariable = "")), residualCovariances = TRUE, statisticalPathPlot = TRUE, 
+    totalEffects = TRUE, localTests = FALSE, localTestType = "cis", 
     localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -271,7 +274,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number one_direct - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -282,19 +285,19 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "directs",
-        processVariable = "")), residualCovariances = TRUE, statisticalPathPlot = TRUE,
-    totalEffects = TRUE, localTests = FALSE, localTestType = "cis",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "directs", 
+        processVariable = "")), residualCovariances = TRUE, statisticalPathPlot = TRUE, 
+    totalEffects = TRUE, localTests = FALSE, localTestType = "cis", 
     localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -353,7 +356,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number two_confounder - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -364,21 +367,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "contcor1"), list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "contcor2")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "contcor1"), list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "contcor2")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -438,9 +441,9 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.00931723446549082, 0.524832920777229, 0.257757843155869, "Total",
-			 0.0585458573430464, 0.136265298611614, 1.89158828977093, -0.0183967830162192,
-			 0.521461905534409, 0.251532561259095, "Total indirect", 0.067792370251071,
-			 0.137721583868113, 1.8263844649069))
+			 0.0585458573430464, 0.136265298611614, 1.89158828977093, -0.0345845435803312,
+			 0.0470351073738792, 0.00622528189677404, "Total indirect", 0.7649551805981,
+			 0.0208217221331657, 0.298980163934575))
 
 
 
@@ -456,7 +459,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number two_confounder - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -467,21 +470,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "facExperim"), list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "facGender")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "facExperim"), list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "facGender")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -514,12 +517,12 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.397396510584462, 0.416025502052742, 0.0093144957341401, "facExperimexperimental",
-			 "contNormal", "", "<unicode>", "", 0.964197302009531, 0.207509428503119,
-			 0.0448870964627041, -0.0543727189027194, 0.0333398342079703,
-			 -0.0105164423473746, "facExperimexperimental", "contGamma",
-			 "contNormal", "<unicode>", "<unicode>", 0.63836482029219, 0.0223760624691461,
-			 -0.469986279394574))
+		list(-0.397396510584462, 0.416025502052742, 0.0093144957341401, "experimental",
+			 "facExperim", "contNormal", "", "<unicode>", "", 0.964197302009531,
+			 0.207509428503119, 0.0448870964627041, -0.0543727189027194,
+			 0.0333398342079703, -0.0105164423473746, "experimental", "facExperim",
+			 "contGamma", "contNormal", "<unicode>", "<unicode>", 0.63836482029219,
+			 0.0223760624691461, -0.469986279394574))
 
 
 
@@ -542,10 +545,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.409075392315575, 0.406671499089106, -0.00120194661323445, "Total",
-			 0.995391649700707, 0.208102520719562, -0.005775742692008, -0.397396510584462,
-			 0.416025502052742, 0.0093144957341401, "Total indirect", 0.964197302009531,
-			 0.207509428503119, 0.0448870964627041))
+		list(-0.409075392315575, 0.406671499089106, -0.00120194661323445, "experimental",
+			 "Total", 0.995391649700707, 0.208102520719562, -0.005775742692008,
+			 -0.409075392315575, 0.406671499089106, -0.00120194661323445,
+			 "experimental", "Total", 0.995391649700707, 0.208102520719562,
+			 -0.005775742692008, -0.0543727189027194, 0.0333398342079703,
+			 -0.0105164423473746, "experimental", "Total indirect", 0.63836482029219,
+			 0.0223760624691461, -0.469986279394574))
 
 
 
@@ -561,7 +567,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_X_Y - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -572,21 +578,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "mediators",
-        processVariable = "debCollin1"), list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "contcor2")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "mediators", 
+        processVariable = "debCollin1"), list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "contcor2")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -651,9 +657,9 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.172816800526246, 0.240148499061018, 0.0336658492673863, "Total",
-			 0.749300959047747, 0.105350226546172, 0.319561242259233, -0.17738968874516,
-			 0.235906781207678, 0.0292585462312589, "Total indirect", 0.78139319035638,
-			 0.105434710334697, 0.277503927675992))
+			 0.749300959047747, 0.105350226546172, 0.319561242259233, -0.0179628726375066,
+			 0.0242572794460163, 0.00314720340425485, "Total indirect", 0.770132222942081,
+			 0.0107706448732094, 0.292201947172458))
 
 
 
@@ -669,7 +675,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_X_Y - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -680,21 +686,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "mediators",
-        processVariable = "debCollin1"), list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "facGender")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "mediators", 
+        processVariable = "debCollin1"), list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "facGender")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -727,13 +733,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.0859003151554296, 0.895699802278834, 0.490800058717132, "facGenderm",
-			 "contNormal", "", "", "<unicode>", "", "", 0.0175121668886125,
+		list(0.0859003151554296, 0.895699802278834, 0.490800058717132, "m",
+			 "facGender", "contNormal", "", "", "<unicode>", "", "", 0.0175121668886125,
 			 0.206585297870522, 2.37577438363858, -0.0953627168761149, 0.0411095548346247,
-			 -0.0271265810207451, "facGenderm", "contGamma", "contNormal",
+			 -0.0271265810207451, "m", "facGender", "contGamma", "contNormal",
 			 "", "<unicode>", "<unicode>", "", 0.435883275295673, 0.0348149947619486,
 			 -0.779163725464449, -0.0210117568450086, 0.0239241658212091,
-			 0.00145620448810027, "facGenderm", "contGamma", "debCollin1",
+			 0.00145620448810027, "m", "facGender", "contGamma", "debCollin1",
 			 "contNormal", "<unicode>", "<unicode>", "<unicode>", 0.898916540794359,
 			 0.0114634562218149, 0.127030143433454))
 
@@ -758,10 +764,17 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.0625107971036305, 0.867748567265343, 0.465129682184487, "Total",
-			 0.0235575803680084, 0.205421573180254, 2.264268912868, 0.0874078079953342,
-			 0.89710471841513, 0.492256263205232, "Total indirect", 0.0171663559416233,
-			 0.206559129863248, 2.3831251783987))
+		list(0.0625107971036305, 0.867748567265343, 0.465129682184487, "m",
+			 "Total", 0.0235575803680084, 0.205421573180254, 2.264268912868,
+			 0.0625107971036305, 0.867748567265343, 0.465129682184487, "m",
+			 "Total", 0.0235575803680084, 0.205421573180254, 2.264268912868,
+			 0.0625107971036305, 0.867748567265343, 0.465129682184487, "m",
+			 "Total", 0.0235575803680084, 0.205421573180254, 2.264268912868,
+			 -0.0941334753506578, 0.0427927222853681, -0.0256703765326449,
+			 "m", "Total indirect", 0.462405005295899, 0.0349307943197126,
+			 -0.734892436103528, -0.0941334753506578, 0.0427927222853681,
+			 -0.0256703765326449, "m", "Total indirect", 0.462405005295899,
+			 0.0349307943197126, -0.734892436103528))
 
 
 
@@ -777,7 +790,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_X_M - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -788,21 +801,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "mediators",
-        processVariable = "debCollin1"), list(processDependent = "debCollin1",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "contcor2")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "mediators", 
+        processVariable = "debCollin1"), list(processDependent = "debCollin1", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "contcor2")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -887,7 +900,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_X_M - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -898,21 +911,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "mediators",
-        processVariable = "debCollin1"), list(processDependent = "debCollin1",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "facGender")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "mediators", 
+        processVariable = "debCollin1"), list(processDependent = "debCollin1", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "facGender")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -943,13 +956,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.0812046417471832, 0.0448619220894113, -0.018171359828886, "facGenderm",
-			 "contGamma", "contNormal", "", "<unicode>", "<unicode>", "",
-			 0.572058586763452, 0.0321604286688407, -0.565022314099054, "",
-			 "", 0.00130342699162342, "facGenderm", "debCollin1", "contNormal",
-			 "", "<unicode>", "<unicode>", "", "", "", "", "", "", 0.000970569137243933,
-			 "facGenderm", "contGamma", "debCollin1", "contNormal", "<unicode>",
-			 "<unicode>", "<unicode>", "", "", ""))
+		list(-0.0812046417471832, 0.0448619220894113, -0.018171359828886, "m",
+			 "facGender", "contGamma", "contNormal", "", "<unicode>", "<unicode>",
+			 "", 0.572058586763452, 0.0321604286688407, -0.565022314099054,
+			 "", "", 0.00130342699162342, "m", "facGender", "debCollin1",
+			 "contNormal", "", "<unicode>", "<unicode>", "", "", "", "",
+			 "", "", 0.000970569137243933, "m", "facGender", "contGamma",
+			 "debCollin1", "contNormal", "<unicode>", "<unicode>", "<unicode>",
+			 "", "", ""))
 
 
 
@@ -970,10 +984,17 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.079416444198823, 0.0476217167987858, -0.0158973637000186, "Total",
-			 0.623756169473329, 0.0324082896419704, -0.490533868823201, -0.0216391957105213,
-			 0.0261871879682561, 0.00227399612886735, "Total indirect", 0.852146453356244,
-			 0.0122008322744769, 0.18638041059087))
+		list(-0.079416444198823, 0.0476217167987858, -0.0158973637000186, "m",
+			 "Total", 0.623756169473329, 0.0324082896419704, -0.490533868823201,
+			 -0.079416444198823, 0.0476217167987858, -0.0158973637000186,
+			 "m", "Total", 0.623756169473329, 0.0324082896419704, -0.490533868823201,
+			 -0.079416444198823, 0.0476217167987858, -0.0158973637000186,
+			 "m", "Total", 0.623756169473329, 0.0324082896419704, -0.490533868823201,
+			 -0.0216391957105213, 0.0261871879682561, 0.00227399612886735,
+			 "m", "Total indirect", 0.852146453356244, 0.0122008322744769,
+			 0.18638041059087, -0.0216391957105213, 0.0261871879682561, 0.00227399612886735,
+			 "m", "Total indirect", 0.852146453356244, 0.0122008322744769,
+			 0.18638041059087))
 
 
 
@@ -989,7 +1010,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_M_Y - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -1000,21 +1021,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "mediators",
-        processVariable = "debCollin1"), list(processDependent = "contNormal",
-        processIndependent = "debCollin1", processType = "confounders",
-        processVariable = "contcor2")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "mediators", 
+        processVariable = "debCollin1"), list(processDependent = "contNormal", 
+        processIndependent = "debCollin1", processType = "confounders", 
+        processVariable = "contcor2")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1094,7 +1115,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_M_Y - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -1105,21 +1126,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "mediators",
-        processVariable = "debCollin1"), list(processDependent = "contNormal",
-        processIndependent = "debCollin1", processType = "confounders",
-        processVariable = "facGender")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "mediators", 
+        processVariable = "debCollin1"), list(processDependent = "contNormal", 
+        processIndependent = "debCollin1", processType = "confounders", 
+        processVariable = "facGender")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1198,7 +1219,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_moderator - continuous works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -1209,21 +1230,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "moderators",
-        processVariable = "contcor1"), list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "contcor2")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "moderators", 
+        processVariable = "contcor1"), list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "contcor2")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1258,16 +1279,16 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.396528663809054, 0.156057671983207, 16, -0.120235495912924,
+		list(-0.396528663809054, 0.156057671983207, "", -0.120235495912924,
 			 "contcor2", "contNormal", "", "<unicode>", "", 0.393701114822503,
 			 0.140968492316949, -0.85292460702914, -0.0206079744902215, 0.0187008168621928,
-			 50, -0.00095357881401436, "contcor2", "contGamma", "contNormal",
+			 16, -0.00095357881401436, "contcor2", "contGamma", "contNormal",
 			 "<unicode>", "<unicode>", 0.924241577037212, 0.0100279371617226,
 			 -0.0950922207265357, -0.0132920341139206, 0.0180760774799312,
-			 84, 0.00239202168300531, "contcor2", "contGamma", "contNormal",
+			 50, 0.00239202168300531, "contcor2", "contGamma", "contNormal",
 			 "<unicode>", "<unicode>", 0.765001164933273, 0.00800221632674874,
 			 0.298919897355134, -0.0215739037623553, 0.0336605425836526,
-			 "", 0.00604331941064863, "contcor2", "contGamma", "contNormal",
+			 84, 0.00604331941064863, "contcor2", "contGamma", "contNormal",
 			 "<unicode>", "<unicode>", 0.668004923764089, 0.014090678905758,
 			 0.428887738558792))
 
@@ -1298,8 +1319,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 			 "Total", 0.405319255104091, 0.14161174406949, -0.832158907470919,
 			 -0.396174412496076, 0.167790059491526, 84, -0.114192176502275,
 			 "Total", 0.427363383697888, 0.143871131417741, -0.79371153460043,
-			 -0.396528663809054, 0.156057671983207, -0.120235495912924, "Total indirect",
-			 0.393701114822503, 0.140968492316949, -0.85292460702914))
+			 -0.0215739037623553, 0.0336605425836526, 0.00604331941064863,
+			 "Total indirect", 0.668004923764089, 0.014090678905758, 0.428887738558792,
+			 -0.0215739037623553, 0.0336605425836526, 0.00604331941064863,
+			 "Total indirect", 0.668004923764089, 0.014090678905758, 0.428887738558792,
+			 -0.0215739037623553, 0.0336605425836526, 0.00604331941064863,
+			 "Total indirect", 0.668004923764089, 0.014090678905758, 0.428887738558792
+			))
 
 
 
@@ -1315,7 +1341,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number confounder_moderator - factor works", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
@@ -1326,21 +1352,21 @@ options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
 options$pathPlotsLegend <- TRUE
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-    modelNumberMediators = list(), modelNumberModeratorW = "",
-    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-    processRelationships = list(list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "moderators",
-        processVariable = "facExperim"), list(processDependent = "contNormal",
-        processIndependent = "contGamma", processType = "confounders",
-        processVariable = "facGender")), residualCovariances = TRUE,
-    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "", 
+    modelNumberMediators = list(), modelNumberModeratorW = "", 
+    modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, 
+    processRelationships = list(list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "moderators", 
+        processVariable = "facExperim"), list(processDependent = "contNormal", 
+        processIndependent = "contGamma", processType = "confounders", 
+        processVariable = "facGender")), residualCovariances = TRUE, 
+    statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE, 
     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1376,14 +1402,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.108832957868417, 0.914012147270688, 0.511422552569552, 0, "facGenderm",
-			 "contNormal", "", "<unicode>", "", 0.0127813022805476, 0.205406628834362,
-			 2.48980549202216, -0.198988505343462, 0.0527669505225173, -0.0731107774104725,
-			 1, "facGenderm", "contGamma", "contNormal", "<unicode>", "<unicode>",
-			 0.254969127608045, 0.0642245107185118, -1.1383625440279, -0.0618215513880583,
-			 0.132974655309278, 0.0355765519606098, "", "facGenderm", "contGamma",
-			 "contNormal", "<unicode>", "<unicode>", 0.474043852370205, 0.0496938230074287,
-			 0.715914973080085))
+		list(0.108832957868417, 0.914012147270688, 0.511422552569552, "", "m",
+			 "facGender", "contNormal", "", "<unicode>", "", 0.0127813022805476,
+			 0.205406628834362, 2.48980549202216, -0.198988505343462, 0.0527669505225173,
+			 -0.0731107774104725, 0, "m", "facGender", "contGamma", "contNormal",
+			 "<unicode>", "<unicode>", 0.254969127608045, 0.0642245107185118,
+			 -1.1383625440279, -0.0618215513880583, 0.132974655309278, 0.0355765519606098,
+			 1, "m", "facGender", "contGamma", "contNormal", "<unicode>",
+			 "<unicode>", 0.474043852370205, 0.0496938230074287, 0.715914973080085
+			))
 
 
 
@@ -1406,12 +1433,17 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.0256784470944819, 0.850945103223677, 0.43831177515908, 0, "Total",
-			 0.037348512364032, 0.210531076754163, 2.08193384994129, 0.13633783786735,
-			 0.957660371192974, 0.546999104530162, 1, "Total", 0.00903666574412432,
-			 0.20952490448909, 2.61066390109555, 0.108832957868417, 0.914012147270688,
-			 0.511422552569552, "Total indirect", 0.0127813022805476, 0.205406628834362,
-			 2.48980549202216))
+		list(0.0256784470944819, 0.850945103223677, 0.43831177515908, "", "m",
+			 "Total", 0.037348512364032, 0.210531076754163, 2.08193384994129,
+			 0.13633783786735, 0.957660371192974, 0.546999104530162, 0, "m",
+			 "Total", 0.00903666574412432, 0.20952490448909, 2.61066390109555,
+			 0.0256784470944819, 0.850945103223677, 0.43831177515908, 1,
+			 "m", "Total", 0.037348512364032, 0.210531076754163, 2.08193384994129,
+			 -0.198988505343462, 0.0527669505225173, -0.0731107774104725,
+			 0, "m", "Total indirect", 0.254969127608045, 0.0642245107185118,
+			 -1.1383625440279, -0.0618215513880583, 0.132974655309278, 0.0355765519606098,
+			 1, "m", "Total indirect", 0.474043852370205, 0.0496938230074287,
+			 0.715914973080085))
 
 
 
