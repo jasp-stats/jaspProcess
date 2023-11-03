@@ -280,7 +280,7 @@ test_that("Test that .procGraphAddAttributes works", {
   expect_equal(igraph::V(graph)$isPartOfInt, c(FALSE, FALSE, FALSE, TRUE, FALSE))
   expect_equal(igraph::V(graph)$isTreat, c(TRUE, FALSE, FALSE, FALSE, FALSE))
   expect_equal(igraph::E(graph)$isMod, c(TRUE, FALSE, FALSE, TRUE, FALSE))
-  expect_equal(igraph::E(graph)$modVars, list("contcor2", NULL, NULL, "contGamma", NULL))
+  expect_equal(igraph::E(graph)$modVars, c("contcor2", NA, NA, "contGamma", NA))
 })
 
 test_that("Test that .procGraphAddAttributes works - moderated moderation", {
@@ -302,6 +302,7 @@ test_that("Test that .procGraphAddAttributes works - moderated moderation", {
   expect_equal(igraph::V(graph)$intLength, c(1, 1, 1, 1, 2, 2, 2, 3))
   expect_equal(igraph::V(graph)$isNestedInt, c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE))
   expect_equal(igraph::V(graph)$isHigherOrderInt, c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE))
+  expect_equal(igraph::E(graph)$modVars, list(c("contcor1", "contcor2"), c("contGamma", "contcor2"), c("contGamma", "contcor1"), as.character(NA), as.character(NA), as.character(NA), as.character(NA)))
 })
 
 test_that("Test that .procEncodePath works", {
@@ -472,13 +473,89 @@ test_that("Test that .procRegSyntax works", {
   expect_equal(syntax, "contNormal ~ c1*contGamma + b1*contcor1 + c2*contcor2 + c3*contGamma:contcor2\ncontcor1 ~ a1*contGamma")
 })
 
+test_that("Test that .procMedEffectsSyntaxModPars", {
+  graph <- createDummyGraphModelModeratedMediation()
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+
+  pathEdge <- igraph::E(graph)["contGamma" %--% "contNormal"]
+  sourceNode <- "contGamma"
+
+  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, graph, modProbes)
+  expect_equal(modPars, c("c3*0.1", "c3*0.5", "c3*0.9"))
+})
+
+test_that("Test that .procMedEffectsSyntaxGetLhs works - no contrasts", {
+  graph <- createDummyGraphModelModeratedMediation()
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+  contrasts <- list()
+  path <- c(contGamma = 1, contNormal = 2)
+  lhs <- jaspProcess:::.procMedEffectsSyntaxGetLhs(path, graph, modProbes, contrasts)
+  expect_equal(lhs, c("contGamma__contNormal.contcor2__2.5", "contGamma__contNormal.contcor2__50", "contGamma__contNormal.contcor2__97.5"))
+})
+
+test_that("Test that .procMedEffectsSyntaxGetLhs works - with contrasts", {
+  edgeList <- matrix(c("contGammaA", "contNormal",
+                       "contGammaB", "contNormal",
+                       "contGammaA", "contcor1",
+                       "contGammaB", "contcor1",
+                       "contcor1", "contNormal",
+                       "contcor2", "contNormal",
+                       "contGammaA:contcor2", "contNormal",
+                       "contGammaB:contcor2", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graph <- create_graph_from_edgeList(edgeList)
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+  contrasts <- list(contGamma = matrix(c(0, 1, 0, 0, 0, 1), 3, 2, dimnames = list(NULL, c("A", "B"))))
+  path <- c(contGammaA = 1, contNormal = 2)
+  lhs <- jaspProcess:::.procMedEffectsSyntaxGetLhs(path, graph, modProbes, contrasts)
+  expect_equal(lhs, c("contGamma__contNormal.contGamma__A.contcor2__2.5",
+                      "contGamma__contNormal.contGamma__B.contcor2__2.5",
+                      "contGamma__contNormal.contGamma__A.contcor2__50",
+                      "contGamma__contNormal.contGamma__B.contcor2__50",
+                      "contGamma__contNormal.contGamma__A.contcor2__97.5",
+                      "contGamma__contNormal.contGamma__B.contcor2__97.5"))
+})
+
+test_that("Test that .procMedEffectsSyntaxGetRhs works - no contrasts", {
+  graph <- createDummyGraphModelModeratedMediation()
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+  contrasts <- list()
+  path <- c(contGamma = 1, contNormal = 2)
+  rhs <- jaspProcess:::.procMedEffectsSyntaxGetRhs(path, graph, modProbes, contrasts)
+  expect_equal(rhs, c("(c1 + c3*0.1)", "(c1 + c3*0.5)", "(c1 + c3*0.9)"))
+})
+
+test_that("Test that .procMedEffectsSyntaxGetRhs works - with contrasts", {
+  edgeList <- matrix(c("contGammaA", "contNormal",
+                       "contGammaB", "contNormal",
+                       "contGammaA", "contcor1",
+                       "contGammaB", "contcor1",
+                       "contcor1", "contNormal",
+                       "contcor2", "contNormal",
+                       "contGammaA:contcor2", "contNormal",
+                       "contGammaB:contcor2", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graph <- create_graph_from_edgeList(edgeList)
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+  contrasts <- list(contGamma = matrix(c(0, 1, 0, 0, 0, 1), 3, 2, dimnames = list(NULL, c("A", "B"))))
+  path <- c(contGammaA = 1, contNormal = 2)
+  rhs <- jaspProcess:::.procMedEffectsSyntaxGetRhs(path, graph, modProbes, contrasts)
+  expect_equal(rhs, c("(c1 + c4*0.1)", "(c2 + c5*0.1)", "(c1 + c4*0.5)",
+                      "(c2 + c5*0.5)", "(c1 + c4*0.9)", "(c2 + c5*0.9)"))
+})
+
 test_that("Test that .procMedEffectsSyntax works", {
   graph <- createDummyGraphModelModeratedMediation()
   graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
-  modProbs <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
   contrasts <- list()
 
-  syntax <- jaspProcess:::.procMedEffectsSyntax(graph, modProbs, contrasts)
+  syntax <- jaspProcess:::.procMedEffectsSyntax(graph, modProbes, contrasts)
   expect_equal(syntax, "contGamma__contNormal.contcor2__2.5 := (c1 + c3*0.1)\ncontGamma__contNormal.contcor2__50 := (c1 + c3*0.5)\ncontGamma__contNormal.contcor2__97.5 := (c1 + c3*0.9)\ncontGamma__contcor1__contNormal := a1*b1\ntot.contcor2__2.5 := (c1 + c3*0.1) + a1*b1\ntot.contcor2__50 := (c1 + c3*0.5) + a1*b1\ntot.contcor2__97.5 := (c1 + c3*0.9) + a1*b1\ntotInd. := a1*b1")
 })
 

@@ -303,15 +303,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         # Set all edges from var interacting with sourceNode to target as isMod
         igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$isMod <- TRUE
         # Store unique moderating variables
-        if (any(is.na(igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars))) {
-          igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- sourceNodeIntVars[sourceNodeIntVars != v]
-        } else {
-          igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- list(
-            unique(c(
-              igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars[[1]],
-              sourceNodeIntVars[sourceNodeIntVars != v]
-            ))
-          )
+        if (length(sourceNodeIntVars[sourceNodeIntVars != v]) > 0) {
+          if (any(is.na(igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars))) {
+            igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- sourceNodeIntVars[sourceNodeIntVars != v]
+          } else {
+            igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- list(
+              unique(c(
+                igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars[[1]],
+                sourceNodeIntVars[sourceNodeIntVars != v]
+              ))
+            )
+          }
         }
       }
     }
@@ -806,101 +808,165 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(paste(regLines, collapse = "\n"))
 }
 
-.procMedEffectsSyntax <- function(graph, modProbs, contrasts) {
+.procMedEffectsSyntaxModPars <- function(pathEdge, sourceNode, graph, modProbes) {
+  # Get moderator parameters for two-way interactions
+  modPars <- lapply(pathEdge$modVars[[1]], function(v) {
+    # Get edge for two way interaction between X and M
+    twoWayEdge <- igraph::E(graph)[paste(sourceNode, v, sep = ":") %--% pathEdge$target]$parName
+
+    # Concatenate two way edge parName with moderator probes
+    return(apply(expand.grid(
+      twoWayEdge,
+      format(modProbes[[v]], digits = 3)
+    ), 1, paste, collapse = "*"))
+  })
+  
+  # Get all possible combinations of probes from different moderators
+  modPars <- apply(expand.grid(modPars), 1, paste, collapse = "+")
+
+  # Get name of potential three-way interaction
+  threeWayInt <- paste(c(pathEdge$source, pathEdge$modVars[[1]]), collapse = "__")
+
+  if (threeWayInt %in% igraph::E(graph)$source) { # If three-way int
+    # Get edge of three way interaction X x M1 x M2
+    threeWayEdge <- igraph::E(graph)[threeWayInt %--% pathEdge$target]
+    # Combine three way int parName with moderator probes
+    threeWayModPars <- paste(
+      threeWayEdge$parName,
+      apply(
+        expand.grid(lapply(pathEdge$modVars[[1]], function(v) format(modProbes[[v]], digits = 3))),
+        1, paste, collapse = "*"
+      ),
+      sep = "*"
+    )
+    # Add to previous moderator probes
+    modPars <- paste(modPars, threeWayModPars, sep = "+")
+  }
+  return(modPars)
+}
+
+.procContrFacVars <- function(contrasts) {
+  # Concatenate factor names with levels
+  return(lapply(names(contrasts), function(contr) paste0(contr, colnames(contrasts[[contr]]))))
+}
+
+.procMedEffectsSyntaxGetLhs <- function(path, graph, modProbes, contrasts) {
+  # Get factor names with level names
+  contrFacVars <- .procContrFacVars(contrasts)
+  # Is source node a factor with contrast
+  sourceInContrFacVars <- sapply(contrFacVars, function(v) names(path)[1] %in% v)
+
+  if (any(sourceInContrFacVars)) {
+    # Replace factor in lhs with factor with level names appended
+    facContr <- names(contrasts)[sourceInContrFacVars]
+    facContrLevels <- paste(facContr, colnames(contrasts[[facContr]]), sep = "__")
+    lhs <- paste(c(facContr, names(path)[-1]), collapse = "__")
+    lhs <- apply(expand.grid(lhs, facContrLevels), 1, paste, collapse = ".")
+  } else {
+    # Just concatenate path vars to lhs
+    lhs <- paste(names(path), collapse = "__")
+  }
+  
+  # Get moderators on path
+  modsOnPath <- unique(na.omit(unlist(sapply(2:length(path), function(i) {
+    return(igraph::E(graph)[names(path)[i-1] %--% names(path)[i]]$modVars)
+  }))))
+
+  if (!is.null(modsOnPath) && length(modsOnPath) > 0) { # If path is moderated
+    # Get combinations of moderators
+    modsOnPath <- lapply(modsOnPath, function(v) {
+      return(apply(
+        expand.grid(v, gsub("\\%", "", names(modProbes[[v]]))), # Remove `%` from quantile name strings
+        1, paste, collapse = "__"
+      ))
+    })
+    # Add moderator combinations to left hand side
+    lhs <- apply(expand.grid(lhs, apply(expand.grid(modsOnPath), 1, paste, collapse = ".")), 1, paste, collapse = ".")
+  }
+
+  return(lhs)
+}
+
+.procMedEffectsSyntaxGetRhs <- function(path, graph, modProbes, contrasts) {
+  # Get factor names with level names
+  contrFacVars <- .procContrFacVars(contrasts)
+  # Is source node a factor with contrast
+  sourceInContrFacVars <- sapply(contrFacVars, function(v) names(path)[1] %in% v)
+  
+  if (any(sourceInContrFacVars)) {
+    sourceFacVars <- contrFacVars[[which(sourceInContrFacVars)]]
+  } else {
+    sourceFacVars <- numeric(0)
+  }
+
+  # Right hand side of lavaan syntax
+  rhs <- lapply(2:length(path), function(i) {
+    # Get edge from path[-1] to path[i]
+    if (any(sourceInContrFacVars) && names(path)[i-1] %in% sourceFacVars) {
+      # Get all vars with factor levels as source nodes
+      sourceNode <- sourceFacVars
+    } else {
+      # Just get previous node as source node
+      sourceNode <- names(path)[i-1]
+    }
+
+    # Edge from previous node to current node
+    pathEdge <- igraph::E(graph)[sourceNode %--% names(path)[i]]
+
+    # If no moderators on edge, return only parName
+    if(any(is.na(unlist(pathEdge$modVars)))) return(pathEdge$parName)
+  
+    # Get pars from moderators
+    modPars <- .procMedEffectsSyntaxModPars(pathEdge, sourceNode, graph, modProbes)
+
+    # If indirect path add parentheses
+    if (i > 1) {
+      return(paste0("(", pathEdge$parName, " + ", modPars, ")"))
+    }
+    # Concanenate path edge parName with moderator probes
+    return(paste(pathEdge$parName, modPars, sep = " + "))
+  })
+  
+  # If indirect paths, multiply their steps
+  rhs <- .doCallPaste(rhs, sep = "*")
+
+  return(rhs)
+}
+
+.procMedEffectsSyntaxSinglePath <- function(path, graph, modProbes, contrasts) {
+  # Right hand side of lavaan syntax
+  rhs <- .procMedEffectsSyntaxGetRhs(path, graph, modProbes, contrasts)
+
+  # Left hand side of lavaan syntax
+  lhs <- .procMedEffectsSyntaxGetLhs(path, graph, modProbes, contrasts)
+
+  return(list(lhs = lhs, rhs = rhs))
+}
+
+.procMedEffectsSyntax <- function(graph, modProbes, contrasts) {
   # Get all simple paths from X to Y
   medPaths <- igraph::all_simple_paths(graph,
     from = igraph::V(graph)[isTreat]$name,
     to = igraph::V(graph)[isDep]$name,
     mode = "out"
   )
-  
-  medEffects <- lapply(medPaths, function(path) {
-    # Left hand side of lavaan syntax
-    lhs <- paste(names(path), collapse = "__")
-    
-    # Get moderators on path
-    modName <- na.omit(unlist(sapply(2:length(path), function(i) {
-      return(igraph::E(graph)[.from(names(path)[i-1]) & .to(names(path)[i])]$modVars)
-    })))
-    
-    # Right hand side of lavaan syntax
-    rhs <- lapply(2:length(path), function(i) {
-      # Get edge from path[-1] to path[i]
-      pathEdge <- igraph::E(graph)[.from(names(path)[i-1]) & .to(names(path)[i])]
-
-      # If no moderators on edge, return only parName
-      if(any(is.na(pathEdge$modVars[[1]]))) return(pathEdge$parName)
-      
-      modPars <- lapply(pathEdge$modVars[[1]], function(v) { # If moderators
-        # Get edge for two way interaction between X and M
-        twoWayEdge <- igraph::E(graph)[
-          .from(paste(names(path)[i-1], v, sep = ":")) & 
-          .to(names(path)[i])
-        ]$parName
-
-        # Concatenate two way edge parName with moderator probes
-        return(paste(
-          twoWayEdge,
-          format(modProbs[[v]], digits = 3),
-          sep = "*"
-        ))
-      })
-      # Get all possible combinations of probes from different moderators
-      modPars <- apply(expand.grid(modPars), 1, paste, collapse = "+")
-
-      # Get name of potential three-way interaction
-      threeWayInt <- paste(c(pathEdge$source, pathEdge$modVars[[1]]), collapse = "__")
-
-      if (threeWayInt %in% igraph::E(graph)$source) { # If three-way int
-        # Get edge of three way interaction X x M1 x M2
-        threeWayEdge <- igraph::E(graph)[.from(threeWayInt) & .to(names(path)[i])]
-        # Combine three way int parName with moderator probes
-        threeWayModPars <- paste(
-          threeWayEdge$parName,
-          apply(
-            expand.grid(lapply(pathEdge$modVars[[1]], function(v) format(modProbs[[v]], digits = 3))),
-            1, paste, collapse = "*"
-          ),
-          sep = "*"
-        )
-        # Add to previous moderator probes
-        modPars <- paste(modPars, threeWayModPars, sep = "+")
-      } 
-      
-      # If indirect path add parentheses
-      if (i > 1) {
-        return(paste0("(", pathEdge$parName, " + ", modPars, ")"))
-      }
-      # Concanenate path edge parName with moderator probes
-      return(paste(pathEdge$parName, modPars, sep = " + "))
-    })
-    # If indirect paths, multiply their steps
-    rhs <- .doCallPaste(rhs, sep = "*")
-    
-    if (!is.null(modName) && length(modName) > 0) { # If path is moderated
-      # Get combinations of moderators
-      modName <- lapply(modName, function(v) {
-        return(apply(
-          expand.grid(v, gsub("\\%", "", names(modProbs[[v]]))), # Remove `%` from quantile name strings
-          1, paste, collapse = "__"
-        ))
-      })
-      # Add moderator combinations to left hand side
-      lhs <- apply(expand.grid(lhs, apply(expand.grid(modName), 1, paste, collapse = ".")), 1, paste, collapse = ".")
-    }
-
-    return(list(lhs = lhs, rhs = rhs, modName = modName))
-  })
+  # Get lhs and rhs plus moderator names for each path
+  medEffects <- lapply(medPaths, .procMedEffectsSyntaxSinglePath, graph = graph, modProbes = modProbes, contrasts = contrasts)
+  # Sort effects according to path length to preserve order
+  medEffects <- medEffects[sort.int(sapply(medPaths, length), index.return = TRUE)$ix]
   # All rhs effects
   totRhs <- lapply(medEffects, function(path) path$rhs)
-  # All moderators of total effects
-  totLhsMods <- lapply(medEffects, function(path) apply(expand.grid(path$modName), 1, paste, collapse = "."))
   # Add rhs effects
   totEffects <- .doCallPaste(totRhs, sep = " + ")
   # Concatenate rhs and lhs effects
   medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
+  # Get conditional effect labels from lhs of each path
+  totEffectsConditional <- Filter(function(x) !is.null(x) & all(x != ""), lapply(medEffects, function(path) {
+    # Split lhs and remove first chunk, then paste together again
+    return(sapply(strsplit(path$lhs, "\\."), function(path) paste(path[-1], collapse = ".")))
+  }))
   # Concatenate total effects
-  totEffectsLabeled <- paste(paste("tot", unlist(totLhsMods), sep = "."), totEffects, sep = " := ")
+  totEffectsLabeled <- paste(paste0("tot.", unlist(totEffectsConditional)), totEffects, sep = " := ")
   # Only return total effects when no indirect path
   if (length(medEffects) < 2) {
     return(paste(c(medEffectsLabeled, totEffectsLabeled), collapse = "\n"))
@@ -908,7 +974,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Add rhs indirect effects
   totIndEffects <- .doCallPaste(totRhs[-1], sep = " + ")
   # Concatenate indirect effects
-  totIndEffectsLabeled <- paste(paste("totInd", unlist(totLhsMods[-1]), sep = "."), totIndEffects, sep = " := ")
+  totIndEffectsLabeled <- paste(paste("totInd", unlist(totEffectsConditional[-1]), sep = "."), totIndEffects, sep = " := ")
 
   return(paste(c(medEffectsLabeled, totEffectsLabeled, totIndEffectsLabeled), collapse = "\n"))
 }
