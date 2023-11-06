@@ -421,18 +421,25 @@ Form
     Section
     {
         title: qsTr("Options")
-        columns: 2
+        columns: 3
 
-		GroupBox
+		Group
 		{
 			CheckBox { label: qsTr("Parameter labels") 	;		name: "parameterLabels" }
-			CheckBox { label: qsTr("Standardized estimates") ;  name: "standardizedEstimates" }
 			CheckBox { label: qsTr("Lavaan syntax")     ;       name: "syntax" }
 			CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
 			CheckBox { label: qsTr("AIC weights")         ;     name: "aicWeights" }
 			CheckBox { label: qsTr("BIC weights")         ;     name: "bicWeights" }
 		}
-        GroupBox
+		RadioButtonGroup
+		{
+			name: "standardizedEstimates"
+			title: qsTr("Standardized estimates")
+			RadioButton { value: "unstandardized"; label: qsTr("Unstandardized"); checked: true }
+			RadioButton { value: "centered"; label: qsTr("Mean-centered") }
+			RadioButton { value: "standardized"; label: qsTr("Standardized") }
+		}
+        Group
         {
             CIField {
                 text: qsTr("Confidence intervals")

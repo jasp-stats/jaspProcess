@@ -427,8 +427,24 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procReadData <- function(options) {
   # Read in selected variables from dataset
-  vars <- lapply(c('dependent', 'covariates', 'factors'), function(x) options[[x]])
-  dataset <- .readDataSetToEnd(columns = unlist(vars))
+  vars <- c(options[['dependent']], options[['covariates']], options[['factors']])
+  dataset <- .readDataSetToEnd(columns = vars)
+
+  # Standardize variables to get standardized estimates
+  if (options$standardizedEstimates != "unstandardized") {
+    # Only use complete cases for standardization with listwise deletion
+    # Otherwise data entered into lavaan is not actually standardized
+    if (options$naAction == "listwise") {
+      isComplete <- complete.cases(dataset)
+    } else {
+      isComplete <- !logical(nrow(dataset))
+    }
+
+    for (v in c(options[["dependent"]], options[["covariates"]])) {
+      dataset[[v]][isComplete] <- scale(dataset[[v]][isComplete], center = TRUE, scale = options$standardizedEstimates == "standardized")
+    }
+  }
+
   return(dataset)
 }
 
@@ -449,7 +465,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     for (v in igraph::V(graph)[intLength == 3]$intVars) {
       # Compute factor dummy variables involved in interaction
       varFormula <- formula(paste("~", paste(encodeColNames(v), collapse = "+")))
-      varDummyMat <- model.matrix(varFormula, data = dataset)
+      # Create model matrix but keep missing values in place because it needs to be merged with dataset later
+      varDummyMat <- model.matrix(varFormula, data = model.frame(dataset, na.action = NULL))
       # Create variable name like var1__var2__var3
       varName <- paste(colnames(varDummyMat[, -1]), collapse = "__")
       # Bind factor dummy variables to temporary dataset (will be added to actual data set later)
@@ -465,8 +482,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Convert regression variables to formula
     sourceFormula <- formula(paste("~", paste(encodeColNames(sourceVars), collapse = "+")))
 
-    # Create dummy variables for factors
-    sourceDummyMat <- model.matrix(sourceFormula, data = dataset)
+    # Create dummy variables for factors, again keep missing values in place
+    sourceDummyMat <- model.matrix(sourceFormula, data = model.frame(dataset, na.action = NULL))
     
     # Add dummy variables to dataset
     dataset <- cbind(dataset, sourceDummyMat)
@@ -1031,7 +1048,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
     mimic           = options$emulation,
     estimator       = options$estimator,
-    std.ov          = options$standardizedEstimate,
     missing         = options$naAction,
     do.fit          = doFit
   ))
@@ -1334,6 +1350,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   tbl[["pvalue"]]   <- coefs$pvalue
   tbl[["ci.lower"]] <- coefs$ci.lower
   tbl[["ci.upper"]] <- coefs$ci.upper
+
+  if (options$standardizedEstimates != "unstandardized") {
+    txt <- switch(options$standardizedEstimates,
+      centered = gettext("mean-centered"),
+      standardized = gettext("standardized")
+    )
+    tbl$addFootnote(gettextf("Standard errors, test statistics, and confidence intervals are based on %s estimates.", txt))
+  }
 }
 
 .procGetBootstrapCiType <- function(options) {
