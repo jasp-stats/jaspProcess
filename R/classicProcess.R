@@ -1083,8 +1083,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 
   if (inherits(fittedModel, "try-error")) {
-    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(fittedModel, "condition")$message)
-    return(jaspSem:::.decodeVarsInMessage(names(dataset), errmsg))
+    return(gettextf("Estimation failed\nMessage:\n%s", attr(fittedModel, "condition")$message))
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
