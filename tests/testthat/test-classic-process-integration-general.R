@@ -393,3 +393,204 @@ test_that("Interactions between two-level and three-level factors work", {
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-facTwo-int-facThree")
 })
+
+checkTables <- function(results1, results2) {
+  table1 <- results1[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
+  table2 <- results2[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
+  expect_equal(table1, table2)
+
+  table1 <- results1[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  table2 <- results2[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  expect_equal(table1, table2)
+
+  table1 <- results1[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+  table2 <- results2[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+  expect_equal(table1, table2)
+
+  table1 <- results1[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
+  table2 <- results2[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
+  expect_equal(table1, table2)
+}
+
+test_that("Standardized estimates match", {
+  N <- 100
+
+  set.seed(1)
+  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), m = rnorm(N, 3, 4))
+
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "y"
+  options$covariates <- list("x", "m")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "listwise"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$standardizedEstimates <- "standardized"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(list(processDependent = "y",
+                                                                      processIndependent = "x", processType = "mediators",
+                                                                      processVariable = "m")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+
+  dfStd <- as.data.frame(scale(dfUnstd))
+
+  options$standardizedEstimates <- "unstandardized"
+
+  set.seed(1)
+  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+
+  checkTables(resultsUnstd, resultsStd)
+})
+
+test_that("Standardized estimates match - missing values/listwise", {
+  N <- 100
+
+  set.seed(1)
+  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), m = rnorm(N, 3, 4))
+  dfUnstd$x[1:10] <- NA
+  dfUnstd$y[11:20] <- NA
+  dfUnstd$m[21:30] <- NA
+
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "y"
+  options$covariates <- list("x", "m")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "listwise"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$standardizedEstimates <- "standardized"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(list(processDependent = "y",
+                                                                      processIndependent = "x", processType = "mediators",
+                                                                      processVariable = "m")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+
+  dfStd <- dfUnstd
+  dfStd[complete.cases(dfStd),] <- as.data.frame(scale(dfStd[complete.cases(dfStd),]))
+
+  options$standardizedEstimates <- "unstandardized"
+
+  set.seed(1)
+  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+
+  checkTables(resultsUnstd, resultsStd)
+})
+
+test_that("Standardized estimates match - missing values/fiml", {
+  N <- 100
+
+  set.seed(1)
+  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), m = rnorm(N, 3, 4))
+  dfUnstd$x[1:10] <- NA
+  dfUnstd$y[11:20] <- NA
+  dfUnstd$m[21:30] <- NA
+
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "y"
+  options$covariates <- list("x", "m")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$standardizedEstimates <- "standardized"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(list(processDependent = "y",
+                                                                      processIndependent = "x", processType = "mediators",
+                                                                      processVariable = "m")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+
+  dfStd <- dfUnstd
+  dfStd <- as.data.frame(scale(dfStd))
+
+  options$standardizedEstimates <- "unstandardized"
+
+  set.seed(1)
+  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+
+  checkTables(resultsUnstd, resultsStd)
+})
+
+test_that("Standardized estimates match - moderated moderation", {
+  N <- 100
+
+  set.seed(1)
+  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), w = rnorm(N, 3, 4), z = rnorm(N, 3, 4))
+
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "y"
+  options$covariates <- list("x", "w", "z")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "listwise"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$standardizedEstimates <- "standardized"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(list(processDependent = "y",
+                                                                      processIndependent = "x", processType = "moderators",
+                                                                      processVariable = "w"), list(processDependent = "y",
+                                                                                                   processIndependent = "w", processType = "moderators",
+                                                                                                   processVariable = "z")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+
+  dfStd <- dfUnstd
+  dfStd[complete.cases(dfStd),] <- as.data.frame(scale(dfStd[complete.cases(dfStd),]))
+
+  options$standardizedEstimates <- "unstandardized"
+
+  set.seed(1)
+  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+
+  checkTables(resultsUnstd, resultsStd)
+})
