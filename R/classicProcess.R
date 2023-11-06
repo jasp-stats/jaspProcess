@@ -1034,6 +1034,36 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
+.procBootstrap <- function(fittedModel, samples) {
+  # Run bootstrap, track progress with progress bar
+  # Notes: faulty runs are simply ignored
+  # recommended: add a warning if not all boot samples are successful
+  # fit <- lavBootstrap(fit, samples = 1000)
+  # if (nrow(fit@boot$coef) < 1000)
+  #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)),
+  #                  "<em>Note.</em>")
+  
+  
+  coef_with_callback <- function(lav_object) {
+    # Progress bar is ticked every time coef() is evaluated, which happens once on the main object:
+    # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L107
+    # and then every time on a successful bootstrap:
+    # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L375
+    # i.e., samples + 1 times
+    progressbarTick()
+    return(lavaan::coef(lav_object, type = "user"))
+  }
+  startProgressbar(samples + 1)
+  
+  bootResult <- lavaan::bootstrapLavaan(object = fittedModel, R = samples, FUN = coef_with_callback)
+  
+  # Add the bootstrap samples to the fit object
+  fittedModel@boot       <- list(coef = bootResult)
+  fittedModel@Options$se <- "bootstrap"
+  
+  return(fittedModel)
+}
+
 .procResultsFitModel <- function(container, dataset, options) {
   # Should model be fitted?
   doFit <- .procCheckFitModel(container[["graph"]]$object)
@@ -1058,7 +1088,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
-    medResult <- jaspSem:::lavBootstrap(fittedModel, options$bootstrapSamples) # FIXME
+    fittedModel <- .procBootstrap(fittedModel, options$bootstrapSamples)
   }
 
   if (doFit) {
@@ -1358,6 +1388,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     )
     tbl$addFootnote(gettextf("Standard errors, test statistics, and confidence intervals are based on %s estimates.", txt))
   }
+
+  if (options$errorCalculationMethod == "bootstrap") {
+    txt <- switch(options[["bootstrapCiType"]],
+      percentileBiasCorrected = gettext("bias-corrected percentile"),
+      percentile = gettext("percentile"),
+      gettext("normal theory")
+    )
+    tbl$addFootnote(gettextf("Confidence intervals are %s bootstrapped.", txt))
+  }
 }
 
 .procGetBootstrapCiType <- function(options) {
@@ -1366,6 +1405,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     percentile = "perc",
     "norm"
   ))
+}
+
+.procBootstrapSamplesFootnote <- function(tbl, procResults, options) {
+  if (options$errorCalculationMethod == "bootstrap" && nrow(procResults@boot$coef) < options$bootstrapSamples) {
+    tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(procResults@boot$coef)))
+  }
 }
 
 .procPathCoefficientsTable <- function(container, options, procResults, modelIdx) {
@@ -1388,6 +1433,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!procResults@Fit@converged) {
     pathCoefTable$addFootnote(gettext("Model did not converge."))
   }
+
+  .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
 
   pathCoefs <- pathCoefs[pathCoefs$op == "~",]
 
@@ -1438,11 +1485,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (container$getError()) return()
 
-  pathCoefs <- lavaan::parameterEstimates(procResults)
+  bootstrapCiType <- .procGetBootstrapCiType(options)
+
+  pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
+                                          level = options$ciLevel)
 
   if (!procResults@Fit@converged) {
     medEffectsTable$addFootnote(gettext("Model did not converge."))
   }
+
+  .procBootstrapSamplesFootnote(medEffectsTable, procResults, options)
 
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
@@ -1512,11 +1564,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (container$getError()) return()
 
-  pathCoefs <- lavaan::parameterEstimates(procResults)
+  bootstrapCiType <- .procGetBootstrapCiType(options)
+
+  pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
+                                          level = options$ciLevel)
 
   if (!procResults@Fit@converged) {
     totEffectsTable$addFootnote(gettext("Model did not converge."))
   }
+
+  .procBootstrapSamplesFootnote(totEffectsTable, procResults, options)
 
   medEffects <- pathCoefs[pathCoefs$op == ":=", ]
 
@@ -1575,6 +1632,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!procResults@Fit@converged) {
     pathCoefTable$addFootnote(gettext("Model did not converge."))
   }
+
+  .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
 
   pathCoefs <- pathCoefs[pathCoefs$op == "~~" & !is.na(pathCoefs$z),]
 
