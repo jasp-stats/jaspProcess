@@ -15,11 +15,9 @@ Imports:
   ggraph,
   grid,
   jaspBase,
-  jaspGraphs,
-  jaspSem
+  jaspGraphs
 Suggests:
   testthat
 Remotes:
   jasp-stats/jaspBase,
-  jasp-stats/jaspGraphs,
-  jasp-stats/jaspSem
+  jasp-stats/jaspGraphs
