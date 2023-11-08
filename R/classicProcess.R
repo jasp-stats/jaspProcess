@@ -427,8 +427,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procReadData <- function(options) {
   # Read in selected variables from dataset
-  vars <- c(options[['dependent']], options[['covariates']], options[['factors']])
-  dataset <- .readDataSetToEnd(columns = vars)
+  dataset <- .readDataSetToEnd(
+    columns = c(options[['dependent']], options[['covariates']]),
+    columns.as.factor = options[['factors']]
+  )
 
   # Standardize variables to get standardized estimates
   if (options$standardizedEstimates != "unstandardized") {
@@ -1727,14 +1729,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     # Sets container error if invalid
-    .procIsValidModel(modelContainer, procResults[[i]])
+    isValid <- .procIsValidModel(modelContainer, procResults[[i]])
+
+    if (isValid && !procResults[[i]]@Options[["do.fit"]]) {
+      next
+    }
+
+    contrasts <- modelsContainer[[modelNames[i]]][["contrasts"]]$object
 
     if (options[["processModels"]][[i]][["localTests"]])
-      .procLocalTestTable(modelContainer, dataset, options, procResults[[i]], i)
+      .procLocalTestTable(modelContainer, dataset, options, procResults[[i]], contrasts, i)
   }
 }
 
-.procLocalTestTable <- function(container, dataset, options, procResults, modelIdx) {
+.procLocalTestTable <- function(container, dataset, options, procResults, contrasts, modelIdx) {
   if (!is.null(container[["localTestTable"]])) return()
 
   localTestTable <- createJaspTable(title = gettext("Conditional independence tests"))
@@ -1750,6 +1758,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   container[["localTestTable"]] <- localTestTable
   
   if (container$getError()) return()
+
+  # Only test variables in dataset that are part of model
+  dataset <- dataset[encodeColNames(procResults@Data@ov$name)]
 
   if (!procResults@Fit@converged) {
     localTestTable$addFootnote(gettext("Model did not converge."))
@@ -1805,7 +1816,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   localTestTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
                     overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (testType == "cis" && any(sapply(dataset, is.factor))) {
+  if (testType == "cis" && !is.null(contrasts) && length(contrasts) > 0) {
     localTestTable$setError(gettext("Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."))
     return()
   }
@@ -1823,7 +1834,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   })
 
   parNamesAbbr <- abbreviate(unique(unlist(parTable[c("lhs", "rhs")])))
-
+  
   graph <- dagitty::dagitty(paste("dag {", paste(arrows, collapse = "\n")," } "))
 
   localTestResult <- dagitty::localTests(
@@ -1853,7 +1864,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   } else {
     localTestTable$setError(gettext("The specified model does not imply any (conditional) independencies that can be tested."))
-  
   }
 }
 
