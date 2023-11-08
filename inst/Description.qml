@@ -4,7 +4,7 @@ import JASP.Module	1.0
 Description
 {
 	name		: "jaspProcess"
-	title		: qsTr("Process")
+	title		: qsTr("Process (beta)")
 	description	: qsTr("Test and compare causal and conditional process models.")
 	icon		: "process.svg"
 	version		: "0.17.1"
