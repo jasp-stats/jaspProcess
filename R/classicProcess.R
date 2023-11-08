@@ -1143,7 +1143,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 
   if (inherits(fittedModel, "try-error")) {
-    return(gettextf("Estimation failed\nMessage:\n%s", attr(fittedModel, "condition")$message))
+    return(gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", attr(fittedModel, "condition")$message)))
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
@@ -1181,11 +1181,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     if (is.null(modelsContainer[[modelName]][["fittedModel"]])) {
-      fittedModel <- .procResultsFitModel(
-        modelsContainer[[modelName]],
-        dataset,
-        options
-      )
+      if (modelOptions[["inputType"]] == "inputModelNumber" && !modelOptions[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
+        fittedModel <- gettextf("%s: Hayes model %s not implemented", modelName, modelOptions[["modelNumber"]])
+      } else {
+        fittedModel <- .procResultsFitModel(
+          modelsContainer[[modelName]],
+          dataset,
+          options
+        )
+      }
       state <- createJaspState(object = fittedModel)
       state$dependOn(
         optionContainsValue = list(processModels = modelOptions),
@@ -1290,13 +1294,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   jaspResults[["modelSummaryTable"]] <- summaryTable
 
-  isInvalid <- sapply(procResults, is.character)
-
-  if (any(isInvalid)) {
-    errmsg <- gettextf("Model fit could not be assessed because one or more models were not estimated")
-    summaryTable$setError(errmsg)
-    return()
-  }
+  # Remove invalid models
+  procResults <- .procFilterFittedModels(procResults)
 
   converged <- sapply(procResults, function(mod) mod@Fit@converged)
 
@@ -1304,23 +1303,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     summaryTable$addFootnote(message = gettext("At least one model did not converge."))
   }
 
-  procResults <- .procFilterFittedModels(procResults)
-
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
-    if (mod[["inputType"]] == "inputModelNumber") {
-      if (!mod[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
-        modelNumberTable$setError(gettextf("Hayes model number %s for %s not implemented", mod[["modelNumber"]], mod[["name"]]))
-      }
-      return(mod[["modelNumber"]])
-    }
-
-    return(.procRecognizeModelNumber(modelsContainer[[mod[["name"]]]][["graph"]]$object))
+    graph <- modelsContainer[[mod[["name"]]]][["graph"]]$object
+    if (is.null(graph) || inherits(graph, "try-error") || is.character(graph)) return(NULL)
+    return(.procRecognizeModelNumber(graph))
   })
 
-  summaryTable[["Model"]]       <- modelNames
-  summaryTable[["modelNumber"]] <- modelNumbers
+  modelNumberIsInvalid <- sapply(modelNumbers, is.null)
+
+  summaryTable[["Model"]]       <- modelNames[!modelNumberIsInvalid]
+  summaryTable[["modelNumber"]] <- modelNumbers[!modelNumberIsInvalid]
 
   if (length(procResults) == 0) return()
 
@@ -1399,12 +1393,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       modelContainer <- container[[modelNames[i]]]
     }
 
-    if (is.character(procResults[[i]])) {
-      modelContainer$setError(procResults[[i]])
-      next
-    }
-  
-    if (!procResults[[i]]@Options[["do.fit"]]) {
+    isValid <- .procIsValidModel(modelContainer, procResults[[i]])
+    
+    if (isValid && !procResults[[i]]@Options[["do.fit"]]) {
       next
     }
 
@@ -1472,7 +1463,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procPathCoefficientsTable <- function(container, options, procResults, modelIdx) {
-  if (!is.null(container[["pathCoefficientsTable"]]) || !procResults@Options[["do.fit"]]) return()
+  if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
   pathCoefTable$dependOn(
@@ -1531,7 +1522,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
-  if (!is.null(container[["mediationEffectsTable"]]) || !procResults@Options[["do.fit"]]) return()
+  if (!is.null(container[["mediationEffectsTable"]])) return()
 
   medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
   medEffectsTable$dependOn(
@@ -1610,7 +1601,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procPathTotalEffectsTable <- function(container, options, procResults, modelIdx) {
-  if (!is.null(container[["totalEffectsTable"]]) || !procResults@Options[["do.fit"]]) return()
+  if (!is.null(container[["totalEffectsTable"]])) return()
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
   totEffectsTable$dependOn(
@@ -1734,10 +1725,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       modelContainer <- container[[modelNames[i]]]
     }
 
-    if (is.character(procResults[[i]])) {
-      modelContainer$setError(procResults[[i]])
-      return()
-    }
+    # Sets container error if invalid
+    .procIsValidModel(modelContainer, procResults[[i]])
+
     if (options[["processModels"]][[i]][["localTests"]])
       .procLocalTestTable(modelContainer, dataset, options, procResults[[i]], i)
   }
@@ -1757,7 +1747,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     )
   )
   container[["localTestTable"]] <- localTestTable
-
+  
   if (container$getError()) return()
 
   if (!procResults@Fit@converged) {
