@@ -1300,12 +1300,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Remove invalid models
   procResults <- .procFilterFittedModels(procResults)
 
-  converged <- sapply(procResults, function(mod) mod@Fit@converged)
-
-  if (!all(converged)) {
-    summaryTable$addFootnote(message = gettext("At least one model did not converge."))
-  }
-
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
@@ -1318,6 +1312,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   summaryTable[["Model"]]       <- modelNames[!modelNumberIsInvalid]
   summaryTable[["modelNumber"]] <- modelNumbers[!modelNumberIsInvalid]
+
+  converged <- sapply(procResults, function(mod) mod@Fit@converged)
+
+  if (any(!converged)) {
+    summaryTable$addFootnote(message = gettextf("The following models did not converge: %s.", modelNames[!modelNumberIsInvalid & !converged]))
+  }
 
   if (length(procResults) == 0) return()
 
@@ -1339,7 +1339,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (any(df == 0)) {
-    summaryTable$addFootnote(message = gettext("At least one model is saturated (df = 0)."))
+    summaryTable$addFootnote(message = gettextf("The following models are saturated (df = 0): %s.", modelNames[!modelNumberIsInvalid & df == 0]))
   }
 
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
