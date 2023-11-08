@@ -1354,6 +1354,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     parEstContainer <- createJaspContainer("Parameter estimates")
     parEstContainer$dependOn(.procGetDependencies())
 
+    parEstContainer[["warning"]] <- createJaspHtml(text = gettext(
+      "<b>Important</b>: Parameter estimates are causal effects and need to be treated and interpreted as such.
+      Causal effects are only meaningful if they are identified by the model, that is, all confounding effects are accounted for."
+    ))
+
     jaspResults[["parEstContainer"]] <- parEstContainer
   }
 
