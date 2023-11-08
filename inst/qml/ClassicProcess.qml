@@ -267,12 +267,13 @@ Form
                                 title: 				qsTr("Mediators M")
                                 allowedColumns: 	["scale", "ordinal"]
                             }
-                            AssignedVariablesList
-                            {
-                                name: 				"modelNumberCovariates"
-                                title: 				qsTr("Covariates")
-                                allowedColumns: 	["scale", "ordinal"]
-                            }
+							// TODO
+                            // AssignedVariablesList
+                            // {
+                            //     name: 				"modelNumberCovariates"
+                            //     title: 				qsTr("Covariates")
+                            //     allowedColumns: 	["scale", "ordinal"]
+                            // }
                             AssignedVariablesList
                             {
 								id: modelNumberModeratorW
@@ -427,7 +428,8 @@ Form
 		{
 			CheckBox { label: qsTr("Parameter labels") 	;		name: "parameterLabels" }
 			CheckBox { label: qsTr("Lavaan syntax")     ;       name: "syntax" }
-			CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
+			// TODO
+			// CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
 			CheckBox { label: qsTr("AIC weights")         ;     name: "aicWeights" }
 			CheckBox { label: qsTr("BIC weights")         ;     name: "bicWeights" }
 		}
