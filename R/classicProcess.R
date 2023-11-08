@@ -674,8 +674,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Return matrix with dummy coding for each factor
       return(conMat[, colIdx])
     }
+    # If listwise missing value deletion, only use complete cases for quantiles
+    if (options$naAction == "listwise") {
+      isComplete <- complete.cases(dataset)
+    } else {
+      isComplete <- !logical(nrow(dataset))
+    }
     # If not factor return quantiles of continuous moderator
-    return(quantile(dataset[[nms]], probs = probeVals))
+    return(quantile(dataset[[nms]][isComplete], probs = probeVals, na.rm = TRUE))
   })
   
   names(modProbes) <- modVars
