@@ -663,3 +663,104 @@ test_that("Bootstrapping works", {
                                       "Total indirect", 0.802391316946556, 0.0119107709683332, 0.250253496335626
                                  ))
 })
+
+test_that("Missing values work", {
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "debMiss1", "debMiss30", "debMiss80", "contNormal")
+  options$factors <- list("facGender", "facExperim")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel <- 0.95
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(list(processDependent = "contNormal",
+                                                                      processIndependent = "debMiss1", processType = "mediators",
+                                                                      processVariable = "debMiss80"), list(processDependent = "contNormal",
+                                                                                                            processIndependent = "debMiss1", processType = "moderators",
+                                                                                                            processVariable = "debMiss30")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options, makeTests = T)
+
+  table <- results[["results"]][["modelSummaryTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(1633.95668168149, 1665.23417274585, 4, "Model 1", 69, -802.978340840746,
+                                      5))
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-110.494463632206, 193.953814337481, 41.7296753526376, "debMiss30",
+                                      "<unicode>", 0.591066617050381, "debMiss1", 77.6668041788361,
+                                      0.537291006033293, 479.941575046104, 960.646126274836, 720.29385066047,
+                                      "debMiss1", "<unicode>", 4.26250901242042e-09, "debMiss1", 122.630965420913,
+                                      5.87367022829973, 383.414148911908, 767.437819796141, 575.425984354025,
+                                      "debMiss30", "<unicode>", 4.26250834628661e-09, "debMiss30",
+                                      97.9670223313699, 5.87367024801129, 115.541023077736, 819.391923859025,
+                                      467.466473468381, "debMiss80", "<unicode>", 0.00922929177619203,
+                                      "debMiss80", 179.557100623577, 2.60344186804607, 0.575040607190625,
+                                      1.50092716961641, 1.03798388840352, "contNormal", "<unicode>",
+                                      1.11020509905302e-05, "contNormal", 0.236199891867671, 4.39451466381296
+                                 ))
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.00240725924854762, 0.0318799753335926, 16, 0.0147363580425225,
+                                      "debMiss1", "contNormal", "", "<unicode>", "", 0.0920365699284971,
+                                      0.00874690424227016, 1.68475127134784, -0.00531454395872133,
+                                      0.0204294107367177, 50, 0.0075574333889982, "debMiss1", "contNormal",
+                                      "", "<unicode>", "", 0.249839277779795, 0.00656745606003582,
+                                      1.15073984811053, -0.0143974276252919, 0.01619299815196, 84,
+                                      0.000897785263334051, "debMiss1", "contNormal", "", "<unicode>",
+                                      "", 0.908410023217562, 0.00780382344230435, 0.115044281815395,
+                                      -0.00561727350119405, 0.013735725309603, "", 0.0040592259042045,
+                                      "debMiss1", "debMiss80", "contNormal", "<unicode>", "<unicode>",
+                                      0.41096785589033, 0.00493708021255775, 0.82219160504616))
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.00353329548037963, 0.0239230729764131, 0.0101948887480167,
+                                      "debMiss1", "<unicode>", 0.145526000994699, "contNormal", 0.00700430433246862,
+                                      1.4555176737193, -0.0392651628833341, 0.0050660029411319, -0.0170995799711011,
+                                      "debMiss80", "<unicode>", 0.130531572527147, "contNormal", 0.0113091786824004,
+                                      -1.51200900183068, -0.0187559411088868, 0.00250596857881399,
+                                      -0.00812498626503641, "debMiss30", "<unicode>", 0.134145223719248,
+                                      "contNormal", 0.00542405622129081, -1.49795391742876, -0.000711499389746557,
+                                      0.000124746250921522, -0.000293376569412517, "debMiss1:debMiss30",
+                                      "<unicode>", 0.169065736523859, "contNormal", 0.000213331889581716,
+                                      -1.37521197598609, -0.669874147279466, 0.195099221688927, -0.23738746279527,
+                                      "debMiss1", "<unicode>", 0.282014951584179, "debMiss80", 0.220660526364564,
+                                      -1.07580393605638))
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.00390635118894364, 0.0336848167045104, 16, 0.018795583946727,
+                                      "Total", 0.0133541749576855, 0.00759668691630445, 2.47418172603465,
+                                      0.00199406108787663, 0.0212392574985288, 50, 0.0116166592932027,
+                                      "Total", 0.0179755575692619, 0.00490957909493638, 2.36612122313781,
+                                      -0.0076934700091281, 0.0176074923442052, 84, 0.00495701116753855,
+                                      "Total", 0.44248747532871, 0.00645444573290735, 0.767999511137837,
+                                      -0.00561727350119405, 0.013735725309603, 0.0040592259042045,
+                                      "Total indirect", 0.41096785589033, 0.00493708021255775, 0.82219160504616
+                                 ))
+
+  plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot-missing")
+
+  plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-missing")
+})
