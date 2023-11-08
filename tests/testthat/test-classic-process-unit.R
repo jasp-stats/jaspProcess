@@ -473,7 +473,7 @@ test_that("Test that .procRegSyntax works", {
   expect_equal(syntax, "contNormal ~ c1*contGamma + b1*contcor1 + c2*contcor2 + c3*contGamma:contcor2\ncontcor1 ~ a1*contGamma")
 })
 
-test_that("Test that .procMedEffectsSyntaxModPars", {
+test_that("Test that .procMedEffectsSyntaxModPars works - no contrasts", {
   graph <- createDummyGraphModelModeratedMediation()
   graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
   modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
@@ -481,8 +481,30 @@ test_that("Test that .procMedEffectsSyntaxModPars", {
   pathEdge <- igraph::E(graph)["contGamma" %--% "contNormal"]
   sourceNode <- "contGamma"
 
-  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, graph, modProbes)
+  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, list(), graph, modProbes)
   expect_equal(modPars, c("c3*0.1", "c3*0.5", "c3*0.9"))
+})
+
+test_that("Test that .procMedEffectsSyntaxModPars works - with contrasts", {
+  edgeList <- matrix(c("contGammaA", "contNormal",
+                       "contGammaB", "contNormal",
+                       "contGammaA", "contcor1",
+                       "contGammaB", "contcor1",
+                       "contcor1", "contNormal",
+                       "contcor2", "contNormal",
+                       "contGammaA:contcor2", "contNormal",
+                       "contGammaB:contcor2", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graph <- create_graph_from_edgeList(edgeList)
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
+  modProbes <- list(contcor2 = c("2.5%" = 0.1, "50%" = 0.5, "97.5%" = 0.9))
+  contrasts <- list(contGamma = matrix(c(0, 1, 0, 0, 0, 1), 3, 2, dimnames = list(NULL, c("A", "B"))))
+  contrFacVars <- jaspProcess:::.procContrFacVars(contrasts)
+  pathEdge <- igraph::E(graph)["contGammaA" %--% "contNormal"]
+  sourceNode <- "contGammaA"
+
+  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, contrFacVars, graph, modProbes)
+  expect_equal(modPars, c("c4*0.1", "c4*0.5", "c4*0.9"))
 })
 
 test_that("Test that .procMedEffectsSyntaxGetLhs works - no contrasts", {

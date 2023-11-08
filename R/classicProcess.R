@@ -825,7 +825,31 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(paste(regLines, collapse = "\n"))
 }
 
-.procMedEffectsSyntaxModPars <- function(pathEdge, sourceNode, graph, modProbes) {
+.procMedEffectsSyntaxMergeFacMods <- function(mods, contrFacVars, modOut, sep) {
+  # Concatenates the dummy variables of factor moderators so they are not combined with each other as other moderators
+  if (length(contrFacVars) > 0) {
+    # Check if moderator is part of which contrast, returns NA if not
+    modInWhichContr <- sapply(mods, function(v) {
+      whichContr <- which(sapply(contrFacVars, function(contr) v %in% contr))
+      if (length(whichContr) == 0) return(NA)
+      return(whichContr)
+    })
+    # Replace dummy variables of factor moderators with concatenated variables
+    for (i in unique(na.omit(modInWhichContr))) {
+      # Which dummy variables should be replaced
+      modOutInContr <- which(!is.na(modInWhichContr) & modInWhichContr == i)
+      # Replace dummy variables
+      modOut[[modOutInContr[1]]] <- .doCallPaste(Filter(Negate(is.null), modOut[modOutInContr]), sep = sep)
+      # If more than two factor levels remove variables for additional levels
+      if (length(modOutInContr) > 1) {
+        modOut <- modOut[-modOutInContr[-1]]
+      }
+    }
+  }
+  return(modOut)
+}
+
+.procMedEffectsSyntaxModPars <- function(pathEdge, sourceNode, contrFacVars, graph, modProbes) {
   # Get moderator parameters for two-way interactions
   modPars <- lapply(pathEdge$modVars[[1]], function(v) {
     # Get edge for two way interaction between X and M
@@ -838,9 +862,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     ), 1, paste, collapse = "*"))
   })
   
+  # Concatenate dummy variables for factor moderators
+  modPars <- .procMedEffectsSyntaxMergeFacMods(pathEdge$modVars[[1]], contrFacVars, modPars, sep = " + ")
+  
   # Get all possible combinations of probes from different moderators
-  modPars <- apply(expand.grid(modPars), 1, paste, collapse = "+")
-
+  modPars <- apply(expand.grid(modPars), 1, paste, collapse = " + ")
+  
   # Get name of potential three-way interaction
   threeWayInt <- paste(c(pathEdge$source, pathEdge$modVars[[1]]), collapse = "__")
 
@@ -891,14 +918,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (!is.null(modsOnPath) && length(modsOnPath) > 0) { # If path is moderated
     # Get combinations of moderators
-    modsOnPath <- lapply(modsOnPath, function(v) {
+    modsOnPathWithProbes <- lapply(modsOnPath, function(v) {
       return(apply(
         expand.grid(v, gsub("\\%", "", names(modProbes[[v]]))), # Remove `%` from quantile name strings
         1, paste, collapse = "__"
       ))
     })
+    
+    # Concatenate dummy variables for factor moderators
+    modsOnPathWithProbes <- .procMedEffectsSyntaxMergeFacMods(modsOnPath, contrFacVars, modsOnPathWithProbes, sep = ".")
+    
     # Add moderator combinations to left hand side
-    lhs <- apply(expand.grid(lhs, apply(expand.grid(modsOnPath), 1, paste, collapse = ".")), 1, paste, collapse = ".")
+    lhs <- apply(expand.grid(lhs, apply(expand.grid(modsOnPathWithProbes), 1, paste, collapse = ".")), 1, paste, collapse = ".")
   }
 
   return(lhs)
@@ -932,10 +963,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # If no moderators on edge, return only parName
     if(any(is.na(unlist(pathEdge$modVars)))) return(pathEdge$parName)
-  
-    # Get pars from moderators
-    modPars <- .procMedEffectsSyntaxModPars(pathEdge, sourceNode, graph, modProbes)
 
+    # Get pars from moderators
+    modPars <- .procMedEffectsSyntaxModPars(pathEdge, sourceNode, contrFacVars, graph, modProbes)
+    
     # If indirect path add parentheses
     if (i > 1) {
       return(paste0("(", pathEdge$parName, " + ", modPars, ")"))
@@ -960,6 +991,25 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(list(lhs = lhs, rhs = rhs))
 }
 
+.procRemoveDuplicateLabels <- function(condEffects) {
+  # Remove duplicate conditional effect labels
+  # Get unique valid conditional effect labels
+  filteredConditionialEffects <- unique(unlist(Filter(function(x) !is.null(x) & all(x != ""), condEffects)))
+  # If no conditional effects return NULL
+  if (is.null(filteredConditionialEffects)) return(NULL)
+  # Split conditional effect labels
+  filteredConditionialEffectsSplit <- strsplit(filteredConditionialEffects, "\\.")
+  # Check which labels are fully included in other labels
+  isDuplicate <- sapply(1:length(filteredConditionialEffectsSplit), function(i) {
+    # Iterate over all other split labels
+    return(any(sapply(filteredConditionialEffectsSplit[-i], function(path) {
+      # Check if all split chunks of label i are included in the split label
+      return(all(filteredConditionialEffectsSplit[[i]] %in% path))
+    })))
+  })
+  return(filteredConditionialEffects[!isDuplicate])
+}
+
 .procMedEffectsSyntax <- function(graph, modProbes, contrasts) {
   # Get all simple paths from X to Y
   medPaths <- igraph::all_simple_paths(graph,
@@ -978,12 +1028,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Concatenate rhs and lhs effects
   medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
   # Get conditional effect labels from lhs of each path
-  totEffectsConditional <- Filter(function(x) !is.null(x) & all(x != ""), lapply(medEffects, function(path) {
+  totEffectsConditional <- lapply(medEffects, function(path) {
     # Split lhs and remove first chunk, then paste together again
     return(sapply(strsplit(path$lhs, "\\."), function(path) paste(path[-1], collapse = ".")))
-  }))
+  })
   # Concatenate total effects
-  totEffectsLabeled <- paste(paste0("tot.", unlist(totEffectsConditional)), totEffects, sep = " := ")
+  totEffectsLabeled <- paste(
+    paste0("tot.", .procRemoveDuplicateLabels(totEffectsConditional)), totEffects, sep = " := "
+  )
   # Only return total effects when no indirect path
   if (length(medEffects) < 2) {
     return(paste(c(medEffectsLabeled, totEffectsLabeled), collapse = "\n"))
@@ -991,7 +1043,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Add rhs indirect effects
   totIndEffects <- .doCallPaste(totRhs[-1], sep = " + ")
   # Concatenate indirect effects
-  totIndEffectsLabeled <- paste(paste("totInd", unlist(totEffectsConditional[-1]), sep = "."), totIndEffects, sep = " := ")
+  totIndEffectsLabeled <- paste(
+    paste0("totInd.", .procRemoveDuplicateLabels(totEffectsConditional[-1])), totIndEffects, sep = " := "
+  )
 
   return(paste(c(medEffectsLabeled, totEffectsLabeled, totIndEffectsLabeled), collapse = "\n"))
 }
