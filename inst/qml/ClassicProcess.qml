@@ -95,6 +95,7 @@ Form
                         visible: 	variables.checked
 
                         property int colWidth: (models.width - 3 * 40 * preferencesModel.uiScale) / 4
+						property int labelWidth: modelsGroup.colWidth + jaspTheme.contentMargin
 
                         RowLayout
                         {
@@ -103,22 +104,23 @@ Form
                             Label
                             {
                                 text: qsTr("From")
-                                Layout.preferredWidth: modelsGroup.colWidth
+                                Layout.preferredWidth: modelsGroup.labelWidth
                             }
                             Label
                             {
+								
                                 text: qsTr("To")
-                                Layout.preferredWidth: modelsGroup.colWidth
+                                Layout.preferredWidth: modelsGroup.labelWidth
                             }
                             Label
                             {
                                 text: qsTr("Process Type")
-                                Layout.preferredWidth: modelsGroup.colWidth
+                                Layout.preferredWidth: modelsGroup.labelWidth
                             }
                             Label
                             {
                                 text: qsTr("Process Variable")
-                                Layout.preferredWidth: modelsGroup.colWidth
+                                Layout.preferredWidth: modelsGroup.labelWidth
                             }
                         }
 
