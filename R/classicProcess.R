@@ -1165,7 +1165,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     c("processModels", modelIdx, "modelNumber"),
     c("processModels", modelIdx, "modelNumberIndependent"),
     c("processModels", modelIdx, "modelNumberMediators"),
-    c("processModels", modelIdx, "modelNumberCovariates"),
     c("processModels", modelIdx, "modelNumberModeratorW"),
     c("processModels", modelIdx, "modelNumberModeratorZ"),
     c("processModels", modelIdx, "independentCovariances"),
