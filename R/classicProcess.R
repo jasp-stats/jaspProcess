@@ -133,10 +133,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       graph <- try(.procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
       state <- createJaspState(object = graph)
       state$dependOn(
+        options = .procGetDependencies(),
         optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
-      
       modelsContainer[[modelName]][["graph"]] <- state
     }
   }
@@ -575,7 +575,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     graph <- modelsContainer[[modelName]][["graph"]]$object
-    if (inherits(graph, "try-error")) next
+    
+    if (!.procCheckGraph(graph)) next
 
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
       graph <- .procGraphAddParNamesSingleModel(graph)
@@ -641,12 +642,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (inherits(modelsContainer[[modelName]][["graph"]]$object, "try-error")) next
+    if (!.procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)) next
 
     if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
       modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
       state <- createJaspState(object = modProbes)
       state$dependOn(
+        options = .procGetDependencies(),
         optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
@@ -698,13 +700,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     if (
-      inherits(modelsContainer[[modelName]][["graph"]]$object, "try-error")
+      !.procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)
     ) next
 
     if (is.null(modelsContainer[[modelName]][["resCovGraph"]])) {
       resCovGraph <- .procResCovGraphSingleModel(modelsContainer[[modelName]][["graph"]]$object, modelOptions)
       state <- createJaspState(object = resCovGraph)
       state$dependOn(
+        options = .procGetDependencies(),
         optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
@@ -768,13 +771,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
 
     if (
-      inherits(modelsContainer[[modelName]][["graph"]]$object, "try-error")
+      !.procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)
     ) next
 
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
       syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
       state <- createJaspState(object = syntax)
       state$dependOn(
+        options = .procGetDependencies(),
         optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
@@ -1070,8 +1074,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(!any(unlist(encoding) %in% vars) && !any(grepl(encoding[["M"]], vars)))
 }
 
+.procCheckGraph <- function(graph) {
+  return(igraph::is.igraph(graph))
+}
+
 .procCheckFitModel <- function(graph) {
-  if (inherits(graph, "try-error")) return(FALSE)
+  if (!.procCheckGraph(graph)) return(FALSE)
   allSourcesValid <- .procCheckFitModelVars(igraph::E(graph)$source)
   allTargetsValid <- .procCheckFitModelVars(igraph::E(graph)$target)
   return(allSourcesValid && allTargetsValid)
@@ -1194,6 +1202,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       }
       state <- createJaspState(object = fittedModel)
       state$dependOn(
+        options = .procGetDependencies(),
         optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
@@ -1378,11 +1387,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procIsValidModel <- function(container, procResult) {
+  if (inherits(procResult, "lavaan")) return(TRUE)
   if (is.character(procResult)) {
     container$setError(procResult)
-    return(FALSE)
   }
-  return(TRUE)
+  return(FALSE)
 }
 
 .procParameterEstimateTables <- function(container, options, modelsContainer) {
@@ -1402,7 +1411,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     isValid <- .procIsValidModel(modelContainer, procResults[[i]])
     
-    if (isValid && !procResults[[i]]@Options[["do.fit"]]) {
+    if (!isValid || !procResults[[i]]@Options[["do.fit"]]) {
       next
     }
 
@@ -2122,6 +2131,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procLavToGraph <- function(container, type, estimates, options) {
   graph <- container[["graph"]]$object
+
+  if (!.procCheckGraph(graph)) return()
   
   if (type == "conceptual") {
     graph <- .procGraphLayoutConceptual(graph)
