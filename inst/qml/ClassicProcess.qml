@@ -297,7 +297,7 @@ Form
 					{
                         id: opts
 						title: 		qsTr("Options for %1").arg(rowValue)
-						columns: 	4
+						columns: 	3
                         
 						Group
 						{
@@ -320,7 +320,7 @@ Form
 						Group
 						{
                             title: qsTr("Parameter Estimates")
-							columns: 	1
+							// columns: 	1
 							CheckBox
 							{
 								name: "pathCoefficients"
@@ -344,24 +344,6 @@ Form
 								name: "residualCovariances"
 								label: qsTr("Residual covariances")
 								checked: residualCovariancesForAllModels.checked
-							}
-						}
-
-						Group
-						{
-                            title: qsTr("Path Plots")
-							columns: 	1
-							CheckBox
-							{
-								name: "conceptualPathPlot"
-								label: qsTr("Conceptual")
-								checked: conceptualPathPlotsForAllModels.checked
-							}
-							CheckBox
-							{
-								name: "statisticalPathPlot"
-								label: qsTr("Statistical")
-								checked: statisticalPathPlotsForAllModels.checked
 							}
 						}
 
@@ -413,6 +395,24 @@ Form
 										max: 100000
 									}
 								}
+							}
+						}
+
+						Group
+						{
+                            title: qsTr("Path Plots")
+							columns: 	1
+							CheckBox
+							{
+								name: "conceptualPathPlot"
+								label: qsTr("Conceptual")
+								checked: conceptualPathPlotsForAllModels.checked
+							}
+							CheckBox
+							{
+								name: "statisticalPathPlot"
+								label: qsTr("Statistical")
+								checked: statisticalPathPlotsForAllModels.checked
 							}
 						}
 					}
