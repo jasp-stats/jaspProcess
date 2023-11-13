@@ -1347,10 +1347,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     summaryTable[["wBIC"]] <- .computeWeights(bic)
   }
 
-  if (any(df == 0)) {
-    summaryTable$addFootnote(message = gettextf("The following models are saturated (df = 0): %s.", modelNames[!modelNumberIsInvalid & df == 0]))
-  }
-
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
     summaryTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators."))
   }
