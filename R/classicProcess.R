@@ -1318,13 +1318,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   modelNumberIsInvalid <- sapply(modelNumbers, is.null)
 
+  summaryTable$setRowName(rowIndex = seq_along(modelNames[!modelNumberIsInvalid]), newName = modelNames[!modelNumberIsInvalid])
+
   summaryTable[["Model"]]       <- modelNames[!modelNumberIsInvalid]
   summaryTable[["modelNumber"]] <- modelNumbers[!modelNumberIsInvalid]
 
   converged <- sapply(procResults, function(mod) mod@Fit@converged)
 
   if (any(!converged)) {
-    summaryTable$addFootnote(message = gettextf("The following models did not converge: %s.", modelNames[!modelNumberIsInvalid & !converged]))
+    summaryTable$addFootnote(
+      message = gettextf("Model did not converge"),
+      symbol = "\u2020",
+      colNames = "Model",
+      rowNames = modelNames[!modelNumberIsInvalid & !converged]
+    )
   }
 
   if (length(procResults) == 0) return()
@@ -1407,7 +1414,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     isValid <- .procIsValidModel(modelContainer, procResults[[i]])
     
-    if (!isValid || !procResults[[i]]@Options[["do.fit"]]) {
+    if (isValid && !procResults[[i]]@Options[["do.fit"]]) {
       next
     }
 
