@@ -1197,15 +1197,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 # Output functions ----
-.procFilterFittedModels <- function(procResults) {
-  isFitted <- sapply(procResults, function(mod) {
-    if (!is.null(mod) && !is.character(mod) && mod@Fit@converged)
-      return(mod@Options[["do.fit"]])
-    return(FALSE)
-  })
-
-  return(procResults[isFitted])
-}
 
 .procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
   # Create regList from hard-coded model
@@ -1262,11 +1253,27 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procModelSummaryTable <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
-  summaryTable <- createJaspTable(title = gettext("Model summary"))
-  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
-  summaryTable$position <- 1
+  modelNumbers <- lapply(options[["processModels"]], function(mod) {
+    graph <- modelsContainer[[mod[["name"]]]][["graph"]]$object
+    if (is.null(graph) || inherits(graph, "try-error") || is.character(graph)) return(NULL)
+    return(.procRecognizeModelNumber(graph))
+  })
+
+  modelNumberIsValid <- !sapply(modelNumbers, is.null)
+
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+
+  # Remove invalid models
+  resultIsValid <- sapply(procResults, function(mod) inherits(mod, "lavaan") && mod@Options[["do.fit"]])
+  procResults <- procResults[resultIsValid]
+
+  tableRowIsValid <- modelNumberIsValid & resultIsValid
+
+  summaryTable <- createJaspTable(title = gettext("Model summary"), rowNames = modelNames[tableRowIsValid])
+  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
+  summaryTable$position <- 1
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
     summaryTable$setError("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
@@ -1288,23 +1295,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   jaspResults[["modelSummaryTable"]] <- summaryTable
 
-  # Remove invalid models
-  procResults <- .procFilterFittedModels(procResults)
-
-  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
-
-  modelNumbers <- lapply(options[["processModels"]], function(mod) {
-    graph <- modelsContainer[[mod[["name"]]]][["graph"]]$object
-    if (is.null(graph) || inherits(graph, "try-error") || is.character(graph)) return(NULL)
-    return(.procRecognizeModelNumber(graph))
-  })
-
-  modelNumberIsInvalid <- sapply(modelNumbers, is.null)
-
-  summaryTable$setRowName(rowIndex = seq_along(modelNames[!modelNumberIsInvalid]), newName = modelNames[!modelNumberIsInvalid])
-
-  summaryTable[["Model"]]       <- modelNames[!modelNumberIsInvalid]
-  summaryTable[["modelNumber"]] <- modelNumbers[!modelNumberIsInvalid]
+  summaryTable[["Model"]]       <- modelNames[tableRowIsValid]
+  summaryTable[["modelNumber"]] <- modelNumbers[tableRowIsValid]
 
   converged <- sapply(procResults, function(mod) mod@Fit@converged)
 
@@ -1313,7 +1305,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       message = gettextf("Model did not converge"),
       symbol = "\u2020",
       colNames = "Model",
-      rowNames = modelNames[!modelNumberIsInvalid & !converged]
+      rowNames = modelNames[tableRowIsValid & !converged]
     )
   }
 
