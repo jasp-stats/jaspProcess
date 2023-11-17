@@ -1139,8 +1139,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     do.fit          = doFit
   ))
 
-  if (inherits(fittedModel, "try-error")) {
-    return(gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", attr(fittedModel, "condition")$message)))
+  if (jaspBase::isTryError(fittedModel)) {
+    return(gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", jaspBase::.extractErrorMessage(fittedModel))))
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
@@ -1202,7 +1202,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create regList from hard-coded model
   modelNumberGraph <- try(.procProcessRelationshipsToGraph(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]]))))
 
-  if (inherits(modelNumberGraph, "try-error")) return(FALSE)
+  if (!igraph::is.igraph(modelNumberGraph)) return(FALSE)
 
   # Replace dummy variables in regList
   modelNumberGraph <- .procModelGraphInputModelNumber(modelNumberGraph, modelOptions, globalDependent)
@@ -1255,7 +1255,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
     graph <- modelsContainer[[mod[["name"]]]][["graph"]]$object
-    if (is.null(graph) || inherits(graph, "try-error") || is.character(graph)) return(NULL)
+    if (!igraph::is.igraph(graph)) return(NULL)
     return(.procRecognizeModelNumber(graph))
   })
 
