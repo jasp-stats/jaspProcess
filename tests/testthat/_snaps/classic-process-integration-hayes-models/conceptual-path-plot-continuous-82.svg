@@ -66,10 +66,10 @@
 <polyline points='567.67,197.69 574.42,172.51 549.24,179.26 ' style='stroke-width: 1.92; stroke-linecap: butt;' />
 <text x='89.15' y='122.61' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='34.80px' lengthAdjust='spacingAndGlyphs'>cnG</text>
 <text x='630.85' y='122.61' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='33.74px' lengthAdjust='spacingAndGlyphs'>cnN</text>
-<text x='269.72' y='303.18' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='26.36px' lengthAdjust='spacingAndGlyphs'>M1</text>
-<text x='450.28' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='26.36px' lengthAdjust='spacingAndGlyphs'>M2</text>
-<text x='269.72' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='26.36px' lengthAdjust='spacingAndGlyphs'>M3</text>
-<text x='450.28' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='26.36px' lengthAdjust='spacingAndGlyphs'>M4</text>
+<text x='269.72' y='303.18' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='34.80px' lengthAdjust='spacingAndGlyphs'>dC1</text>
+<text x='450.28' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='30.59px' lengthAdjust='spacingAndGlyphs'>cn2</text>
+<text x='269.72' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='36.91px' lengthAdjust='spacingAndGlyphs'>dM1</text>
+<text x='450.28' y='483.74' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='30.59px' lengthAdjust='spacingAndGlyphs'>cn1</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='0.00' y='27.74' style='font-size: 13.20px; font-family: sans;' textLength='206.96px' lengthAdjust='spacingAndGlyphs'>conceptual-path-plot-continuous-82</text>

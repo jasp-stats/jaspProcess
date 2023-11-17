@@ -68,6 +68,10 @@ replaceVariablesContinuous <- function(v) {
                 "JaspProcess_Mediator_Encoded" = "debCollin1",
                 "JaspProcess_ModeratorW_Encoded" = "contcor1",
                 "JaspProcess_ModeratorZ_Encoded" = "contcor2",
+                "JaspProcess_Mediator_Encoded1" = "debCollin1",
+                "JaspProcess_Mediator_Encoded2" = "contcor2",
+                "JaspProcess_Mediator_Encoded3" = "debMiss1",
+                "JaspProcess_Mediator_Encoded4" = "contcor1",
                 v
   ))
 }
@@ -79,6 +83,10 @@ replaceVariablesFactors <- function(v) {
                 "JaspProcess_Mediator_Encoded" = "debCollin1",
                 "JaspProcess_ModeratorW_Encoded" = "facExperim",
                 "JaspProcess_ModeratorZ_Encoded" = "contcor2",
+                "JaspProcess_Mediator_Encoded1" = "debCollin1",
+                "JaspProcess_Mediator_Encoded2" = "contcor2",
+                "JaspProcess_Mediator_Encoded3" = "debMiss1",
+                "JaspProcess_Mediator_Encoded4" = "contcor1",
                 v
   ))
 }
@@ -93,6 +101,10 @@ addProcessRelationshipsFromModelNumber <- function(k, options, replaceFun) {
   })
 
   options$processModels[[1]][["processRelationships"]] <- processRelationships
+
+  if (k >= 82) {
+    options[["covariates"]] <- c(options[["covariates"]], "debMiss1")
+  }
 
   return(options)
 }
