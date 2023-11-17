@@ -106,15 +106,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procContainerModels <- function(jaspResults, options) {
-  if(!is.null(jaspResults[["modelsContainer"]])) return()
-
-  modelsContainer <- createJaspContainer()
+  if(is.null(jaspResults[["modelsContainer"]])) {
+    modelsContainer <- createJaspContainer()
+  } else {
+    modelsContainer <- jaspResults[["modelsContainer"]]
+  }
 
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
     if (is.null(modelsContainer[[modelName]])) {
       container <- createJaspContainer(title = modelName)
+      container$dependOn(
+        options = .procGetDependencies(),
+        optionContainsValue = list(processModels = modelOptions),
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
       modelsContainer[[modelName]] <- container
     }
   }
@@ -132,11 +139,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (is.null(modelsContainer[[modelName]][["graph"]])) {
       graph <- try(.procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
       state <- createJaspState(object = graph)
-      state$dependOn(
-        options = .procGetDependencies(),
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
       modelsContainer[[modelName]][["graph"]] <- state
     }
   }
@@ -647,11 +649,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
       modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
       state <- createJaspState(object = modProbes)
-      state$dependOn(
-        options = .procGetDependencies(),
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
       modelsContainer[[modelName]][["modProbes"]] <- state
     }
   }
@@ -706,11 +703,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (is.null(modelsContainer[[modelName]][["resCovGraph"]])) {
       resCovGraph <- .procResCovGraphSingleModel(modelsContainer[[modelName]][["graph"]]$object, modelOptions)
       state <- createJaspState(object = resCovGraph)
-      state$dependOn(
-        options = .procGetDependencies(),
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
       modelsContainer[[modelName]][["resCovGraph"]] <- state
     }
   }
@@ -777,11 +769,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
       syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
       state <- createJaspState(object = syntax)
-      state$dependOn(
-        options = .procGetDependencies(),
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
       modelsContainer[[modelName]][["syntax"]] <- state
     }
   }
@@ -1202,11 +1189,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         )
       }
       state <- createJaspState(object = fittedModel)
-      state$dependOn(
-        options = .procGetDependencies(),
-        optionContainsValue = list(processModels = modelOptions),
-        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
-      )
       modelsContainer[[modelName]][["fittedModel"]] <- state
     }
   }
