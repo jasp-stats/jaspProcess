@@ -89,12 +89,12 @@
 <text transform='translate(454.33,223.67) rotate(-279)' text-anchor='middle' style='font-size: 7.53px; font-family: sans;' textLength='7.95px' lengthAdjust='spacingAndGlyphs'>c2</text>
 <text transform='translate(394.21,265.27) rotate(-429)' text-anchor='middle' style='font-size: 7.53px; font-family: sans;' textLength='8.37px' lengthAdjust='spacingAndGlyphs'>a3</text>
 <text transform='translate(427.51,261.20) rotate(-443)' text-anchor='middle' style='font-size: 7.53px; font-family: sans;' textLength='8.37px' lengthAdjust='spacingAndGlyphs'>a4</text>
-<text x='260.68' y='332.75' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='14.92px' lengthAdjust='spacingAndGlyphs'>cnG</text>
+<text x='260.68' y='332.75' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='12.65px' lengthAdjust='spacingAndGlyphs'>fcG</text>
 <text x='460.51' y='332.75' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='14.46px' lengthAdjust='spacingAndGlyphs'>cnN</text>
 <text x='327.29' y='399.37' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='19.44px' lengthAdjust='spacingAndGlyphs'>dbC1</text>
 <text x='393.90' y='399.37' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='13.11px' lengthAdjust='spacingAndGlyphs'>cn2</text>
-<text x='427.21' y='132.92' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='13.11px' lengthAdjust='spacingAndGlyphs'>cn1</text>
-<text x='360.60' y='199.53' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='12.65px' lengthAdjust='spacingAndGlyphs'>cG:</text>
+<text x='427.21' y='132.92' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='11.75px' lengthAdjust='spacingAndGlyphs'>fcE</text>
+<text x='360.60' y='199.53' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='10.84px' lengthAdjust='spacingAndGlyphs'>fG:</text>
 <text x='393.90' y='532.59' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='17.17px' lengthAdjust='spacingAndGlyphs'>dC1:</text>
 <text x='427.21' y='66.31' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='10.85px' lengthAdjust='spacingAndGlyphs'>c2:</text>
 <polyline points='242.74,309.14 241.50,307.70 239.79,304.66 238.21,301.57 236.79,298.43 235.50,295.25 234.35,292.03 233.33,288.77 232.45,285.47 231.71,282.14 231.09,278.78 230.60,275.38 230.24,271.96 230.00,268.52 229.88,265.05 229.89,261.56 230.01,258.06 230.24,254.54 230.59,251.01 231.06,247.48 231.63,243.93 232.31,240.38 233.09,236.82 233.98,233.27 234.97,229.72 236.06,226.18 237.24,222.64 238.52,219.11 239.90,215.60 241.36,212.10 242.92,208.62 244.56,205.16 246.28,201.72 248.09,198.30 249.98,194.92 251.95,191.56 253.99,188.24 256.11,184.95 258.30,181.70 260.56,178.49 262.89,175.32 265.29,172.19 267.75,169.11 270.28,166.09 272.86,163.11 275.50,160.19 278.20,157.33 280.95,154.52 283.75,151.78 286.60,149.10 289.50,146.49 292.45,143.95 295.44,141.48 298.47,139.09 301.54,136.77 304.65,134.53 307.80,132.38 310.98,130.31 314.18,128.32 317.42,126.43 320.69,124.62 323.98,122.91 327.29,121.30 330.63,119.78 333.98,118.37 337.35,117.06 340.73,115.86 344.13,114.77 347.54,113.79 350.96,112.92 354.38,112.17 357.81,111.54 361.24,111.03 364.67,110.64 368.10,110.38 371.53,110.25 374.95,110.25 378.36,110.39 381.76,110.66 385.15,111.06 388.53,111.61 391.89,112.31 395.23,113.15 398.55,114.14 401.85,115.28 405.13,116.57 406.39,117.34 ' style='stroke-width: 1.92; stroke: #000000; stroke-opacity: 0.50; stroke-linecap: butt;' />
@@ -120,6 +120,6 @@
 <polyline points='461.42,302.44 463.94,309.14 468.48,303.61 ' style='stroke-width: 1.92; stroke: #000000; stroke-opacity: 0.50; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='216.87' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='197.39px' lengthAdjust='spacingAndGlyphs'>statistical-path-plot-continuous-92</text>
+<text x='216.87' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='166.55px' lengthAdjust='spacingAndGlyphs'>statistical-path-plot-factor-92</text>
 </g>
 </svg>

@@ -74,14 +74,14 @@
 <text transform='translate(424.03,220.97) rotate(-297)' text-anchor='middle' style='font-size: 7.53px; font-family: sans;' textLength='7.95px' lengthAdjust='spacingAndGlyphs'>c2</text>
 <text transform='translate(440.52,253.93) rotate(-297)' text-anchor='middle' style='font-size: 7.53px; font-family: sans;' textLength='7.95px' lengthAdjust='spacingAndGlyphs'>c3</text>
 <text transform='translate(437.18,432.50) rotate(-81)' text-anchor='middle' style='font-size: 7.53px; font-family: sans;' textLength='7.95px' lengthAdjust='spacingAndGlyphs'>c4</text>
-<text x='265.98' y='332.75' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='14.92px' lengthAdjust='spacingAndGlyphs'>cnG</text>
+<text x='265.98' y='332.75' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='12.65px' lengthAdjust='spacingAndGlyphs'>fcG</text>
 <text x='465.81' y='332.75' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='14.46px' lengthAdjust='spacingAndGlyphs'>cnN</text>
 <text x='332.59' y='399.37' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='19.44px' lengthAdjust='spacingAndGlyphs'>dbC1</text>
 <text x='399.20' y='399.37' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='13.11px' lengthAdjust='spacingAndGlyphs'>cn2</text>
-<text x='365.89' y='132.92' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='13.11px' lengthAdjust='spacingAndGlyphs'>cn1</text>
+<text x='365.89' y='132.92' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='11.75px' lengthAdjust='spacingAndGlyphs'>fcE</text>
 <text x='399.20' y='199.53' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='17.17px' lengthAdjust='spacingAndGlyphs'>dC1:</text>
 <text x='432.50' y='532.59' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='10.85px' lengthAdjust='spacingAndGlyphs'>c2:</text>
-<text x='365.89' y='66.31' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='12.65px' lengthAdjust='spacingAndGlyphs'>cG:</text>
+<text x='365.89' y='66.31' text-anchor='middle' style='font-size: 8.13px; font-family: sans;' textLength='10.84px' lengthAdjust='spacingAndGlyphs'>fG:</text>
 <polyline points='245.16,314.15 243.53,312.92 241.61,310.64 239.80,308.30 238.09,305.90 236.50,303.43 235.01,300.90 233.63,298.32 232.35,295.68 231.17,292.99 230.09,290.25 229.12,287.46 228.24,284.62 227.46,281.75 226.78,278.83 226.19,275.88 225.69,272.89 225.29,269.87 224.98,266.82 224.76,263.75 224.63,260.64 224.59,257.52 224.63,254.37 224.76,251.21 224.97,248.03 225.27,244.84 225.65,241.64 226.10,238.43 226.64,235.22 227.25,232.00 227.94,228.79 228.71,225.57 229.55,222.36 230.46,219.16 231.45,215.97 232.50,212.79 233.63,209.62 234.82,206.47 236.08,203.34 237.41,200.23 238.79,197.15 240.25,194.09 241.76,191.06 243.34,188.07 244.97,185.11 246.66,182.18 248.41,179.30 250.21,176.45 252.07,173.65 253.98,170.90 255.95,168.19 257.96,165.54 260.03,162.94 262.14,160.40 264.30,157.92 266.50,155.50 268.75,153.14 271.04,150.85 273.38,148.63 275.75,146.48 278.17,144.40 280.62,142.40 283.11,140.48 285.63,138.64 288.20,136.88 290.79,135.21 293.42,133.63 296.07,132.14 298.76,130.74 301.47,129.44 304.22,128.24 306.98,127.14 309.78,126.14 312.59,125.25 315.43,124.46 318.29,123.79 321.17,123.23 324.07,122.79 326.98,122.46 329.91,122.26 332.86,122.18 335.82,122.22 338.79,122.39 341.77,122.70 344.77,123.13 345.08,123.24 ' style='stroke-width: 1.92; stroke: #000000; stroke-opacity: 0.50; stroke-linecap: butt;' />
 <polyline points='237.77,313.22 245.16,314.15 242.27,307.29 ' style='stroke-width: 1.92; stroke: #000000; stroke-opacity: 0.50; stroke-linecap: butt;' />
 <polyline points='337.78,124.74 345.08,123.24 340.12,117.67 ' style='stroke-width: 1.92; stroke: #000000; stroke-opacity: 0.50; stroke-linecap: butt;' />
@@ -105,6 +105,6 @@
 <polyline points='466.61,302.17 469.24,309.14 473.96,303.38 ' style='stroke-width: 1.92; stroke: #000000; stroke-opacity: 0.50; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='211.05' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='197.39px' lengthAdjust='spacingAndGlyphs'>statistical-path-plot-continuous-89</text>
+<text x='211.05' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='166.55px' lengthAdjust='spacingAndGlyphs'>statistical-path-plot-factor-89</text>
 </g>
 </svg>
