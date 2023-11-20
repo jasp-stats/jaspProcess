@@ -751,8 +751,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Add vertices and edges for first dependent var
   depVars <- igraph::V(graph)[isDep]$name
   resCovGraph <- .procCombVars(resCovGraph, depVars[1])
-
-  return(resCovGraph)
+  
+  # Remove edges that are in graph from resCovGraph
+  return(igraph::difference(resCovGraph, igraph::as.undirected(graph)))
 }
 
 .procModelSyntax <- function(jaspResults, options) {
