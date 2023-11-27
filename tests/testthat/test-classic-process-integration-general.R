@@ -1007,3 +1007,39 @@ test_that("Local tests work for factors with loess test type", {
                                       "debCollin1", "<unicode>", "<unicode>", "facGenderm", 0.0989527098094575
                                  ))
 })
+
+test_that("Path plots for empty moderator model works", {
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "debCollin1", "contcor1", "contNormal")
+  options$factors <- list("facGender")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel <- 0.95
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputModelNumber", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 91, modelNumberCovariates = list(), modelNumberIndependent = "contGamma",
+                                     modelNumberMediators = list("debCollin1"), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = TRUE,
+                                     localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+
+  plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot")
+
+  plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "statistical-path-plot")
+})
