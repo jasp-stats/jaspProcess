@@ -778,14 +778,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procModelSyntaxSingleModel <- function(container, modelOptions) {
   graph <- container[["graph"]]$object
   
+  doFit <- .procCheckFitModel(graph)
+
   regSyntax <- .procRegSyntax(graph)
   
-  medEffectSyntax <- .procMedEffectsSyntax(graph,
-    container[["modProbes"]]$object,
-    container[["contrasts"]]$object
-  )
+  medEffectSyntax <- ""
+  resCovSyntax <- ""
 
-  resCovSyntax <- .procResCovSyntax(container[["resCovGraph"]]$object)
+  if (doFit) {
+    medEffectSyntax <- .procMedEffectsSyntax(graph,
+      container[["modProbes"]]$object,
+      container[["contrasts"]]$object
+    )
+    resCovSyntax <- .procResCovSyntax(container[["resCovGraph"]]$object)
+  }
 
   headerJasp <- "
   # -------------------------------------------
