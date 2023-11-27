@@ -21,33 +21,36 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   jaspResults$title <- gettext("Process Analysis")
   # Check if analysis has any variables to read in
   if (options[["dependent"]] == "" || (length(options[["covariates"]]) == 0 && length(options[["factors"]]) == 0)) {
+    # create empty summary table
+    .procModelSummaryTable(jaspResults, options, NULL)
     return()
   }
   # Read dataset
   dataset <- .procReadData(options)
   # Check for errors in dataset
   .procErrorHandling(dataset, options)
-  # Check if all models are ready to compute something
-  if (!.procIsReady(options)) return()
   # Create a container for each model
-  .procContainerModels(jaspResults, options)
-  # Transform input for each model into a graph for further processing
-  .procModelGraph(jaspResults, options)
-  # Add factor dummy variables manually to dataset
-  # because lavaan does not do it automatically;
-  # also add three-way interaction variables manually to dataset 
-  # because lavaan does not allow threeway interaction regression terms
-  dataset <- .procAddFactorDummyIntVars(jaspResults, dataset, options)
-  # Add parameter names to graph of each model
-  .procGraphAddParNames(jaspResults, options)
-  # Compute quantiles at which to probe moderators for each model
-  .procModProbes(jaspResults, dataset, options)
-  # Add undirected graph for variances and covariances
-  .procResCovGraph(jaspResults, options)
-  # Create lavaan syntax for each model from graph
-  .procModelSyntax(jaspResults, options)
-  # Fit lavaan models based on syntax and dataset
-  modelsContainer <- .procComputeResults(jaspResults, dataset, options)
+  modelsContainer <- .procContainerModels(jaspResults, options)
+  # Check if all models are ready to compute something
+  if (.procIsReady(options)) {
+    # Transform input for each model into a graph for further processing
+    .procModelGraph(jaspResults, options)
+    # Add factor dummy variables manually to dataset
+    # because lavaan does not do it automatically;
+    # also add three-way interaction variables manually to dataset 
+    # because lavaan does not allow threeway interaction regression terms
+    dataset <- .procAddFactorDummyIntVars(jaspResults, dataset, options)
+    # Add parameter names to graph of each model
+    .procGraphAddParNames(jaspResults, options)
+    # Compute quantiles at which to probe moderators for each model
+    .procModProbes(jaspResults, dataset, options)
+    # Add undirected graph for variances and covariances
+    .procResCovGraph(jaspResults, options)
+    # Create lavaan syntax for each model from graph
+    .procModelSyntax(jaspResults, options)
+    # Fit lavaan models based on syntax and dataset and update models container
+    modelsContainer <- .procComputeResults(jaspResults, dataset, options)
+  }
   # Create container for path plots for each model
   pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
   # Create path plots for each model and add to container
@@ -55,7 +58,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create table with model fit indices (AIC, ...)
   .procModelSummaryTable(jaspResults, options, modelsContainer)
   # Create container for parameter estimates for each model
-  parEstContainer <- .procContainerParameterEstimates(jaspResults, options)
+  parEstContainer <- .procContainerParameterEstimates(jaspResults, options, modelsContainer)
   # Create tables for parameter estimates
   .procParameterEstimateTables(parEstContainer, options, modelsContainer)
   # Create container for local test results for each model
@@ -127,6 +130,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   jaspResults[["modelsContainer"]] <- modelsContainer
+
+  return(modelsContainer)
 }
 
 .procModelGraph <- function(jaspResults, options) {
@@ -1315,8 +1320,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     )
   }
 
-  if (length(procResults) == 0) return()
-
+  if (length(procResults) == 0) {
+    summaryTable$addFootnote(message = gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."))
+    return()
+  }
   aic <- sapply(procResults, AIC)
   bic <- sapply(procResults, BIC)
   df  <- sapply(procResults, lavaan::fitMeasures, fit.measures = "df")
@@ -1339,18 +1346,25 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procContainerParameterEstimates <- function(jaspResults, options) {
+.procContainerParameterEstimates <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["parEstContainer"]])) {
     parEstContainer <- jaspResults[["parEstContainer"]]
   } else {
     parEstContainer <- createJaspContainer("Parameter estimates")
     parEstContainer$dependOn(.procGetDependencies())
 
-    parEstContainer[["warning"]] <- createJaspHtml(text = gettext(
+    jaspResults[["parEstContainer"]] <- parEstContainer
+  }
+
+  validModel <- sapply(options[["processModels"]], function(mod) !is.null(modelsContainer[[mod[["name"]]]][["fittedModel"]]$object))
+
+  if (any(validModel) && is.null(parEstContainer[["warning"]])) {
+    warningHtml <- createJaspHtml(text = gettext(
       "<b>Important</b>: Parameter estimates are causal effects and need to be treated and interpreted as such. Causal effects are only meaningful if all confounding effects are accounted for and their directions are correctly specified."
     ))
-
-    jaspResults[["parEstContainer"]] <- parEstContainer
+    warningHtml$position <- 1
+    warningHtml$dependOn("processModels")
+    parEstContainer[["warning"]] <- warningHtml
   }
 
   return(parEstContainer)
@@ -1378,6 +1392,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procParameterEstimateTables <- function(container, options, modelsContainer) {
+  if (is.null(modelsContainer)) return()
+  
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
@@ -1394,7 +1410,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     isValid <- .procIsValidModel(modelContainer, procResults[[i]])
     
-    if (isValid && !procResults[[i]]@Options[["do.fit"]]) {
+    if (!isValid || (isValid && !procResults[[i]]@Options[["do.fit"]])) {
       next
     }
 
@@ -1710,6 +1726,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procLocalTestTables <- function(container, dataset, options, modelsContainer) {
+  if(is.null(modelsContainer)) return()
+
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
@@ -1727,7 +1745,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Sets container error if invalid
     isValid <- .procIsValidModel(modelContainer, procResults[[i]])
 
-    if (isValid && !procResults[[i]]@Options[["do.fit"]]) {
+    if (!isValid || (isValid && !procResults[[i]]@Options[["do.fit"]])) {
       next
     }
 
@@ -2343,7 +2361,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procPlotSyntax <- function(container, options, modelsContainer) {
-  if (!options[["syntax"]]) return()
+  if (!options[["syntax"]] || is.null(modelsContainer)) return()
 
   if (is.null(container[["syntaxContainer"]])) {
     syntaxContainer <- createJaspContainer(title = gettext("Model syntax"))
