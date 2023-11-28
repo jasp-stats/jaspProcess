@@ -1180,7 +1180,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (is.null(modelsContainer[[modelName]][["fittedModel"]])) {
       if (modelOptions[["inputType"]] == "inputModelNumber" && !modelOptions[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
-        fittedModel <- gettextf("%s: Hayes model %s not implemented", modelName, modelOptions[["modelNumber"]])
+        fittedModel <- gettextf("%1$s: Hayes model %2$s not implemented", modelName, modelOptions[["modelNumber"]])
       } else {
         fittedModel <- .procResultsFitModel(
           modelsContainer[[modelName]],
