@@ -1391,6 +1391,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(FALSE)
 }
 
+.procSetContainerError <- function(container, procResult) {
+  if (is.character(procResult)) {
+    container$setError(procResult)
+  }
+}
+
 .procParameterEstimateTables <- function(container, options, modelsContainer) {
   if (is.null(modelsContainer)) return()
   
@@ -1407,12 +1413,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     } else {
       modelContainer <- container[[modelNames[i]]]
     }
-
-    isValid <- .procIsValidModel(modelContainer, procResults[[i]])
     
-    if (!isValid || (isValid && !procResults[[i]]@Options[["do.fit"]])) {
-      next
-    }
+    .procSetContainerError(modelContainer, procResults[[i]])
 
     if (options[["processModels"]][[i]][["pathCoefficients"]])
       .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
@@ -1426,6 +1428,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (options[["processModels"]][[i]][["residualCovariances"]])
       .procCovariancesTable(modelContainer, options, procResults[[i]], i)
   }
+}
+
+.procIsValidModel <- function(container, procResults) {
+  return(inherits(procResults, "lavaan") && !container$getError() && procResults@Options[["do.fit"]])
 }
 
 .procCoefficientsTable <- function(tbl, options, coefs) {
@@ -1487,7 +1493,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   container[["pathCoefficientsTable"]] <- pathCoefTable
 
-  if (container$getError()) return()
+  if (!.procIsValidModel(container, procResults)) return()
 
   bootstrapCiType <- .procGetBootstrapCiType(options)
 
@@ -1547,7 +1553,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   container[["mediationEffectsTable"]] <- medEffectsTable
 
-  if (container$getError()) return()
+  if (!.procIsValidModel(container, procResults)) return()
 
   bootstrapCiType <- .procGetBootstrapCiType(options)
 
@@ -1626,7 +1632,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   container[["totalEffectsTable"]] <- totEffectsTable
 
-  if (container$getError()) return()
+  if (!.procIsValidModel(container, procResults)) return()
 
   bootstrapCiType <- .procGetBootstrapCiType(options)
 
@@ -1686,7 +1692,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   container[["covariancesTable"]] <- pathCoefTable
 
-  if (container$getError()) return()
+  if (!.procIsValidModel(container, procResults)) return()
 
   bootstrapCiType <- .procGetBootstrapCiType(options)
 
@@ -1742,12 +1748,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       modelContainer <- container[[modelNames[i]]]
     }
 
-    # Sets container error if invalid
-    isValid <- .procIsValidModel(modelContainer, procResults[[i]])
-
-    if (!isValid || (isValid && !procResults[[i]]@Options[["do.fit"]])) {
-      next
-    }
+    # Sets container error if invalid model
+    .procSetContainerError(modelContainer, procResults[[i]])
 
     contrasts <- modelsContainer[[modelNames[i]]][["contrasts"]]$object
 
@@ -1771,7 +1773,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   container[["localTestTable"]] <- localTestTable
   
-  if (container$getError()) return()
+  if (!.procIsValidModel(container, procResults)) return()
 
   # Only test variables in dataset that are part of model
   dataset <- dataset[encodeColNames(procResults@Data@ov$name)]
@@ -1897,7 +1899,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       pathPlotsContainer <- container[[modelName]]
     }
 
-    valid <- .procIsValidModel(pathPlotsContainer, modelsContainer[[modelName]][["fittedModel"]]$object)
+    valid <- inherits(modelsContainer[[modelName]][["fittedModel"]]$object, "lavaan")
 
     if (valid) {
       if (options[["processModels"]][[i]][["conceptualPathPlot"]]) {
