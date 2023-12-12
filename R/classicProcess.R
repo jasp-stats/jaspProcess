@@ -73,7 +73,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 # Helper function for generic dependencies of all models
 .procGetDependencies <- function() {
-  return(c('dependent', 'covariates', 'factors', "naAction", "emulation", "estimator", "standardizedEstimates"))
+  return(c(
+    "dependent", "covariates", "factors", "naAction", "emulation", "estimator",
+    "standardizedEstimates", "errorCalculationMethod", "bootstrapCiType"
+  ))
 }
 
 # Init functions ----
@@ -1407,6 +1410,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (is.null(container[[modelNames[i]]])) {
       modelContainer <- createJaspContainer(title = modelNames[i], , initCollapsed = TRUE)
       modelContainer$dependOn(
+        options = c("parameterLabels", "ciLevel"),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
       container[[modelNames[i]]] <- modelContainer
@@ -1488,7 +1492,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
   pathCoefTable$dependOn(
-    options = "parameterLabels",
     nestedOptions = list(c("processModels", as.character(modelIdx), "pathCoefficients"))
   )
   container[["pathCoefficientsTable"]] <- pathCoefTable
@@ -1547,7 +1550,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
   medEffectsTable$dependOn(
-    options = c("parameterLabels", "moderationProbes"),
+    options = "moderationProbes",
     nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
   )
 
@@ -1626,7 +1629,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
   totEffectsTable$dependOn(
-    options = c("parameterLabels", "moderationProbes"),
+    options = "moderationProbes",
     nestedOptions = list(c("processModels", as.character(modelIdx), "totalEffects"))
   )
 
