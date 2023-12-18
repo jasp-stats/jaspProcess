@@ -1986,7 +1986,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::V(graph)[isTreat]$posY[1] <- 0
 
   igraph::V(graph)[isDep]$posX <- 1
-  igraph::V(graph)[isDep]$posY <- 0
+  igraph::V(graph)[isDep]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isDep))
+  igraph::V(graph)[isDep]$posY[1] <- 0
   
   return(graph)
 }
