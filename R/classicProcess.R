@@ -165,7 +165,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   graph <- .procProcessRelationshipsToGraph(processRelationships)
 
   if (modelOptions[["inputType"]] == "inputModelNumber")
-    graph <- .procModelGraphInputModelNumber(graph, modelOptions, decodeColNames(globalDependent))
+    graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
   
   return(graph)
 }
@@ -174,10 +174,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   graph <- igraph::make_empty_graph()
   
   for (path in processRelationships) {
-    dependent <- path[["processDependent"]]
-    independent <- path[["processIndependent"]]
-    type <- path[["processType"]]
-    processVariable <- path[["processVariable"]]
+    dependent <- encodeColNames(path[["processDependent"]])
+    independent <- encodeColNames(path[["processIndependent"]])
+    type <- encodeColNames(path[["processType"]])
+    processVariable <- encodeColNames(path[["processVariable"]])
 
     # Add vertices for independent and dependent var
     verticesToAdd <- c(independent, dependent)
@@ -476,7 +476,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Create new variable for three-way interactions (moderated moderation)
     for (v in igraph::V(graph)[intLength == 3]$intVars) {
       # Compute factor dummy variables involved in interaction
-      varFormula <- formula(paste("~", paste(encodeColNames(v), collapse = "+")))
+      varFormula <- formula(paste("~", paste(v, collapse = "+")))
       # Create model matrix but keep missing values in place because it needs to be merged with dataset later
       varDummyMat <- model.matrix(varFormula, data = model.frame(dataset, na.action = NULL))
       # Create variable name like var1__var2__var3
@@ -492,7 +492,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     # Convert regression variables to formula
-    sourceFormula <- formula(paste("~", paste(encodeColNames(sourceVars), collapse = "+")))
+    sourceFormula <- formula(paste("~", paste(sourceVars, collapse = "+")))
 
     # Create dummy variables for factors, again keep missing values in place
     sourceDummyMat <- model.matrix(sourceFormula, data = model.frame(dataset, na.action = NULL))
@@ -513,7 +513,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     facGraph <- igraph::make_empty_graph()
 
     # Decode names to match with graph node names (FIXME)
-    names(contrastList) <- decodeColNames(names(contrastList))
+    names(contrastList) <- names(contrastList)
     
     # Split terms of predictor vars
     sourcVarsSplit <- strsplit(unique(igraph::E(graph)$source), ":|__")
@@ -671,13 +671,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   contrasts <- container[["contrasts"]]$object
 
-  modProbes <- lapply(encodeColNames(modVars), function(nms) {
+  modProbes <- lapply(modVars, function(nms) {
     # Is moderator factor
     matchFac <- sapply(options[["factors"]], grepl, x = nms)
 
     if (length(matchFac) > 0 && any(matchFac)) { # If is factor
       whichFac <- options[["factors"]][matchFac]
-      conMat <- contrasts[[decodeColNames(whichFac)]]
+      conMat <- contrasts[[whichFac]]
       colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
       row.names(conMat) <- as.character(conMat[, colIdx])
       # Return matrix with dummy coding for each factor
@@ -813,7 +813,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   headerMedEffects <- "
   # Mediation, indirect, and total effects"
 
-  return(encodeColNames(paste(
+  return(paste(
     headerJasp,
     regSyntax,
     headerResCov,
@@ -821,7 +821,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     headerMedEffects,
     medEffectSyntax,
     sep = "\n")
-  ))
+  )
 }
 
 .procRegSyntax <- function(graph) {
@@ -1002,6 +1002,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Left hand side of lavaan syntax
   lhs <- .procMedEffectsSyntaxGetLhs(path, graph, modProbes, contrasts)
 
+  # Encode column names because they will be split at '.'
   return(list(lhs = lhs, rhs = rhs))
 }
 
@@ -1098,8 +1099,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::E(graph)$parEst <- NA
   
   for (i in 1:nrow(est)) {
-    if (all(decodeColNames(c(est$rhs[i], est$lhs[i])) %in% igraph::V(graph)$name)) {
-      igraph::E(graph)[decodeColNames(est$rhs[i]) %--% decodeColNames(est$lhs[i])]$parEst <- est$est[i]
+    if (all(c(est$rhs[i], est$lhs[i])) %in% igraph::V(graph)$name) {
+      igraph::E(graph)[est$rhs[i] %--% est$lhs[i]]$parEst <- est$est[i]
     }
   }
 
@@ -1779,7 +1780,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!.procIsValidModel(container, procResults)) return()
 
   # Only test variables in dataset that are part of model
-  dataset <- dataset[encodeColNames(procResults@Data@ov$name)]
+  dataset <- dataset[procResults@Data@ov$name]
 
   if (!procResults@Fit@converged) {
     localTestTable$addFootnote(gettext("Model did not converge."))
