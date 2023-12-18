@@ -143,17 +143,20 @@ test_that("Factors with more than two levels work", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(-0.830256392443183, 0.671610737357546, 16, -0.0793228275428181,
-                                      "B", "Total", 0.835982155868673, 0.383136410068569, -0.207035472114545,
-                                      -0.525905203599432, 1.15334878307229, 16, 0.313721789736431,
-                                      "C", "Total", 0.463967628372663, 0.428388990797144, 0.732329253262693,
+                                      "B", "Total", "facThree", "contNormal", "<unicode>", 0.835982155868673,
+                                      0.383136410068569, -0.207035472114545, -0.525905203599432, 1.15334878307229,
+                                      16, 0.313721789736431, "C", "Total", "facThree", "contNormal",
+                                      "<unicode>", 0.463967628372663, 0.428388990797144, 0.732329253262693,
                                       -0.419840075280424, 0.605570327476428, 50, 0.0928651260980024,
-                                      "B", "Total", 0.722586733028552, 0.261589093178538, 0.355003815218782,
-                                      -0.343080242602794, 0.839989902182687, 50, 0.248454829789947,
-                                      "C", "Total", 0.410383843371771, 0.301809154177676, 0.823218336325481,
+                                      "B", "Total", "facThree", "contNormal", "<unicode>", 0.722586733028552,
+                                      0.261589093178538, 0.355003815218782, -0.343080242602794, 0.839989902182687,
+                                      50, 0.248454829789947, "C", "Total", "facThree", "contNormal",
+                                      "<unicode>", 0.410383843371771, 0.301809154177676, 0.823218336325481,
                                       -0.539700678828145, 1.248288868581, 84, 0.354294094876428, "B",
-                                      "Total", 0.437310752972172, 0.456128163964384, 0.776742422123473,
-                                      -0.891019363658371, 1.18974240595951, 84, 0.149361521150572,
-                                      "C", "Total", 0.778418345460771, 0.530816327756701, 0.281380796596429
+                                      "Total", "facThree", "contNormal", "<unicode>", 0.437310752972172,
+                                      0.456128163964384, 0.776742422123473, -0.891019363658371, 1.18974240595951,
+                                      84, 0.149361521150572, "C", "Total", "facThree", "contNormal",
+                                      "<unicode>", 0.778418345460771, 0.530816327756701, 0.281380796596429
                                  ))
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
@@ -250,15 +253,17 @@ test_that("Interactions between three-level and two-level factors work", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                  list(-0.791795096924544, 0.581685251275046, -0.105054922824749, "B",
-                                       0, "Total", 0.764308431708751, 0.350384078236495, -0.299827901294765,
-                                       -0.835536962519563, 0.956997866934718, 0.0607304522075771, "C",
-                                       0, "Total", 0.894346977790344, 0.457287695996857, 0.132805786683564,
-                                       -0.346979683149472, 1.19016835490491, 0.42159433587772, "B",
-                                       1, "Total", 0.282320764531175, 0.392136807150339, 1.07512054005195,
-                                       -0.273316897247542, 1.3997156098619, 0.563199356307179, "C",
-                                       1, "Total", 0.1869751495513, 0.426801849499815, 1.31958040239801
-                                  ))
+                                 list(-0.791795096924544, 0.581685251275046, -0.105054922824749, "B",
+                                      0, "Total", "facThree", "contNormal", "<unicode>", 0.764308431708751,
+                                      0.350384078236495, -0.299827901294765, -0.835536962519563, 0.956997866934718,
+                                      0.0607304522075771, "C", 0, "Total", "facThree", "contNormal",
+                                      "<unicode>", 0.894346977790344, 0.457287695996857, 0.132805786683564,
+                                      -0.346979683149472, 1.19016835490491, 0.42159433587772, "B",
+                                      1, "Total", "facThree", "contNormal", "<unicode>", 0.282320764531175,
+                                      0.392136807150339, 1.07512054005195, -0.273316897247542, 1.3997156098619,
+                                      0.563199356307179, "C", 1, "Total", "facThree", "contNormal",
+                                      "<unicode>", 0.1869751495513, 0.426801849499815, 1.31958040239801
+                                 ))
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
@@ -351,12 +356,13 @@ test_that("Interactions between two-level and three-level factors work", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(-1.50982658998053, 0.360680619782956, -0.574572985098788, 0, 0,
-                                      "E", "Total", 0.22854948713801, 0.477178974847959, -1.20410373336726,
-                                      -0.481073569295704, 0.385226116503068, -0.0479237263963181,
-                                      1, 0, "E", "Total", 0.828324822990655, 0.220998878712067, -0.216850540942141,
+                                      "E", "Total", "facTwo", "contNormal", "<unicode>", 0.22854948713801,
+                                      0.477178974847959, -1.20410373336726, -0.481073569295704, 0.385226116503068,
+                                      -0.0479237263963181, 1, 0, "E", "Total", "facTwo", "contNormal",
+                                      "<unicode>", 0.828324822990655, 0.220998878712067, -0.216850540942141,
                                       -0.864792807836215, 0.720584645837844, -0.0721040809991859,
-                                      0, 1, "E", "Total", 0.858502237177862, 0.404440455584724, -0.178281079460611
-                                 ))
+                                      0, 1, "E", "Total", "facTwo", "contNormal", "<unicode>", 0.858502237177862,
+                                      0.404440455584724, -0.178281079460611))
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
@@ -652,14 +658,16 @@ test_that("Bootstrapping works", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(-0.185247768110493, 0.184954521048108, 16, 0.0204130854588272,
-                                      "Total", 0.828873774494712, 0.0944410948565151, 0.216146217807417,
-                                      -0.168690463730101, 0.101377032919165, 50, -0.0262717264731872,
-                                      "Total", 0.70296268972986, 0.0688960355342047, -0.38132421219134,
+                                      "Total", "contGamma", "contNormal", "<unicode>", 0.828873774494712,
+                                      0.0944410948565151, 0.216146217807417, -0.168690463730101, 0.101377032919165,
+                                      50, -0.0262717264731872, "Total", "contGamma", "contNormal",
+                                      "<unicode>", 0.70296268972986, 0.0688960355342047, -0.38132421219134,
                                       -0.273074796118108, 0.132617352791238, 84, -0.0772222652104539,
-                                      "Total", 0.455579011178567, 0.103494796871115, -0.746146352715889,
-                                      -0.0178703105626821, 0.0288190536878919, 0.00298071207899204,
-                                      "Total indirect", 0.80239131693294, 0.0119107709679499, 0.250253496353234
-                                 ))
+                                      "Total", "contGamma", "contNormal", "<unicode>", 0.455579011178567,
+                                      0.103494796871115, -0.746146352715889, -0.0178703105626821,
+                                      0.0288190536878919, "", 0.00298071207899204, "Total indirect",
+                                      "contGamma", "contNormal", "<unicode>", 0.80239131693294, 0.0119107709679499,
+                                      0.250253496353234))
 })
 
 test_that("Missing values work", {
@@ -746,14 +754,16 @@ test_that("Missing values work", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(0.00390635118951979, 0.0336848167039331, 16, 0.0187955839467264,
-                                      "Total", 0.0133541749541057, 0.00759668691601019, 2.47418172613041,
-                                      0.00199406108792504, 0.0212392574984804, 50, 0.0116166592932027,
-                                      "Total", 0.0179755575686842, 0.0049095790949117, 2.36612122314971,
-                                      -0.00769347000856958, 0.0176074923436479, 84, 0.00495701116753915,
-                                      "Total", 0.442487475308531, 0.0064544457326227, 0.767999511171801,
-                                      -0.00561727350073337, 0.0137357253091405, 0.00405922590420357,
-                                      "Total indirect", 0.410967855868118, 0.00493708021232223, 0.822191605085194
-                                 ))
+                                      "Total", "debMiss1", "contNormal", "<unicode>", 0.0133541749541057,
+                                      0.00759668691601019, 2.47418172613041, 0.00199406108792504,
+                                      0.0212392574984804, 50, 0.0116166592932027, "Total", "debMiss1",
+                                      "contNormal", "<unicode>", 0.0179755575686842, 0.0049095790949117,
+                                      2.36612122314971, -0.00769347000856958, 0.0176074923436479,
+                                      84, 0.00495701116753915, "Total", "debMiss1", "contNormal",
+                                      "<unicode>", 0.442487475308531, 0.0064544457326227, 0.767999511171801,
+                                      -0.00561727350073337, 0.0137357253091405, "", 0.00405922590420357,
+                                      "Total indirect", "debMiss1", "contNormal", "<unicode>", 0.410967855868118,
+                                      0.00493708021232223, 0.822191605085194))
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
@@ -869,14 +879,16 @@ test_that("Not implemented Hayes models error message work", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 2"]][["collection"]][["parEstContainer_Model 2_totalEffectsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(-0.164688059120473, 0.205514230038128, 16, 0.0204130854588272,
-                                      "Total", 0.828873774494712, 0.0944410948565151, 0.216146217807417,
-                                      -0.16130547479782, 0.108762021851446, 50, -0.0262717264731872,
-                                      "Total", 0.70296268972986, 0.0688960355342047, -0.38132421219134,
+                                      "Total", "contGamma", "contNormal", "<unicode>", 0.828873774494712,
+                                      0.0944410948565151, 0.216146217807417, -0.16130547479782, 0.108762021851446,
+                                      50, -0.0262717264731872, "Total", "contGamma", "contNormal",
+                                      "<unicode>", 0.70296268972986, 0.0688960355342047, -0.38132421219134,
                                       -0.280068339665127, 0.125623809244219, 84, -0.0772222652104539,
-                                      "Total", 0.455579011178567, 0.103494796871115, -0.746146352715889,
-                                      -0.0203639700462949, 0.026325394204279, 0.00298071207899204,
-                                      "Total indirect", 0.80239131693294, 0.0119107709679499, 0.250253496353234
-                                 ))
+                                      "Total", "contGamma", "contNormal", "<unicode>", 0.455579011178567,
+                                      0.103494796871115, -0.746146352715889, -0.0203639700462949,
+                                      0.026325394204279, "", 0.00298071207899204, "Total indirect",
+                                      "contGamma", "contNormal", "<unicode>", 0.80239131693294, 0.0119107709679499,
+                                      0.250253496353234))
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 2"]][["collection"]][["pathPlotContainer_Model 2_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]

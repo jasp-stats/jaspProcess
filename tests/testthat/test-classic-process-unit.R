@@ -578,7 +578,7 @@ test_that("Test that .procMedEffectsSyntax works", {
   contrasts <- list()
 
   syntax <- jaspProcess:::.procMedEffectsSyntax(graph, modProbes, contrasts)
-  expect_equal(syntax, "contGamma__contNormal.contcor2__2.5 := (c1 + c3*0.1)\ncontGamma__contNormal.contcor2__50 := (c1 + c3*0.5)\ncontGamma__contNormal.contcor2__97.5 := (c1 + c3*0.9)\ncontGamma__contcor1__contNormal := a1*b1\ntot.contcor2__2.5 := (c1 + c3*0.1) + a1*b1\ntot.contcor2__50 := (c1 + c3*0.5) + a1*b1\ntot.contcor2__97.5 := (c1 + c3*0.9) + a1*b1\ntotInd. := a1*b1")
+  expect_equal(syntax, "contGamma__contNormal.contcor2__2.5 := (c1 + c3*0.1)\ncontGamma__contNormal.contcor2__50 := (c1 + c3*0.5)\ncontGamma__contNormal.contcor2__97.5 := (c1 + c3*0.9)\ncontGamma__contcor1__contNormal := a1*b1\ntot.contGamma__contNormal.contcor2__2.5 := (c1 + c3*0.1) + a1*b1\ntot.contGamma__contNormal.contcor2__50 := (c1 + c3*0.5) + a1*b1\ntot.contGamma__contNormal.contcor2__97.5 := (c1 + c3*0.9) + a1*b1\ntotInd.contGamma__contNormal := a1*b1")
 })
 
 test_that("Test that .procResCovSyntax works", {

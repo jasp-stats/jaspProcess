@@ -77,8 +77,9 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.0338982352403213, 0.370786700700972, 0.168444232730325, "Total",
-			 0.102761008338914, 0.10323785006597, 1.63161314016795, -0.027115002941041,
-			 0.0385272160356765, 0.00570610654731776, "Total indirect", 0.733292476299653,
+			 "contcor1", "contNormal", "<unicode>", 0.102761008338914, 0.10323785006597,
+			 1.63161314016795, -0.027115002941041, 0.0385272160356765, 0.00570610654731776,
+			 "Total indirect", "contcor1", "contNormal", "<unicode>", 0.733292476299653,
 			 0.0167457717321581, 0.34074909407489))
 
 
@@ -171,9 +172,10 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.339311551617825, 0.485810696897825, 0.07324957264, "experimental",
-			 "Total", 0.727848824673947, 0.210494237400306, 0.347988493864076,
-			 -0.0500653809891558, 0.0303840547660915, -0.00984066311153218,
-			 "experimental", "Total indirect", 0.63159016355888, 0.0205231923621613,
+			 "Total", "facExperim", "contNormal", "<unicode>", 0.727848824673947,
+			 0.210494237400306, 0.347988493864076, -0.0500653809891558, 0.0303840547660915,
+			 -0.00984066311153218, "experimental", "Total indirect", "facExperim",
+			 "contNormal", "<unicode>", 0.63159016355888, 0.0205231923621613,
 			 -0.479489883341709))
 
 
@@ -256,7 +258,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.176023203389167, 0.0942455484667592, -0.0408888274612038, "Total",
-			 0.553151714317508, 0.0689473770915618, -0.593043987835877))
+			 "contGamma", "contNormal", "<unicode>", 0.553151714317508, 0.0689473770915618,
+			 -0.593043987835877))
 
 
 
@@ -338,7 +341,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.176023203389167, 0.0942455484667592, -0.0408888274612038, "Total",
-			 0.553151714317508, 0.0689473770915618, -0.593043987835877))
+			 "contGamma", "contNormal", "<unicode>", 0.553151714317508, 0.0689473770915618,
+			 -0.593043987835877))
 
 
 
@@ -414,9 +418,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	jaspTools::expect_equal_tables(table,
 		list(-0.0183967830162192, 0.521461905534409, 0.251532561259095, "contcor1",
 			 "contNormal", "", "<unicode>", "", 0.067792370251071, 0.137721583868113,
-			 1.8263844649069, -0.0345845435803312, 0.0470351073738792, 0.00622528189677404,
-			 "contcor1", "contGamma", "contNormal", "<unicode>", "<unicode>",
-			 0.7649551805981, 0.0208217221331657, 0.298980163934575))
+			 1.8263844649069, -0.404335782858585, 0.134221360435661, -0.135057211211462,
+			 "contcor2", "contNormal", "", "<unicode>", "", 0.325595679387153,
+			 0.137389550915812, -0.983023893092285, -0.0345845435803312,
+			 0.0470351073738792, 0.00622528189677404, "contcor1", "contGamma",
+			 "contNormal", "<unicode>", "<unicode>", 0.7649551805981, 0.0208217221331657,
+			 0.298980163934575, -0.0167552188968918, 0.0129087470860217,
+			 -0.00192323590543502, "contcor2", "contGamma", "contNormal",
+			 "<unicode>", "<unicode>", 0.799383602350585, 0.00756747731511882,
+			 -0.254144918491219))
 
 
 
@@ -440,9 +450,16 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.00931723446549082, 0.524832920777229, 0.257757843155869, "Total",
-			 0.0585458573430464, 0.136265298611614, 1.89158828977093, -0.0345845435803312,
-			 0.0470351073738792, 0.00622528189677404, "Total indirect", 0.7649551805981,
-			 0.0208217221331657, 0.298980163934575))
+			 "contcor1", "contNormal", "<unicode>", 0.0585458573430464, 0.136265298611614,
+			 1.89158828977093, -0.406100660732333, 0.132139766498539, -0.136980447116897,
+			 "Total", "contcor2", "contNormal", "<unicode>", 0.318469002843721,
+			 0.137308754517033, -0.997608984210142, -0.0345845435803312,
+			 0.0470351073738792, 0.00622528189677404, "Total indirect", "contcor1",
+			 "contNormal", "<unicode>", 0.7649551805981, 0.0208217221331657,
+			 0.298980163934575, -0.0167552188968918, 0.0129087470860217,
+			 -0.00192323590543502, "Total indirect", "contcor2", "contNormal",
+			 "<unicode>", 0.799383602350585, 0.00756747731511882, -0.254144918491219
+			))
 
 
 
@@ -517,11 +534,17 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.397396510584462, 0.416025502052742, 0.0093144957341401, "experimental",
-			 "facExperim", "contNormal", "", "<unicode>", "", 0.964197302009531,
-			 0.207509428503119, 0.0448870964627041, -0.0543727189027194,
-			 0.0333398342079703, -0.0105164423473746, "experimental", "facExperim",
-			 "contGamma", "contNormal", "<unicode>", "<unicode>", 0.63836482029219,
-			 0.0223760624691461, -0.469986279394574))
+			 "", "facExperim", "contNormal", "", "<unicode>", "", 0.964197302009531,
+			 0.207509428503119, 0.0448870964627041, 0.0807497114696924, 0.899678077647834,
+			 0.490213894558763, "", "m", "facGender", "contNormal", "", "<unicode>",
+			 "", 0.0189514272255094, 0.208914136340704, 2.34648503516921,
+			 -0.0543727189027194, 0.0333398342079703, -0.0105164423473746,
+			 "experimental", "", "facExperim", "contGamma", "contNormal",
+			 "<unicode>", "<unicode>", 0.63836482029219, 0.0223760624691461,
+			 -0.469986279394574, -0.0894709002623381, 0.0396871047364398,
+			 -0.0248918977629491, "", "m", "facGender", "contGamma", "contNormal",
+			 "<unicode>", "<unicode>", 0.449969588604478, 0.0329490761099591,
+			 -0.75546572777576))
 
 
 
@@ -545,10 +568,16 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.409075392315575, 0.406671499089106, -0.00120194661323445, "experimental",
-			 "Total", 0.995391649700707, 0.208102520719562, -0.005775742692008,
+			 "", "Total", "facExperim", "contNormal", "<unicode>", 0.995391649700707,
+			 0.208102520719562, -0.005775742692008, 0.0574485510919578, 0.873195442499671,
+			 0.465321996795814, "", "m", "Total", "facGender", "contNormal",
+			 "<unicode>", 0.0253502727477093, 0.208102520720335, 2.23602287557656,
 			 -0.0543727189027194, 0.0333398342079703, -0.0105164423473746,
-			 "experimental", "Total indirect", 0.63836482029219, 0.0223760624691461,
-			 -0.469986279394574))
+			 "experimental", "", "Total indirect", "facExperim", "contNormal",
+			 "<unicode>", 0.63836482029219, 0.0223760624691461, -0.469986279394574,
+			 -0.0894709002623381, 0.0396871047364398, -0.0248918977629491,
+			 "", "m", "Total indirect", "facGender", "contNormal", "<unicode>",
+			 0.449969588604478, 0.0329490761099591, -0.75546572777576))
 
 
 
@@ -652,8 +681,9 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.171980601989964, 0.241303276716377, 0.0346613373632068, "Total",
-			 0.742339407866267, 0.105431498222996, 0.32875694595457, -0.0143110559607141,
-			 0.0225964389634036, 0.00414269150134476, "Total indirect", 0.659941924671553,
+			 "contcor2", "contNormal", "<unicode>", 0.742339407866267, 0.105431498222996,
+			 0.32875694595457, -0.0143110559607141, 0.0225964389634036, 0.00414269150134476,
+			 "Total indirect", "contcor2", "contNormal", "<unicode>", 0.659941924671553,
 			 0.00941535028583161, 0.439993348689189))
 
 
@@ -758,10 +788,11 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(0.0615403730485783, 0.867081308544673, 0.464310840796626, "m",
-			 "Total", 0.0238565192493443, 0.205498912696891, 2.25943210454587,
-			 -0.0935866374626978, 0.040608201679051, -0.0264892178918234,
-			 "m", "Total indirect", 0.439067321348252, 0.0342340063899798,
-			 -0.773769146096109))
+			 "Total", "facGender", "contNormal", "<unicode>", 0.0238565192493443,
+			 0.205498912696891, 2.25943210454587, -0.0935866374626978, 0.040608201679051,
+			 -0.0264892178918234, "m", "Total indirect", "facGender", "contNormal",
+			 "<unicode>", 0.439067321348252, 0.0342340063899798, -0.773769146096109
+			))
 
 
 
@@ -866,10 +897,11 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.0178966078683174, 0.0246010378926834, 0.00335221501218302,
-			 "Total", 0.757166363425402, 0.0108414353774398, 0.309203984110695,
-			 -0.0135662302663832, 0.0112004146902579, -0.00118290778806262,
-			 "Total indirect", 0.851484913673871, 0.0063181377698767, -0.187224120642387
-			))
+			 "Total", "contcor2", "contNormal", "<unicode>", 0.757166363425402,
+			 0.0108414353774398, 0.309203984110695, -0.0178966078683174,
+			 0.0246010378926834, 0.00335221501218302, "Total indirect", "contcor2",
+			 "contNormal", "<unicode>", 0.757166363425402, 0.0108414353774398,
+			 0.309203984110695))
 
 
 
@@ -974,10 +1006,11 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.0794164391530521, 0.0476217013132922, -0.01589736891988, "m",
-			 "Total", 0.623755999445009, 0.0324082844043067, -0.490534109166464,
-			 -0.021639151110671, 0.0261871328052263, 0.00227399084727767,
-			 "m", "Total indirect", 0.852146487944709, 0.012200806824295,
-			 0.186380366481138))
+			 "Total", "facGender", "contNormal", "<unicode>", 0.623755999445009,
+			 0.0324082844043067, -0.490534109166464, -0.0794164391530521,
+			 0.0476217013132922, -0.01589736891988, "m", "Total indirect",
+			 "facGender", "contNormal", "<unicode>", 0.623755999445009, 0.0324082844043067,
+			 -0.490534109166464))
 
 
 
@@ -1053,10 +1086,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	jaspTools::expect_equal_tables(table,
 		list(-0.179344124936921, 0.0952661437880555, -0.0420389905744326, "contGamma",
 			 "contNormal", "", "<unicode>", "", 0.548448832007176, 0.0700549272565891,
-			 -0.600086135561272, -0.020663796033847, 0.0256217211442374,
+			 -0.600086135561272, -0.176275917684869, 0.237313209364953, 0.0305186458400417,
+			 "contcor2", "contNormal", "", "<unicode>", "", 0.772389630720537,
+			 0.10550936912927, 0.289250576436017, -0.020663796033847, 0.0256217211442374,
 			 0.00247896255519518, "contGamma", "debCollin1", "contNormal",
 			 "<unicode>", "<unicode>", 0.833711582126616, 0.011807746862488,
-			 0.209943741516902))
+			 0.209943741516902, -0.0112451663636773, 0.00924474906985262,
+			 -0.00100020864691232, "contcor2", "debCollin1", "contNormal",
+			 "<unicode>", "<unicode>", 0.848251370059927, 0.00522711529271755,
+			 -0.191350025951373))
 
 
 
@@ -1080,9 +1118,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.174961351109489, 0.0958412950710138, -0.0395600280192374, "Total",
-			 0.566888387870401, 0.069083577126049, -0.572640121791271, -0.020663796033847,
-			 0.0256217211442374, 0.00247896255519518, "Total indirect", 0.833711582126616,
-			 0.011807746862488, 0.209943741516902))
+			 "contGamma", "contNormal", "<unicode>", 0.566888387870401, 0.069083577126049,
+			 -0.572640121791271, -0.177114666223163, 0.236151540609422, 0.0295184371931294,
+			 "Total", "contcor2", "contNormal", "<unicode>", 0.779485655425546,
+			 0.105426990009096, 0.279989376445088, -0.020663796033847, 0.0256217211442374,
+			 0.00247896255519518, "Total indirect", "contGamma", "contNormal",
+			 "<unicode>", 0.833711582126616, 0.011807746862488, 0.209943741516902,
+			 -0.0112451663636773, 0.00924474906985262, -0.00100020864691232,
+			 "Total indirect", "contcor2", "contNormal", "<unicode>", 0.848251370059927,
+			 0.00522711529271755, -0.191350025951373))
 
 
 
@@ -1156,12 +1200,17 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.199131680433643, 0.0699782263807102, -0.0645767270264666, "contGamma",
-			 "contNormal", "", "<unicode>", "", 0.346888279550906, 0.0686517479242114,
-			 -0.940642139188598, -0.0207692258847186, 0.0237283785708711,
-			 0.00147957634307626, "contGamma", "debCollin1", "contNormal",
-			 "<unicode>", "<unicode>", 0.896297169201029, 0.0113516382970762,
-			 0.130340335408445))
+		list(-0.199131680433643, 0.0699782263807102, -0.0645767270264666, "",
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.346888279550906,
+			 0.0686517479242114, -0.940642139188598, 0.0859003151283558,
+			 0.895699802252282, 0.490800058690319, "m", "facGender", "contNormal",
+			 "", "<unicode>", "", 0.0175121668948446, 0.206585297870655,
+			 2.37577438350726, -0.0207692258847186, 0.0237283785708711, 0.00147957634307626,
+			 "", "contGamma", "debCollin1", "contNormal", "<unicode>", "<unicode>",
+			 0.896297169201029, 0.0113516382970762, 0.130340335408445, -0.0127511137442109,
+			 0.0144204790678225, 0.000834682661805813, "m", "facGender",
+			 "debCollin1", "contNormal", "<unicode>", "<unicode>", 0.904153576898372,
+			 0.00693165614938833, 0.120416051202925))
 
 
 
@@ -1184,10 +1233,17 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.195822609174617, 0.0696283078078361, -0.0630971506833903, "Total",
-			 0.351461078416551, 0.0677183149987183, -0.931759017993648, -0.0207692258847186,
-			 0.0237283785708711, 0.00147957634307626, "Total indirect", 0.896297169201029,
-			 0.0113516382970762, 0.130340335408445))
+		list(-0.195822609174617, 0.0696283078078361, -0.0630971506833903, "",
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.351461078416551,
+			 0.0677183149987183, -0.931759017993648, 0.0868938127220651,
+			 0.896375669982184, 0.491634741352124, "m", "Total", "facGender",
+			 "contNormal", "<unicode>", 0.0172775001236745, 0.206504268355237,
+			 2.38074856886926, -0.0207692258847186, 0.0237283785708711, 0.00147957634307626,
+			 "", "Total indirect", "contGamma", "contNormal", "<unicode>",
+			 0.896297169201029, 0.0113516382970762, 0.130340335408445, -0.0127511137442109,
+			 0.0144204790678225, 0.000834682661805813, "m", "Total indirect",
+			 "facGender", "contNormal", "<unicode>", 0.904153576898372, 0.00693165614938833,
+			 0.120416051202925))
 
 
 
@@ -1298,18 +1354,21 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.395742508773221, 0.153364359319345, 16, -0.121189074726938,
-			 "Total", 0.386963823664923, 0.140080856695289, -0.865136590294808,
-			 -0.395397392394023, 0.159710443934186, 50, -0.117843474229918,
-			 "Total", 0.405319255104091, 0.14161174406949, -0.832158907470919,
-			 -0.396174412496076, 0.167790059491526, 84, -0.114192176502275,
-			 "Total", 0.427363383697888, 0.143871131417741, -0.79371153460043,
-			 -0.0206079744902215, 0.0187008168621928, 16, -0.00095357881401436,
-			 "Total indirect", 0.924241577037212, 0.0100279371617226, -0.0950922207265357,
+			 "Total", "contcor2", "contNormal", "<unicode>", 0.386963823664923,
+			 0.140080856695289, -0.865136590294808, -0.395397392394023, 0.159710443934186,
+			 50, -0.117843474229918, "Total", "contcor2", "contNormal", "<unicode>",
+			 0.405319255104091, 0.14161174406949, -0.832158907470919, -0.396174412496076,
+			 0.167790059491526, 84, -0.114192176502275, "Total", "contcor2",
+			 "contNormal", "<unicode>", 0.427363383697888, 0.143871131417741,
+			 -0.79371153460043, -0.0206079744902215, 0.0187008168621928,
+			 16, -0.00095357881401436, "Total indirect", "contcor2", "contNormal",
+			 "<unicode>", 0.924241577037212, 0.0100279371617226, -0.0950922207265357,
 			 -0.0132920341139206, 0.0180760774799312, 50, 0.00239202168300531,
-			 "Total indirect", 0.765001164933273, 0.00800221632674874, 0.298919897355134,
-			 -0.0215739037623553, 0.0336605425836526, 84, 0.00604331941064863,
-			 "Total indirect", 0.668004923764089, 0.014090678905758, 0.428887738558792
-			))
+			 "Total indirect", "contcor2", "contNormal", "<unicode>", 0.765001164933273,
+			 0.00800221632674874, 0.298919897355134, -0.0215739037623553,
+			 0.0336605425836526, 84, 0.00604331941064863, "Total indirect",
+			 "contcor2", "contNormal", "<unicode>", 0.668004923764089, 0.014090678905758,
+			 0.428887738558792))
 
 
 
@@ -1418,13 +1477,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(0.0256784470944819, 0.850945103223677, 0.43831177515908, 0, "m",
-			 "Total", 0.037348512364032, 0.210531076754163, 2.08193384994129,
-			 0.13633783786735, 0.957660371192974, 0.546999104530162, 1, "m",
-			 "Total", 0.00903666574412432, 0.20952490448909, 2.61066390109555,
+			 "Total", "facGender", "contNormal", "<unicode>", 0.037348512364032,
+			 0.210531076754163, 2.08193384994129, 0.13633783786735, 0.957660371192974,
+			 0.546999104530162, 1, "m", "Total", "facGender", "contNormal",
+			 "<unicode>", 0.00903666574412432, 0.20952490448909, 2.61066390109555,
 			 -0.198988505343462, 0.0527669505225173, -0.0731107774104725,
-			 0, "m", "Total indirect", 0.254969127608045, 0.0642245107185118,
-			 -1.1383625440279, -0.0618215513880583, 0.132974655309278, 0.0355765519606098,
-			 1, "m", "Total indirect", 0.474043852370205, 0.0496938230074287,
+			 0, "m", "Total indirect", "facGender", "contNormal", "<unicode>",
+			 0.254969127608045, 0.0642245107185118, -1.1383625440279, -0.0618215513880583,
+			 0.132974655309278, 0.0355765519606098, 1, "m", "Total indirect",
+			 "facGender", "contNormal", "<unicode>", 0.474043852370205, 0.0496938230074287,
 			 0.715914973080085))
 
 

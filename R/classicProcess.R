@@ -1026,43 +1026,73 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procMedEffectsSyntax <- function(graph, modProbes, contrasts) {
-  # Get all simple paths from X to Y
-  medPaths <- igraph::all_simple_paths(graph,
-    from = igraph::V(graph)[isTreat]$name,
-    to = igraph::V(graph)[isDep]$name,
-    mode = "out"
-  )
-  # Get lhs and rhs plus moderator names for each path
-  medEffects <- lapply(medPaths, .procMedEffectsSyntaxSinglePath, graph = graph, modProbes = modProbes, contrasts = contrasts)
-  # Sort effects according to path length to preserve order
-  medEffects <- medEffects[sort.int(sapply(medPaths, length), index.return = TRUE)$ix]
-  # All rhs effects
-  totRhs <- lapply(medEffects, function(path) path$rhs)
-  # Add rhs effects
-  totEffects <- .doCallPaste(totRhs, sep = " + ")
-  # Concatenate rhs and lhs effects
-  medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
-  # Get conditional effect labels from lhs of each path
-  totEffectsConditional <- lapply(medEffects, function(path) {
-    # Split lhs and remove first chunk, then paste together again
-    return(sapply(strsplit(path$lhs, "\\."), function(path) paste(path[-1], collapse = ".")))
-  })
-  # Concatenate total effects
-  totEffectsLabeled <- paste(
-    paste0("tot.", .procRemoveDuplicateLabels(totEffectsConditional)), totEffects, sep = " := "
-  )
-  # Only return total effects when no indirect path
-  if (length(medEffects) < 2) {
-    return(paste(c(medEffectsLabeled, totEffectsLabeled), collapse = "\n"))
-  }
-  # Add rhs indirect effects
-  totIndEffects <- .doCallPaste(totRhs[-1], sep = " + ")
-  # Concatenate indirect effects
-  totIndEffectsLabeled <- paste(
-    paste0("totInd.", .procRemoveDuplicateLabels(totEffectsConditional[-1])), totIndEffects, sep = " := "
-  )
+  allMedEffects <- list()
+  allTotEffects <- list()
+  allTotIndEffects <- list()
 
-  return(paste(c(medEffectsLabeled, totEffectsLabeled, totIndEffectsLabeled), collapse = "\n"))
+  # Iterate over all combinations of treatment and dependent variables
+  for (trt in igraph::V(graph)[isTreat]$name) {
+    for (dep in igraph::V(graph)[isDep]$name) {
+      # Get all simple paths from X to Y
+      medPaths <- igraph::all_simple_paths(graph,
+        from = trt,
+        to = dep,
+        mode = "out"
+      )
+      # Get lhs and rhs plus moderator names for each path
+      medEffects <- lapply(medPaths, .procMedEffectsSyntaxSinglePath, graph = graph, modProbes = modProbes, contrasts = contrasts)
+      medPathLengthsSorted <- sort.int(sapply(medPaths, length), index.return = TRUE)
+      # Sort effects according to path length to preserve order
+      medEffects <- medEffects[medPathLengthsSorted$ix]
+      # All rhs effects
+      totRhs <- lapply(medEffects, function(path) path$rhs)
+      # Add rhs effects
+      totEffects <- .doCallPaste(totRhs, sep = " + ")
+      # Concatenate rhs and lhs effects
+      medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
+      # Get conditional effect labels from lhs of each path
+      totEffectsConditional <- lapply(medEffects, function(path) {
+        # Split lhs and remove first middle part of chunk, then paste together again
+        return(sapply(strsplit(path$lhs, "\\."), function(path) {
+          # Split first chunk
+          pathSplit <- strsplit(path[1], "__")[[1]]
+          # Only use first and last node of path for total effects
+          paste(c(paste(pathSplit[c(1, length(pathSplit))], collapse = "__"), path[-1]), collapse = ".")
+        }))
+      })
+      # Concatenate total effects
+      totEffectsLabeled <- paste(
+        paste0("tot.", .procRemoveDuplicateLabels(totEffectsConditional)), totEffects, sep = " := "
+      )
+
+      allMedEffects <- c(allMedEffects, medEffectsLabeled)
+      allTotEffects <- c(allTotEffects, totEffectsLabeled)
+
+      # Indirect paths have more than two nodes
+      isIndirect <- medPathLengthsSorted$x > 2
+
+      if (any(isIndirect)) {
+        # Add rhs indirect effects
+        totIndEffects <- .doCallPaste(totRhs[isIndirect], sep = " + ")
+        # Concatenate indirect effects
+        totIndEffectsLabeled <- paste(
+          paste0("totInd.", .procRemoveDuplicateLabels(totEffectsConditional[isIndirect])), totIndEffects, sep = " := "
+        )
+
+        allTotIndEffects <- c(allTotIndEffects, totIndEffectsLabeled)
+      }
+    }
+  }
+
+  allEffects <- c(allMedEffects, allTotEffects)
+
+  # Only return total effects when no indirect path
+  if (length(allTotIndEffects) > 0) {
+    allEffects <- c(allEffects, allTotIndEffects)
+  }
+
+  # Remove duplicated effects (can occur for factors with more than two levels)
+  return(paste(allEffects[!duplicated(allMedEffects)], collapse = "\n"))
 }
 
 .procResCovSyntax <- function(graph) {
@@ -1532,6 +1562,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- list()
 
   for (path in paths) {
+    # If path is not conditional, add empty string to all mods
+    if (length(path) == 1) {
+      for (mod in mods) {
+        modProbes[[mod]] <- c(modProbes[[mod]], "")
+      }
+    }
     pathMods <- sapply(path[-1], function(row) row[1])
 
     for (condEff in path[-1]) {
@@ -1604,17 +1640,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     medEffectsTable[[paste0("lhs_", i)]] <- medEffect
   }
 
-  medEffectIsConditional <- sapply(labelSplit, function(path) length(path) > 1)
+  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))))
 
-  uniqueMods <- unique(unlist(lapply(labelSplit[medEffectIsConditional], function(path) lapply(path[-1], function(row) row[1]))))
-
-  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medEffectIsConditional], uniqueMods)
+  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medLengthSortIdx], uniqueMods)
 
   for (mod in uniqueMods) {
-    medEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE) # combine = F because empty cells indicate no moderation
-    modLabels <- vector("character", length(medEffectIsConditional))
-    modLabels[medEffectIsConditional] <- modProbes[[mod]]
-    medEffectsTable[[mod]] <- modLabels
+    medEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    medEffectsTable[[mod]] <- modProbes[[mod]]
   }
 
   # Add column with parameter labels
@@ -1661,12 +1693,19 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   totEffectLabels <- sapply(labelSplit, function(path) path[[1]])
   totEffects <- medEffects[isTotEffect, ]
 
-  totEffectsTable$addColumnInfo(name = "lhs", title = "", type = "string", combine = TRUE)
-  totEffectsTable[["lhs"]] <- ifelse(totEffectLabels == "tot", gettext("Total"), gettext("Total indirect"))
+  totEffectsTable$addColumnInfo(name = "lbl", title = "", type = "string", combine = TRUE)
+  totEffectsTable[["lbl"]] <- ifelse(totEffectLabels == "tot", gettext("Total"), gettext("Total indirect"))
 
-  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))))
+  totEffectsTable$addColumnInfo(name = "lhs_1", title = "", type = "string")
+  totEffectsTable[["lhs_1"]] <- lapply(labelSplit, function(path) path[[2]][1])
+  totEffectsTable$addColumnInfo(name = "op", title = "", type = "string")
+  totEffectsTable[["op"]] <- rep_len("\u2192", length(totEffectLabels))
+  totEffectsTable$addColumnInfo(name = "lhs_2", title = "", type = "string")
+  totEffectsTable[["lhs_2"]] <- lapply(labelSplit, function(path) path[[2]][2])
 
-  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit, uniqueMods)
+  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-c(1:2)], function(row) row[1]))))
+
+  modProbes <- .procEffectsTablesGetConditionalLabels(lapply(labelSplit, function(path) path[-2]), uniqueMods)
 
   for (mod in uniqueMods) {
     totEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
