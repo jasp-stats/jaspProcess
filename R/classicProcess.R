@@ -57,6 +57,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procPathPlots(pathPlotContainer, options, modelsContainer)
   # Create table with model fit indices (AIC, ...)
   .procModelSummaryTable(jaspResults, options, modelsContainer)
+  # Create R² table if requested
+  .procRsquared(options, modelsContainer)
   # Create container for parameter estimates for each model
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options, modelsContainer)
   # Create tables for parameter estimates
@@ -1925,6 +1927,54 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     localTestTable$setError(gettext("The specified model does not imply any (conditional) independencies that can be tested."))
   }
 }
+
+
+.procRsquared <- function(options, modelsContainer) {
+  # adapted from .semRsquared() from jaspSem/R/sem.R (one table for several models)
+  if (!options[["rSquared"]] || !is.null(modelsContainer[["rsquared"]])) return()
+  
+  # retrieve model objects
+  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
+  
+  # init table
+  tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
+  for (i in seq_along(options[["processModels"]])) {
+    tabr2$addColumnInfo(name = paste0("rsq_", i), title = modelNames[i],
+                        overtitle = "R\u00B2", type = "number")
+  }
+  
+  tabr2$dependOn(c("rSquared", "processModels"))
+  tabr2$position <- 1
+  
+  modelsContainer[["rsquared"]] <- tabr2
+  
+  if (modelsContainer$getError()) return()
+  
+  # compute data and fill table
+  
+  # retrieve r²
+  r2li <- try(lapply(procResults, lavaan::inspect, what = "r2"))
+  if (inherits(r2li, "try-error")) 
+    return() # return silently
+  
+  # generate df with variable names
+  r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
+  tabr2[["__var__"]] <- unique(unlist(lapply(r2li, names)))
+  
+  for (i in 1:length(r2li)) {
+    # fill matching vars from model with df
+    r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
+    # add column to table
+    tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+  }
+  
+  
+}
+
+
+
 
 # Plotting functions ----
 
