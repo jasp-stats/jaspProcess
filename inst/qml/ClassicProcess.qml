@@ -50,6 +50,7 @@ Form
             maximumItems:	10
             newItemName:	qsTr("Model 1")
             optionKey:		"name"
+			depends:		["dependent", "covariates", "factors"]
 
             content: Group
             {
