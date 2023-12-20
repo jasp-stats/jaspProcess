@@ -1130,7 +1130,7 @@ test_that("R-squared table matches", {
                                      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
                                      localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options, makeTests = TRUE)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
   
   table <- results[["results"]][["rSquaredTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
