@@ -1169,7 +1169,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(fittedModel)
 }
 
-.procResultsFitModel <- function(container, dataset, options) {
+.procResultsFitModel <- function(container, dataset, options, modelOptions) {
   # Should model be fitted?
   doFit <- .procCheckFitModel(container[["graph"]]$object)
 
@@ -1184,6 +1184,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     mimic           = options$emulation,
     estimator       = options$estimator,
     missing         = options$naAction,
+    meanstructure   = modelOptions$intercepts,
     do.fit          = doFit
   ))
 
@@ -1232,7 +1233,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         fittedModel <- .procResultsFitModel(
           modelsContainer[[modelName]],
           dataset,
-          options
+          options,
+          modelOptions
         )
       }
       state <- createJaspState(object = fittedModel)
@@ -1525,7 +1527,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
   pathCoefTable$dependOn(
-    nestedOptions = list(c("processModels", as.character(modelIdx), "pathCoefficients"))
+    nestedOptions = list(c("processModels", as.character(modelIdx), "pathCoefficients"),
+                         c("processModels", as.character(modelIdx), "intercepts"))
   )
   container[["pathCoefficientsTable"]] <- pathCoefTable
 
@@ -1541,8 +1544,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
-
-  pathCoefs <- pathCoefs[pathCoefs$op == "~",]
+  
+  # select paths from parameter estimates
+  pathCoefs <- pathCoefs[pathCoefs$op %in% c("~1","~"),]
+  pathCoefs[which(pathCoefs$op=="~1"),"rhs"]<-"(Intercept)"
+  pathCoefs <- dplyr::arrange(pathCoefs,desc(op))
 
   pathCoefTable$addColumnInfo(name = "lhs", title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")

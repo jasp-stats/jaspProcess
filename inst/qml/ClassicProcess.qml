@@ -327,6 +327,13 @@ Form
 								name: "pathCoefficients"
 								label: qsTr("Paths")
 								checked: pathCoefficientsForAllModels.checked
+								
+								CheckBox
+  							{
+  								name: "intercepts"
+  								label: qsTr("Intercepts")
+  								checked: interceptsForAllModels.checked
+  							}
 							}
 							CheckBox
 							{
@@ -593,6 +600,13 @@ Form
                     name: 		"pathCoefficientsForAllModels"
                     label: 		qsTr("Paths")
                     checked: 	true
+                    
+                    CheckBox
+                    {
+                        id:			interceptsForAllModels
+                        name: 		"interceptsForAllModels"
+                        label: 		qsTr("Intercepts")
+                    }
                 }
                 CheckBox
                 {
