@@ -47,6 +47,7 @@ getOptionsOneModel <- function() {
       "modelNumberModeratorZ" = "",
       "name" = "Model 1",
       "pathCoefficients" = TRUE,
+	  "intercepts" = FALSE,
       "processRelationships" = list(),
       "residualCovariances" = TRUE,
       "statisticalPathPlot" = TRUE,
