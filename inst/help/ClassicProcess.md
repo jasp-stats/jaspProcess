@@ -80,6 +80,7 @@ This section allows users to specify multiple process models through one of two 
 
 - Parameter labels: Display the labels of parameter in the output tables. For indirect and direct (total) effects, display the equations for the effects.
 - Lavaan syntax: Show the lavaan syntax used to fit the model in the output.
+- R-squared: Show *R*², the proportion of variation explained in each endogenous (outcome) variable from its predictors, in the output.
 - AIC weights: Show the Akaike weights in the summary table in the output.
 - BIC weigths: Show the Schwarz weights in the summary table in the output.
 - Standardized estimates: When `Missing Value Handling` is `Exclude cases listwise`, standardization is applied only based on complete cases.

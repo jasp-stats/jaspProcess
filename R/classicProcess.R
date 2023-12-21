@@ -57,6 +57,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procPathPlots(pathPlotContainer, options, modelsContainer)
   # Create table with model fit indices (AIC, ...)
   .procModelSummaryTable(jaspResults, options, modelsContainer)
+  # Create R² table if requested
+  .procRsquared(jaspResults, options, modelsContainer)
   # Create container for parameter estimates for each model
   parEstContainer <- .procContainerParameterEstimates(jaspResults, options, modelsContainer)
   # Create tables for parameter estimates
@@ -1923,6 +1925,48 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   } else {
     localTestTable$setError(gettext("The specified model does not imply any (conditional) independencies that can be tested."))
+  }
+}
+
+
+.procRsquared <- function(jaspResults, options, modelsContainer) {
+  # adapted from .semRsquared() from jaspSem/R/sem.R (one table for several models)
+  if (!options[["rSquared"]] || !is.null(jaspResults[["rSquaredTable"]])) return()
+  
+  # retrieve model objects
+  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
+  resultIsValid <- sapply(procResults, function(mod) inherits(mod, "lavaan") && mod@Options[["do.fit"]])
+  procResults <- procResults[resultIsValid]
+  modelNames <- modelNames[resultIsValid]
+  # init table
+  tabr2 <- createJaspTable(gettext("R-squared"))
+  tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
+  for (i in seq_along(options[["processModels"]])) {
+    tabr2$addColumnInfo(name = paste0("rsq_", i), title = modelNames[i],
+                        overtitle = "R\u00B2", type = "number")
+  }
+  
+  tabr2$dependOn(c(.procGetDependencies(), "rSquared", "processModels"))
+  tabr2$position <- 1
+  
+  jaspResults[["rSquaredTable"]] <- tabr2
+  
+  
+  # compute data and fill table
+  
+  # retrieve r²
+  r2li <- lapply(procResults, lavaan::inspect, what = "r2")
+  
+  # generate df with variable names
+  r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
+  tabr2[["__var__"]] <- unique(unlist(lapply(r2li, names)))
+  
+  for (i in 1:length(r2li)) {
+    # fill matching vars from model with df
+    r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
+    # add column to table
+    tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
   }
 }
 

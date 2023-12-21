@@ -1088,12 +1088,53 @@ test_that("Path plot for multiple dependent variables work", {
                                      localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
-
+  
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot-multi-dep")
-
+  
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-multi-dep")
+})
+
+test_that("R-squared table matches", {
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$rSquared <- TRUE
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "debCollin1", "contcor1", "contNormal", "debMiss1")
+  options$factors <- list("facGender")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel <- 0.95
+  options$naAction <- "listwise"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
+                                     processRelationships = list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "debCollin1"), list(processDependent = "contcor1",
+                                                                                                            processIndependent = "facGender", processType = "mediators",
+                                                                                                            processVariable = "debCollin1"), list(processDependent = "debMiss1",
+                                                                                                                                                  processIndependent = "contGamma", processType = "mediators",
+                                                                                                                                                  processVariable = "debCollin1")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  
+  table <- results[["results"]][["rSquaredTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("contNormal", 0.00181189494871836, "debCollin1", 0.0265249455063975,
+                                      "debMiss1", 0.0250288495182258, "contcor1", 0.0112314309960128
+                                 ))
 })

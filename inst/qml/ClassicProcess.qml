@@ -431,8 +431,7 @@ Form
 		{
 			CheckBox { label: qsTr("Parameter labels") 	;		name: "parameterLabels" }
 			CheckBox { label: qsTr("Lavaan syntax")     ;       name: "syntax" }
-			// TODO
-			// CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
+			CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
 			CheckBox { label: qsTr("AIC weights")         ;     name: "aicWeights" }
 			CheckBox { label: qsTr("BIC weights")         ;     name: "bicWeights" }
 		}
