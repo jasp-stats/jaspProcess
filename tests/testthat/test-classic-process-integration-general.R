@@ -1138,3 +1138,71 @@ test_that("R-squared table matches", {
                                       "debMiss1", 0.0250288495182258, "contcor1", 0.0112314309960128
                                  ))
 })
+
+test_that("Path coefficients table with intercepts matches", {
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "debCollin1", "contcor1", "contNormal", "debMiss1")
+  options$factors <- list("facGender")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel <- 0.95
+  options$naAction <- "listwise"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, intercepts = TRUE,
+                                     processRelationships = list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "debCollin1"), list(processDependent = "contcor1",
+                                                                                                            processIndependent = "facGender", processType = "mediators",
+                                                                                                            processVariable = "debCollin1"), list(processDependent = "debMiss1",
+                                                                                                                                                  processIndependent = "contGamma", processType = "mediators",
+                                                                                                                                                  processVariable = "debCollin1")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-1.81842415998067, 1.75850994333305, -0.0299571083238086, "(Intercept)",
+                                      "<unicode>", 0.973810386382783, "contNormal", 0.91249995702169,
+                                      -0.0328297092983825, 0.653479549943803, 0.712058021425658, 0.68276878568473,
+                                      "(Intercept)", "<unicode>", 0, "debCollin1", 0.0149437622180597,
+                                      45.6892163915453, -4.9479870283803, 83.8830280464201, 39.4675205090199,
+                                      "(Intercept)", "<unicode>", 0.0815750282662664, "debMiss1",
+                                      22.66138964172, 1.74161960643224, -1.53702416025488, 1.76773422033608,
+                                      0.115355030040601, "(Intercept)", "<unicode>", 0.891166767987515,
+                                      "contcor1", 0.843066098831018, 0.136827978494866, 1.7137813220542,
+                                      2.31240655389555, 2.01309393797488, "(Intercept)", "<unicode>",
+                                      0, "contGamma", 0.15271332447005, 13.1821761130587, 0.406563633033025,
+                                      0.603537375908213, 0.505050504470619, "(Intercept)", "<unicode>",
+                                      0, "facGenderm", 0.0502493271378688, 10.0508908922286, -0.165995350051199,
+                                      0.106498401702712, -0.0297484741742436, "contGamma", "<unicode>",
+                                      0.668692399817187, "contNormal", 0.0695149895363656, -0.427943302195006,
+                                      -2.73898714357846, 2.42947526958326, -0.154755936997602, "debCollin1",
+                                      "<unicode>", 0.906565370265694, "contNormal", 1.31850953740219,
+                                      -0.117371875293759, -0.0185979214400448, 0.00248650372610035,
+                                      -0.00805570885697224, "contGamma", "<unicode>", 0.134215466465715,
+                                      "debCollin1", 0.00537877872564405, -1.49768363189316, -0.0391876523573127,
+                                      0.0248902735585444, -0.00714868939938416, "facGenderm", "<unicode>",
+                                      0.661881681066528, "debCollin1", 0.0163467100470457, -0.437316706469394,
+                                      -3.99105068626878, 2.81795395174919, -0.586548367259797, "contGamma",
+                                      "<unicode>", 0.735608480658925, "debMiss1", 1.73702289728957,
+                                      -0.337674516654351, -116.26393123917, 12.0332112282069, -52.1153600054816,
+                                      "debCollin1", "<unicode>", 0.111315707132311, "debMiss1", 32.7294642859176,
+                                      -1.59230715022443, -2.35410384171132, 2.52278252053418, 0.0843393394114301,
+                                      "debCollin1", "<unicode>", 0.945952802832767, "contcor1", 1.24412652495499,
+                                      0.067790001836414, -0.596452849320671, 0.17019409854064, -0.213129375390016,
+                                      "facGenderm", "<unicode>", 0.275824268295476, "contcor1", 0.195576794754527,
+                                      -1.08974776714957))
+})
