@@ -413,7 +413,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Replace encoded Y with user variable
   vars <- gsub(encoding[["Y"]], globalDependent, vars)
 
-  return(vars)
+  return(encodeColNames(vars))
 }
 
 .procModelGraphInputModelNumber <- function(graph, modelOptions, globalDependent) {
