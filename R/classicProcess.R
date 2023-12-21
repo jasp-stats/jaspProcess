@@ -1546,7 +1546,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
   
   # select paths from parameter estimates
-  pathCoefs <- pathCoefs[pathCoefs$op %in% c("~1","~"),]
+  operators <- if(options[["processModels"]][[modelIdx]][["intercepts"]]) c("~1","~") else "~"
+  pathCoefs <- pathCoefs[pathCoefs$op %in% operators,]
   pathCoefs[which(pathCoefs$op=="~1"),"rhs"]<-"(Intercept)"
   pathCoefs <- dplyr::arrange(pathCoefs,desc(op))
 
