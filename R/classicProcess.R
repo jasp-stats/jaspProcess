@@ -1191,11 +1191,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     return(gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", jaspBase::.extractErrorMessage(fittedModel))))
   }
 
-  if (options$errorCalculationMethod == "bootstrap") {
-    fittedModel <- .procBootstrap(fittedModel, options$bootstrapSamples)
-  }
-
   if (doFit) {
+    if (options$errorCalculationMethod == "bootstrap") {
+      fittedModel <- .procBootstrap(fittedModel, options$bootstrapSamples)
+    }
     container[["graph"]]$object <- .procGraphAddEstimates(container[["graph"]]$object, fittedModel)
     container[["resCovGraph"]]$object <- .procGraphAddEstimates(container[["resCovGraph"]]$object, fittedModel, type = "variances")
   }
