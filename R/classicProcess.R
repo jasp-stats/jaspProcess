@@ -127,7 +127,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       container <- createJaspContainer(title = modelName)
       container$dependOn(
         options = .procGetDependencies(),
-        optionContainsValue = list(processModels = modelOptions),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))[-1] # omit model name
       )
       modelsContainer[[modelName]] <- container
