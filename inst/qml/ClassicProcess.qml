@@ -329,11 +329,11 @@ Form
 								checked: pathCoefficientsForAllModels.checked
 								
 								CheckBox
-  							{
-  								name: "intercepts"
-  								label: qsTr("Intercepts")
-  								checked: interceptsForAllModels.checked
-  							}
+  							    {
+  								    name: "intercepts"
+  								    label: qsTr("Intercepts")
+  								    checked: interceptsForAllModels.checked
+  							    }
 							}
 							CheckBox
 							{

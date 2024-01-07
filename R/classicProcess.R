@@ -1546,10 +1546,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
   
   # select paths from parameter estimates
-  operators <- if(options[["processModels"]][[modelIdx]][["intercepts"]]) c("~1","~") else "~"
-  pathCoefs <- pathCoefs[pathCoefs$op %in% operators,]
-  pathCoefs[which(pathCoefs$op=="~1"),"rhs"]<-"(Intercept)"
-  pathCoefs <- dplyr::arrange(pathCoefs,desc(op))
+  operators <- if(options[["processModels"]][[modelIdx]][["intercepts"]]) c("~1", "~") else "~"
+  pathCoefs <- pathCoefs[pathCoefs$op %in% operators & !is.na(pathCoefs$z),]
+  pathCoefs[which(pathCoefs$op == "~1"), "rhs"] <- "(Intercept)"
+  pathCoefs <- pathCoefs[order(pathCoefs$op, decreasing = TRUE),]
 
   pathCoefTable$addColumnInfo(name = "lhs", title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
