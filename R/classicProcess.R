@@ -1397,7 +1397,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(validModel) && is.null(parEstContainer[["warning"]])) {
     warningHtml <- createJaspHtml(text = gettext(
-      "<b>Important</b>: Parameter estimates are causal effects and need to be treated and interpreted as such. Causal effects are only meaningful if all confounding effects are accounted for and their directions are correctly specified."
+      "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
     ))
     warningHtml$position <- 1
     warningHtml$dependOn("processModels")
