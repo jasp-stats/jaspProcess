@@ -1,7 +1,7 @@
 Package: jaspProcess
 Type: Package
 Title: A module for JASP
-Version: 0.18.2
+Version: 0.18.3
 Date: 2020-10-15
 Author: JASP Team
 Website: jasp-stats.org

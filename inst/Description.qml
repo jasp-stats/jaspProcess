@@ -7,7 +7,7 @@ Description
 	title		: qsTr("Process (beta)")
 	description	: qsTr("Test and compare causal and conditional process models.")
 	icon		: "process.svg"
-	version			: "0.18.2"
+	version			: "0.18.3"
 	author		: "JASP Team and Netherlands eScience Center"
 	maintainer	: "JASP Team <info@jasp-stats.org>"
 	website		: "https://jasp-stats.org"
