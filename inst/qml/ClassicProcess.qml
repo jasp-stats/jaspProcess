@@ -442,13 +442,18 @@ Form
 			CheckBox { label: qsTr("AIC weights")         ;     name: "aicWeights" }
 			CheckBox { label: qsTr("BIC weights")         ;     name: "bicWeights" }
 		}
-		RadioButtonGroup
+		Group
 		{
-			name: "standardizedEstimates"
-			title: qsTr("Standardized estimates")
-			RadioButton { value: "unstandardized"; label: qsTr("Unstandardized"); checked: true }
-			RadioButton { value: "centered"; label: qsTr("Mean-centered") }
-			RadioButton { value: "standardized"; label: qsTr("Standardized") }
+			CheckBox
+			{
+				label: qsTr("Mean-centered moderation")
+				name: "meanCenteredModeration"
+			}
+			CheckBox
+			{
+				label: qsTr("Standardized estimates")
+				name: "standardizedModelEstimates"
+			}
 		}
         Group
         {
