@@ -373,6 +373,160 @@ test_that("Interactions between two-level and three-level factors work", {
   jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-facTwo-int-facThree")
 })
 
+test_that("Moderated moderation with three-level factor works", {
+  set.seed(1)
+  df <- get_fac_df()
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1")
+  options$factors <- list("facTwo", "facThree")
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+                                                                                  value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+                                     inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+                                     modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
+                                     modelNumberMediators = list(), modelNumberModeratorW = "",
+                                     modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, intercepts = FALSE,
+                                     processRelationships = list(list(processDependent = "contNormal",
+                                                                      processIndependent = "facTwo", processType = "moderators",
+                                                                      processVariable = "facThree"), list(processDependent = "contNormal",
+                                                                      processIndependent = "facThree", processType = "moderators",
+                                                                      processVariable = "contcor1")), residualCovariances = TRUE,
+                                     statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
+                                     localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", df, options)
+
+  table <- results[["results"]][["modelSummaryTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(897.350690440546, 967.690285462225, 28, "Model 1", 100, -421.675345220273
+			))
+
+	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-0.0571337225433101, 0.129608297620049, 0.0362372875383693, "contcor1",
+			 "<unicode>", 0.446858982473102, "facTwoE", 0.0476391458303203,
+			 0.760661991452116, -0.00972473529804621, 0.0721247566220565,
+			 0.0312000106620052, "facThreeC", "<unicode>", 0.135116062658085,
+			 "facTwoE", 0.0208803561100411, 1.49422790002137, -0.0625880165042206,
+			 0.0313879076612076, -0.0156000544215065, "facThreeB", "<unicode>",
+			 0.515233596562299, "facTwoE", 0.0239738905680661, -0.650710170600604,
+			 0.179548339113719, 0.317251845374176, 0.248400092243947, "facTwoE",
+			 "<unicode>", 1.53743684450092e-12, "facTwoE", 0.0351290909798966,
+			 7.07106518600495, 0.538066838799693, 0.95073371504676, 0.744400276923226,
+			 "contNormal", "<unicode>", 1.53743684450092e-12, "contNormal",
+			 0.105274096744157, 7.07106781198331, -0.0429566164819254, 0.137322246199543,
+			 0.0471828148588088, "contcor1", "<unicode>", 0.304925255108712,
+			 "facThreeB", 0.0459903508695785, 1.02592856907337, -0.188552917761682,
+			 -0.0930471186869522, -0.140800018224317, "facThreeC", "<unicode>",
+			 7.51556683553645e-09, "facThreeB", 0.0243641719511345, -5.77897818594899,
+			 0.166537531138018, 0.29426237624884, 0.230399953693429, "facThreeB",
+			 "<unicode>", 1.53743684450092e-12, "facThreeB", 0.0325834673795792,
+			 7.07106923303767, -0.111386638122135, 0.0439390702844393, -0.0337237839188479,
+			 "contcor1", "<unicode>", 0.394724199682416, "facThreeC", 0.0396246333176946,
+			 -0.851081286947541, 0.124035793431671, 0.219164263490584, 0.171600028461128,
+			 "facThreeC", "<unicode>", 1.53743684450092e-12, "facThreeC",
+			 0.0242679127803557, 7.07106663907387, 0.656577583345261, 1.16013495569705,
+			 0.908356269521155, "contcor1", "<unicode>", 1.53743684450092e-12,
+			 "contcor1", 0.12846087385375, 7.07107341146766))
+
+	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-1.97167451459102, 0.988455559187214, 16, -0.491609477701903,
+			 0, 0, "E", "facTwo", "contNormal", "<unicode>", 0.515040148944578,
+			 0.755149098944512, -0.651009818311425, -1.32086292755252, 1.30662687795768,
+			 16, -0.00711802479741981, 1, 0, "E", "facTwo", "contNormal",
+			 "<unicode>", 0.991527170977456, 0.670290328351823, -0.010619315983452,
+			 -1.56978265523222, 1.37220783244855, 16, -0.098787411391833,
+			 0, 1, "E", "facTwo", "contNormal", "<unicode>", 0.895280899949492,
+			 0.750521568479527, -0.131625013245076, -1.48866165823005, 0.395273169690407,
+			 50, -0.546694244269821, 0, 0, "E", "facTwo", "contNormal", "<unicode>",
+			 0.255323516020266, 0.480604450587024, -1.1375139027574, -0.549301757463352,
+			 0.424896174732677, 50, -0.0622027913653374, 1, 0, "E", "facTwo",
+			 "contNormal", "<unicode>", 0.80236431071549, 0.248524447357293,
+			 -0.250288420422121, -0.975557482799032, 0.66781312687953, 50,
+			 -0.153872177959751, 0, 1, "E", "facTwo", "contNormal", "<unicode>",
+			 0.713595941883554, 0.419234899886238, -0.367030936597847, -2.30404731122581,
+			 1.04339098060135, 84, -0.630328165312234, 0, 0, "E", "facTwo",
+			 "contNormal", "<unicode>", 0.460436112387406, 0.853954031357548,
+			 -0.73812891814585, -1.51326314908243, 1.22158972426693, 84,
+			 -0.14583671240775, 1, 0, "E", "facTwo", "contNormal", "<unicode>",
+			 0.834423931041378, 0.697679369345951, -0.20903113781975, -1.75663624366286,
+			 1.28162404565854, 84, -0.237506099002163, 0, 1, "E", "facTwo",
+			 "contNormal", "<unicode>", 0.759279098738087, 0.775080642625786,
+			 -0.306427597259493))
+
+	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-1.4952508133346, 0.376405396119968, -0.559422708607316, "facTwoE",
+			 "<unicode>", 0.241343887504401, "contNormal", 0.477472092400155,
+			 -1.17163435834587, -0.808220377635, 0.59436777094962, -0.10692630334269,
+			 "facThreeB", "<unicode>", 0.765065412434103, "contNormal", 0.357809673965455,
+			 -0.29883569708351, -0.829205888637198, 0.969201818414954, 0.0699979648888782,
+			 "facThreeC", "<unicode>", 0.878735667018079, "contNormal", 0.45878590658751,
+			 0.152572177749594, -0.54442917372999, 1.51341207953896, 0.484491452904484,
+			 "facTwoE:facThreeB", "<unicode>", 0.35606187749693, "contNormal",
+			 0.524969149816256, 0.922895094071833, -0.830525387533374, 1.61616952015351,
+			 0.39282206631007, "facTwoE:facThreeC", "<unicode>", 0.529118134551158,
+			 "contNormal", 0.624168333445437, 0.629352764728827, -0.823871404172618,
+			 0.735349738299696, -0.0442608329364609, "contcor1", "<unicode>",
+			 0.911399833375425, "contNormal", 0.397767804605404, -0.111273040261187,
+			 -1.38918101804154, 1.24535656225063, -0.0719122278954538, "facTwoE:contcor1",
+			 "<unicode>", 0.914790415422004, "contNormal", 0.67208826311939,
+			 -0.106998190329473, -0.977745206488471, 1.79543315427082, 0.408843973891173,
+			 "facTwoE:facThreeB:contcor1", "<unicode>", 0.563326972037531,
+			 "contNormal", 0.707456459055821, 0.577906906718783, -1.95071036467509,
+			 1.37116042215519, -0.289774971259951, "facTwoE:facThreeC:contcor1",
+			 "<unicode>", 0.732392304254536, "contNormal", 0.84743158880285,
+			 -0.34194497241873, -0.91705304127427, 0.779294465264945, -0.0688792880046625,
+			 "facThreeB:contcor1", "<unicode>", 0.873537625823345, "contNormal",
+			 0.432749662728445, -0.159166589686946, -1.10340180178156, 1.27857845239661,
+			 0.0875883253075207, "facThreeC:contcor1", "<unicode>", 0.885389490670545,
+			 "contNormal", 0.607659189905255, 0.144140542532036))
+
+	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-1.97167451459102, 0.988455559187214, 16, -0.491609477701903,
+			 0, 0, "E", "Total", "facTwo", "contNormal", "<unicode>", 0.515040148944578,
+			 0.755149098944512, -0.651009818311425, -1.32086292755252, 1.30662687795768,
+			 16, -0.00711802479741981, 1, 0, "E", "Total", "facTwo", "contNormal",
+			 "<unicode>", 0.991527170977456, 0.670290328351823, -0.010619315983452,
+			 -1.56978265523222, 1.37220783244855, 16, -0.098787411391833,
+			 0, 1, "E", "Total", "facTwo", "contNormal", "<unicode>", 0.895280899949492,
+			 0.750521568479527, -0.131625013245076, -1.48866165823005, 0.395273169690407,
+			 50, -0.546694244269821, 0, 0, "E", "Total", "facTwo", "contNormal",
+			 "<unicode>", 0.255323516020266, 0.480604450587024, -1.1375139027574,
+			 -0.549301757463352, 0.424896174732677, 50, -0.0622027913653374,
+			 1, 0, "E", "Total", "facTwo", "contNormal", "<unicode>", 0.80236431071549,
+			 0.248524447357293, -0.250288420422121, -0.975557482799032, 0.66781312687953,
+			 50, -0.153872177959751, 0, 1, "E", "Total", "facTwo", "contNormal",
+			 "<unicode>", 0.713595941883554, 0.419234899886238, -0.367030936597847,
+			 -2.30404731122581, 1.04339098060135, 84, -0.630328165312234,
+			 0, 0, "E", "Total", "facTwo", "contNormal", "<unicode>", 0.460436112387406,
+			 0.853954031357548, -0.73812891814585, -1.51326314908243, 1.22158972426693,
+			 84, -0.14583671240775, 1, 0, "E", "Total", "facTwo", "contNormal",
+			 "<unicode>", 0.834423931041378, 0.697679369345951, -0.20903113781975,
+			 -1.75663624366286, 1.28162404565854, 84, -0.237506099002163,
+			 0, 1, "E", "Total", "facTwo", "contNormal", "<unicode>", 0.759279098738087,
+			 0.775080642625786, -0.306427597259493))
+
+	plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
+	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+	jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot-mod-mod-facThree")
+
+	plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
+	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+	jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-mod-mod-facThree")
+})
+
 checkTables <- function(results1, results2) {
   table1 <- results1[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
   table2 <- results2[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
@@ -391,22 +545,22 @@ checkTables <- function(results1, results2) {
   expect_equal(table1, table2)
 }
 
-test_that("Standardized estimates match", {
+test_that("Mean-centering works", {
   N <- 100
 
   set.seed(1)
-  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), m = rnorm(N, 3, 4))
+  df <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), w = rnorm(N, 3, 4))
 
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "y"
-  options$covariates <- list("x", "m")
+  options$covariates <- list("x", "w")
   options$statisticalPathPlotsCovariances <- TRUE
   options$statisticalPathPlotsResidualVariances <- TRUE
   options$errorCalculationMethod <- "standard"
   options$naAction <- "listwise"
   options$emulation <- "lavaan"
   options$estimator <- "default"
-  options$standardizedEstimates <- "standardized"
+  options$meanCenteredModeration <- TRUE
   options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
                                                                                   value = "50"), list(probePercentile = 84, value = "84"))
   options$pathPlotsLegend <- TRUE
@@ -417,42 +571,44 @@ test_that("Standardized estimates match", {
                                      modelNumberMediators = list(), modelNumberModeratorW = "",
                                      modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, intercepts = FALSE,
                                      processRelationships = list(list(processDependent = "y",
-                                                                      processIndependent = "x", processType = "mediators",
-                                                                      processVariable = "m")), residualCovariances = TRUE,
+                                                                      processIndependent = "x", processType = "moderators",
+                                                                      processVariable = "w")), residualCovariances = TRUE,
                                      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
                                      localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
-  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+  results1 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  dfStd <- as.data.frame(scale(dfUnstd))
+  df$x <- scale(df$x, scale = FALSE)
+  df$w <- scale(df$w, scale = FALSE)
 
-  options$standardizedEstimates <- "unstandardized"
+  options$meanCenteredModeration <- FALSE
 
   set.seed(1)
-  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+  results2 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  checkTables(resultsUnstd, resultsStd)
+  checkTables(results1, results2)
 })
 
-test_that("Standardized estimates match - missing values/listwise", {
+test_that("Mean-centering works - missing values/listwise", {
   N <- 100
 
   set.seed(1)
-  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), m = rnorm(N, 3, 4))
-  dfUnstd$x[1:10] <- NA
-  dfUnstd$y[11:20] <- NA
-  dfUnstd$m[21:30] <- NA
+  df <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), w = rnorm(N, 3, 4))
+
+  df$x[1:10] <- NA
+  df$y[11:20] <- NA
+  df$w[21:30] <- NA
 
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "y"
-  options$covariates <- list("x", "m")
+  options$covariates <- list("x", "w")
   options$statisticalPathPlotsCovariances <- TRUE
   options$statisticalPathPlotsResidualVariances <- TRUE
   options$errorCalculationMethod <- "standard"
   options$naAction <- "listwise"
   options$emulation <- "lavaan"
   options$estimator <- "default"
-  options$standardizedEstimates <- "standardized"
+  options$meanCenteredModeration <- TRUE
   options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
                                                                                   value = "50"), list(probePercentile = 84, value = "84"))
   options$pathPlotsLegend <- TRUE
@@ -463,43 +619,44 @@ test_that("Standardized estimates match - missing values/listwise", {
                                      modelNumberMediators = list(), modelNumberModeratorW = "",
                                      modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, intercepts = FALSE,
                                      processRelationships = list(list(processDependent = "y",
-                                                                      processIndependent = "x", processType = "mediators",
-                                                                      processVariable = "m")), residualCovariances = TRUE,
+                                                                      processIndependent = "x", processType = "moderators",
+                                                                      processVariable = "w")), residualCovariances = TRUE,
                                      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
                                      localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
-  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+  results1 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  dfStd <- dfUnstd
-  dfStd[complete.cases(dfStd),] <- as.data.frame(scale(dfStd[complete.cases(dfStd),]))
+  df$x[complete.cases(df)] <- scale(df$x[complete.cases(df)], scale = FALSE)
+  df$w[complete.cases(df)] <- scale(df$w[complete.cases(df)], scale = FALSE)
 
-  options$standardizedEstimates <- "unstandardized"
+  options$meanCenteredModeration <- FALSE
 
   set.seed(1)
-  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+  results2 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  checkTables(resultsUnstd, resultsStd)
+  checkTables(results1, results2)
 })
 
 test_that("Standardized estimates match - missing values/fiml", {
   N <- 100
 
   set.seed(1)
-  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), m = rnorm(N, 3, 4))
-  dfUnstd$x[1:10] <- NA
-  dfUnstd$y[11:20] <- NA
-  dfUnstd$m[21:30] <- NA
+  df <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), w = rnorm(N, 3, 4))
+
+  df$x[1:10] <- NA
+  df$y[11:20] <- NA
+  df$w[21:30] <- NA
 
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "y"
-  options$covariates <- list("x", "m")
+  options$covariates <- list("x", "w")
   options$statisticalPathPlotsCovariances <- TRUE
   options$statisticalPathPlotsResidualVariances <- TRUE
   options$errorCalculationMethod <- "standard"
   options$naAction <- "fiml"
   options$emulation <- "lavaan"
   options$estimator <- "default"
-  options$standardizedEstimates <- "standardized"
+  options$meanCenteredModeration <- TRUE
   options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
                                                                                   value = "50"), list(probePercentile = 84, value = "84"))
   options$pathPlotsLegend <- TRUE
@@ -510,29 +667,29 @@ test_that("Standardized estimates match - missing values/fiml", {
                                      modelNumberMediators = list(), modelNumberModeratorW = "",
                                      modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE, intercepts = FALSE,
                                      processRelationships = list(list(processDependent = "y",
-                                                                      processIndependent = "x", processType = "mediators",
-                                                                      processVariable = "m")), residualCovariances = TRUE,
+                                                                      processIndependent = "x", processType = "moderators",
+                                                                      processVariable = "w")), residualCovariances = TRUE,
                                      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
                                      localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
-  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+  results1 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  dfStd <- dfUnstd
-  dfStd <- as.data.frame(scale(dfStd))
+  df$x <- scale(df$x, scale = FALSE)
+  df$w <- scale(df$w, scale = FALSE)
 
-  options$standardizedEstimates <- "unstandardized"
+  options$meanCenteredModeration <- FALSE
 
   set.seed(1)
-  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+  results2 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  checkTables(resultsUnstd, resultsStd)
+  checkTables(results1, results2)
 })
 
 test_that("Standardized estimates match - moderated moderation", {
   N <- 100
 
   set.seed(1)
-  dfUnstd <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), w = rnorm(N, 3, 4), z = rnorm(N, 3, 4))
+  df <- data.frame(x = rnorm(N, 1, 2), y = rnorm(N), w = rnorm(N, 3, 4), z = rnorm(N, 3, 4))
 
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "y"
@@ -543,7 +700,7 @@ test_that("Standardized estimates match - moderated moderation", {
   options$naAction <- "listwise"
   options$emulation <- "lavaan"
   options$estimator <- "default"
-  options$standardizedEstimates <- "standardized"
+  options$meanCenteredModeration <- TRUE
   options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
                                                                                   value = "50"), list(probePercentile = 84, value = "84"))
   options$pathPlotsLegend <- TRUE
@@ -561,17 +718,18 @@ test_that("Standardized estimates match - moderated moderation", {
                                      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
                                      localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
-  resultsUnstd <- jaspTools::runAnalysis("ClassicProcess", dfUnstd, options)
+  results1 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  dfStd <- dfUnstd
-  dfStd[complete.cases(dfStd),] <- as.data.frame(scale(dfStd[complete.cases(dfStd),]))
+  df$x <- scale(df$x, scale = FALSE)
+  df$w <- scale(df$w, scale = FALSE)
+  df$z <- scale(df$z, scale = FALSE)
 
-  options$standardizedEstimates <- "unstandardized"
+  options$meanCenteredModeration <- FALSE
 
   set.seed(1)
-  resultsStd <- jaspTools::runAnalysis("ClassicProcess", dfStd, options)
+  results2 <- jaspTools::runAnalysis("ClassicProcess", df, options)
 
-  checkTables(resultsUnstd, resultsStd)
+  checkTables(results1, results2)
 })
 
 test_that("Bootstrapping works", {
@@ -1088,11 +1246,11 @@ test_that("Path plot for multiple dependent variables work", {
                                      localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
-  
+
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot-multi-dep")
-  
+
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-multi-dep")
@@ -1131,7 +1289,7 @@ test_that("R-squared table matches", {
                                      localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
-  
+
   table <- results[["results"]][["rSquaredTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("contNormal", 0.00181189494871836, "debCollin1", 0.0265249455063975,
@@ -1171,7 +1329,7 @@ test_that("Path coefficients table with intercepts matches", {
                                      localTestType = "cis.loess", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
-  
+
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(-1.81842415998067, 1.75850994333305, -0.0299571083238086, "(Intercept)",
