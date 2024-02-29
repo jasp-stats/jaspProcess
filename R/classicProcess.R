@@ -76,8 +76,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 # Helper function for generic dependencies of all models
 .procGetDependencies <- function() {
   return(c(
-    "dependent", "covariates", "factors", "naAction", "emulation", "estimator",
-    "standardizedEstimates", "errorCalculationMethod", "bootstrapCiType"
+    "dependent", "covariates", "factors", "naAction", "emulation", "estimator", "meanCenteredModeration",
+    "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType"
   ))
 }
 
@@ -224,13 +224,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # are represented as separate variables which are products of the three interacting variables.
       # The names of these variables are the interacting variable names separated by
       # double underscores, e.g.: var1__var2__var3
+      # EDIT: Two-way interactions are now also added as product variables, e.g., var1__var2 because this is necessary
+      # mean-centering before entering the analysis and specifying the covariance structure
 
       # Get all existing interaction terms
       sourceVars <- igraph::E(graph)[.to(dependent)]$source
-      isInt <- grepl(":", sourceVars)
+      isInt <- grepl("__", sourceVars)
       if (any(isInt)) {
         # Split interaction terms
-        varsSplit <- strsplit(sourceVars, ":")
+        varsSplit <- strsplit(sourceVars, "__")
         for (v in varsSplit[isInt]) {
           # If the second term of the interaction is the independent of current path
           # this indicates a three-way interaction with the independent variable
@@ -239,7 +241,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
             interVarThree <- paste0(paste(v, collapse = "__"), "__", processVariable)
             # Also add a two-way interaction moderator1 x moderator2,
             # otherwise model might be underspecified
-            interVarTwo <- paste0(v[1], ":", processVariable)
+            interVarTwo <- paste0(v[1], "__", processVariable)
             # Add vertices and edges for interaction terms if not in graph yet
             intVerticesToAdd <- c(interVarTwo, interVarThree)[!c(interVarTwo, interVarThree) %in% igraph::V(graph)$name]
 
@@ -253,7 +255,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         }
       }
       # Add regular interaction independent x moderator var to regress on dependent var
-      interVar <- paste0(independent, ":", processVariable)
+      interVar <- paste0(independent, "__", processVariable)
 
       # Add vertices and edges for two-way interaction
       if (!interVar %in% igraph::V(graph)$name) {
@@ -271,9 +273,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procGraphAddAttributes <- function(graph) {
   # Is node an interaction term
-  igraph::V(graph)$isInt <- grepl(":|__", igraph::V(graph)$name)
+  igraph::V(graph)$isInt <- grepl("__", igraph::V(graph)$name)
   # Which are the node interaction vars
-  igraph::V(graph)$intVars <- strsplit(igraph::V(graph)$name, ":|__")
+  igraph::V(graph)$intVars <- strsplit(igraph::V(graph)$name, "__")
   # How many interaction vars are there
   igraph::V(graph)$intLength <- sapply(igraph::V(graph)$intVars, length)
   # Is nested interaction term (fully included in higher-order interaction)
@@ -426,11 +428,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   igraph::V(graph)$intVars <- sapply(igraph::V(graph)$intVars, .procReplaceDummyVars, modelOptions = modelOptions, globalDependent = globalDependent)
 
-  if (any(igraph::V(graph)$intLength == 2)) {
-    igraph::V(graph)[intLength == 2]$name <- unlist(sapply(igraph::V(graph)[intLength == 2]$intVars, paste, collapse = ":"))
-  }
-  if (any(igraph::V(graph)$intLength == 3)) {
-    igraph::V(graph)[intLength == 3]$name <- unlist(sapply(igraph::V(graph)[intLength == 3]$intVars, paste, collapse = "__"))
+  if (any(igraph::V(graph)$isInt)) {
+    igraph::V(graph)[isInt]$name <- unlist(sapply(igraph::V(graph)[isInt]$intVars, paste, collapse = "__"))
   }
   
   return(graph)
@@ -442,21 +441,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     columns = c(options[['dependent']], options[['covariates']]),
     columns.as.factor = options[['factors']]
   )
-
-  # Standardize variables to get standardized estimates
-  if (options$standardizedEstimates != "unstandardized") {
-    # Only use complete cases for standardization with listwise deletion
-    # Otherwise data entered into lavaan is not actually standardized
-    if (options$naAction == "listwise") {
-      isComplete <- complete.cases(dataset)
-    } else {
-      isComplete <- !logical(nrow(dataset))
-    }
-
-    for (v in c(options[["dependent"]], options[["covariates"]])) {
-      dataset[[v]][isComplete] <- scale(dataset[[v]][isComplete], center = TRUE, scale = options$standardizedEstimates == "standardized")
-    }
-  }
 
   return(dataset)
 }
@@ -473,23 +457,19 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # Get all predictor vars
     sourceVars <- unique(igraph::E(graph)$source)
-    
-    # Create new variable for three-way interactions (moderated moderation)
-    for (v in igraph::V(graph)[intLength == 3]$intVars) {
+
+    # Create new (dummy-coded) variables for two and three-way interactions (moderated moderation)
+    for (v in igraph::V(graph)[intLength >= 2]$intVars) {
       # Compute factor dummy variables involved in interaction
-      varFormula <- formula(paste("~", paste(v, collapse = "+")))
+      varFormula <- formula(paste("~", paste(v, collapse = "*")))
       # Create model matrix but keep missing values in place because it needs to be merged with dataset later
       varDummyMat <- model.matrix(varFormula, data = model.frame(dataset, na.action = NULL))
-      # Create variable name like var1__var2__var3
-      varName <- paste(colnames(varDummyMat[, -1]), collapse = "__")
-      # Bind factor dummy variables to temporary dataset (will be added to actual data set later)
-      tempDataset <- cbind(dataset, varDummyMat[, -1])
-      # Compute product of interacting variables by first creating a string "var1 * var2 * var3"
-      # Then we evaluate the string as R code using the dataset as the environment to evaluate in
-      intVar <- eval(str2lang(paste(colnames(varDummyMat[, -1]), collapse = "*")), envir = tempDataset)
-      dataset[[varName]] = intVar
-      # Replace old three way interaction term with dummy coded interaction term (only for factors)
-      sourceVars[sourceVars == paste(v, collapse = "__")] <- varName
+      # Rename col names to match syntax
+      colnames(varDummyMat) <- gsub(":", "__", colnames(varDummyMat))
+      # Add interaction variables to dataset
+      dataset <- cbind(dataset, varDummyMat[, -1])
+      # Remove old interaction term
+      sourceVars <- sourceVars[sourceVars != paste(v, collapse = "__")]
     }
 
     # Convert regression variables to formula
@@ -517,7 +497,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     names(contrastList) <- names(contrastList)
     
     # Split terms of predictor vars
-    sourcVarsSplit <- strsplit(unique(igraph::E(graph)$source), ":|__")
+    sourcVarsSplit <- strsplit(unique(igraph::E(graph)$source), "__")
 
     # Replace dummy-coded variables in graph
     # Goes through all source variables and replaces them with dummy coded variable names
@@ -533,13 +513,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       })
   
       # Concatenate source var and interaction terms in dummy coded variable
-      if (length(vars) < 3) {
-        contr <- .doCallPaste(contr, sep = ":")
-        sourceName <- paste(vars, collapse = ":")
-      } else {
-        contr <- .doCallPaste(contr, sep = "__")
-        sourceName <- paste(vars, collapse = "__")
-      }
+      contr <- .doCallPaste(contr, sep = "__")
+      sourceName <- paste(vars, collapse = "__")
+      
 
       # Add nodes for source variables not in graph
       contrNotInGraph <- contr[!contr %in% igraph::V(facGraph)$name]
@@ -646,6 +622,35 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
+.procMeanCenter <- function(graph, dataset, options) {
+  # Center interacting variables
+  if (options$meanCenteredModeration) {
+    # Only use complete cases for standardization with listwise deletion
+    # Otherwise data entered into lavaan is not actually standardized
+    if (options$naAction == "listwise") {
+      isComplete <- complete.cases(dataset)
+    } else {
+      isComplete <- !logical(nrow(dataset))
+    }
+    
+    for (v in unique(unlist(igraph::V(graph)[intLength > 1]$intVars))) {
+      # Only center continuous variables
+      if (v %in% options[["covariates"]]) {
+        dataset[[v]][isComplete] <- scale(dataset[[v]][isComplete], center = TRUE, scale = FALSE)
+      }
+    }
+
+    # Recalculate two- and three-way interaction variables with centered terms
+    for (v in grep("__", names(dataset), value = TRUE)) {
+      vSplit <- strsplit(v, "__")[[1]]
+      vCentered <- eval(str2lang(paste(vSplit, collapse = "*")), envir = dataset)
+      dataset[[v]] <- vCentered
+    }
+  }
+
+  return(dataset)
+}
+
 .procModProbes <- function(jaspResults, dataset, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
@@ -660,10 +665,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       state <- createJaspState(object = modProbes)
       modelsContainer[[modelName]][["modProbes"]] <- state
     }
+
+    # Quantiles on standardized scale for standardized effects
+    if (is.null(modelsContainer[[modelName]][["modProbesStd"]]) && options$standardizedModelEstimates) {
+      modProbesStd <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options, standardize = TRUE)
+      state <- createJaspState(object = modProbesStd)
+      modelsContainer[[modelName]][["modProbesStd"]] <- state
+    }
   }
 }
 
-.procModProbesSingleModel <- function(container, dataset, options) {
+.procModProbesSingleModel <- function(container, dataset, options, standardize = FALSE) {
   probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
 
   graph <- container[["graph"]]$object
@@ -671,6 +683,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modVars <- unique(unlist(lapply(igraph::V(graph)$intVars, function(vars) vars[-1])))
 
   contrasts <- container[["contrasts"]]$object
+
+  # Mean-center data set before quantile computation
+  if (!standardize) {
+    dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
+  }
 
   modProbes <- lapply(modVars, function(nms) {
     # Is moderator factor
@@ -690,8 +707,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     } else {
       isComplete <- !logical(nrow(dataset))
     }
+
+    vComplete <- dataset[[nms]][isComplete]
+
+    # Standardize quantiles for standardized estimates
+    if (standardize) {
+      vComplete <- scale(vComplete)
+    }
+
     # If not factor return quantiles of continuous moderator
-    return(quantile(dataset[[nms]][isComplete], probs = probeVals, na.rm = TRUE))
+    return(quantile(vComplete, probs = probeVals, na.rm = TRUE))
   })
   
   names(modProbes) <- modVars
@@ -777,14 +802,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     ) next
 
     if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], modelOptions)
+      syntax <- .procModelSyntaxSingleModel(modelsContainer[[modelName]], options)
       state <- createJaspState(object = syntax)
       modelsContainer[[modelName]][["syntax"]] <- state
     }
   }
 }
 
-.procModelSyntaxSingleModel <- function(container, modelOptions) {
+.procModelSyntaxSingleModel <- function(container, options) {
   graph <- container[["graph"]]$object
   
   doFit <- .procCheckFitModel(graph)
@@ -799,6 +824,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       container[["modProbes"]]$object,
       container[["contrasts"]]$object
     )
+    # Append standardized mediation effects
+    if (options$standardizedModelEstimates) {
+      medEffectSyntax <- paste(medEffectSyntax, .procMedEffectsSyntax(graph,
+        container[["modProbesStd"]]$object,
+        container[["contrasts"]]$object,
+        standardize = TRUE
+      ), sep = "\n\n")
+    }
+    
     resCovSyntax <- .procResCovSyntax(container[["resCovGraph"]]$object)
   }
 
@@ -868,7 +902,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get moderator parameters for two-way interactions
   modPars <- lapply(pathEdge$modVars[[1]], function(v) {
     # Get edge for two way interaction between X and M
-    twoWayEdge <- igraph::E(graph)[paste(sourceNode, v, sep = ":") %--% pathEdge$target]$parName
+    twoWayEdge <- igraph::E(graph)[paste(sourceNode, v, sep = "__") %--% pathEdge$target]$parName
 
     # Concatenate two way edge parName with moderator probes
     return(apply(expand.grid(
@@ -886,7 +920,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get name of potential three-way interaction
   threeWayInt <- paste(c(pathEdge$source, pathEdge$modVars[[1]]), collapse = "__")
 
-  if (threeWayInt %in% igraph::E(graph)$source) { # If three-way int
+  if (length(pathEdge$modVars[[1]]) > 1 && threeWayInt %in% igraph::E(graph)$source) { # If three-way int
     # Get edge of three way interaction X x M1 x M2
     threeWayEdge <- igraph::E(graph)[threeWayInt %--% pathEdge$target]
     # Combine three way int parName with moderator probes
@@ -1026,7 +1060,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(filteredConditionialEffects[!isDuplicate])
 }
 
-.procMedEffectsSyntax <- function(graph, modProbes, contrasts) {
+.procMedEffectsSyntax <- function(graph, modProbes, contrasts, standardize = FALSE) {
   allMedEffects <- list()
   allTotEffects <- list()
   allTotIndEffects <- list()
@@ -1041,7 +1075,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         mode = "out"
       )
       # Get lhs and rhs plus moderator names for each path
-      medEffects <- lapply(medPaths, .procMedEffectsSyntaxSinglePath, graph = graph, modProbes = modProbes, contrasts = contrasts)
+      medEffects <- lapply(
+        medPaths,
+        .procMedEffectsSyntaxSinglePath,
+        graph = graph,
+        modProbes = modProbes,
+        contrasts = contrasts
+      )
       medPathLengthsSorted <- sort.int(sapply(medPaths, length), index.return = TRUE)
       # Sort effects according to path length to preserve order
       medEffects <- medEffects[medPathLengthsSorted$ix]
@@ -1049,8 +1089,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       totRhs <- lapply(medEffects, function(path) path$rhs)
       # Add rhs effects
       totEffects <- .doCallPaste(totRhs, sep = " + ")
-      # Concatenate rhs and lhs effects
-      medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
       # Get conditional effect labels from lhs of each path
       totEffectsConditional <- lapply(medEffects, function(path) {
         # Split lhs and remove first middle part of chunk, then paste together again
@@ -1061,11 +1099,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
           paste(c(paste(pathSplit[c(1, length(pathSplit))], collapse = "__"), path[-1]), collapse = ".")
         }))
       })
+      # Remove duplicate labels
+      totEffectsConditionalUnique <- .procRemoveDuplicateLabels(totEffectsConditional)
+      # Append __std to effect labels to indicate standardized effects
+      if (standardize) {
+        medEffects <- lapply(medEffects, function(path) list(lhs = paste0(path$lhs, "__std"), rhs = path$rhs))
+        totEffectsConditionalUnique <- paste0(totEffectsConditionalUnique, "__std")
+      }
+      # Concatenate rhs and lhs effects
+      medEffectsLabeled <- unlist(lapply(medEffects, function(path) paste(path$lhs, path$rhs, sep = " := ")))
       # Concatenate total effects
       totEffectsLabeled <- paste(
-        paste0("tot.", .procRemoveDuplicateLabels(totEffectsConditional)), totEffects, sep = " := "
+        paste0("tot.", totEffectsConditionalUnique), totEffects, sep = " := "
       )
-
+      
       allMedEffects <- c(allMedEffects, medEffectsLabeled)
       allTotEffects <- c(allTotEffects, totEffectsLabeled)
 
@@ -1073,11 +1120,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       isIndirect <- medPathLengthsSorted$x > 2
 
       if (any(isIndirect)) {
+        totIndEffectsConditionalUnique <- .procRemoveDuplicateLabels(totEffectsConditional[isIndirect])
+        
+        if (standardize) {
+          totIndEffectsConditionalUnique <- paste0(totIndEffectsConditionalUnique, "__std")
+        }
+
         # Add rhs indirect effects
         totIndEffects <- .doCallPaste(totRhs[isIndirect], sep = " + ")
         # Concatenate indirect effects
         totIndEffectsLabeled <- paste(
-          paste0("totInd.", .procRemoveDuplicateLabels(totEffectsConditional[isIndirect])), totIndEffects, sep = " := "
+          paste0("totInd.", totIndEffectsConditionalUnique), totIndEffects, sep = " := "
         )
 
         allTotIndEffects <- c(allTotIndEffects, totIndEffectsLabeled)
@@ -1091,7 +1144,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (length(allTotIndEffects) > 0) {
     allEffects <- c(allEffects, allTotIndEffects)
   }
-
   # Remove duplicated effects (can occur for factors with more than two levels)
   return(paste(allEffects[!duplicated(allMedEffects)], collapse = "\n"))
 }
@@ -1138,6 +1190,55 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
+.procStandardizedEstimates <- function(fittedModel, options) {
+  # Gets standardized estimates with appropriate interaction terms
+
+  # Get unstandardized coefficients
+  est <- lavaan::coef(fittedModel)
+  # Get standardized coefficients
+  # Note that interaction terms are not standardized the way users might expect because
+  # the standardization is applied to the product of the interacting variables instead of
+  # the variables before the product
+  parTblStd <- lavaan::standardizedSolution(fittedModel)
+
+  # Get implied covariance matrix to calc standaridized interaction coeffcients
+  covImplied <- lavaan::lavInspect(fittedModel, "implied")$cov
+
+  # Get implied standard deviations of variables
+  sdImplied <- sqrt(diag(covImplied))
+
+  # Get variables involved in interactions
+  isInt <- grepl(":|__", parTblStd$rhs)
+  intSplit <- strsplit(parTblStd$rhs, ":|__")
+
+  estStd <- parTblStd$est.std
+  
+  for (i in 1:length(estStd)) {
+    if (isInt[i]) {
+      # Divide by implied SD of LHS variables
+      estStd[i] <- est[i] / sdImplied[parTblStd$lhs[i]]
+
+      # Multiply by implied SDs of interacting variables
+      for (v in intSplit[[i]]) {
+        # Don't standardize by SDs of factors as this leads to uninterpretable coefficients
+        # Instead the coefficients are partially standardized
+        if (!any(sapply(options[["factors"]], grepl, x = v))) {
+          estStd[i] <- estStd[i] * sdImplied[v]
+        }
+      }
+    # If rhs is categorical  
+    } else if (any(sapply(options[["factors"]], grepl, x = parTblStd$rhs[i])) && parTblStd$op[i] == "~") {
+      # Divide only by implied SD of LHS variables because we don't standardize by SDs of categorical vars
+      estStd[i] <- est[i] / sdImplied[parTblStd$lhs[i]]
+    }
+  }
+  
+  # Defined terms need to be recomputed because they used the old interaction coefficient
+  estStd[parTblStd$op == ":="] <- fittedModel@Model@def.function(estStd)
+
+  return(estStd)
+}
+
 .procBootstrap <- function(fittedModel, samples) {
   # Run bootstrap, track progress with progress bar
   # Notes: faulty runs are simply ignored
@@ -1174,6 +1275,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (!doFit) {
     dataset <- NULL
+  } else {
+    dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
   }
 
   fittedModel <- try(lavaan::sem(
@@ -1481,20 +1584,36 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
                     overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   tbl$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
                     overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
+  
   tbl[["est"]]      <- coefs$est
   tbl[["se"]]       <- coefs$se
   tbl[["z"]]        <- coefs$z
   tbl[["pvalue"]]   <- coefs$pvalue
   tbl[["ci.lower"]] <- coefs$ci.lower
   tbl[["ci.upper"]] <- coefs$ci.upper
+  
+  if (options$standardizedModelEstimates && "est.std" %in% names(coefs)) {
+    tbl$addColumnInfo(name = "est.std", title = gettext("Std. Estimate"), type = "number", format = "sf:4;dp:3")
+    tbl[["est.std"]] <- coefs$est.std
+    
+    # Set row names to assign footnotes to cells
+    for (i in 1:nrow(coefs)) {
+      tbl$setRowName(i, coefs$rowId[i])
+    }
 
-  if (options$standardizedEstimates != "unstandardized") {
-    txt <- switch(options$standardizedEstimates,
-      centered = gettext("mean-centered"),
-      standardized = gettext("standardized")
-    )
-    tbl$addFootnote(gettextf("Standard errors, test statistics, and confidence intervals are based on %s estimates.", txt))
+    rowHasFac <- sapply(coefs$rowId, function(v) any(sapply(options[["factors"]], grepl, x = v)))
+
+    if (any(rowHasFac)) {
+      tbl$addFootnote(
+        message = gettext("Partially standardized estimate because effect involves categorical predictor."),
+        colNames = "est.std",
+        rowNames = coefs$rowId[rowHasFac]
+      )
+    }
+  }
+
+  if (options$meanCenteredModeration) {
+    tbl$addFootnote(gettext("Moderation effect estimates are based on mean-centered variables."))
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
@@ -1537,6 +1656,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
                                           level = options$ciLevel)
+
+  if (options$standardizedModelEstimates) {
+    pathCoefs["rowId"] <- pathCoefs$rhs
+    pathCoefs["est.std"] <- .procStandardizedEstimates(procResults, options)
+  }
 
   if (!procResults@Fit@converged) {
     pathCoefTable$addFootnote(gettext("Model did not converge."))
@@ -1608,13 +1732,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
                                           level = options$ciLevel)
 
+  if (options$standardizedModelEstimates) {
+    pathCoefs["rowId"] <- pathCoefs$lhs
+    pathCoefs["est.std"] <- .procStandardizedEstimates(procResults, options)
+  }
+
   if (!procResults@Fit@converged) {
     medEffectsTable$addFootnote(gettext("Model did not converge."))
   }
 
   .procBootstrapSamplesFootnote(medEffectsTable, procResults, options)
 
-  medEffects <- pathCoefs[pathCoefs$op == ":=",]
+  isStandardized <- grepl("__std$", pathCoefs$lhs)
+  
+  medEffects <- pathCoefs[pathCoefs$op == ":=" & !isStandardized,]
+  medEffects["est.std"] <- pathCoefs[pathCoefs$op == ":=" & isStandardized, "est.std"]
+  
 
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
@@ -1683,13 +1816,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
                                           level = options$ciLevel)
 
+  if (options$standardizedModelEstimates) {
+    pathCoefs["rowId"] <- pathCoefs$lhs
+    pathCoefs["est.std"] <- .procStandardizedEstimates(procResults, options)
+  }
+
   if (!procResults@Fit@converged) {
     totEffectsTable$addFootnote(gettext("Model did not converge."))
   }
 
   .procBootstrapSamplesFootnote(totEffectsTable, procResults, options)
 
-  medEffects <- pathCoefs[pathCoefs$op == ":=", ]
+  isStandardized <- grepl("__std$", pathCoefs$lhs)
+
+  medEffects <- pathCoefs[pathCoefs$op == ":=" & !isStandardized,]
+  medEffects["est.std"] <- pathCoefs[pathCoefs$op == ":=" & isStandardized, "est.std"]
 
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 

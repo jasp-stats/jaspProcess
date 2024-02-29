@@ -15,7 +15,7 @@ createDummyGraphModelModeratedMediation <- function() {
                        "contGamma", "contcor1",
                        "contcor1", "contNormal",
                        "contcor2", "contNormal",
-                       "contGamma:contcor2", "contNormal"
+                       "contGamma__contcor2", "contNormal"
   ), ncol = 2, byrow = TRUE)
   return(create_graph_from_edgeList(edgeList))
 }
@@ -25,9 +25,9 @@ createDummyGraphModelModeratedModeration <- function() {
     "contGamma", "contNormal",
     "contcor1", "contNormal",
     "contcor2", "contNormal",
-    "contGamma:contcor1", "contNormal",
-    "contGamma:contcor2", "contNormal",
-    "contcor1:contcor2", "contNormal",
+    "contGamma__contcor1", "contNormal",
+    "contGamma__contcor2", "contNormal",
+    "contcor1__contcor2", "contNormal",
     "contGamma__contcor1__contcor2", "contNormal"
   ), ncol = 2, byrow = TRUE)
   return(create_graph_from_edgeList(edgeList))
@@ -39,11 +39,11 @@ createDummyGraphModelDoubleModeratedModeration <- function() {
     "contcor1", "contNormal",
     "contcor2", "contNormal",
     "debCollin1", "contNormal",
-    "contGamma:contcor1", "contNormal",
-    "contGamma:contcor2", "contNormal",
-    "contGamma:debCollin1", "contNormal",
-    "contcor1:contcor2", "contNormal",
-    "contcor1:debCollin1", "contNormal",
+    "contGamma__contcor1", "contNormal",
+    "contGamma__contcor2", "contNormal",
+    "contGamma__debCollin1", "contNormal",
+    "contcor1__contcor2", "contNormal",
+    "contcor1__debCollin1", "contNormal",
     "contGamma__contcor1__contcor2", "contNormal",
     "contGamma__contcor1__debCollin1", "contNormal"
   ), ncol = 2, byrow = TRUE)
@@ -57,12 +57,12 @@ createDummyGraphModelTwoModeratedModerators <- function() {
     "contcor2", "contNormal",
     "debCollin1", "contNormal",
     "debCollin2", "contNormal",
-    "contGamma:contcor1", "contNormal",
-    "contGamma:contcor2", "contNormal",
-    "contGamma:debCollin1", "contNormal",
-    "contGamma:debCollin2", "contNormal",
-    "contcor1:contcor2", "contNormal",
-    "debCollin1:debCollin2", "contNormal",
+    "contGamma__contcor1", "contNormal",
+    "contGamma__contcor2", "contNormal",
+    "contGamma__debCollin1", "contNormal",
+    "contGamma__debCollin2", "contNormal",
+    "contcor1__contcor2", "contNormal",
+    "debCollin1__debCollin2", "contNormal",
     "contGamma__contcor1__contcor2", "contNormal",
     "contGamma__debCollin1__debCollin2", "contNormal"
   ), ncol = 2, byrow = TRUE)
@@ -208,8 +208,8 @@ test_that("Test that .procProcessRelationshipsToGraph works - moderation", {
 
   expect_true(igraph::is_igraph(graph))
   expect_true(igraph::is_dag(graph))
-  expect_equal(igraph::V(graph)$name, c("contGamma", "contNormal", "contcor1", "contGamma:contcor1"))
-  expect_equal(igraph::E(graph)$source, c("contGamma", "contcor1", "contGamma:contcor1"))
+  expect_equal(igraph::V(graph)$name, c("contGamma", "contNormal", "contcor1", "contGamma__contcor1"))
+  expect_equal(igraph::E(graph)$source, c("contGamma", "contcor1", "contGamma__contcor1"))
   expect_equal(igraph::E(graph)$target, c("contNormal", "contNormal", "contNormal"))
 })
 
@@ -225,8 +225,8 @@ test_that("Test that .procProcessRelationshipsToGraph works - moderated moderati
 
   expect_true(igraph::is_igraph(graph))
   expect_true(igraph::is_dag(graph))
-  expect_equal(igraph::V(graph)$name, c("contGamma", "contNormal", "contcor1", "contGamma:contcor1", "contcor2", "contGamma:contcor2", "contGamma__contcor1__contcor2", "contcor1:contcor2"))
-  expect_equal(igraph::E(graph)$source, c("contGamma", "contcor1", "contGamma:contcor1", "contcor2", "contGamma:contcor2", "contGamma__contcor1__contcor2", "contcor1:contcor2"))
+  expect_equal(igraph::V(graph)$name, c("contGamma", "contNormal", "contcor1", "contGamma__contcor1", "contcor2", "contGamma__contcor2", "contGamma__contcor1__contcor2", "contcor1__contcor2"))
+  expect_equal(igraph::E(graph)$source, c("contGamma", "contcor1", "contGamma__contcor1", "contcor2", "contGamma__contcor2", "contGamma__contcor1__contcor2", "contcor1__contcor2"))
   expect_equal(igraph::E(graph)$target, c("contNormal", "contNormal", "contNormal", "contNormal", "contNormal", "contNormal", "contNormal"))
 })
 
@@ -263,14 +263,14 @@ test_that("Test that .procGraphAddAttributes works", {
                        "contGamma", "contcor1",
                        "contcor1", "contNormal",
                        "contcor2", "contNormal",
-                       "contGamma:contcor2", "contNormal"
+                       "contGamma__contcor2", "contNormal"
                        ), ncol = 2, byrow = TRUE)
   graph <- igraph::graph_from_edgelist(edgeList)
   igraph::E(graph)$source <- edgeList[,1]
   igraph::E(graph)$target <- edgeList[,2]
   graph <- jaspProcess:::.procGraphAddAttributes(graph)
   expect_equal(igraph::V(graph)$isInt, c(FALSE, FALSE, FALSE, FALSE, TRUE))
-  expect_equal(igraph::V(graph)$intVars, strsplit(unique(as.vector(t(edgeList))), ":|__"))
+  expect_equal(igraph::V(graph)$intVars, strsplit(unique(as.vector(t(edgeList))), "__"))
   expect_equal(igraph::V(graph)$intLength, c(1, 1, 1, 1, 2))
   expect_true(all(!igraph::V(graph)$isNestedInt))
   expect_equal(igraph::V(graph)$isHigherOrderInt, c(FALSE, FALSE, FALSE, FALSE, TRUE))
@@ -288,9 +288,9 @@ test_that("Test that .procGraphAddAttributes works - moderated moderation", {
     "contGamma", "contNormal",
     "contcor1", "contNormal",
     "contcor2", "contNormal",
-    "contGamma:contcor1", "contNormal",
-    "contGamma:contcor2", "contNormal",
-    "contcor1:contcor2", "contNormal",
+    "contGamma__contcor1", "contNormal",
+    "contGamma__contcor2", "contNormal",
+    "contcor1__contcor2", "contNormal",
     "contGamma__contcor1__contcor2", "contNormal"
   ), ncol = 2, byrow = TRUE)
   graph <- igraph::graph_from_edgelist(edgeList)
@@ -416,7 +416,7 @@ test_that("Test that .procModelGraphInputModelNumber works", {
                        "JaspProcess_Independent_Encoded", "JaspProcess_Mediator_Encoded",
                        "JaspProcess_Mediator_Encoded", "JaspProcess_Dependent_Encoded",
                        "JaspProcess_ModeratorW_Encoded", "JaspProcess_Dependent_Encoded",
-                       "JaspProcess_Independent_Encoded:JaspProcess_ModeratorW_Encoded", "JaspProcess_Dependent_Encoded"
+                       "JaspProcess_Independent_Encoded__JaspProcess_ModeratorW_Encoded", "JaspProcess_Dependent_Encoded"
   ), ncol = 2, byrow = TRUE)
   graph <- igraph::graph_from_edgelist(edgeList)
   igraph::E(graph)$source <- edgeList[,1]
@@ -432,7 +432,7 @@ test_that("Test that .procModelGraphInputModelNumber works", {
   globalDependent <- "contNormal"
   graph <- jaspProcess:::.procGraphAddAttributes(graph)
   graph <- jaspProcess:::.procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
-  expect_equal(igraph::V(graph)$name, c("contGamma", "contNormal", "contcor1", "contcor2", "contGamma:contcor2"))
+  expect_equal(igraph::V(graph)$name, c("contGamma", "contNormal", "contcor1", "contcor2", "contGamma__contcor2"))
 })
 
 test_that("Test that .procGraphAddParNamesSingleModel works", {
@@ -470,7 +470,7 @@ test_that("Test that .procRegSyntax works", {
   graph <- createDummyGraphModelModeratedMediation()
   graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
   syntax <- jaspProcess:::.procRegSyntax(graph)
-  expect_equal(syntax, "contNormal ~ c1*contGamma + b1*contcor1 + c2*contcor2 + c3*contGamma:contcor2\ncontcor1 ~ a1*contGamma")
+  expect_equal(syntax, "contNormal ~ c1*contGamma + b1*contcor1 + c2*contcor2 + c3*contGamma__contcor2\ncontcor1 ~ a1*contGamma")
 })
 
 test_that("Test that .procMedEffectsSyntaxModPars works - no contrasts", {
@@ -492,8 +492,8 @@ test_that("Test that .procMedEffectsSyntaxModPars works - with contrasts", {
                        "contGammaB", "contcor1",
                        "contcor1", "contNormal",
                        "contcor2", "contNormal",
-                       "contGammaA:contcor2", "contNormal",
-                       "contGammaB:contcor2", "contNormal"
+                       "contGammaA__contcor2", "contNormal",
+                       "contGammaB__contcor2", "contNormal"
   ), ncol = 2, byrow = TRUE)
   graph <- create_graph_from_edgeList(edgeList)
   graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
@@ -524,8 +524,8 @@ test_that("Test that .procMedEffectsSyntaxGetLhs works - with contrasts", {
                        "contGammaB", "contcor1",
                        "contcor1", "contNormal",
                        "contcor2", "contNormal",
-                       "contGammaA:contcor2", "contNormal",
-                       "contGammaB:contcor2", "contNormal"
+                       "contGammaA__contcor2", "contNormal",
+                       "contGammaB__contcor2", "contNormal"
   ), ncol = 2, byrow = TRUE)
   graph <- create_graph_from_edgeList(edgeList)
   graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
@@ -558,8 +558,8 @@ test_that("Test that .procMedEffectsSyntaxGetRhs works - with contrasts", {
                        "contGammaB", "contcor1",
                        "contcor1", "contNormal",
                        "contcor2", "contNormal",
-                       "contGammaA:contcor2", "contNormal",
-                       "contGammaB:contcor2", "contNormal"
+                       "contGammaA__contcor2", "contNormal",
+                       "contGammaB__contcor2", "contNormal"
   ), ncol = 2, byrow = TRUE)
   graph <- create_graph_from_edgeList(edgeList)
   graph <- jaspProcess:::.procGraphAddParNamesSingleModel(graph)
@@ -586,7 +586,7 @@ test_that("Test that .procResCovSyntax works", {
 
   syntax <- jaspProcess:::.procResCovSyntax(graph)
 
-  expect_equal(syntax, "contGamma ~~ contNormal\ncontGamma ~~ contcor1\ncontcor1 ~~ contNormal\ncontcor2 ~~ contNormal\ncontGamma:contcor2 ~~ contNormal")
+  expect_equal(syntax, "contGamma ~~ contNormal\ncontGamma ~~ contcor1\ncontcor1 ~~ contNormal\ncontcor2 ~~ contNormal\ncontGamma__contcor2 ~~ contNormal")
 })
 
 test_that("Test that .procCheckFitModel works", {

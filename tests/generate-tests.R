@@ -25,6 +25,7 @@ getOptionsOneModel <- function() {
   options[["errorCalculationMethod"]] = "standard"
   options[["estimator"]] = "default"
   options[["naAction"]] = "fiml"
+  options[["standardizedModelEstimates"]] = TRUE
 
   options[["statisticalPathPlotsCovariances"]] = TRUE
   options[["statisticalPathPlotsResidualVariances"]] = TRUE

@@ -83,10 +83,8 @@ This section allows users to specify multiple process models through one of two 
 - R-squared: Show *R*², the proportion of variation explained in each endogenous (outcome) variable from its predictors, in the output.
 - AIC weights: Show the Akaike weights in the summary table in the output.
 - BIC weigths: Show the Schwarz weights in the summary table in the output.
-- Standardized estimates: When `Missing Value Handling` is `Exclude cases listwise`, standardization is applied only based on complete cases.
-	- Unstandardized: All variables are unstandardized when entered into the model.
-	- Mean-centered: All continuous variables are mean-centered when entered into the model.
-	- Standardized: All continuous variables are standardized when entered into the model.
+- Mean-centered moderation: Continuous variables involved in moderation effects are mean-centered before entering the analysis. When `Missing Value Handling` is `Exclude cases listwise`, centering is applied only based on complete cases.
+- Standardized estimates: Adds standardized parameter estimates to the output tables. The standardization is done by multiplying the estimate with (*SD*<sub>X</sub>/*SD*<sub>Y</sub>) where *SD*<sub>X</sub> and *SD*<sub>Y</sub> are the model-implied standard deviations for the independent and dependent variable, respectively. Note that the standardization for interaction and conditional effects is based on the product of the standard deviations of the individual terms and not on the standard deviation of the product term, i.e., (*SD*<sub>X</sub>*SD*<sub>W</sub>/*SD*<sub>Y</sub>) instead of (*SD*<sub>XW</sub>/*SD*<sub>Y</sub>). For categorical independent variables, estimates are partially standardized, i.e., only multiplied by *SD*<sub>Y</sub>. See Hayes (2022) for details. Conditional effects are probed on standardized moderators (where standardization is based on complete cases if `Missing Value Handling` is `Exclude cases listwise`).
 - Confidence intervals: The level of confidence intervals for parameter estimates in the output tables.
 - Method:
 	- Standard: Calculates standard errors and confidence intervals based on the inverted expected information matrix.
