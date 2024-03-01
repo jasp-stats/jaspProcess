@@ -387,7 +387,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     vars <- gsub(encoding[["Z"]], modZ, vars)
 
   # Is var a mediator?
-  isMed <- grepl(encoding[["M"]], vars)
+  isMed <- grepl(paste0("^", encoding[["M"]], "[0-9]?$"), vars) # Fancy RegEx avoids flagging interaction variables
   # Which mediator index?
   medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
   medIdx <- as.integer(medIdx[!is.na(medIdx)])
