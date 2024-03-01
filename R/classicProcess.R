@@ -274,6 +274,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::V(graph)$isInt <- grepl(":|__", igraph::V(graph)$name)
   # Which are the node interaction vars
   igraph::V(graph)$intVars <- strsplit(igraph::V(graph)$name, ":|__")
+
   # How many interaction vars are there
   igraph::V(graph)$intLength <- sapply(igraph::V(graph)$intVars, length)
   # Is nested interaction term (fully included in higher-order interaction)
@@ -387,7 +388,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     vars <- gsub(encoding[["Z"]], modZ, vars)
 
   # Is var a mediator?
-  isMed <- grepl(encoding[["M"]], vars)
+  isMed <- grepl(paste0("^", encoding[["M"]], "[0-9]?$"), vars) # Fancy RegEx avoids flagging interaction variables
   # Which mediator index?
   medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
   medIdx <- as.integer(medIdx[!is.na(medIdx)])
@@ -517,12 +518,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     names(contrastList) <- names(contrastList)
     
     # Split terms of predictor vars
-    sourcVarsSplit <- strsplit(unique(igraph::E(graph)$source), ":|__")
+    sourceVarsSplit <- strsplit(unique(igraph::E(graph)$source), ":|__")
 
     # Replace dummy-coded variables in graph
     # Goes through all source variables and replaces them with dummy coded variable names
     # if necessary
-    for (vars in sourcVarsSplit) {
+    for (vars in sourceVarsSplit) {
       # Concatenate variable with factor levels from contrast list to get dummy variable name
       contr <- lapply(vars, function(v) {
         if (v %in% names(contrastList)) {
