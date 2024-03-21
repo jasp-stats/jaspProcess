@@ -301,7 +301,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Is edge moderated
   igraph::E(graph)$isMod <- FALSE
 
-  # Which are moderation variables for each edge; NULL if none
+  # Which are moderation variables for each edge; NA if none
   igraph::E(graph)$modVars <- NA
 
   for (i in 1:length(igraph::E(graph))) {
@@ -433,7 +433,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!is.null(igraph::E(graph)$modVars))
     igraph::E(graph)$modVars <- sapply(igraph::E(graph)$modVars,
                                        function(x) {
-                                         if (!is.na(x)) .procReplaceDummyVars(x, modelOptions = modelOptions, globalDependent = globalDependent)
+                                         if (all(!is.na(x)))
+                                           .procReplaceDummyVars(x, modelOptions = modelOptions, globalDependent = globalDependent)
                                        }
                                 ) # Returns a list!
   
