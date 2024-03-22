@@ -373,10 +373,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get encoding
   encoding <- .procVarEncoding()
 
-  independent  <- modelOptions[["modelNumberIndependent"]]
-  mediators    <- modelOptions[["modelNumberMediators"]]
-  modW         <- modelOptions[["modelNumberModeratorW"]]
-  modZ         <- modelOptions[["modelNumberModeratorZ"]]
+  independent <-        modelOptions[["modelNumberIndependent"]]
+  mediators   <- unlist(modelOptions[["modelNumberMediators"  ]])
+  modW        <-        modelOptions[["modelNumberModeratorW" ]]
+  modZ        <-        modelOptions[["modelNumberModeratorZ" ]]
 
   # Apply the JASP coding to X, W, Z, and M if the user has specified the variables and 'vars' still contains the dummy version
   if (independent != "" && encoding$X %in% vars) {
