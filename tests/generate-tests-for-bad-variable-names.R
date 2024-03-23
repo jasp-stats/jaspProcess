@@ -1,7 +1,7 @@
 ### Title:    Generate Unit Tests for Data with Potentially Problematic Variable Names
 ### Author:   Kyle M. Lang (Adapted from ./generate-tests.R)
 ### Created:  2024-03-22
-### Modified: 2024-03-22
+### Modified: 2024-03-23
 
 ###-Setup--------------------------------------------------------------------------------------------------------------------###
 
@@ -64,10 +64,10 @@ numMap <- list(
 ###-Tests for Hayes' Numbered Models-----------------------------------------------------------------------------------------###
 
 ## Where are we saving these tests?
-testsFile <- "test-classic-process-hayes-models-with-bad-variable-names.R"
+testsFile <- "test-ClassicProcess-hayes-models-with-bad-variable-names.R"
 
 ## Test a representative range of model numbers (we probably don't need to test them all here):
-modelNumbers <- c(1:5, 10, 21, 28, 29, 81, 82, 89, 92)
+modelNumbers <- c(1:4, 10, 29, 82, 92)
 
 ## Make sure these model numbers are available:
 modCheck <- modelNumbers %in% jaspProcess:::.procHardCodedModelNumbers() |> all()  
@@ -77,151 +77,12 @@ if(!modCheck)
 ## Generate tests for continuous variables:
 parms$type <- "continuous"
 parms$map  <- numMap
-numTests <- lapply(modelNumbers, makeTestString, parms = parms)
+numTests <- lapply(modelNumbers, makeTestString, parms = parms, testObjective = "works with bad variable names")
 
 ## Generate tests for factor variables:
 parms$type <- "factor"
 parms$map  <- facMap
-facTests <- lapply(modelNumbers, makeTestString, parms = parms)
+facTests <- lapply(modelNumbers, makeTestString, parms = parms, testObjective = "works with bad variable names")
 
 ## Write tests to external script:
 c(header, paste(numTests, facTests, sep = seperator)) |> writeLines(con = testsFile, sep = seperator)
-
-###-Tests Custom Models------------------------------------------------------------------------------------------------------###
-
-customModels <- list(
-  "one_confounder" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "confounders",
-      processVariable = "W"
-    )
-  ),
-  "one_direct" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "directs",
-      processVariable = ""
-    )
-  ),
-  "two_confounder" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "confounders",
-      processVariable = "W"
-    ),
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "confounders",
-      processVariable = "Z"
-    )
-  ),
-  "confounder_X_Y" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "mediators",
-      processVariable = "M"
-    ),
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "confounders",
-      processVariable = "Z"
-    )
-  ),
-  "confounder_X_M" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "mediators",
-      processVariable = "M"
-    ),
-    list(
-      processDependent = "M",
-      processIndependent = "X",
-      processType = "confounders",
-      processVariable = "Z"
-    )
-  ),
-  "confounder_M_Y" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "mediators",
-      processVariable = "M"
-    ),
-    list(
-      processDependent = "Y",
-      processIndependent = "M",
-      processType = "confounders",
-      processVariable = "Z"
-    )
-  ),
-  "confounder_moderator" = list(
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "moderators",
-      processVariable = "W"
-    ),
-    list(
-      processDependent = "Y",
-      processIndependent = "X",
-      processType = "confounders",
-      processVariable = "Z"
-    )
-  )
-)
-
-addProcessRelationshipsFromCustomModel <- function(k, options, replaceFun) {
-  processRelationships <- customModels[[as.character(k)]]
-  processRelationships <- lapply(processRelationships, function(row) {
-    row <- lapply(row, replaceFun)
-    return(row)
-  })
-
-  options$processModels[[1]][["processRelationships"]] <- processRelationships
-
-  return(options)
-}
-
-replaceVariablesContinuousCustom <- function(v) {
-  return(switch(v,
-                "Y" = "contNormal",
-                "X" = "contGamma",
-                "M" = "debCollin1",
-                "W" = "contcor1",
-                "Z" = "contcor2",
-                v
-  ))
-}
-
-replaceVariablesFactorsCustom <- function(v) {
-  return(switch(v,
-                "Y" = "contNormal",
-                "X" = "contGamma",
-                "M" = "debCollin1",
-                "W" = "facExperim",
-                "Z" = "facGender",
-                v
-  ))
-}
-
-fileContext <- file("tests/testthat/test-classic-process-integration-custom-models.R")
-header <- "# This code is automatically generated by 'generate-tests.R'"
-testCode <- ""
-for (k in names(customModels)) {
-  opts <- getOptionsOneModel()
-  opts <- addProcessRelationshipsFromCustomModel(k, opts, replaceVariablesContinuousCustom)
-  testCode <- paste(testCode, captureCodeContinuous(k, opts), sep = "\n")
-  opts <- getOptionsOneModel()
-  opts <- addProcessRelationshipsFromCustomModel(k, opts, replaceVariablesFactorsCustom)
-  testCode <- paste(testCode, captureCodeFactor(k, opts), sep = "\n")
-}
-writeLines(paste(header, testCode, sep = "\n\n"), fileContext)
-close(fileContext)

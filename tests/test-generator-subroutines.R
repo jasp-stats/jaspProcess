@@ -1,19 +1,15 @@
 ### Title:    Subroutines for Generating Unit Tests
 ### Author:   Kyle M. Lang (Functions extracted from ./generate-tests.R and adapted)
 ### Created:  2024-03-22
-### Modified: 2024-03-22
+### Modified: 2024-03-23
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 .getOptionsOneModel <- function(k, parms) {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options[["dependent"]]  <- parms$vars$y
+  options[["covariates"]] <- parms$vars$numeric
   options[["factors"]]    <- parms$vars$factor
-
-  covs <- parms$vars$numeric
-  if(k < 82) covs <- head(covs, -1)
-
-  options[["covariates"]] <- covs
 
   options[["moderationProbes"]] <- list(
     list(
@@ -48,13 +44,13 @@
       "inputType" = "inputVariables",
       "mediationEffects" = TRUE,
       "mediatorCovariances" = TRUE,
-      "modelNumber" = k,
+      "modelNumber" = 1,
       "modelNumberCovariates" = list(),
       "modelNumberIndependent" = "",
       "modelNumberMediators" = list(),
       "modelNumberModeratorW" = "",
       "modelNumberModeratorZ" = "",
-      "name" = paste("Model", k),
+      "name" = "Model 1",
       "pathCoefficients" = TRUE,
 	    "intercepts" = FALSE,
       "processRelationships" = list(),
@@ -79,12 +75,14 @@
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
-.addProcessRelationships <- function(k, parms) {
+.getProcessRelationships <- function(k, parms) {
   customModels <- parms$customModels
-  ifelse(is.null(customModels),
-         jaspProcess:::.procGetHardCodedModel(k, 2),
-         customModels[[k]]) |> 
-  lapply(lapply, .replaceVariables, map = parms$map)
+  if(is.null(customModels))
+    x <- jaspProcess:::.procGetHardCodedModel(k, 2)
+  else
+    x <- customModels[[k]]
+
+  x |> lapply(lapply, .replaceVariables, map = parms$map)
 }
 
 ###--------------------------------------------------------------------------------------------------------------------------###
@@ -105,7 +103,7 @@
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
-.captureTestCode <- function(k, opts, parms) {
+.captureTestCode <- function(k, opts, parms, testObjective = "works") {
   out <- capture.output(jaspTools::runAnalysis("ClassicProcess", dataset = parms$data, options = opts, makeTests = TRUE)) |>
     paste(collapse = "\n") |>
     try(silent = TRUE)
@@ -117,15 +115,15 @@
       gsub("conceptual-path-plot", paste("conceptual-path-plot", type, k, sep = "-"), x = _) |>
       gsub("statistical-path-plot", paste("statistical-path-plot", type, k, sep = "-"), x = _)
 
-    out <- paste0("test_that(\"Test that model number ", k, " - ", type, " works\", {\n", out, "\n})")
+    out <- paste0("test_that(\"Test that model number ", k, " - ", type, " ", testObjective, "\", {\n", out, "\n})")
   } 
   out
 }
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
-makeTestString <- function(k, parms) { 
+makeTestString <- function(k, parms, ...) { 
   opts <- .getOptionsOneModel(k, parms)
-  opts$processModels[[1]][["processRelationships"]] <- .addProcessRelationships(k, parms)
-  .captureTestCode(k, opts, parms)
+  opts$processModels[[1]]$processRelationships <- .getProcessRelationships(k, parms)
+  .captureTestCode(k, opts, parms, ...)
 }
