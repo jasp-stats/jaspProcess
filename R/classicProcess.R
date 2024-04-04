@@ -665,17 +665,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       state <- createJaspState(object = modProbes)
       modelsContainer[[modelName]][["modProbes"]] <- state
     }
-
-    # Quantiles on standardized scale for standardized effects
-    if (is.null(modelsContainer[[modelName]][["modProbesStd"]]) && options$standardizedModelEstimates) {
-      modProbesStd <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options, standardize = TRUE)
-      state <- createJaspState(object = modProbesStd)
-      modelsContainer[[modelName]][["modProbesStd"]] <- state
-    }
   }
 }
 
-.procModProbesSingleModel <- function(container, dataset, options, standardize = FALSE) {
+.procModProbesSingleModel <- function(container, dataset, options) {
   probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
 
   graph <- container[["graph"]]$object
@@ -685,9 +678,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   contrasts <- container[["contrasts"]]$object
 
   # Mean-center data set before quantile computation
-  if (!standardize) {
-    dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
-  }
+  dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
 
   modProbes <- lapply(modVars, function(nms) {
     # Is moderator factor
@@ -709,11 +700,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     vComplete <- dataset[[nms]][isComplete]
-
-    # Standardize quantiles for standardized estimates
-    if (standardize) {
-      vComplete <- scale(vComplete)
-    }
 
     # If not factor return quantiles of continuous moderator
     return(quantile(vComplete, probs = probeVals, na.rm = TRUE))
@@ -824,14 +810,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       container[["modProbes"]]$object,
       container[["contrasts"]]$object
     )
-    # Append standardized mediation effects
-    if (options$standardizedModelEstimates) {
-      medEffectSyntax <- paste(medEffectSyntax, .procMedEffectsSyntax(graph,
-        container[["modProbesStd"]]$object,
-        container[["contrasts"]]$object,
-        standardize = TRUE
-      ), sep = "\n\n")
-    }
     
     resCovSyntax <- .procResCovSyntax(container[["resCovGraph"]]$object)
   }
@@ -1192,14 +1170,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procStandardizedEstimates <- function(fittedModel, options) {
   # Gets standardized estimates with appropriate interaction terms
+  # Note that we don't use lavaan::standardizedSolution: 
+  # Its interaction terms are not standardized the way users might expect because
+  # the standardization is applied to the product of the interacting variables 
+  # instead of the variables before the product
 
   # Get unstandardized coefficients
-  est <- lavaan::coef(fittedModel)
-  # Get standardized coefficients
-  # Note that interaction terms are not standardized the way users might expect because
-  # the standardization is applied to the product of the interacting variables instead of
-  # the variables before the product
-  parTblStd <- lavaan::standardizedSolution(fittedModel)
+  parTbl <- lavaan::parameterTable(fittedModel)
 
   # Get implied covariance matrix to calc standaridized interaction coeffcients
   covImplied <- lavaan::lavInspect(fittedModel, "implied")$cov
@@ -1207,34 +1184,48 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get implied standard deviations of variables
   sdImplied <- sqrt(diag(covImplied))
 
-  # Get variables involved in interactions
-  isInt <- grepl(":|__", parTblStd$rhs)
-  intSplit <- strsplit(parTblStd$rhs, ":|__")
+  # Split lhs and rhs labels
+  rhsSplit <- strsplit(parTbl$rhs, ":|__")
+  lhsSplit <- strsplit(parTbl$lhs, "\\.")
 
-  estStd <- parTblStd$est.std
+  estStd <- parTbl$est
   
   for (i in 1:length(estStd)) {
-    if (isInt[i]) {
-      # Divide by implied SD of LHS variables
-      estStd[i] <- est[i] / sdImplied[parTblStd$lhs[i]]
+    # If estimate is not defined effect
+    if (parTbl$op[i] != ":=") {
+      # Divide by implied SD of lhs variables
+      estStd[i] <- estStd[i] / sdImplied[parTbl$lhs[i]]
 
-      # Multiply by implied SDs of interacting variables
-      for (v in intSplit[[i]]) {
-        # Don't standardize by SDs of factors as this leads to uninterpretable coefficients
-        # Instead the coefficients are partially standardized
-        if (!any(sapply(options[["factors"]], grepl, x = v))) {
-          estStd[i] <- estStd[i] * sdImplied[v]
+      # If is not intercept
+      if (parTbl$op[i] != "~1") {
+        # Multiply by implied SDs of rhs variables
+        for (v in rhsSplit[[i]]) {
+          # Don't standardize by SDs of factors as this leads to uninterpretable coefficients
+          # Instead the coefficients are partially standardized
+          if (!any(sapply(options[["factors"]], grepl, x = v))) {
+            estStd[i] <- estStd[i] * sdImplied[v]
+          }
         }
       }
-    # If rhs is categorical  
-    } else if (any(sapply(options[["factors"]], grepl, x = parTblStd$rhs[i])) && parTblStd$op[i] == "~") {
-      # Divide only by implied SD of LHS variables because we don't standardize by SDs of categorical vars
-      estStd[i] <- est[i] / sdImplied[parTblStd$lhs[i]]
+    # If effect is defined by other estimates
+    } else {
+      # Get lhs and rhs labels for defined effects
+      if (lhsSplit[[i]][1] %in% c("tot", "totInd")) {
+        lhsSplit2 <- strsplit(lhsSplit[[i]][2], "__")[[1]]
+      } else {
+        lhsSplit2 <- strsplit(lhsSplit[[i]][1], "__")[[1]]
+      }
+      
+      # Divide by implied SD of lhs variables
+      estStd[i] <- estStd[i] / sdImplied[lhsSplit2[length(lhsSplit2)]]
+
+      # Don't standardize for factors
+      if (!any(sapply(options[["factors"]], grepl, x = lhsSplit2[1]))) {
+        # Multiply by implied SDs of rhs variables
+        estStd[i] <- estStd[i] * sdImplied[lhsSplit2[1]]
+      }
     }
   }
-  
-  # Defined terms need to be recomputed because they used the old interaction coefficient
-  estStd[parTblStd$op == ":="] <- fittedModel@Model@def.function(estStd)
 
   return(estStd)
 }
@@ -1742,12 +1733,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   .procBootstrapSamplesFootnote(medEffectsTable, procResults, options)
-
-  isStandardized <- grepl("__std$", pathCoefs$lhs)
   
-  medEffects <- pathCoefs[pathCoefs$op == ":=" & !isStandardized,]
-  medEffects["est.std"] <- pathCoefs[pathCoefs$op == ":=" & isStandardized, "est.std"]
-  
+  medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
@@ -1827,10 +1814,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   .procBootstrapSamplesFootnote(totEffectsTable, procResults, options)
 
-  isStandardized <- grepl("__std$", pathCoefs$lhs)
-
-  medEffects <- pathCoefs[pathCoefs$op == ":=" & !isStandardized,]
-  medEffects["est.std"] <- pathCoefs[pathCoefs$op == ":=" & isStandardized, "est.std"]
+  medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
