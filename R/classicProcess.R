@@ -1155,7 +1155,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L375
     # i.e., samples + 1 times
     progressbarTick()
-    return(lavaan::coef(lav_object, type = "user"))
+    return(lavaan::coef(lav_object))
   }
   startProgressbar(samples + 1)
   
