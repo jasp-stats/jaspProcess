@@ -475,9 +475,9 @@ Form
                         label: qsTr("Type")
                         name: "bootstrapCiType"
                         values: [
-                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
-                            { label: qsTr("Percentile"),                value: "percentile"         },
-                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
+							{ label: qsTr("Percentile"),                value: "percentile"         		},
+                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   	},
+                            { label: qsTr("Normal theory"),             value: "normalTheory"         		}
                         ]
                     }
                 }
