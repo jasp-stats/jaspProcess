@@ -2076,7 +2076,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # init table
   tabr2 <- createJaspTable(gettext("R-squared"))
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
-  for (i in seq_along(options[["processModels"]])) {
+  for (i in seq_along(modelNames)) {
     tabr2$addColumnInfo(name = paste0("rsq_", i), title = modelNames[i],
                         overtitle = "R\u00B2", type = "number")
   }
@@ -2086,21 +2086,31 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   jaspResults[["rSquaredTable"]] <- tabr2
   
-  
+  converged <- sapply(procResults, function(mod) mod@Fit@converged)
+
+  if (any(!converged)) {
+    tabr2$addFootnote(
+      message = gettextf("Model did not converge."),
+      symbol = "\u2020",
+      colNames = paste0("rsq_", which(!converged))
+    )
+  }
+
   # compute data and fill table
+  if (any(converged)) {
+    # retrieve r²
+    r2li <- lapply(procResults, lavaan::inspect, what = "r2")
+    
+    # generate df with variable names
+    r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
+    tabr2[["__var__"]] <- unique(unlist(lapply(r2li, names)))
   
-  # retrieve r²
-  r2li <- lapply(procResults, lavaan::inspect, what = "r2")
-  
-  # generate df with variable names
-  r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
-  tabr2[["__var__"]] <- unique(unlist(lapply(r2li, names)))
-  
-  for (i in 1:length(r2li)) {
-    # fill matching vars from model with df
-    r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
-    # add column to table
-    tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+    for (i in 1:length(r2li)) {
+      # fill matching vars from model with df
+      r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
+      # add column to table
+      tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+    }
   }
 }
 
