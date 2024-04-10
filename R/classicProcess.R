@@ -2607,7 +2607,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   for (i in 1:length(options[["processModels"]])) {
     modelName <- options[["processModels"]][[i]][["name"]]
-    if (is.null(syntaxContainer[[modelName]])) {
+    if (is.null(syntaxContainer[[modelName]]) && !is.null(modelsContainer[[modelName]][["syntax"]])) {
       modelSyntax <- createJaspHtml(modelsContainer[[modelName]][["syntax"]]$object, class = "jasp-code", title = modelName)
       modelSyntax$dependOn(
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
