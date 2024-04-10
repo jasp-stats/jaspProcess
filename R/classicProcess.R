@@ -1444,7 +1444,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(!converged)) {
     summaryTable$addFootnote(
-      message = gettextf("Model did not converge"),
+      message = gettextf("Model did not converge."),
       symbol = "\u2020",
       colNames = "Model",
       rowNames = modelNames[tableRowIsValid & !converged]
@@ -1455,23 +1455,26 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     summaryTable$addFootnote(message = gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."))
     return()
   }
-  aic <- sapply(procResults, AIC)
-  bic <- sapply(procResults, BIC)
-  df  <- sapply(procResults, lavaan::fitMeasures, fit.measures = "df")
 
-  summaryTable[["AIC"]]      <- aic
-  summaryTable[["BIC"]]      <- bic
-  summaryTable[["logLik"]]   <- sapply(procResults, lavaan::logLik)
-  summaryTable[["N"]]        <- sapply(procResults, lavaan::lavInspect, what = "nobs")
-  summaryTable[["Df"]]       <- df
+  summaryTable[["N"]] <- sapply(procResults, lavaan::lavInspect, what = "nobs")
 
-  if (options[["aicWeights"]]) {
-    summaryTable[["wAIC"]] <- .computeWeights(aic)
+  if (any(converged)) {
+    aic <- sapply(procResults[converged], AIC)
+    bic <- sapply(procResults[converged], BIC)
+    df  <- sapply(procResults[converged], lavaan::fitMeasures, fit.measures = "df")
+
+    summaryTable[["AIC"]][converged]      <- aic
+    summaryTable[["BIC"]][converged]      <- bic
+    summaryTable[["logLik"]][converged]   <- sapply(procResults[converged], lavaan::logLik)
+    summaryTable[["Df"]][converged]       <- df
+
+    if (options[["aicWeights"]]) {
+      summaryTable[["wAIC"]][converged] <- .computeWeights(aic)
+    }
+    if (options[["bicWeights"]]) {
+      summaryTable[["wBIC"]][converged] <- .computeWeights(bic)
+    }
   }
-  if (options[["bicWeights"]]) {
-    summaryTable[["wBIC"]] <- .computeWeights(bic)
-  }
-
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
     summaryTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators."))
   }
