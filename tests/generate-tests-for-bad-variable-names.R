@@ -1,11 +1,9 @@
-### Title:    Generate Unit Tests for Data with Potentially Problematic Variable Names
-### Author:   Kyle M. Lang (Adapted from ./generate-tests.R)
-### Created:  2024-03-22
-### Modified: 2024-03-23
+### Generate Unit Tests for Data with Potentially Problematic Variable Names
 
 ###-Setup--------------------------------------------------------------------------------------------------------------------###
 
-## Assume our working directory is originally set to the modules project directory:
+## Assume our working directory is originally set to the module's project directory
+## This is hacky BS, but it seems necessary if we want to use the data stored in ./tests/testthat/data/
 setwd("tests/testthat")
 
 ## Initialize the necessary subroutines:

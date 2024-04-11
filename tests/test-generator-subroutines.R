@@ -1,7 +1,4 @@
-### Title:    Subroutines for Generating Unit Tests
-### Author:   Kyle M. Lang (Functions extracted from ./generate-tests.R and adapted)
-### Created:  2024-03-22
-### Modified: 2024-03-23
+### Subroutines for Generating Unit Tests
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
