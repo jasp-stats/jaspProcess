@@ -163,7 +163,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   ## TODO: Models involving moderated moderation 19,20,69,71,73
 
-  graph <- .procProcessRelationshipsToGraph(processRelationships)
+  graph <- .procProcessRelationshipsToGraph(processRelationships, modelOptions[["inputType"]] == "inputVariables")
 
   if (modelOptions[["inputType"]] == "inputModelNumber")
     graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
@@ -171,14 +171,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procProcessRelationshipsToGraph <- function(processRelationships) {
+.procProcessRelationshipsToGraph <- function(processRelationships, inputVariables = TRUE) {
   graph <- igraph::make_empty_graph()
   
   for (path in processRelationships) {
-    dependent <- path[["processDependent"]]
-    independent <- path[["processIndependent"]]
-    type <- path[["processType"]]
-    processVariable <- path[["processVariable"]]
+    dependent       <- path[["processDependent"  ]]
+    independent     <- path[["processIndependent"]]
+    type            <- path[["processType"       ]]
+    processVariable <- path[["processVariable"   ]]
+
+    # Encode variable names if the model is defined through the "Variables" dialog
+    if (inputVariables) {
+      dependent       <- encodeColNames(dependent)
+      independent     <- encodeColNames(independent)
+      processVariable <- encodeColNames(processVariable)
+    }
 
     # Add vertices for independent and dependent var
     verticesToAdd <- c(independent, dependent)
@@ -1359,7 +1366,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
   # Create regList from hard-coded model
-  modelNumberGraph <- try(.procProcessRelationshipsToGraph(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]]))))
+  modelNumberGraph <- try(
+    .procProcessRelationshipsToGraph(
+      .procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]])),
+      inputVariables = FALSE
+    )
+  )
 
   if (!igraph::is.igraph(modelNumberGraph)) return(FALSE)
 
