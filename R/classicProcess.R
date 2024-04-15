@@ -409,7 +409,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     jaspCodedM <- encodeColNames(mediators)
 
     ## Find the mediators in 'vars':
-    meds <- grep(encoding$M, vars, value = TRUE)
+    meds <- grep(paste0("^", encoding$M, "\\d?$"), vars, value = TRUE)
 
     ### Which mediator index?
     medIdx <- stringr::str_extract(meds, "[0-9]")
