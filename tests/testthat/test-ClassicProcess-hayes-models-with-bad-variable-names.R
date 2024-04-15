@@ -1406,6 +1406,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 			 7.07106956334225))
 
 
+
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(16, 16, -0.179638968435534, 0.198137676035385, 0.0092493537999258,
@@ -1452,6 +1453,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 			 84, 84, -0.0477631655344829, 0.0498882032327905, 0.0010625188491538,
 			 "W", "jasp", "M", "<unicode>", "<unicode>", 0.965979178487907,
 			 0.0249115212160874, 0.0426517048050703))
+
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
