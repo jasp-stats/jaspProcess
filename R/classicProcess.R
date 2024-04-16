@@ -428,7 +428,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Apply the JASP encoding to Y if 'vars' still contains the dummy version:
   if(encoding$Y %in% vars)
-    vars[vars %in% encoding$Y] <- encodeColNames(globalDependent)
+    vars[vars %in% encoding$Y] <- globalDependent
 
   return(vars)
 }
