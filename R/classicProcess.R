@@ -163,7 +163,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   )
   ## TODO: Models involving moderated moderation 19,20,69,71,73
 
-  graph <- .procProcessRelationshipsToGraph(processRelationships)
+  graph <- .procProcessRelationshipsToGraph(processRelationships, modelOptions[["inputType"]] == "inputVariables")
 
   if (modelOptions[["inputType"]] == "inputModelNumber")
     graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
@@ -171,14 +171,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procProcessRelationshipsToGraph <- function(processRelationships) {
+.procProcessRelationshipsToGraph <- function(processRelationships, inputVariables = TRUE) {
   graph <- igraph::make_empty_graph()
   
   for (path in processRelationships) {
-    dependent <- encodeColNames(path[["processDependent"]])
-    independent <- encodeColNames(path[["processIndependent"]])
-    type <- encodeColNames(path[["processType"]])
-    processVariable <- encodeColNames(path[["processVariable"]])
+    dependent       <- path[["processDependent"  ]]
+    independent     <- path[["processIndependent"]]
+    type            <- path[["processType"       ]]
+    processVariable <- path[["processVariable"   ]]
+
+    # Encode variable names if the model is defined through the "Variables" dialog
+    if (inputVariables) {
+      dependent       <- encodeColNames(dependent)
+      independent     <- encodeColNames(independent)
+      processVariable <- encodeColNames(processVariable)
+    }
 
     # Add vertices for independent and dependent var
     verticesToAdd <- c(independent, dependent)
@@ -303,7 +310,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Is edge moderated
   igraph::E(graph)$isMod <- FALSE
 
-  # Which are moderation variables for each edge; NULL if none
+  # Which are moderation variables for each edge; NA if none
   igraph::E(graph)$modVars <- NA
 
   for (i in 1:length(igraph::E(graph))) {
@@ -375,56 +382,70 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get encoding
   encoding <- .procVarEncoding()
 
-  independent  <- modelOptions[["modelNumberIndependent"]]
-  mediators    <- modelOptions[["modelNumberMediators"]]
-  modW         <- modelOptions[["modelNumberModeratorW"]]
-  modZ         <- modelOptions[["modelNumberModeratorZ"]]
+  independent <-        modelOptions[["modelNumberIndependent"]]
+  mediators   <- unlist(modelOptions[["modelNumberMediators"  ]])
+  modW        <-        modelOptions[["modelNumberModeratorW" ]]
+  modZ        <-        modelOptions[["modelNumberModeratorZ" ]]
 
-  # Replace encoded X, W, Z with user variables
-  if (independent != "")
-    vars <- gsub(encoding[["X"]], independent, vars)
-  if (modW != "")
-    vars <- gsub(encoding[["W"]], modW, vars)
-  if (modZ != "")
-    vars <- gsub(encoding[["Z"]], modZ, vars)
+  # Apply the JASP coding to X, W, Z, and M if the user has specified the variables and 'vars' still contains the dummy version
+  if (independent != "" && encoding$X %in% vars) {
+    # Apply JASP encoding:
+    jaspCodedX <- encodeColNames(independent)
+    # Sub the JASP-coded name into 'vars':
+    vars       <- gsub(encoding$X, jaspCodedX, vars)
+  }
 
-  # Is var a mediator?
-  isMed <- grepl(encoding[["M"]], vars)
-  # Which mediator index?
-  medIdx <- stringr::str_extract(vars[isMed], "[0-9]")
-  medIdx <- as.integer(medIdx[!is.na(medIdx)])
-  
-  if (length(medIdx) > 0 && length(mediators) > 0) {
-    for (i in 1:length(medIdx)) {
-      if (length(mediators) >= medIdx[i]) {
-        vars <- gsub(vars[isMed][i], mediators[medIdx[i]], vars)
+  if (modW != "" && encoding$W %in% vars) {
+    jaspCodedW <- encodeColNames(modW)
+    vars       <- gsub(encoding$W, jaspCodedW, vars)
+  }
+
+  if (modZ != "" && encoding$Z %in% vars) {
+    jaspCodedZ <- encodeColNames(modZ)
+    vars       <- gsub(encoding$Z, jaspCodedZ, vars)
+  }
+
+  if (length(mediators) > 0 && any(grepl(encoding$M, vars))) {
+    jaspCodedM <- encodeColNames(mediators)
+
+    ## Find the mediators in 'vars':
+    meds <- grep(paste0("^", encoding$M, "\\d?$"), vars, value = TRUE)
+
+    ### Which mediator index?
+    medIdx <- stringr::str_extract(meds, "[0-9]")
+    medIdx <- as.integer(medIdx[!is.na(medIdx)])
+
+    if (length(medIdx) > 0) {
+      for (i in seq_along(medIdx)) {
+        if (length(mediators) >= medIdx[i])
+          vars <- gsub(meds[i], jaspCodedM[medIdx[i]], vars)
       }
+    } else { # If mediator has no index still replace
+      for (i in seq_along(meds))
+        vars <- gsub(meds[i], jaspCodedM[i], vars)
     }
   }
 
-  # If mediator has no index still replace
-  if ((length(medIdx) == 0) && sum(isMed) > 0) {
-    for (i in 1:length(vars[isMed])) {
-      if (length(mediators) >= i) {
-        vars <- gsub(vars[isMed][i], mediators[i], vars)
-      }
-    }
-  }
-  
-  # Replace encoded Y with user variable
-  vars <- gsub(encoding[["Y"]], globalDependent, vars)
+  # Apply the JASP encoding to Y if 'vars' still contains the dummy version:
+  if(encoding$Y %in% vars)
+    vars[vars %in% encoding$Y] <- globalDependent
 
-  return(encodeColNames(vars))
+  return(vars)
 }
 
 .procModelGraphInputModelNumber <- function(graph, modelOptions, globalDependent) {
   # Replace dummy vars in graph attributes
-  igraph::V(graph)$name <- .procReplaceDummyVars(igraph::V(graph)$name, modelOptions = modelOptions, globalDependent = globalDependent)
+  igraph::V(graph)$name   <- .procReplaceDummyVars(igraph::V(graph)$name,   modelOptions = modelOptions, globalDependent = globalDependent)
   igraph::E(graph)$source <- .procReplaceDummyVars(igraph::E(graph)$source, modelOptions = modelOptions, globalDependent = globalDependent)
   igraph::E(graph)$target <- .procReplaceDummyVars(igraph::E(graph)$target, modelOptions = modelOptions, globalDependent = globalDependent)
   
   if (!is.null(igraph::E(graph)$modVars))
-    igraph::E(graph)$modVars <- sapply(igraph::E(graph)$modVars, function(x) if (!is.null(x)) .procReplaceDummyVars(x, modelOptions = modelOptions, globalDependent = globalDependent)) # Returns a list!
+    igraph::E(graph)$modVars <- sapply(igraph::E(graph)$modVars,
+                                       function(x) {
+                                         if (all(!is.na(x)))
+                                           .procReplaceDummyVars(x, modelOptions = modelOptions, globalDependent = globalDependent)
+                                       }
+                                ) # Returns a list!
   
   igraph::V(graph)$intVars <- sapply(igraph::V(graph)$intVars, .procReplaceDummyVars, modelOptions = modelOptions, globalDependent = globalDependent)
 
@@ -576,10 +597,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::E(graph)$parSymbol <- ifelse(
     # If source is mediator and target is global dependent -> b
     igraph::V(graph)[igraph::E(graph)$source]$isMed & igraph::V(graph)[igraph::E(graph)$target]$isDep, "b",
-    # If source is mediator and target is not global dependent (i.e., other mediator) -> d
-    ifelse(igraph::V(graph)[igraph::E(graph)$source]$isMed & !igraph::V(graph)[igraph::E(graph)$target]$isDep, "d",
-      # If source is exogenous and target is mediator -> a; else -> c
-      ifelse(igraph::V(graph)[igraph::E(graph)$source]$isExo & igraph::V(graph)[igraph::E(graph)$target]$isMed, "a", "c"))
+      # Else If source is mediator and target is not global dependent (i.e., other mediator) -> d
+      ifelse(igraph::V(graph)[igraph::E(graph)$source]$isMed & !igraph::V(graph)[igraph::E(graph)$target]$isDep, "d",
+        # Else If source is exogenous and target is mediator -> a
+        ifelse(igraph::V(graph)[igraph::E(graph)$source]$isExo & igraph::V(graph)[igraph::E(graph)$target]$isMed, "a",
+          # Else -> c
+          "c")
+      )
   )
   # Get occurence of each symbol
   parSymbolTable <- table(igraph::E(graph)$parSymbol)
@@ -1342,7 +1366,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procIsModelNumberGraph <- function(modelNumber, graph, modelOptions, globalDependent) {
   # Create regList from hard-coded model
-  modelNumberGraph <- try(.procProcessRelationshipsToGraph(.procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]]))))
+  modelNumberGraph <- try(
+    .procProcessRelationshipsToGraph(
+      .procGetHardCodedModel(modelNumber, length(modelOptions[["modelNumberMediators"]])),
+      inputVariables = FALSE
+    )
+  )
 
   if (!igraph::is.igraph(modelNumberGraph)) return(FALSE)
 
