@@ -34,7 +34,7 @@ Form
         {
             name:			"factors"
             title:			qsTr("Categorical Predictors")
-            allowedColumns:	["ordinal", "nominal", "nominalText"]
+            allowedColumns:	["ordinal", "nominal"]
         }
     }
 
