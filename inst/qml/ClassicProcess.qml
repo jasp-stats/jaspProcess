@@ -34,7 +34,7 @@ Form
         {
             name:			"factors"
             title:			qsTr("Categorical Predictors")
-            allowedColumns:	["ordinal", "nominal"]
+            allowedColumns:	["ordinal", "nominal", "nominalText"]
         }
     }
 
@@ -43,266 +43,240 @@ Form
         title: qsTr("Models")
         columns: 1
 
+
         TabView
         {
-            id:				models
-            name:			"processModels"
+			id:				models
+			name:			"processModels"
             maximumItems:	10
             newItemName:	qsTr("Model 1")
             optionKey:		"name"
-			depends:		["dependent", "covariates", "factors"]
 
             content: Group
-            {
-                Group {
-                    anchors.left: 		parent.left
-                    anchors.margins: 	jaspTheme.contentMargin
-                    
-                    RadioButtonGroup
-                    {
-                        name: 					"inputType"
-                        title: 					qsTr("Input type for %1").arg(rowValue)
-                        radioButtonsOnSameRow: 	true
-                        columns: 				2
+			{
+				Group
+				{
+					Layout.leftMargin: jaspTheme.contentMargin
+					Layout.topMargin: jaspTheme.contentMargin
+					RadioButtonGroup
+					{
+						name: 					"inputType"
+						title: 					qsTr("Input type for %1").arg(rowValue)
+						radioButtonsOnSameRow: 	true
+						columns: 				2
 
-                        RadioButton{
-                            id: 		variables
-                            value: 		"inputVariables"
-                            label: 		qsTr("Variables")
-                            checked: 	true
-                        }
-                        RadioButton{
-                            id: 	modelNumber
-                            value: 	"inputModelNumber"
-                            label: 	qsTr("Model number")
-                        }
-                    }
-                    Group
-                    {
-                        title: ""
-                        Rectangle
-                        {
-                            id: 			separator
-                            border.width: 	1
-                            height: 		2
-                            width: 			models.width - 2 * jaspTheme.contentMargin
-                            border.color: 	jaspTheme.gray
-                        }
-                    }
-
-                    Group
-                    {
-                        id: 		modelsGroup
-                        visible: 	variables.checked
-
-                        property int colWidth: (models.width - 3 * 40 * preferencesModel.uiScale) / 4
-						property int labelWidth: modelsGroup.colWidth + jaspTheme.contentMargin
-
-                        RowLayout
-                        {
-                            anchors.left: 		parent.left
-                            anchors.margins: 	jaspTheme.contentMargin
-                            Label
-                            {
-                                text: qsTr("From")
-                                Layout.preferredWidth: modelsGroup.labelWidth
-                            }
-                            Label
-                            {
-								
-                                text: qsTr("To")
-                                Layout.preferredWidth: modelsGroup.labelWidth
-                            }
-                            Label
-                            {
-                                text: qsTr("Process Type")
-                                Layout.preferredWidth: modelsGroup.labelWidth
-                            }
-                            Label
-                            {
-                                text: qsTr("Process Variable")
-                                Layout.preferredWidth: modelsGroup.labelWidth
-                            }
-                        }
-
-                        ComponentsList
-                        {
-                            id: 					relations
-                            name: 					"processRelationships"
-                            preferredWidth: 		models.width - 2 * jaspTheme.contentMargin
-                            itemRectangle.color: 	jaspTheme.controlBackgroundColor
-                            minimumItems:           1
-                            rowComponent: 			RowLayout
-                            {
-                                id: 		rowComp
-                                enabled: 	rowIndex === relations.count - 1
-
-                                Layout.columnSpan: 4
-                                DropDown
-                                {
-                                    id: 				    procIndep
-                                    name: 				    'processIndependent'
-                                    source: 			    ['covariates', 'factors']
-                                    controlMinWidth: 	    modelsGroup.colWidth
-                                    addEmptyValue: 		    true
-                                    onCurrentValueChanged:
-                                    {
-                                        if (currentIndex > 0 && (procVar.currentValue == currentValue || procDep.currentValue == currentValue))
-                                            addControlError("Same value!")
-                                        else
-                                        {
-                                            clearControlError()
-                                            procVar.clearControlError()
-											procDep.clearControlError()
-                                        }
-                                    }
-                                }
-                                DropDown
-                                {
-                                    id: 				procDep
-                                    name: 				'processDependent'
-                                    source: 			["dependent", "processVariable"] //, {name: "processRelationships.processVariable", use: "discardIndex=" + (relations.count - 1)}]
-                                    controlMinWidth: 	modelsGroup.colWidth
-                                    addEmptyValue: 		true
-									onCurrentValueChanged:
-                                    {
-                                        if (currentIndex > 0 && (procVar.currentValue == currentValue || procIndep.currentValue == currentValue))
-                                            addControlError("Same value!")
-                                        else
-                                        {
-                                            clearControlError()
-                                            procVar.clearControlError()
-											procIndep.clearControlError()
-                                        }
-                                    }
-                                }
-                                DropDown
-                                {
-                                    id: 	procType
-                                    name: 	'processType'
-                                    values:
-                                    [
-                                        { label: qsTr("Mediator"), 		value: 'mediators'		},
-                                        { label: qsTr("Moderator"), 	value: 'moderators'		},
-                                        { label: qsTr("Confounder"), 	value: 'confounders'	},
-                                        { label: qsTr("Direct"), 		value: 'directs'		}
-                                    ]
-                                    controlMinWidth: 	modelsGroup.colWidth
-                                    addEmptyValue: 		true
-                                    onCurrentValueChanged:
-                                    {
-                                        if (currentValue == "directs")
-                                        {
-                                            procVar.currentValue = ""
-                                        }
-                                    }
-                                }
-                                DropDown
-                                {
-                                    id: 				    procVar
-                                    name: 				    'processVariable'
-                                    enabled: 			    procType.currentValue != "directs"
-                                    source: 			    procType.currentValue == 'mediators' ? ['covariates'] : ['covariates', 'factors']
-                                    controlMinWidth: 	    modelsGroup.colWidth
-                                    addEmptyValue: 		    true
-                                    onCurrentValueChanged:
-                                    {
-                                        if (currentIndex > 0 && (procIndep.currentValue == currentValue || procDep.currentValue == currentValue))
-                                            addControlError("Same value!")
-                                        else
-                                        {
-                                            clearControlError()
-                                            procIndep.clearControlError()
-											procDep.clearControlError()
-                                        }
-                                    }
-                                }
-                                function enableAddItemManually()
-                                {
-                                    var nextItem = relations.count == 0 || (procDep.currentValue != "" &&
-                                        procIndep.currentValue != "" && procType.currentValue != "" &&
-                                        ((procType.currentValue != "directs" && procVar.currentValue != "") ||
-                                        (procType.currentValue == "directs" && procVar.currentValue == ""))) ;
-
-                                    return nextItem
-                                }
-                                onParentChanged:
-                                {
-                                    if (parent)
-                                    {
-                                        parent.isDeletable = 		Qt.binding(function() { return rowComp.enabled })
-                                        relations.addItemManually = Qt.binding(enableAddItemManually)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Group
-                    {
-                        visible: modelNumber.checked
-
-                        IntegerField
-                        {
-                            name: 			"modelNumber"
-                            label: 			qsTr("Hayes model number")
-                            defaultValue: 	1
-                            min: 			1
-                            max: 			92
-                        }
-                        VariablesForm
-                        {
-                            preferredWidth: models.width - 2 * jaspTheme.contentMargin
-                            AvailableVariablesList
-                            {
-                                name: 		"allAssignedVars"
-                                source: 	["covariates", "factors"]
-
-                            }
-                            AssignedVariablesList
-                            {
-                                name: 				"modelNumberIndependent"
-                                title: 				qsTr("Independent X")
-                                singleVariable: 	true
-                            }
-                            AssignedVariablesList
-                            {
-                                name: 				"modelNumberMediators"
-                                title: 				qsTr("Mediators M")
-                                allowedColumns: 	["scale", "ordinal"]
-                            }
-							// TODO
-                            // AssignedVariablesList
-                            // {
-                            //     name: 				"modelNumberCovariates"
-                            //     title: 				qsTr("Covariates")
-                            //     allowedColumns: 	["scale", "ordinal"]
-                            // }
-                            AssignedVariablesList
-                            {
-								id: modelNumberModeratorW
-                                name: 				"modelNumberModeratorW"
-                                title: 				qsTr("Moderator W")
-                                singleVariable: 	true
-                            }
-                            AssignedVariablesList
-                            {
-								id: modelNumberModeratorZ
-                                name: 				"modelNumberModeratorZ"
-                                title: 				qsTr("Moderator Z")
-                                singleVariable: 	true
-                            }
-                        }
-                    }
+						RadioButton{
+							id: 		variables
+							value: 		"inputVariables"
+							label: 		qsTr("Variables")
+							checked: 	true
+						}
+						RadioButton{
+							id: 	modelNumber
+							value: 	"inputModelNumber"
+							label: 	qsTr("Model number")
+						}
+					}
+					Group
+					{
+						title: ""
+						Rectangle
+						{
+							id: 			separator
+							border.width: 	1
+							height: 		2
+							width: 			models.width - 2 * jaspTheme.contentMargin
+							border.color: 	jaspTheme.gray
+						}
+					}
 
 					Group
 					{
-                        id: opts
+						id: 		modelsGroup
+						visible: 	variables.checked
+
+						property int colWidth: (models.width - 3 * 40 * preferencesModel.uiScale) / 4
+						property int labelWidth: modelsGroup.colWidth + jaspTheme.contentMargin
+
+						ComponentsList
+						{
+							id: 					relations
+							name: 					"processRelationships"
+							preferredWidth: 		models.width - 2 * jaspTheme.contentMargin
+							//itemRectangle.color: 	jaspTheme.controlBackgroundColor
+							minimumItems:           1
+							headerLabels:			[qsTr("From"), qsTr("To"), qsTr("Process Type"), qsTr("Process Variable")]
+							rowComponent: 			RowLayout
+							{
+								id: 		rowComp
+								enabled: 	rowIndex === relations.count - 1
+
+								Layout.columnSpan: 4
+								DropDown
+								{
+									id: 				    procIndep
+									name: 				    'processIndependent'
+									source: 			    ['covariates', 'factors']
+									controlMinWidth: 	    modelsGroup.colWidth
+									addEmptyValue: 		    true
+									onCurrentValueChanged:
+									{
+										if (currentIndex > 0 && (procVar.currentValue == currentValue || procDep.currentValue == currentValue))
+											addControlError("Same value!")
+										else
+										{
+											clearControlError()
+											procVar.clearControlError()
+											procDep.clearControlError()
+										}
+									}
+								}
+								DropDown
+								{
+									id: 				procDep
+									name: 				'processDependent'
+									source: 			["dependent", "processVariable"] //, {name: "processRelationships.processVariable", use: "discardIndex=" + (relations.count - 1)}]
+									controlMinWidth: 	modelsGroup.colWidth
+									addEmptyValue: 		true
+									onCurrentValueChanged:
+									{
+										if (currentIndex > 0 && (procVar.currentValue == currentValue || procIndep.currentValue == currentValue))
+											addControlError("Same value!")
+										else
+										{
+											clearControlError()
+											procVar.clearControlError()
+											procIndep.clearControlError()
+										}
+									}
+								}
+								DropDown
+								{
+									id: 	procType
+									name: 	'processType'
+									values:
+									[
+										{ label: qsTr("Mediator"), 		value: 'mediators'		},
+										{ label: qsTr("Moderator"), 	value: 'moderators'		},
+										{ label: qsTr("Confounder"), 	value: 'confounders'	},
+										{ label: qsTr("Direct"), 		value: 'directs'		}
+									]
+									controlMinWidth: 	modelsGroup.colWidth
+									addEmptyValue: 		true
+									onCurrentValueChanged:
+									{
+										if (currentValue == "directs")
+										{
+											procVar.currentValue = ""
+										}
+									}
+								}
+								DropDown
+								{
+									id: 				    procVar
+									name: 				    'processVariable'
+									enabled: 			    procType.currentValue != "directs"
+									source: 			    procType.currentValue == 'mediators' ? ['covariates'] : ['covariates', 'factors']
+									controlMinWidth: 	    modelsGroup.colWidth
+									addEmptyValue: 		    true
+									onCurrentValueChanged:
+									{
+										if (currentIndex > 0 && (procIndep.currentValue == currentValue || procDep.currentValue == currentValue))
+											addControlError("Same value!")
+										else
+										{
+											clearControlError()
+											procIndep.clearControlError()
+											procDep.clearControlError()
+										}
+									}
+								}
+								function enableAddItemManually()
+								{
+									var nextItem = relations.count == 0 || (procDep.currentValue != "" &&
+										procIndep.currentValue != "" && procType.currentValue != "" &&
+										((procType.currentValue != "directs" && procVar.currentValue != "") ||
+										(procType.currentValue == "directs" && procVar.currentValue == ""))) ;
+
+									return nextItem
+								}
+								onParentChanged:
+								{
+									if (parent)
+									{
+										parent.isDeletable = 		Qt.binding(function() { return rowComp.enabled })
+										relations.addItemManually = Qt.binding(enableAddItemManually)
+									}
+								}
+							}
+						}
+					}
+					Group
+					{
+						visible: modelNumber.checked
+
+						IntegerField
+						{
+							name: 			"modelNumber"
+							label: 			qsTr("Hayes model number")
+							defaultValue: 	1
+							min: 			1
+							max: 			92
+						}
+						VariablesForm
+						{
+							preferredWidth: models.width - 2 * jaspTheme.contentMargin
+							AvailableVariablesList
+							{
+								name: 		"allAssignedVars"
+								source: 	["covariates", "factors"]
+
+							}
+							AssignedVariablesList
+							{
+								name: 				"modelNumberIndependent"
+								title: 				qsTr("Independent X")
+								singleVariable: 	true
+							}
+							AssignedVariablesList
+							{
+								name: 				"modelNumberMediators"
+								title: 				qsTr("Mediators M")
+								allowedColumns: 	["scale", "ordinal"]
+							}
+							// TODO
+							// AssignedVariablesList
+							// {
+							//     name: 				"modelNumberCovariates"
+							//     title: 				qsTr("Covariates")
+							//     allowedColumns: 	["scale", "ordinal"]
+							// }
+							AssignedVariablesList
+							{
+								id: modelNumberModeratorW
+								name: 				"modelNumberModeratorW"
+								title: 				qsTr("Moderator W")
+								singleVariable: 	true
+							}
+							AssignedVariablesList
+							{
+								id: modelNumberModeratorZ
+								name: 				"modelNumberModeratorZ"
+								title: 				qsTr("Moderator Z")
+								singleVariable: 	true
+							}
+						}
+					}
+
+					Group
+					{
+						id: opts
 						title: 		qsTr("Options for %1").arg(rowValue)
 						columns: 	3
-                        
+
 						Group
 						{
-                            title: qsTr("Residual Covariances")
+							title: qsTr("Residual Covariances")
 
 							CheckBox
 							{
@@ -320,20 +294,20 @@ Form
 
 						Group
 						{
-                            title: qsTr("Parameter Estimates")
+							title: qsTr("Parameter Estimates")
 							// columns: 	1
 							CheckBox
 							{
 								name: "pathCoefficients"
 								label: qsTr("Paths")
 								checked: pathCoefficientsForAllModels.checked
-								
+
 								CheckBox
-  							    {
-  								    name: "intercepts"
-  								    label: qsTr("Intercepts")
-  								    checked: interceptsForAllModels.checked
-  							    }
+								{
+									name: "intercepts"
+									label: qsTr("Intercepts")
+									checked: interceptsForAllModels.checked
+								}
 							}
 							CheckBox
 							{
@@ -357,7 +331,7 @@ Form
 
 						Group
 						{
-                            title: qsTr("Tests")
+							title: qsTr("Tests")
 							columns: 	1
 							CheckBox
 							{
@@ -374,8 +348,8 @@ Form
 									id: localTestType
 									name: "localTestType"
 									label: ""
-									values: 
-									[ 
+									values:
+									[
 										{ label: qsTr("Linear"), 			value: "cis" 				},
 										{ label: qsTr("Loess"), 			value: "cis.loess" 			},
 										{ label: qsTr("Chi-square"), 		value: "cis.chisq" 			},
@@ -386,7 +360,7 @@ Form
 									]
 									currentValue: localTestTypeForAllModels.currentValue
 								}
-								CheckBox 
+								CheckBox
 								{
 									label: qsTr("Bootstrap")
 									name: "localTestBootstrap"
@@ -408,7 +382,7 @@ Form
 
 						Group
 						{
-                            title: qsTr("Path Plots")
+							title: qsTr("Path Plots")
 							columns: 	1
 							CheckBox
 							{
@@ -424,8 +398,8 @@ Form
 							}
 						}
 					}
-                }
-            }
+				}
+			}
         }
     }
 
@@ -480,9 +454,9 @@ Form
                         label: qsTr("Type")
                         name: "bootstrapCiType"
                         values: [
-							{ label: qsTr("Percentile"),                value: "percentile"         		},
-                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   	},
-                            { label: qsTr("Normal theory"),             value: "normalTheory"         		}
+							{ label: qsTr("Percentile"),                value: "percentile"         },
+							{ label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
+                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
                         ]
                     }
                 }
