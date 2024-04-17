@@ -18,7 +18,7 @@ test_that("Test that single moderation effect matches validated results", {
   options$pathPlotsLegend <- TRUE
   options$pathPlotsColorPalette <- "colorblind"
   options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = FALSE,
-      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = FALSE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = FALSE, dependentCovariances = FALSE,
       modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
       modelNumberMediators = list(), modelNumberModeratorW = "",
       modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
@@ -75,7 +75,7 @@ test_that("Test that moderated mediation effect matches validated results", {
   options$pathPlotsLegend <- TRUE
   options$pathPlotsColorPalette <- "colorblind"
   options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = FALSE,
-      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = FALSE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = FALSE, dependentCovariances = FALSE,
       modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
       modelNumberMediators = list(), modelNumberModeratorW = "",
       modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,

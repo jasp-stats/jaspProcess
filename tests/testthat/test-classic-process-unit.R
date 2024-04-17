@@ -446,18 +446,17 @@ test_that("Test that .procGraphAddParNamesSingleModel works", {
 test_that("Test that .procCombVars works", {
   graph <- igraph::make_empty_graph()
 
-  vars <- c("contGamma", "contNormal")
+  vars <- c("contGamma", "contNormal", "contcor1")
 
-  graph <- jaspProcess:::.procCombVars(graph, vars)
+  combVars <- jaspProcess:::.procCombVars(vars)
 
-  expect_equal(igraph::V(graph)$name, vars)
-  expect_equal(igraph::E(graph)$source, vars[c(1, 1, 2)])
-  expect_equal(igraph::E(graph)$target, vars[c(2, 1, 2)])
+  expect_equal(unique(combVars), vars)
+  expect_true(length(combVars) == 6)
 })
 
 test_that("Test that .procResCovGraphSingleModel works", {
   graph <- createDummyGraphModelModeratedMediation()
-  opts <- list(independentCovariances = TRUE, mediatorCovariances = TRUE)
+  opts <- list(independentCovariances = TRUE, mediatorCovariances = TRUE, dependentCovariances = TRUE)
 
   resCovGraph <- jaspProcess:::.procResCovGraphSingleModel(graph, opts)
 

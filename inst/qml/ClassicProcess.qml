@@ -290,6 +290,12 @@ Form
 								label: qsTr("Mediators")
 								checked: mediatorCovariancesForAllModels.checked
 							}
+							CheckBox
+							{
+								name: "dependentCovariances"
+								label: qsTr("Dependent variables")
+								checked: dependentCovariancesForAllModels.checked
+							}
 						}
 
 						Group
@@ -559,12 +565,19 @@ Form
                     id:			independentCovariancesForAllModels
                     name: 		"independentCovariancesForAllModels"
                     label: 		qsTr("Independent variables")
+					checked:	true
                 }
 				CheckBox
                 {
                     id:			mediatorCovariancesForAllModels
                     name: 		"mediatorCovariancesForAllModels"
                     label: 		qsTr("Mediators")
+                }
+				CheckBox
+                {
+                    id:			dependentCovariancesForAllModels
+                    name: 		"dependentCovariancesForAllModels"
+                    label: 		qsTr("Dependent variables")
                 }
 			}
 
