@@ -41,6 +41,7 @@
       "inputType" = "inputVariables",
       "mediationEffects" = TRUE,
       "mediatorCovariances" = TRUE,
+      "dependentCovariances" = TRUE,
       "modelNumber" = 1,
       "modelNumberCovariates" = list(),
       "modelNumberIndependent" = "",
@@ -104,7 +105,7 @@
   out <- capture.output(jaspTools::runAnalysis("ClassicProcess", dataset = parms$data, options = opts, makeTests = TRUE)) |>
     paste(collapse = "\n") |>
     try(silent = TRUE)
-    
+
   if (!inherits(out, "try-error")) {
     type <- parms$type
     out <- out |>
@@ -113,13 +114,13 @@
       gsub("statistical-path-plot", paste("statistical-path-plot", type, k, sep = "-"), x = _)
 
     out <- paste0("test_that(\"Test that model number ", k, " - ", type, " ", testObjective, "\", {\n", out, "\n})")
-  } 
+  }
   out
 }
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
-makeTestString <- function(k, parms, ...) { 
+makeTestString <- function(k, parms, ...) {
   opts <- .getOptionsOneModel(k, parms)
   opts$processModels[[1]]$processRelationships <- .getProcessRelationships(k, parms)
   .captureTestCode(k, opts, parms, ...)
