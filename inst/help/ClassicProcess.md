@@ -60,6 +60,9 @@ This section allows users to specify multiple process models through one of two 
 		- Moderator Z: Second moderator variable.
 
 - Residual Covariances: Adds covariances between the residuals of variables indicating that they have a common cause not specified in the model. Also adds variances for independent (exogenous) variables. This adds degrees of freedom corresponding to the number of covariances and variances added.
+	- Independent variables: Adds residual (co-) variances for independent (exogenous) variables. If the model includes an interaction term between a moderator and a mediator (e.g., second stage moderated mediation), residual covariances between the (error term of the) mediator, the moderator and the interaction term are added (see Kwan & Chan, 2018).
+	- Mediators: Adds residual (co-) variances for mediator variables.
+	- Dependent variables: Adds residual (co-) variances for dependent variables.
 - Parameter Estimates: Determines which parameter estimates are shown in the output. Requesting intercepts adds the mean structure to the model, which adds parameters and will therefore affect some fit indices (such as the information criteria AIC and BIC).
 - Path plots: Displays path plots in the output.
 	- Conceptual: Shows a conceptual path plot. These plots contain no parameter labels or estimates and simplify moderation effects in the model structure by omitting direct effects and interactions. Instead moderators point to the path they are moderating. These plots can be shown even when the model is not complete yet (when `Input type` is `Model number`) and are easier to understand than the statistical path plots.
@@ -129,6 +132,8 @@ Hoyle, R. H. (2012). *Handbook of structural equation modeling*. Guilford Press.
 Kenny, D. A. (1979). *Correlation and Causality*. Wiley.
 
 Kline, R. B. (2012). Assumptions in structural equation modeling. In *Handbook of structural equation modeling* (pp. 111–125). Guilford Press.
+
+Kwan, J. L. Y., & Chan, W. (2018). Variable system: An alternative approach for the analysis of mediated moderation. *Psychological Methods, 23*(2), 262–277. https://doi.org/10.1037/met0000160
 
 Rosseel, Y. (2012). lavaan: An R package for structural equation modeling. *Journal of Statistical Software, 48*(2). https://doi.org/10.18637/jss.v048.i02
 

@@ -40,6 +40,7 @@ getOptionsOneModel <- function() {
       "inputType" = "inputVariables",
       "mediationEffects" = TRUE,
       "mediatorCovariances" = TRUE,
+      "dependentCovariances" = TRUE,
       "modelNumber" = 1,
       "modelNumberCovariates" = list(),
       "modelNumberIndependent" = "",

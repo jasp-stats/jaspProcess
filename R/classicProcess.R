@@ -641,6 +641,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       type = "varCovData",
       varCovData.target = options[["covariates"]],
       varCovData.corFun = stats::cov,
+      varCovData.corArgs = list(use = "complete.obs"),
       exitAnalysisIfErrors = TRUE
     )
   }
@@ -752,23 +753,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procCombVars <- function(graph, vars) {
+.procCombVars <- function(vars) {
+  if (length(vars) > 1) return(as.vector(combn(vars, 2)))
+  return(c(vars, vars))
+}
+
+.procResCovGraphAddEdges <- function(graph, edgesToAdd) {
+  vars <- unique(edgesToAdd)
   varsNotInGraph <- vars[!vars %in% igraph::V(graph)$name]
   graph <- igraph::add_vertices(graph, length(varsNotInGraph), name = varsNotInGraph)
-  if (length(vars) > 1) {
-    edgesToAdd <- c(combn(vars, 2), rep(vars, each = 2))
-    graph <- igraph::add_edges(graph,
-      edges = edgesToAdd,
-      source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
-      target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
-    )
-  } else {
-    graph <- igraph::add_edges(graph,
-      edges = c(vars, vars),
-      source = vars,
-      target = vars
-    )
-  }
+  graph <- igraph::add_edges(graph,
+    edges = edgesToAdd,
+    source = edgesToAdd[seq(1, length(edgesToAdd), 2)],
+    target = edgesToAdd[seq(2, length(edgesToAdd), 2)]
+  )
   return(graph)
 }
 
@@ -777,24 +775,57 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   resCovGraph <- igraph::make_empty_graph(directed = FALSE)
 
   # Get all exogenous vars that are not interaction terms
-  exoVars <- igraph::V(graph)[isExo & !isInt]$name
+  exoVars <- igraph::V(graph)[isExo]$name
 
   if (modelOptions[["independentCovariances"]]) {
     # Add vertices and edges for all combinations
-    resCovGraph <- .procCombVars(resCovGraph, exoVars)
+    resCovGraph <- .procResCovGraphAddEdges(resCovGraph, c(rbind(exoVars, exoVars), .procCombVars(exoVars)))
+    
+    # Add error covariances between mediators and interactions with mediators
+    # Create edge list between mediator and interacting variables (unique moderators + interaction variable names)
+    if (any(igraph::V(graph)$isMed)) {
+      medErrorVars <- Reduce(rbind, lapply(igraph::V(graph)[isMed]$name, function(med) {
+        # Get variables interacting with mediator
+        medIntVars <- igraph::V(graph)[intLength > 1 & sapply(igraph::V(graph)$intVars, function(vars) med %in% vars)]$intVars
+        if (length(medIntVars) == 0) return(NULL)
+        uniqueMedIntVars <- unique(unlist(medIntVars))
+        # Create interaction variable names
+        medIntVarsCollapsed <- sapply(medIntVars, paste, collapse = "__")
+        return(cbind(med, c(medIntVarsCollapsed, uniqueMedIntVars)))
+      }))
+
+      # If any covariances
+      if (is.matrix(medErrorVars) && ncol(medErrorVars) > 1) {
+        # Remove self edges
+        medErrorVars <- medErrorVars[medErrorVars[, 1] != medErrorVars[, 2], , drop = FALSE]
+        # Flatten to vector
+        medErrorVarsFlat <- as.vector(t(medErrorVars))
+        resCovGraph <- .procResCovGraphAddEdges(resCovGraph, medErrorVarsFlat)
+      }
+    }
   }
 
   # Get all mediator vars that are not interaction terms
   medVars <- igraph::V(graph)[isMed & !isInt]$name
 
-  if (modelOptions[["mediatorCovariances"]]) {
-    # Add vertices and edges for all combinations
-    resCovGraph <- .procCombVars(resCovGraph, medVars)
+  if (length(medVars) > 0) {
+    if (modelOptions[["mediatorCovariances"]]) {
+      # Add vertices and edges for all combinations
+      resCovGraph <- .procResCovGraphAddEdges(resCovGraph, .procCombVars(medVars))
+    }
+
+    resCovGraph <- .procResCovGraphAddEdges(resCovGraph, rbind(medVars, medVars))
   }
 
-  # Add vertices and edges for first dependent var
+  # Add vertices and edges for dependent vars
   depVars <- igraph::V(graph)[isDep]$name
-  resCovGraph <- .procCombVars(resCovGraph, depVars[1])
+
+  if (modelOptions[["dependentCovariances"]]) {
+    # Add vertices and edges for all combinations
+    resCovGraph <- .procResCovGraphAddEdges(resCovGraph, .procCombVars(depVars))
+  }
+  
+  resCovGraph <- .procResCovGraphAddEdges(resCovGraph, rbind(depVars, depVars))
   
   # Remove edges that are in graph from resCovGraph
   return(igraph::difference(resCovGraph, igraph::as.undirected(graph)))
@@ -1301,6 +1332,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     mimic           = options$emulation,
     estimator       = options$estimator,
     missing         = options$naAction,
+    fixed.x         = !modelOptions$independentCovariances,
+    auto.cov.y      = FALSE,
     meanstructure   = modelOptions$intercepts,
     do.fit          = doFit
   ))
@@ -1331,7 +1364,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     c("processModels", modelIdx, "modelNumberModeratorW"),
     c("processModels", modelIdx, "modelNumberModeratorZ"),
     c("processModels", modelIdx, "independentCovariances"),
-    c("processModels", modelIdx, "mediatorCovariances")
+    c("processModels", modelIdx, "mediatorCovariances"),
+    c("processModels", modelIdx, "dependentCovariances")
   ))
 }
 
@@ -1919,9 +1953,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
 
-  pathCoefTable[["lhs"]]   <- pathCoefs$rhs
-  pathCoefTable[["op"]]    <- rep("\u2194", nrow(pathCoefs))
-  pathCoefTable[["rhs"]]   <- pathCoefs$lhs
+  pathCoefTable[["lhs"]] <- gsub("__", ":", pathCoefs$rhs)
+  pathCoefTable[["op"]]  <- rep("\u2194", nrow(pathCoefs))
+  pathCoefTable[["rhs"]] <- gsub("__", ":", pathCoefs$lhs)
 
   .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
