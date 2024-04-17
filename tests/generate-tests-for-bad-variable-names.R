@@ -34,7 +34,7 @@ parms$data <- "data/badVarNames.csv"
 ## mod     = debMiss1
 ## jasp    = debCollin1
 ## Encoded = debEqual1
- 
+
 numMap <- list(
   "JaspProcess_Dependent_Encoded" = "M",
   "JaspProcess_Independent_Encoded" = "W",
@@ -62,13 +62,13 @@ numMap <- list(
 ###-Tests for Hayes' Numbered Models-----------------------------------------------------------------------------------------###
 
 ## Where are we saving these tests?
-testsFile <- "test-ClassicProcess-hayes-models-with-bad-variable-names.R"
+testsFile <- "test-classic-process-hayes-models-with-bad-variable-names.R"
 
 ## Test a representative range of model numbers (we probably don't need to test them all here):
 modelNumbers <- c(1:4, 10, 29, 82, 92)
 
 ## Make sure these model numbers are available:
-modCheck <- modelNumbers %in% jaspProcess:::.procHardCodedModelNumbers() |> all()  
+modCheck <- modelNumbers %in% jaspProcess:::.procHardCodedModelNumbers() |> all()
 if(!modCheck)
   stop("You've asked me to test a Haye's model number that isn't implemented.")
 
