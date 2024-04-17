@@ -474,7 +474,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
     graph <- modelsContainer[[modelName]][["graph"]]$object
 
-    if (!.procCheckFitModel(graph)) next
+    # Skip if syntax hasn't changed, no need to add dummy and int variables again
+    if (!.procCheckFitModel(graph) || !is.null(modelsContainer[[modelName]][["syntax"]])) next
 
     # Get all predictor vars
     sourceVars <- unique(igraph::E(graph)$source)
@@ -1215,7 +1216,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::E(graph)$parEst <- NA
   
   for (i in 1:nrow(est)) {
-    if (all(c(est$rhs[i], est$lhs[i])) %in% igraph::V(graph)$name) {
+    if (all(c(est$rhs[i], est$lhs[i]) %in% igraph::V(graph)$name)) {
       igraph::E(graph)[est$rhs[i] %--% est$lhs[i]]$parEst <- est$est[i]
     }
   }
@@ -2462,7 +2463,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     edgeLabels <- ""
   } else {
     edgeLabels <- if (estimates && !is.null(igraph::E(graph)$parEst)) round(as.numeric(igraph::E(graph)$parEst), 3) else igraph::E(graph)$parName
-    
+
     resCovGraph <- igraph::as.directed(container[["resCovGraph"]]$object, mode = "arbitrary")
   }
 
@@ -2611,7 +2612,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
           start_cap = ggraph::square(nodeSize, unit = "native"),
           end_cap = ggraph::square(nodeSize, unit = "native"),
           angle_calc = "along",
-          label_dodge = grid::unit(-0.025, "native")
+          label_dodge = grid::unit(0.025, "native")
         )
     }
   }
