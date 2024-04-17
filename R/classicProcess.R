@@ -168,6 +168,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (modelOptions[["inputType"]] == "inputModelNumber")
     graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
   
+  if (!igraph::is_dag(graph)) stop(.procDagMsg())
+
   return(graph)
 }
 
@@ -1317,6 +1319,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procResultsFitModel <- function(container, dataset, options, modelOptions) {
+  # Check if graph has error message
+  if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
+    return(.procEstimationMsg(container[["graph"]]$object))
+  }
+
   # Should model be fitted?
   doFit <- .procCheckFitModel(container[["graph"]]$object)
 
@@ -1340,7 +1347,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 
   if (jaspBase::isTryError(fittedModel)) {
-    return(gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", jaspBase::.extractErrorMessage(fittedModel))))
+    return(.procLavaanMsg(fittedModel))
   }
 
   if (doFit) {
@@ -1381,7 +1388,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (is.null(modelsContainer[[modelName]][["fittedModel"]])) {
       if (modelOptions[["inputType"]] == "inputModelNumber" && !modelOptions[["modelNumber"]] %in% .procHardCodedModelNumbers()) {
-        fittedModel <- gettextf("%1$s: Hayes model %2$s not implemented", modelName, modelOptions[["modelNumber"]])
+        fittedModel <- .procHayesModelMsg(modelName, modelOptions[["modelNumber"]])
       } else {
         fittedModel <- .procResultsFitModel(
           modelsContainer[[modelName]],
@@ -1483,7 +1490,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   summaryTable$position <- 1
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
-    summaryTable$setError("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
+    summaryTable$setError(.procFimlMsg())
   }
 
   summaryTable$addColumnInfo(name = "Model",        title = "",                         type = "string" )
@@ -1509,7 +1516,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(!converged)) {
     summaryTable$addFootnote(
-      message = gettextf("Model did not converge."),
+      message = .procConvergenceMsg(),
       symbol = "\u2020",
       colNames = "Model",
       rowNames = modelNames[tableRowIsValid & !converged]
@@ -1517,7 +1524,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (length(procResults) == 0) {
-    summaryTable$addFootnote(message = gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."))
+    summaryTable$addFootnote(message = .procModelIncompleteMsg())
     return()
   }
 
@@ -1541,7 +1548,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    summaryTable$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators."))
+    summaryTable$addFootnote(message = .procInformationCriteriaMsg())
   }
 }
 
@@ -1558,9 +1565,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   validModel <- sapply(options[["processModels"]], function(mod) !is.null(modelsContainer[[mod[["name"]]]][["fittedModel"]]$object))
 
   if (any(validModel) && is.null(parEstContainer[["warning"]])) {
-    warningHtml <- createJaspHtml(text = gettext(
-      "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
-    ))
+    warningHtml <- createJaspHtml(text = .procCausalAssumptionsMsg())
     warningHtml$position <- 1
     warningHtml$dependOn("processModels")
     parEstContainer[["warning"]] <- warningHtml
@@ -1582,17 +1587,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(pathPlotContainer)
 }
 
-.procIsValidModel <- function(container, procResult) {
-  if (inherits(procResult, "lavaan")) return(TRUE)
-  if (is.character(procResult)) {
-    container$setError(procResult)
-  }
-  return(FALSE)
-}
-
 .procSetContainerError <- function(container, procResult) {
   if (is.character(procResult)) {
     container$setError(procResult)
+  } else if (jaspBase:::isTryError(procResult)) {
+    container$setError(jaspBase::.extractErrorMessage(procResult))
+  } else if (!inherits(procResult, "lavaan")) {
+    container$setError(.procEstimationMsg(.procModelCheckMsg()))
   }
 }
 
@@ -1664,7 +1665,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     if (any(rowHasFac)) {
       tbl$addFootnote(
-        message = gettext("Partially standardized estimate because effect involves categorical predictor."),
+        message = .procPartialStandardizedFootnote(),
         colNames = "est.std",
         rowNames = coefs$rowId[rowHasFac]
       )
@@ -1672,7 +1673,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (options$meanCenteredModeration) {
-    tbl$addFootnote(gettext("Moderation effect estimates are based on mean-centered variables."))
+    tbl$addFootnote(.procMeanCenteredModeratorsFootnote())
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
@@ -1681,7 +1682,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       percentile = gettext("percentile"),
       gettext("normal theory")
     )
-    tbl$addFootnote(gettextf("Confidence intervals are %s bootstrapped.", txt))
+    tbl$addFootnote(.procBootstrappedCiFootnote(txt))
   }
 }
 
@@ -1695,7 +1696,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procBootstrapSamplesFootnote <- function(tbl, procResults, options) {
   if (options$errorCalculationMethod == "bootstrap" && nrow(procResults@boot$coef) < options$bootstrapSamples) {
-    tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(procResults@boot$coef)))
+    tab$addFootnote(.procBootstrapFailedSamplesFootnote(nrow(procResults@boot$coef)))
   }
 }
 
@@ -1722,7 +1723,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (!procResults@Fit@converged) {
-    pathCoefTable$addFootnote(gettext("Model did not converge."))
+    pathCoefTable$addFootnote(.procConvergenceMsg())
   }
 
   .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
@@ -1797,7 +1798,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (!procResults@Fit@converged) {
-    medEffectsTable$addFootnote(gettext("Model did not converge."))
+    medEffectsTable$addFootnote(.procConvergenceMsg())
   }
 
   .procBootstrapSamplesFootnote(medEffectsTable, procResults, options)
@@ -1877,7 +1878,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   if (!procResults@Fit@converged) {
-    totEffectsTable$addFootnote(gettext("Model did not converge."))
+    totEffectsTable$addFootnote(.procConvergenceMsg())
   }
 
   .procBootstrapSamplesFootnote(totEffectsTable, procResults, options)
@@ -1944,7 +1945,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
                                           level = options$ciLevel)
 
   if (!procResults@Fit@converged) {
-    pathCoefTable$addFootnote(gettext("Model did not converge."))
+    pathCoefTable$addFootnote(.procConvergenceMsg())
   }
 
   .procBootstrapSamplesFootnote(pathCoefTable, procResults, options)
@@ -2056,7 +2057,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       "BH" = "Benjamini-Hochberg",
       "BY" = "Benjamini-Yekuteli"
     )
-    localTestTable$addFootnote(gettextf("<em>p</em>-values adjusted for multiple comparisons with the %s method.", adjustMethodRef[[adjustMethod]]))
+    localTestTable$addFootnote(.procMultiComparisonFootnote(adjustMethodRef[[adjustMethod]]))
   }
 
   nReps  <- NULL
@@ -2077,7 +2078,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
                     overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   if (testType == "cis" && !is.null(contrasts) && length(contrasts) > 0) {
-    localTestTable$setError(gettext("Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."))
+    localTestTable$setError(.procLocalTestLinearMsg())
     return()
   }
 
@@ -2123,7 +2124,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       localTestTable[["ci.upper"]] <- localTestResult[[paste0((1-(1-options$ciLevel)/2)*100, "%")]]
     }
   } else {
-    localTestTable$setError(gettext("The specified model does not imply any (conditional) independencies that can be tested."))
+    localTestTable$setError(.procNoImpliedTestsMsg())
   }
 }
 
@@ -2155,7 +2156,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(!converged)) {
     tabr2$addFootnote(
-      message = gettextf("Model did not converge."),
+      message = .procConvergenceMsg(),
       symbol = "\u2020",
       colNames = paste0("rsq_", which(!converged))
     )
@@ -2195,16 +2196,13 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       pathPlotsContainer <- container[[modelName]]
     }
 
-    valid <- inherits(modelsContainer[[modelName]][["fittedModel"]]$object, "lavaan")
+    .procSetContainerError(pathPlotsContainer, modelsContainer[[modelName]][["fittedModel"]]$object)
 
-    if (valid) {
-      if (options[["processModels"]][[i]][["conceptualPathPlot"]]) {
-        .procConceptPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]], i)
-      }
+    if (options[["processModels"]][[i]][["conceptualPathPlot"]])
+      .procConceptPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]], i)
 
-      if (options[["processModels"]][[i]][["statisticalPathPlot"]])
-        .procStatPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]], i)
-    }
+    if (options[["processModels"]][[i]][["statisticalPathPlot"]])
+      .procStatPathPlot(pathPlotsContainer, options, modelsContainer[[modelName]], i)
   }
 }
 
@@ -2681,6 +2679,46 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
 }
+
+
+# Error messages ----
+
+.procDagMsg <- function() gettext("Model must be a directed acyclic graph -- it must not contain loops.")
+
+.procHayesModelMsg <- function(modelName, modelNumber) gettextf("%1$s: Hayes model %2$s not implemented", modelName, modelNumber)
+
+.procEstimationMsg <- function(graph) gettextf("Estimation failed: %s", jaspBase::.extractErrorMessage(graph))
+
+.procLavaanMsg <- function(fittedModel) gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", jaspBase::.extractErrorMessage(fittedModel)))
+
+.procFimlMsg <- function() gettext("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
+
+.procConvergenceMsg <- function() gettext("Model did not converge.")
+
+.procModelIncompleteMsg <- function() gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models.")
+
+.procInformationCriteriaMsg <- function() gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators.")
+
+.procCausalAssumptionsMsg <- function() gettext(
+  "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
+)
+
+.procModelCheckMsg <- function() gettext("Please check the model specification and lavaan syntax.")
+
+.procLocalTestLinearMsg <- function() gettext("Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model.")
+
+.procNoImpliedTestsMsg <- function() gettext("The specified model does not imply any (conditional) independencies that can be tested.")
+
+.procPartialStandardizedFootnote <- function() gettext("Partially standardized estimate because effect involves categorical predictor.")
+
+.procMeanCenteredModeratorsFootnote <- function() gettext("Moderation effect estimates are based on mean-centered variables.")
+
+.procBootstrappedCiFootnote <- function(txt) gettextf("Confidence intervals are %s bootstrapped.", txt)
+
+.procBootstrapFailedSamplesFootnote <- function(n) gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", n)
+
+.procMultiComparisonFootnote <- function(txt) gettextf("<em>p</em>-values adjusted for multiple comparisons with the %s method.", txt)
+
 
 # Helper functions ----
 
