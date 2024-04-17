@@ -1604,7 +1604,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   for (i in 1:length(procResults)) {
     if (is.null(container[[modelNames[i]]])) {
-      modelContainer <- createJaspContainer(title = modelNames[i], , initCollapsed = TRUE)
+      modelContainer <- createJaspContainer(title = modelNames[i])
       modelContainer$dependOn(
         options = c("parameterLabels", "ciLevel"),
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
