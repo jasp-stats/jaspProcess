@@ -1290,7 +1290,7 @@ test_that("Not implemented Hayes models error message work", {
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
-  refMsg <- gettextf("Model 1: Hayes model %s not implemented", modelNumber)
+  refMsg <- jaspProcess:::.procHayesModelMsg("Model 1", modelNumber)
 
   msg <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["error"]][["errorMessage"]]
   expect_equal(msg, refMsg)
@@ -1411,7 +1411,7 @@ test_that("No implied conditional independencies error message works", {
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
-  refMsg <- "The specified model does not imply any (conditional) independencies that can be tested."
+  refMsg <- jaspProcess:::.procNoImpliedTestsMsg()
 
   msg <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["error"]][["errorMessage"]]
   expect_equal(msg, refMsg)
@@ -1454,7 +1454,7 @@ test_that("Invalid test type error message works", {
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
-  refMsg <- gettext("Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model.")
+  refMsg <- jaspProcess:::.procLocalTextLinearMsg()
 
   msg <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["error"]][["errorMessage"]]
   expect_equal(msg, refMsg)
@@ -1688,4 +1688,59 @@ test_that("Path coefficients table with intercepts matches", {
                                       0.067790001836414, -0.596452849320671, 0.17019409854064, -0.213129375390016,
                                       "facGenderm", "<unicode>", 0.275824268295476, "contcor1", 0.195576794754527,
                                       -1.08974776714957))
+})
+
+test_that("Directed acyclic graph error message works", {
+  options <- jaspTools::analysisOptions("ClassicProcess")
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
+  options$factors <- list("facGender", "facExperim")
+  options$standardizedModelEstimates <- TRUE
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+      value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+      dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+      modelNumberIndependent = "", modelNumberMediators = list(),
+      modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+      pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "mediators", processVariable = "debCollin1"),
+          list(processDependent = "contGamma", processIndependent = "debCollin1",
+              processType = "directs", processVariable = "")),
+      residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+      localTests = TRUE, localTestType = "cis", localTestBootstrap = FALSE,
+      localTestBootstrapSamples = 1000),
+      list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+      dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+      modelNumberIndependent = "", modelNumberMediators = list(),
+      modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 2",
+      pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "mediators", processVariable = "debCollin1")),
+      residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+      localTests = TRUE, localTestType = "cis", localTestBootstrap = FALSE,
+      localTestBootstrapSamples = 1000))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+
+  refMsg <- jaspProcess:::.procEstimationMsg(jaspProcess:::.procDagMsg())
+
+  msg <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["error"]][["errorMessage"]]
+  expect_equal(msg, refMsg)
+
+  msg <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["error"]][["errorMessage"]]
+  expect_equal(msg, refMsg)
+
+  msg <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["error"]][["errorMessage"]]
+  expect_equal(msg, refMsg)
 })
