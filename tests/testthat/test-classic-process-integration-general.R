@@ -3,13 +3,35 @@
 test_that("Error handling works - observations", {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "contNormal"
-  options$covariates <- list("debNaN")
+  options$covariates <- list("contGamma", "debNaN")
+  options$factors <- list()
+  options$standardizedModelEstimates <- TRUE
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+      value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+      dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+      modelNumberIndependent = "", modelNumberMediators = list(),
+      modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+      pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "moderators", processVariable = "debNaN")),
+      residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+      localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+      localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
   expect_identical(results[["status"]], "validationError", label = "Observations check")
 
-  options <- jaspTools::analysisOptions("ClassicProcess")
-  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma")
   options$factors <- list("debNaN")
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -19,7 +41,30 @@ test_that("Error handling works - observations", {
 test_that("Error handling works - variance", {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "contNormal"
-  options$covariates <- list("debSame")
+  options$covariates <- list("contGamma", "debSame")
+  options$factors <- list()
+  options$standardizedModelEstimates <- TRUE
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+      value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+      dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+      modelNumberIndependent = "", modelNumberMediators = list(),
+      modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+      pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "moderators", processVariable = "debSame")),
+      residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+      localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+      localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
   expect_identical(results[["status"]], "validationError", label = "Variance check")
@@ -28,7 +73,30 @@ test_that("Error handling works - variance", {
 test_that("Error handling works - infinity", {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "contNormal"
-  options$covariates <- list("debInf")
+  options$covariates <- list("contGamma", "debInf")
+  options$factors <- list()
+  options$standardizedModelEstimates <- TRUE
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+      value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+      dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+      modelNumberIndependent = "", modelNumberMediators = list(),
+      modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+      pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "moderators", processVariable = "debInf")),
+      residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+      localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+      localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
   expect_identical(results[["status"]], "validationError", label = "Infinity check")
@@ -38,6 +106,29 @@ test_that("Error handling works - covariance", {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options$dependent <- "contNormal"
   options$covariates <- list("debCollin1", "debCollin2")
+  options$factors <- list()
+  options$standardizedModelEstimates <- TRUE
+  options$statisticalPathPlotsCovariances <- TRUE
+  options$statisticalPathPlotsResidualVariances <- TRUE
+  options$errorCalculationMethod <- "standard"
+  options$naAction <- "fiml"
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+      value = "50"), list(probePercentile = 84, value = "84"))
+  options$pathPlotsLegend <- TRUE
+  options$pathPlotsColorPalette <- "colorblind"
+  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+      dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+      modelNumberIndependent = "", modelNumberMediators = list(),
+      modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+      pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
+          list(processDependent = "contNormal", processIndependent = "debCollin1",
+              processType = "moderators", processVariable = "debCollin2")),
+      residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+      localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+      localTestBootstrapSamples = 1000))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
   expect_identical(results[["status"]], "validationError", label = "Covariance check")
@@ -1454,7 +1545,7 @@ test_that("Invalid test type error message works", {
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
-  refMsg <- jaspProcess:::.procLocalTextLinearMsg()
+  refMsg <- jaspProcess:::.procLocalTestLinearMsg()
 
   msg <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["error"]][["errorMessage"]]
   expect_equal(msg, refMsg)

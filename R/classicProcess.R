@@ -1483,6 +1483,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  
+  if (length(procResults) == 0) return()
 
   # Remove invalid models
   resultIsValid <- sapply(procResults, function(mod) inherits(mod, "lavaan") && mod@Options[["do.fit"]])

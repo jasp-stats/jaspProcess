@@ -280,7 +280,7 @@ test_that("Test that .procGraphAddAttributes works", {
   expect_equal(igraph::V(graph)$isPartOfInt, c(FALSE, FALSE, FALSE, TRUE, FALSE))
   expect_equal(igraph::V(graph)$isTreat, c(TRUE, FALSE, FALSE, FALSE, FALSE))
   expect_equal(igraph::E(graph)$isMod, c(TRUE, FALSE, FALSE, TRUE, FALSE))
-  expect_equal(igraph::E(graph)$modVars, c("contcor2", NA, NA, "contGamma", NA))
+  expect_equal(igraph::E(graph)$modVars, c("contcor2", NA, NA, NA, NA))
 })
 
 test_that("Test that .procGraphAddAttributes works - moderated moderation", {
@@ -302,7 +302,7 @@ test_that("Test that .procGraphAddAttributes works - moderated moderation", {
   expect_equal(igraph::V(graph)$intLength, c(1, 1, 1, 1, 2, 2, 2, 3))
   expect_equal(igraph::V(graph)$isNestedInt, c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE))
   expect_equal(igraph::V(graph)$isHigherOrderInt, c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE))
-  expect_equal(igraph::E(graph)$modVars, list(c("contcor1", "contcor2"), c("contGamma", "contcor2"), c("contGamma", "contcor1"), as.character(NA), as.character(NA), as.character(NA), as.character(NA)))
+  expect_equal(igraph::E(graph)$modVars, list(c("contcor1", "contcor2"), c("contcor2"), as.character(NA), as.character(NA), as.character(NA), as.character(NA), as.character(NA)))
 })
 
 test_that("Test that .procEncodePath works", {
