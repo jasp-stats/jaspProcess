@@ -318,7 +318,7 @@ Form
 							CheckBox
 							{
 								name: "mediationEffects"
-								label: qsTr("Mediation")
+								label: qsTr("Indirect")
 								checked: mediationEffectsForAllModels.checked
 							}
 							CheckBox
@@ -604,7 +604,7 @@ Form
                 {
                     id:			mediationEffectsForAllModels
                     name: 		"mediationEffectsForAllModels"
-                    label: 		qsTr("Mediation")
+                    label: 		qsTr("Indirect")
                     checked: 	true
                 }
 				CheckBox
