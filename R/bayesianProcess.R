@@ -123,9 +123,8 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   # Necessary for JASP to find function blavaan
   blavaan <- blavaan::blavaan
 
-  # names(dataset) <- decodeColNames(names(dataset))
-
-  fittedModel <- try(blavaan::bsem(
+  # Suppress console output
+  invisible(capture.output(fittedModel <- try(blavaan::bsem(
     model           = container[["syntax"]]$object,
     data            = dataset,
     n.chains        = options$mcmcChains,
@@ -138,7 +137,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     fixed.x         = !modelOptions$independentCovariances,
     auto.cov.y      = FALSE,
     meanstructure   = modelOptions$intercepts
-  ))
+  ))))
   
   if (jaspBase::isTryError(fittedModel)) {
     return(.procLavaanMsg(fittedModel))
@@ -368,14 +367,15 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     includePars <- parTable$lhs
   }
 
-  parStats <- as.data.frame(
+  # Suppress console output
+  invisible(capture.output(parStats <- as.data.frame(
     rstan::monitor(
       as.array(stanFit)[, , na.omit(includePars), drop = FALSE],
       probs = c(0.5, ci), # also compute median
       # This should be zero because as.array does not include warmup samples
       warmup = 0
     )
-  )[, c("mean", "50%", "sd", ciNames, "Rhat", "Bulk_ESS", "Tail_ESS")]
+  )[, c("mean", "50%", "sd", ciNames, "Rhat", "Bulk_ESS", "Tail_ESS")]))
 
   names(parStats) <- c("mean", "median", "sd", "ci.lower", "ci.upper", "Rhat", "Bulk_ESS", "Tail_ESS")
   
