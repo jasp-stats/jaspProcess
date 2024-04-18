@@ -1492,7 +1492,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   summaryTable <- createJaspTable(title = gettext("Model summary"), rowNames = modelNames[tableRowIsValid])
   summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
-  summaryTable$position <- 1
+  summaryTable$position <- 0
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
     summaryTable$setError(.procFimlMsg())
@@ -1571,7 +1571,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(validModel) && is.null(parEstContainer[["warning"]])) {
     warningHtml <- createJaspHtml(text = .procCausalAssumptionsMsg())
-    warningHtml$position <- 1
+    warningHtml$position <- 0
     warningHtml$dependOn("processModels")
     parEstContainer[["warning"]] <- warningHtml
   }
@@ -1713,6 +1713,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     nestedOptions = list(c("processModels", as.character(modelIdx), "pathCoefficients"),
                          c("processModels", as.character(modelIdx), "intercepts"))
   )
+  pathCoefTable$position <- 1
   container[["pathCoefficientsTable"]] <- pathCoefTable
 
   if (!.procIsValidModel(container, procResults)) return()
@@ -1787,7 +1788,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     options = "moderationProbes",
     nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
   )
-
+  medEffectsTable$position <- 2
   container[["mediationEffectsTable"]] <- medEffectsTable
 
   if (!.procIsValidModel(container, procResults)) return()
@@ -1867,7 +1868,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     options = "moderationProbes",
     nestedOptions = list(c("processModels", as.character(modelIdx), "totalEffects"))
   )
-
+  totEffectsTable$position <- 3
   container[["totalEffectsTable"]] <- totEffectsTable
 
   if (!.procIsValidModel(container, procResults)) return()
@@ -1940,6 +1941,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable$dependOn(
     nestedOptions = list(c("processModels", as.character(modelIdx), "residualCovariances"))
   )
+  pathCoefTable$position <- 4
   container[["covariancesTable"]] <- pathCoefTable
 
   if (!.procIsValidModel(container, procResults)) return()
