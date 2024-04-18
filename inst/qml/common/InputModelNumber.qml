@@ -27,7 +27,7 @@ Group
 	IntegerField
 	{
 		name: 			"modelNumber"
-		label: 			qsTr("Hayes model number")
+		label: 			qsTr("Hayes configuration number")
 		defaultValue: 	1
 		min: 			1
 		max: 			92

@@ -70,7 +70,6 @@ Form
 					Group
 					{
 						id: opts
-						title: 		qsTr("Options for %1").arg(rowValue)
 						columns: 	3
                         
 						Common.ResidualCovariances
@@ -158,11 +157,12 @@ Form
 
 		Group
 		{
-			CheckBox { label: qsTr("Parameter labels") 	;		name: "parameterLabels" }
-			CheckBox { label: qsTr("Lavaan syntax")     ;       name: "syntax" }
-			CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
-			CheckBox { label: qsTr("AIC weights")         ;     name: "aicWeights" }
-			CheckBox { label: qsTr("BIC weights")         ;     name: "bicWeights" }
+			CheckBox { label: qsTr("Parameter labels");				name: "parameterLabels" }
+			CheckBox { label: qsTr("Lavaan syntax");       			name: "syntax" 			}
+			CheckBox { label: qsTr("R-squared");       				name: "rSquared" 		}
+			CheckBox { label: qsTr("AIC weights");     				name: "aicWeights" 		}
+			CheckBox { label: qsTr("BIC weights");     				name: "bicWeights" 		}
+			CheckBox { label: qsTr("Hayes configuration number"); 	name: "hayesNumber";  	}
 		}
 		Group
 		{

@@ -25,19 +25,19 @@ RadioButtonGroup
 	property string modelName: ""
 
 	name: 					"inputType"
-	title: 					qsTr("Input type for %1").arg(modelName)
+	title: 					qsTr("Input type")
 	radioButtonsOnSameRow: 	true
 	columns: 				2
 
 	RadioButton
 	{
 		value: 		"inputVariables"
-		label: 		qsTr("Variables")
+		label: 		qsTr("Paths")
 		checked: 	true
 	}
 	RadioButton
 	{
 		value: 	"inputModelNumber"
-		label: 	qsTr("Model number")
+		label: 	qsTr("Hayes configuration")
 	}
 }
