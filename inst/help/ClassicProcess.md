@@ -114,7 +114,7 @@ This section allows users to specify multiple process models through one of two 
 - Adjustment method: Method for adjusting local tests for multiple comparisons.
 - Missing Value Handling:
 	- Exclude cases listwise: Only use complete cases in the model.
-	- Full Information Maximum Likelihood: Computes the likelihood case-by-case using all available data. Only allowed when `Estimator` is `Auto` or `ML`.
+	- Full Information Maximum Likelihood: Computes the likelihood case-by-case using all available data. Only allowed when `Estimator` is `Auto` or `ML`. This option forces the model to add a mean structure increasing the number of parameters in the model and affecting fit indices (AIC and BIC).
 	- Emulation: Sets the default values corresponding to different SEM software.
 	- Estimator: The estimator for the SEMs. See lavaan manual.
 - Probe Conditional Continuous Effects: The percentiles at which the continuous moderators are be probed.
