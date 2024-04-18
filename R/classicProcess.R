@@ -1472,6 +1472,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(.procHardCodedModelNumbers()[modelMatch])
 }
 
+.procAddHayesModelColumn <- function(tbl, options) {
+  if (options[["hayesNumber"]]) {
+    tbl$addColumnInfo(name = "modelNumber", title = gettext("Hayes number"), type = "integer")
+    tbl$addFootnote(
+      message = gettext("Model configuration number defined by Hayes (2022)."),
+      colNames = "modelNumber"
+    )
+  }
+}
+
 .procModelSummaryTable <- function(jaspResults, options, modelsContainer) {
   if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
@@ -1496,7 +1506,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   tableRowIsValid <- modelNumberIsValid & resultIsValid
 
   summaryTable <- createJaspTable(title = gettext("Model summary"), rowNames = modelNames[tableRowIsValid])
-  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction"))
+  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction", "hayesNumber"))
   summaryTable$position <- 0
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
@@ -1504,7 +1514,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   summaryTable$addColumnInfo(name = "Model",        title = "",                         type = "string" )
-  summaryTable$addColumnInfo(name = "modelNumber",  title = "Hayes model number",       type = "integer" )
+  .procAddHayesModelColumn(summaryTable, options)
   summaryTable$addColumnInfo(name = "AIC",          title = gettext("AIC"),             type = "number" )
   if (options[["aicWeights"]]) {
     summaryTable$addColumnInfo(name = "wAIC",       title = gettext("AIC weight"),      type = "number")

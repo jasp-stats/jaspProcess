@@ -205,14 +205,14 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   tableRowIsValid <- modelNumberIsValid & resultIsValid
 
   summaryTable <- createJaspTable(title = gettext("Model summary"), rowNames = modelNames[tableRowIsValid])
-  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "bicWeights"))
+  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "bicWeights", "hayesNumber"))
   summaryTable$position <- 1
 
   ovtWaic <- gettext("WAIC")
   ovtLoo  <- gettext("LOOIC")
 
   summaryTable$addColumnInfo(name = "Model",        title = "",                             type = "string")
-  summaryTable$addColumnInfo(name = "modelNumber",  title = gettext("Hayes model number"),  type = "integer")
+  .procAddHayesModelColumn(summaryTable, options)
   summaryTable$addColumnInfo(name = "ppp",          title = gettext("PPP"),                 type = "number")
   summaryTable$addColumnInfo(name = "bic",          title = gettext("BIC"),                 type = "number")
   if (options[["bicWeights"]]) {

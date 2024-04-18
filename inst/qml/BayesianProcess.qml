@@ -67,7 +67,6 @@ Form
 					Group
 					{
                         id: opts
-						title: 		qsTr("Options for %1").arg(rowValue)
 						columns: 	3
                         
 						Common.ResidualCovariances
@@ -100,7 +99,36 @@ Form
     Section
     {
         title: qsTr("Options")
-        columns: 2
+        columns: 3
+
+		Group
+		{
+			CheckBox 
+			{
+				label: qsTr("Prior distributions")
+				name: "priorDistributions"
+			}
+			CheckBox 
+			{
+				label: qsTr("Parameter labels")
+				name: "parameterLabels"
+			}
+			CheckBox 
+			{
+				label: qsTr("Lavaan syntax")
+				name: "syntax"
+			}
+			CheckBox 
+			{
+				label: qsTr("BIC weights")
+				name: "bicWeights"
+			}
+			CheckBox 
+			{
+				label: qsTr("Hayes configuration number")
+				name: "hayesNumber"
+			}
+		}
 
 		Group
 		{
@@ -132,39 +160,19 @@ Form
 
 		Group
 		{
-			CheckBox 
+			SetSeed {}
+
+			CIField 
 			{
-				label: qsTr("Prior distributions")
-				name: "priorDistributions"
+				text: qsTr("Credible intervals")
+				name: "ciLevel"
 			}
-			CheckBox 
-			{
-				label: qsTr("Parameter labels")
-				name: "parameterLabels"
-			}
-			CheckBox 
-			{
-				label: qsTr("BIC weights")
-				name: "bicWeights"
-			}
-			CheckBox 
-			{
-				label: qsTr("Lavaan syntax")
-				name: "syntax"
-			}
+			
 			CheckBox
 			{
 				label: qsTr("Mean-centered moderation")
 				name: "meanCenteredModeration"
 			}
-		}
-
-		SetSeed {}
-
-		CIField 
-		{
-			text: qsTr("Credible intervals")
-			name: "ciLevel"
 		}
 	}
 
@@ -186,6 +194,8 @@ Form
 				label: ""
 			}
 		}
+
+		Common.PathPlotOptions {}
 
 		Group
 		{
@@ -237,8 +247,6 @@ Form
 				}
 			}
 		}
-
-		Common.PathPlotOptions {}
 	}
 
 	Section 
