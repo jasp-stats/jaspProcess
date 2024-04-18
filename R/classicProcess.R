@@ -19,8 +19,9 @@
 ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Set title
   jaspResults$title <- gettext("Process Analysis")
-  # Check if analysis has any variables to read in
-  if (options[["dependent"]] == "" || (length(options[["covariates"]]) == 0 && length(options[["factors"]]) == 0)) {
+  # Check if all models are ready to compute something
+  ready <- .procIsReady(options)
+  if (!ready) {
     # create empty summary table
     .procModelSummaryTable(jaspResults, options, NULL)
     return()
@@ -31,8 +32,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procErrorHandling(dataset, options)
   # Create a container for each model
   modelsContainer <- .procContainerModels(jaspResults, options)
-  # Check if all models are ready to compute something
-  if (.procIsReady(options)) {
+
+  if (ready) {
     # Transform input for each model into a graph for further processing
     .procModelGraph(jaspResults, options)
     # Add factor dummy variables manually to dataset
@@ -50,25 +51,25 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     .procModelSyntax(jaspResults, options)
     # Fit lavaan models based on syntax and dataset and update models container
     modelsContainer <- .procComputeResults(jaspResults, dataset, options)
+    # Create container for path plots for each model
+    pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
+    # Create path plots for each model and add to container
+    .procPathPlots(pathPlotContainer, options, modelsContainer)
+    # Create table with model fit indices (AIC, ...)
+    .procModelSummaryTable(jaspResults, options, modelsContainer)
+    # Create R² table if requested
+    .procRsquared(jaspResults, options, modelsContainer)
+    # Create container for parameter estimates for each model
+    parEstContainer <- .procContainerParameterEstimates(jaspResults, options, modelsContainer)
+    # Create tables for parameter estimates
+    .procParameterEstimateTables(parEstContainer, options, modelsContainer)
+    # Create container for local test results for each model
+    localTestContainer <- .procContainerLocalTests(jaspResults, options)
+    # Create tables with local test results
+    .procLocalTestTables(localTestContainer, dataset, options, modelsContainer)
+    # Create html output with lavaan syntax for each model
+    .procPlotSyntax(jaspResults, options, modelsContainer)
   }
-  # Create container for path plots for each model
-  pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
-  # Create path plots for each model and add to container
-  .procPathPlots(pathPlotContainer, options, modelsContainer)
-  # Create table with model fit indices (AIC, ...)
-  .procModelSummaryTable(jaspResults, options, modelsContainer)
-  # Create R² table if requested
-  .procRsquared(jaspResults, options, modelsContainer)
-  # Create container for parameter estimates for each model
-  parEstContainer <- .procContainerParameterEstimates(jaspResults, options, modelsContainer)
-  # Create tables for parameter estimates
-  .procParameterEstimateTables(parEstContainer, options, modelsContainer)
-  # Create container for local test results for each model
-  localTestContainer <- .procContainerLocalTests(jaspResults, options)
-  # Create tables with local test results
-  .procLocalTestTables(localTestContainer, dataset, options, modelsContainer)
-  # Create html output with lavaan syntax for each model
-  .procPlotSyntax(jaspResults, options, modelsContainer)
 
   return()
 }
