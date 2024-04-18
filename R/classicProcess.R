@@ -1619,7 +1619,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     } else {
       modelContainer <- container[[modelNames[i]]]
     }
-    
+
     .procSetContainerError(modelContainer, procResults[[i]])
 
     if (options[["processModels"]][[i]][["pathCoefficients"]])
@@ -1782,7 +1782,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["mediationEffectsTable"]])) return()
 
-  medEffectsTable <- createJaspTable(title = gettext("Mediation effects"))
+  medEffectsTable <- createJaspTable(title = gettext("Direct and indirect effects"))
   medEffectsTable$dependOn(
     options = "moderationProbes",
     nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
