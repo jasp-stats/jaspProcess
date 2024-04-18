@@ -324,15 +324,19 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       for (v in sourceNodeIntVars) {
         # Set all edges from var interacting with sourceNode to target as isMod
         igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$isMod <- TRUE
+
+        validV <- sourceNodeIntVars[sourceNodeIntVars != v]
+        validV <- validV[paste(v, validV, sep = "__") %in% igraph::V(graph)$name]
+
         # Store unique moderating variables
-        if (length(sourceNodeIntVars[sourceNodeIntVars != v]) > 0) {
+        if (length(validV) > 0) {
           if (any(is.na(igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars))) {
-            igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- sourceNodeIntVars[sourceNodeIntVars != v]
+            igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- validV
           } else {
             igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars <- list(
               unique(c(
                 igraph::E(graph)[source == v & target == igraph::E(graph)$target[i]]$modVars[[1]],
-                sourceNodeIntVars[sourceNodeIntVars != v]
+                validV
               ))
             )
           }
@@ -2337,7 +2341,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       
       for (l in 1:length(target)) {
         # Delete edges from moderators to target variable
-        modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]))
+        modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]) && !igraph::V(graph)[name == v]$isMed)
         
         if (any(modIntVarHasEdgeToTarget)) {
           graph <- igraph::delete_edges(graph,
