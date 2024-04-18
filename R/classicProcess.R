@@ -77,8 +77,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 # Helper function for generic dependencies of all models
 .procGetDependencies <- function() {
   return(c(
-    "dependent", "covariates", "factors", "naAction", "emulation", "estimator", "meanCenteredModeration",
-    "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType"
+    "dependent", "covariates", "factors", "naAction", "emulation", "estimator",
+    "meanCenteredModeration", "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType",
+    "mcmcBurnin", "mcmcSamples", "mcmcChains", "seed", "setSeed", "nuPriorMu",
+    "nuPriorSigma", "betaPriorMu", "betaPriorSigma", "psiPriorAlpha",
+    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta"
   ))
 }
 
@@ -660,7 +663,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (options$meanCenteredModeration) {
     # Only use complete cases for standardization with listwise deletion
     # Otherwise data entered into lavaan is not actually standardized
-    if (options$naAction == "listwise") {
+    if (!is.null(options$naAction) && options$naAction == "listwise") {
       isComplete <- complete.cases(dataset)
     } else {
       isComplete <- !logical(nrow(dataset))
@@ -1614,7 +1617,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (is.null(container[[modelNames[i]]])) {
       modelContainer <- createJaspContainer(title = modelNames[i])
       modelContainer$dependOn(
-        options = c("parameterLabels", "ciLevel"),
+        
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))
       )
       container[[modelNames[i]]] <- modelContainer
@@ -1782,6 +1785,51 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(modProbes)
 }
 
+.procPathMediationEffectsTableHelper <- function(tbl, medEffects) {
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
+
+  # Only use label splits of length > 1 to omit total effects
+  labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
+
+  # Get paths from label of mediation effect
+  medPaths <- lapply(labelSplit, function(path) path[[1]])
+
+  # Get path lengths
+  medPathLengths <- sapply(medPaths, length)
+
+  # Sort paths to incresaing length
+  medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
+  medEffects <- medEffects[medLengthSortIdx, ]
+
+  # Add a column for each step of longest path
+  for (i in 1:max(medPathLengths)) {
+    # If path has step add var name otherwise empty
+    medEffect <- sapply(medPaths[medLengthSortIdx], function(path) ifelse(length(path) >= i, path[i], ""))
+
+    # Add operator columns
+    if (i > 1) {
+      # Add operator for non-empty path steps otherwise empty
+      medOp <- ifelse(medEffect == "", "", "\u2192")
+      tbl$addColumnInfo(name = paste0("op_", i), title = "", type = "string")
+      tbl[[paste0("op_", i)]] <- medOp
+    }
+
+    tbl$addColumnInfo(name = paste0("lhs_", i), title = "", type = "string")
+    tbl[[paste0("lhs_", i)]] <- medEffect
+  }
+
+  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))))
+
+  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medLengthSortIdx], uniqueMods)
+
+  for (mod in uniqueMods) {
+    tbl$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    tbl[[mod]] <- modProbes[[mod]]
+  }
+
+  return(medEffects)
+}
+
 .procPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
   if (!is.null(container[["mediationEffectsTable"]])) return()
 
@@ -1813,46 +1861,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
-
-  # Only use label splits of length > 1 to omit total effects
-  labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
-
-  # Get paths from label of mediation effect
-  medPaths <- lapply(labelSplit, function(path) path[[1]])
-
-  # Get path lengths
-  medPathLengths <- sapply(medPaths, length)
-
-  # Sort paths to incresaing length
-  medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
-  medEffects <- medEffects[medLengthSortIdx, ]
-
-  # Add a column for each step of longest path
-  for (i in 1:max(medPathLengths)) {
-    # If path has step add var name otherwise empty
-    medEffect <- sapply(medPaths[medLengthSortIdx], function(path) ifelse(length(path) >= i, path[i], ""))
-
-    # Add operator columns
-    if (i > 1) {
-      # Add operator for non-empty path steps otherwise empty
-      medOp <- ifelse(medEffect == "", "", "\u2192")
-      medEffectsTable$addColumnInfo(name = paste0("op_", i), title = "", type = "string")
-      medEffectsTable[[paste0("op_", i)]] <- medOp
-    }
-
-    medEffectsTable$addColumnInfo(name = paste0("lhs_", i), title = "", type = "string")
-    medEffectsTable[[paste0("lhs_", i)]] <- medEffect
-  }
-
-  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))))
-
-  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medLengthSortIdx], uniqueMods)
-
-  for (mod in uniqueMods) {
-    medEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
-    medEffectsTable[[mod]] <- modProbes[[mod]]
-  }
+  medEffects <- .procPathMediationEffectsTableHelper(medEffectsTable, medEffects)
 
   # Add column with parameter labels
   if (options$parameterLabels) {
@@ -1860,6 +1869,39 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   .procCoefficientsTable(medEffectsTable, options, medEffects)
+}
+
+.procPathTotalEffectsTableHelper <- function(tbl, medEffects) {
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
+
+  # Only use label splits of length == 1 to get total effects
+  isTotEffect <- sapply(labelSplit, function(path) length(path[[1]])) == 1
+  labelSplit <- labelSplit[isTotEffect]
+
+  # Get paths from label of mediation effect
+  totEffectLabels <- sapply(labelSplit, function(path) path[[1]])
+  totEffects <- medEffects[isTotEffect, ]
+
+  tbl$addColumnInfo(name = "lbl", title = "", type = "string", combine = TRUE)
+  tbl[["lbl"]] <- ifelse(totEffectLabels == "tot", gettext("Total"), gettext("Total indirect"))
+
+  tbl$addColumnInfo(name = "lhs_1", title = "", type = "string")
+  tbl[["lhs_1"]] <- lapply(labelSplit, function(path) path[[2]][1])
+  tbl$addColumnInfo(name = "op", title = "", type = "string")
+  tbl[["op"]] <- rep_len("\u2192", length(totEffectLabels))
+  tbl$addColumnInfo(name = "lhs_2", title = "", type = "string")
+  tbl[["lhs_2"]] <- lapply(labelSplit, function(path) path[[2]][2])
+
+  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-c(1:2)], function(row) row[1]))))
+
+  modProbes <- .procEffectsTablesGetConditionalLabels(lapply(labelSplit, function(path) path[-2]), uniqueMods)
+
+  for (mod in uniqueMods) {
+    tbl$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    tbl[[mod]] <- modProbes[[mod]]
+  }
+
+  return(totEffects)
 }
 
 .procPathTotalEffectsTable <- function(container, options, procResults, modelIdx) {
@@ -1893,34 +1935,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
-
-  # Only use label splits of length > 1 to omit total effects
-  isTotEffect <- sapply(labelSplit, function(path) length(path[[1]])) == 1
-  labelSplit <- labelSplit[isTotEffect]
-
-  # Get paths from label of mediation effect
-  totEffectLabels <- sapply(labelSplit, function(path) path[[1]])
-  totEffects <- medEffects[isTotEffect, ]
-
-  totEffectsTable$addColumnInfo(name = "lbl", title = "", type = "string", combine = TRUE)
-  totEffectsTable[["lbl"]] <- ifelse(totEffectLabels == "tot", gettext("Total"), gettext("Total indirect"))
-
-  totEffectsTable$addColumnInfo(name = "lhs_1", title = "", type = "string")
-  totEffectsTable[["lhs_1"]] <- lapply(labelSplit, function(path) path[[2]][1])
-  totEffectsTable$addColumnInfo(name = "op", title = "", type = "string")
-  totEffectsTable[["op"]] <- rep_len("\u2192", length(totEffectLabels))
-  totEffectsTable$addColumnInfo(name = "lhs_2", title = "", type = "string")
-  totEffectsTable[["lhs_2"]] <- lapply(labelSplit, function(path) path[[2]][2])
-
-  uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-c(1:2)], function(row) row[1]))))
-
-  modProbes <- .procEffectsTablesGetConditionalLabels(lapply(labelSplit, function(path) path[-2]), uniqueMods)
-
-  for (mod in uniqueMods) {
-    totEffectsTable$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
-    totEffectsTable[[mod]] <- modProbes[[mod]]
-  }
+  totEffects <- .procPathTotalEffectsTableHelper(totEffectsTable, medEffects)
 
   # Add column with parameter labels
   if (options$parameterLabels) {
@@ -2242,8 +2257,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       "pathPlotsLegendLabels",
       "pathPlotsLegendColor",
       "pathPlotsLabelLength",
-      "pathPlotsColor",
-      "pathPlotsColorPalette"
+      "useColorPalette",
+      "colorPalette"
     ),
     nestedOptions = list(c("processModels", as.character(modelIdx), "statisticalPathPlot"))
   )
@@ -2499,9 +2514,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 
   # Create function from color palette
-  colorFun <- jaspGraphs::JASPcolors(options[["pathPlotsColorPalette"]], asFunction = TRUE)
+  colorFun <- jaspGraphs::JASPcolors(options[["colorPalette"]], asFunction = TRUE)
 
-  if (options[["pathPlotsColor"]]) {
+  if (options[["useColorPalette"]]) {
     if (type == "conceptual" && any(igraph::V(graph)$isInt)) {
       # Make helper nodes transparent
       colorPalette <- c(colorFun(length(unique(nodeType))-1), "transparent")
