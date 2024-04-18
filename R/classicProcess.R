@@ -2720,7 +2720,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procMeanCenteredModeratorsFootnote <- function() gettext("Moderation effect estimates are based on mean-centered variables.")
 
-.procBootstrappedCiFootnote <- function(txt) gettextf("Confidence intervals are %s bootstrapped.", txt)
+.procBootstrappedCiFootnote <- function(txt) gettextf("Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method.", txt)
 
 .procBootstrapFailedSamplesFootnote <- function(n) gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", n)
 
