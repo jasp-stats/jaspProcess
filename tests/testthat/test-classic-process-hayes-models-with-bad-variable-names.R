@@ -3,31 +3,37 @@
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 1 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Y")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -36,8 +42,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1333.40664843794, 1369.87903104177, 0, "Model 1", 100, -652.70332421897,
-			 1))
+		list(1333.40664843794, 1369.87903104177, 0, "Model 1", 100, 1, -652.70332421897
+			))
 
 
 
@@ -112,31 +118,37 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 1 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "med")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "med")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -145,8 +157,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(608.281967358097, 644.75434996193, 0, "Model 1", 100, -290.140983679048,
-			 1))
+		list(608.281967358097, 644.75434996193, 0, "Model 1", 100, 1, -290.140983679048
+			))
 
 
 
@@ -219,33 +231,39 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 2 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -254,8 +272,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1837.46300634853, 1907.80260137021, 0, "Model 1", 100, -891.731503174267,
-			 2))
+		list(1837.46300634853, 1907.80260137021, 0, "Model 1", 100, 2, -891.731503174267
+			))
 
 
 
@@ -380,33 +398,39 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 2 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -415,8 +439,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1050.43314292912, 1120.7727379508, 0, "Model 1", 100, -498.21657146456,
-			 2))
+		list(1050.43314292912, 1120.7727379508, 0, "Model 1", 100, 2, -498.21657146456
+			))
 
 
 
@@ -533,33 +557,39 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 3 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "Y", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "Y",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -568,8 +598,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(2490.08046840291, 2604.70795658639, 0, "Model 1", 100, -1201.04023420146,
-			 3))
+		list(2490.08046840291, 2604.70795658639, 0, "Model 1", 100, 3, -1201.04023420146
+			))
 
 
 
@@ -724,33 +754,39 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 3 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "med", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "med",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -759,8 +795,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1189.15287476073, 1303.7803629442, 0, "Model 1", 100, -550.576437380364,
-			 3))
+		list(1189.15287476073, 1303.7803629442, 0, "Model 1", 100, 3, -550.576437380364
+			))
 
 
 
@@ -911,31 +947,37 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 4 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "jasp")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "jasp")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -944,8 +986,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(459.709342975141, 483.155874649034, 0, "Model 1", 100, -220.854671487571,
-			 4))
+		list(459.709342975141, 483.155874649034, 0, "Model 1", 100, 4, -220.854671487571
+			))
 
 
 
@@ -1008,31 +1050,37 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 4 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "jasp")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "jasp")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -1041,8 +1089,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(234.766135212086, 258.212666885979, 0, "Model 1", 100, -108.383067606043,
-			 4))
+		list(234.766135212086, 258.212666885979, 0, "Model 1", 100, 4, -108.383067606043
+			))
 
 
 
@@ -1105,39 +1153,45 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 10 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "jasp", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "jasp", processIndependent = "W", 
-            processType = "moderators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "jasp", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "jasp", processIndependent = "W",
+            processType = "moderators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -1146,8 +1200,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1632.07305708222, 1723.2540135918, 0, "Model 1", 100, -781.036528541108,
-			 10))
+		list(1632.07305708222, 1723.2540135918, 0, "Model 1", 100, 10, -781.036528541108
+			))
 
 
 
@@ -1334,39 +1388,45 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 10 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "jasp", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "jasp", processIndependent = "s", 
-            processType = "moderators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "jasp", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "jasp", processIndependent = "s",
+            processType = "moderators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -1375,8 +1435,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(847.472979995417, 938.653936505, 0, "Model 1", 100, -388.736489997709,
-			 10))
+		list(847.472979995417, 938.653936505, 0, "Model 1", 100, 10, -388.736489997709
+			))
 
 
 
@@ -1539,39 +1599,45 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 29 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "jasp", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "moderators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "jasp", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "moderators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -1580,8 +1646,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1434.42423460798, 1546.44655260547, 1, "Model 1", 100, -674.212117303992,
-			 29))
+		list(1434.42423460798, 1546.44655260547, 1, "Model 1", 100, 29, -674.212117303992
+			))
 
 
 
@@ -1782,39 +1848,45 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 29 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "jasp", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "moderators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "jasp", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "moderators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "Z")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -1823,8 +1895,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(652.227166421852, 764.24948441934, 1, "Model 1", 100, -283.113583210926,
-			 29))
+		list(652.227166421852, 764.24948441934, 1, "Model 1", 100, 29, -283.113583210926
+			))
 
 
 
@@ -2002,41 +2074,47 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 82 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "mod"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "mod", 
-            processType = "mediators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "mod"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "mod",
+            processType = "mediators", processVariable = "Y")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -2045,8 +2123,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1919.79936103679, 1990.13895605847, 0, "Model 1", 100, -932.899680518397,
-			 82))
+		list(1919.79936103679, 1990.13895605847, 0, "Model 1", 100, 82, -932.899680518397
+			))
 
 
 
@@ -2154,41 +2232,47 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 82 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "mod"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "mod", 
-            processType = "mediators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "mod"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "mod",
+            processType = "mediators", processVariable = "Y")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -2197,8 +2281,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1694.56540701386, 1764.90500203554, 0, "Model 1", 100, -820.282703506932,
-			 82))
+		list(1694.56540701386, 1764.90500203554, 0, "Model 1", 100, 82, -820.282703506932
+			))
 
 
 
@@ -2305,47 +2389,53 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 92 - continuous works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "jasp", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "Z", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "W", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "Z", processIndependent = "jasp", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "moderators", processVariable = "Y"), 
-        list(processDependent = "M", processIndependent = "Z", 
-            processType = "moderators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "jasp", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "Z", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "W",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "Z", processIndependent = "jasp",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "moderators", processVariable = "Y"),
+        list(processDependent = "M", processIndependent = "Z",
+            processType = "moderators", processVariable = "Y")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -2354,8 +2444,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1430.87654939867, 1542.89886739616, 1, "Model 1", 100, -672.438274699334,
-			 92))
+		list(1430.87654939867, 1542.89886739616, 1, "Model 1", 100, 92, -672.438274699334
+			))
 
 
 
@@ -2515,47 +2605,53 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 92 - factor works with bad variable names", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
-options$dependent <- "M"
-options$covariates <- list("W", "Y", "Z", "jasp", "mod")
-options$factors <- list("s", "med")
-options$statisticalPathPlotsCovariances <- TRUE
-options$statisticalPathPlotsResidualVariances <- TRUE
 options$errorCalculationMethod <- "standard"
 options$naAction <- "fiml"
 options$emulation <- "lavaan"
 options$estimator <- "default"
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$dependent <- "M"
+options$covariates <- list("W", "Y", "Z", "jasp", "mod")
+options$factors <- list("s", "med")
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
+options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsCovariances <- TRUE
+options$statisticalPathPlotsResidualVariances <- TRUE
 options$pathPlotsLegend <- TRUE
+options$pathPlotsLegendLabels <- FALSE
+options$pathPlotsLegendColor <- TRUE
+options$pathPlotsColor <- TRUE
+options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$pathPlotsLabelLength <- 3
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "jasp"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "mediators", processVariable = "Z"), 
-        list(processDependent = "jasp", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "Z", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "s", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "Z", processIndependent = "jasp", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "jasp", 
-            processType = "moderators", processVariable = "med"), 
-        list(processDependent = "M", processIndependent = "Z", 
-            processType = "moderators", processVariable = "med")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "jasp"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "mediators", processVariable = "Z"),
+        list(processDependent = "jasp", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "Z", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "s",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "Z", processIndependent = "jasp",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "jasp",
+            processType = "moderators", processVariable = "med"),
+        list(processDependent = "M", processIndependent = "Z",
+            processType = "moderators", processVariable = "med")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
@@ -2564,8 +2660,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(504.655507907653, 616.677825905141, 1, "Model 1", 100, -209.327753953827,
-			 92))
+		list(504.655507907653, 616.677825905141, 1, "Model 1", 100, 92, -209.327753953827
+			))
 
 
 

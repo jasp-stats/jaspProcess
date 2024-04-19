@@ -28,11 +28,16 @@
   options[["estimator"]] <- "default"
   options[["naAction"]] <- "fiml"
 
+  options[["statisticalPathPlotsParameterEstimates"]] <- TRUE
   options[["statisticalPathPlotsCovariances"]] <- TRUE
   options[["statisticalPathPlotsResidualVariances"]] <- TRUE
-  options[["pathPlotsLegend"]] <- TRUE
-  options[["pathPlotsColor"]] <- TRUE
-  options[["pathPlotsColorPalette"]] <- "colorblind"
+  options[["pathPlotsLegend"]] <-  TRUE
+  options[["pathPlotsLegendLabels"]] <- FALSE
+  options[["pathPlotsLegendColor"]] <- TRUE
+  options[["pathPlotsColor"]] <-  TRUE
+  options[["colorPalette"]] <- "colorblind"
+  options[["pathPlotsColorPalette"]] <-  "colorblind"
+  options[["pathPlotsLabelLength"]] <- 3
 
   options[["processModels"]] <- list(
     list(
