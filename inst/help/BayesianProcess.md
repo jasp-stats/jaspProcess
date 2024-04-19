@@ -36,7 +36,7 @@ Bayesian conditional process models in JASP require all dependent (endogeneous) 
 ---
 #### Assignment Box
 
-- Dependent: The final dependent variable of interest.
+- Dependent: The final dependent variable of interest. It is possible to have additional dependent variables from `Continuous Predictors` but only when setting `InputType` to `Paths` and adding them in the `To` column.
 - Continuous Predictors: Continuous or ordinal predictor variables.
 - Categorical Predictors: Categorical independent predictor variables.
 
@@ -45,7 +45,7 @@ Bayesian conditional process models in JASP require all dependent (endogeneous) 
 This section allows users to specify multiple process models through one of two interfaces. New models can be added by clicking the green `+` button. For each model, the following options are available:
 
 - Input type:
-	- Variables: Models can be specified by adding and specifying paths. Paths indicate causality. For each path, there are four options
+	- Paths: Models can be specified by adding and specifying paths. Paths indicate causality. For each path, there are four options
 		- From: The variable from which the path starts.
 		- To: The variable at which the path ends.
 		- Process Type: The type process influencing the path.
@@ -53,7 +53,7 @@ This section allows users to specify multiple process models through one of two 
 			- Moderator: The path is moderated by a third variable. Adds a direct path from the `Process Variable` and the interaction between the `Process Variable` and `From` to the `To` variable.
 			- Confounder: The path is confounded by a third variable. Adds a direct path from the `Process Variable` both to `From` and `To`.
 			- Direct: Adds a direct path from `From` to `To`.
-	- Model number: Models can be specified by choosing a `Hayes model number` and adding the required variables to assignment boxes.
+	- Hayes configuration: Models can be specified by choosing a `Hayes configuration number` and adding the required variables to assignment boxes.
 		- Independent X: The independent (exogenous) variable.
 		- Mediators M: Mediator variables.
 		- Moderator W: First moderator variable.
@@ -67,18 +67,29 @@ This section allows users to specify multiple process models through one of two 
 
 #### Options
 
+- Prior distributions: Show the prior distributions for path coefficients in the output. The distributions can be modified in the `Advanced` section.
+- Parameter labels: Display the labels of parameter in the output tables. For indirect and direct (total) effects, display the equations for the effects.
+- Lavaan syntax: Show the lavaan syntax used to fit the model in the output.
+- BIC weigths: Show the Schwarz weights in the summary table in the output.
+- Hayes configuration number: Display the configuration number according to Hayes (2022).
 - Burnin: Number of burnin samples drawn for each MCMC chain.
 - Samples: Number of samples drawn for each MCMC chain.
 - Chains: Number of chains in the MCMC algorithm.
 - Repeatability: Seed to exactly reproduce the output.
-- Prior distributions: Show the prior distributions for path coefficients in the output. The distributions can be modified in the `Advanced` section.
-- Parameter labels: Display the labels of parameter in the output tables. For indirect and direct (total) effects, display the equations for the effects.
-- Lavaan syntax: Show the lavaan syntax used to fit the model in the output.
 - Credible intervals: The level of credible intervals in the output tables. Credible intervals are based on quantiles of the posterior samples.
+- Mean-centered moderation: Continuous variables involved in moderation effects are mean-centered before entering the analysis. When `Missing Value Handling` is `Exclude cases listwise`, centering is applied only based on complete cases.
 
 #### Plots
 
 - Color palette: Color palette for plots.
+- Path plots: Options for path plots.
+	- Covariances: Whether to display covariances between variable nodes.
+	- Residual variances: Whether to display residual covariances.
+	- Parameter estimates: Whether to show parameter estimates instead of parameter labels.
+	- Legend:
+		- Whether to display the full node labels in the legend.
+		- Whether to display the color labels in the legend.
+	- Label length: Length of abbreviated node labels.
 - MCMC plots: Options for displaying posterior distributions and MCMC diagnostics.
 	- Aggregate chains for densities and histograms: If checked, the samples of different chains are aggregated in density plots and histograms. If unchecked, there are separate colors per chain.
 	- Density: Show a density plot of the posterior samples.
@@ -90,14 +101,6 @@ This section allows users to specify multiple process models through one of two 
 	- Bivariate scatter: Show a bivariate scatter plot of all pairs of variables. Only shows output when more than 1 parameter is sampled.
 		- Diagonal plot type: Show a density plot or a histogram on the diagonal entries of the scatter plot.
 		- Off-diagonal plot type: Show a hexagonal bivariate density plot, or a contour plot on the off-diagonal entries of the scatter plot.
-- Path plots: Options for path plots.
-	- Covariances: Whether to display covariances between variable nodes.
-	- Residual variances: Whether to display residual covariances.
-	- Parameter estimates: Whether to show parameter estimates instead of parameter labels.
-	- Legend:
-		- Whether to display the full node labels in the legend.
-		- Whether to display the color labels in the legend.
-	- Label length: Length of abbreviated node labels.
 
 #### Advanced
 

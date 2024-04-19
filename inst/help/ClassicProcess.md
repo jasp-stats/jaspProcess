@@ -36,7 +36,7 @@ If the estimation method is maximum likelihood, conditional process models in JA
 ---
 #### Assignment Box
 
-- Dependent: The final dependent variable of interest.
+- Dependent: The final dependent variable of interest. It is possible to have additional dependent variables from `Continuous Predictors` but only when setting `InputType` to `Paths` and adding them in the `To` column.
 - Continuous Predictors: Continuous or ordinal predictor variables.
 - Categorical Predictors: Categorical independent predictor variables.
 
@@ -45,7 +45,7 @@ If the estimation method is maximum likelihood, conditional process models in JA
 This section allows users to specify multiple process models through one of two interfaces. New models can be added by clicking the green `+` button. For each model, the following options are available:
 
 - Input type:
-	- Variables: Models can be specified by adding and specifying paths. Paths indicate causality. For each path, there are four options
+	- Paths: Models can be specified by adding and specifying paths. Paths indicate causality. For each path, there are four options
 		- From: The variable from which the path starts.
 		- To: The variable at which the path ends.
 		- Process Type: The type process influencing the path.
@@ -53,7 +53,7 @@ This section allows users to specify multiple process models through one of two 
 			- Moderator: The path is moderated by a third variable. Adds a direct path from the `Process Variable` and the interaction between the `Process Variable` and `From` to the `To` variable.
 			- Confounder: The path is confounded by a third variable. Adds a direct path from the `Process Variable` both to `From` and `To`.
 			- Direct: Adds a direct path from `From` to `To`.
-	- Model number: Models can be specified by choosing a `Hayes model number` and adding the required variables to assignment boxes.
+	- Hayes configuration: Models can be specified by choosing a `Hayes configuration number` and adding the required variables to assignment boxes.
 		- Independent X: The independent (exogenous) variable.
 		- Mediators M: Mediator variables.
 		- Moderator W: First moderator variable.
@@ -86,6 +86,7 @@ This section allows users to specify multiple process models through one of two 
 - R-squared: Show *R*², the proportion of variation explained in each endogenous (outcome) variable from its predictors, in the output.
 - AIC weights: Show the Akaike weights in the summary table in the output.
 - BIC weigths: Show the Schwarz weights in the summary table in the output.
+- Hayes configuration number: Display the configuration number according to Hayes (2022).
 - Mean-centered moderation: Continuous variables involved in moderation effects are mean-centered before entering the analysis. When `Missing Value Handling` is `Exclude cases listwise`, centering is applied only based on complete cases.
 - Standardized estimates: Adds standardized parameter estimates to the output tables. The standardization is done by multiplying the estimate with (*SD*<sub>X</sub>/*SD*<sub>Y</sub>) where *SD*<sub>X</sub> and *SD*<sub>Y</sub> are the model-implied standard deviations for the independent and dependent variable, respectively. Note that the standardization of estimates of interaction effects is based on the product of the standard deviations of the individual terms and not on the standard deviation of the product term, i.e., (*SD*<sub>X</sub>*SD*<sub>W</sub>/*SD*<sub>Y</sub>) instead of (*SD*<sub>XW</sub>/*SD*<sub>Y</sub>), where *SD*<sub>W</sub> is the model-implied standard deviation of the moderator. The estimates of (conditional) indirect and total effects are also only standardized by (*SD*<sub>X</sub>/*SD*<sub>Y</sub>) but not by standard deviations of mediators or moderators. For effects involving categorical independent variables, estimates are partially standardized, i.e., only multiplied by *SD*<sub>Y</sub>. Conditional effects are probed on the unstandardized scale of moderators. See Cheung and Cheung (2023) for details.
 - Confidence intervals: The level of confidence intervals for parameter estimates in the output tables.
