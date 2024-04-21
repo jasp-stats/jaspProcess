@@ -2,31 +2,14 @@
 
 test_that("Test that single moderation effect matches validated results", {
 
-  options <- jaspTools::analysisOptions("ClassicProcess")
+  options <- getOptionsClassical()
   options$dependent <- "GovernmentAction"
   options$covariates <- list("NegativeEmotion", "Age")
   options$factors <- list()
-  options$standardizedModelEstimates <- TRUE
-  options$statisticalPathPlotsCovariances <- TRUE
-  options$statisticalPathPlotsResidualVariances <- TRUE
-  options$errorCalculationMethod <- "standard"
-  options$naAction <- "fiml"
-  options$emulation <- "lavaan"
-  options$estimator <- "default"
-  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
-      value = "50"), list(probePercentile = 84, value = "84"))
-  options$pathPlotsLegend <- TRUE
-  options$pathPlotsColorPalette <- "colorblind"
-  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = FALSE,
-      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = FALSE, dependentCovariances = FALSE,
-      modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-      modelNumberMediators = list(), modelNumberModeratorW = "",
-      modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-      intercepts = FALSE, processRelationships = list(list(processDependent = "GovernmentAction",
+
+  options$processModels <- list(getProcessModel(list(list(processDependent = "GovernmentAction",
           processIndependent = "NegativeEmotion", processType = "moderators",
-          processVariable = "Age")), residualCovariances = TRUE,
-      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
-      localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+          processVariable = "Age"))))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", test_path("global_warming.csv"), options)
 
@@ -59,35 +42,18 @@ test_that("Test that single moderation effect matches validated results", {
 
 test_that("Test that moderated mediation effect matches validated results", {
 
-  options <- jaspTools::analysisOptions("ClassicProcess")
+  options <- getOptionsClassical()
   options$dependent <- "DonationAttitude"
   options$covariates <- list("Justification", "Skepticism")
   options$factors <- list("Framing")
-  options$standardizedModelEstimates <- TRUE
-  options$statisticalPathPlotsCovariances <- TRUE
-  options$statisticalPathPlotsResidualVariances <- TRUE
-  options$errorCalculationMethod <- "standard"
-  options$naAction <- "fiml"
-  options$emulation <- "lavaan"
-  options$estimator <- "default"
-  options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
-      value = "50"), list(probePercentile = 84, value = "84"))
-  options$pathPlotsLegend <- TRUE
-  options$pathPlotsColorPalette <- "colorblind"
-  options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = FALSE,
-      inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = FALSE, dependentCovariances = FALSE,
-      modelNumber = 1, modelNumberCovariates = list(), modelNumberIndependent = "",
-      modelNumberMediators = list(), modelNumberModeratorW = "",
-      modelNumberModeratorZ = "", name = "Model 1", pathCoefficients = TRUE,
-      intercepts = FALSE, processRelationships = list(list(processDependent = "DonationAttitude",
+
+  options$processModels <- list(getProcessModel(list(list(processDependent = "DonationAttitude",
           processIndependent = "Framing", processType = "mediators",
           processVariable = "Justification"), list(processDependent = "Justification",
           processIndependent = "Framing", processType = "moderators",
           processVariable = "Skepticism"), list(processDependent = "DonationAttitude",
           processIndependent = "Framing", processType = "moderators",
-          processVariable = "Skepticism")), residualCovariances = TRUE,
-      statisticalPathPlot = TRUE, totalEffects = TRUE, localTests = FALSE,
-      localTestType = "cis", localTestBootstrap = FALSE, localTestBootstrapSamples = 1000))
+          processVariable = "Skepticism"))))
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", test_path("climate_change_disasters.csv"), options)
 
