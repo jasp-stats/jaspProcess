@@ -2,7 +2,7 @@
 
 
 test_that("Test that model number 1 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -13,28 +13,28 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -122,7 +122,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 1 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -133,28 +133,28 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -239,7 +239,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 2 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -250,30 +250,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -421,7 +421,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 2 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -432,30 +432,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -592,7 +592,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 3 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -603,30 +603,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -810,7 +810,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 3 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -821,30 +821,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1021,7 +1021,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 4 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1032,28 +1032,28 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1126,7 +1126,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 4 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1137,28 +1137,28 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1233,7 +1233,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 5 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1244,30 +1244,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1369,7 +1369,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 5 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1380,30 +1380,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1501,7 +1501,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 7 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1512,30 +1512,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1644,7 +1644,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 7 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1655,30 +1655,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1781,7 +1781,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 8 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1792,32 +1792,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -1937,7 +1937,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 8 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1948,32 +1948,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -2084,7 +2084,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 9 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2095,32 +2095,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -2309,7 +2309,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 9 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2320,32 +2320,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -2514,7 +2514,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 10 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2525,36 +2525,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -2777,7 +2777,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 10 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2788,36 +2788,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -3011,7 +3011,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 11 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -3022,32 +3022,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -3274,7 +3274,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 11 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -3285,32 +3285,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -3520,7 +3520,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 12 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -3531,36 +3531,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -3826,7 +3826,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 12 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -3837,36 +3837,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -4108,7 +4108,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 13 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -4119,34 +4119,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -4384,7 +4384,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 13 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -4395,34 +4395,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -4641,7 +4641,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 14 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -4652,30 +4652,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -4788,7 +4788,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 14 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -4799,30 +4799,30 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -4931,7 +4931,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 15 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -4942,32 +4942,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -5099,7 +5099,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 15 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -5110,32 +5110,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -5261,7 +5261,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 16 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -5272,32 +5272,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -5495,7 +5495,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 16 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -5506,32 +5506,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -5709,7 +5709,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 17 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -5720,36 +5720,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -6005,7 +6005,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 17 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -6016,36 +6016,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -6277,7 +6277,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 18 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -6288,32 +6288,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -6551,7 +6551,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 18 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -6562,32 +6562,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -6810,7 +6810,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 21 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -6821,32 +6821,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -7042,7 +7042,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 21 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -7053,32 +7053,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -7251,7 +7251,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 22 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -7262,34 +7262,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -7494,7 +7494,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 22 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -7505,34 +7505,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -7713,7 +7713,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 28 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -7724,34 +7724,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -7968,7 +7968,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 28 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -7979,34 +7979,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -8203,7 +8203,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 29 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -8214,36 +8214,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -8482,7 +8482,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 29 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -8493,36 +8493,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -8732,7 +8732,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 58 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -8743,32 +8743,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -8894,7 +8894,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 58 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -8905,32 +8905,32 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -9053,7 +9053,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 59 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -9064,34 +9064,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -9226,7 +9226,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 59 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -9237,34 +9237,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -9393,7 +9393,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 60 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -9404,34 +9404,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -9642,7 +9642,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 60 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -9653,34 +9653,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -9873,7 +9873,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 61 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -9884,36 +9884,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -10132,7 +10132,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 61 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -10143,36 +10143,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -10371,7 +10371,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 62 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -10382,36 +10382,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -10633,7 +10633,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 62 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -10644,36 +10644,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -10877,7 +10877,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 63 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -10888,38 +10888,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -11162,7 +11162,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 63 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -11173,38 +11173,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -11420,7 +11420,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 64 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -11431,34 +11431,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -11673,7 +11673,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 64 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -11684,34 +11684,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -11908,7 +11908,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 65 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -11919,36 +11919,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -12172,7 +12172,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 65 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -12183,36 +12183,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -12414,7 +12414,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 66 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -12425,36 +12425,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -12695,7 +12695,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 66 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -12706,36 +12706,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -12959,7 +12959,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 67 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -12970,38 +12970,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -13261,7 +13261,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 67 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -13272,38 +13272,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -13538,7 +13538,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 68 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -13549,34 +13549,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -13829,7 +13829,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 68 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -13840,34 +13840,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -14107,7 +14107,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 70 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -14118,34 +14118,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -14405,7 +14405,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 70 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -14416,34 +14416,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -14691,7 +14691,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 72 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -14702,36 +14702,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contcor1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "contcor1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -15048,7 +15048,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 72 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -15059,36 +15059,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facExperim", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "facExperim",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -15395,7 +15395,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 75 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -15406,36 +15406,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -15671,7 +15671,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 75 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -15682,36 +15682,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -15928,7 +15928,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 76 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -15939,40 +15939,40 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -16238,7 +16238,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 76 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -16249,40 +16249,40 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "contcor2")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -16520,7 +16520,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 82 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -16531,38 +16531,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debMiss1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debMiss1", 
-            processType = "mediators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debMiss1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debMiss1",
+            processType = "mediators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -16689,7 +16689,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 82 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -16700,38 +16700,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debMiss1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debMiss1", 
-            processType = "mediators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debMiss1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debMiss1",
+            processType = "mediators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -16859,7 +16859,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 83 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -16870,34 +16870,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -17031,7 +17031,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 83 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -17042,34 +17042,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -17193,7 +17193,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 84 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -17204,36 +17204,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contcor2", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contcor2", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -17379,7 +17379,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 84 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -17390,36 +17390,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contcor2", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contcor2", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -17553,7 +17553,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 85 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -17564,38 +17564,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contcor2", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contcor2", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -17752,7 +17752,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 85 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -17763,38 +17763,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contcor2", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contcor2", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -17936,7 +17936,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 86 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -17947,36 +17947,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -18122,7 +18122,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 86 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -18133,36 +18133,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -18294,7 +18294,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 87 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -18305,34 +18305,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -18470,7 +18470,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 87 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -18481,34 +18481,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -18637,7 +18637,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 88 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -18648,36 +18648,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -18838,7 +18838,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 88 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -18849,36 +18849,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -19030,7 +19030,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 89 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -19041,38 +19041,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -19254,7 +19254,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 89 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -19265,38 +19265,38 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -19466,7 +19466,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 90 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -19477,36 +19477,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -19661,7 +19661,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 90 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -19672,36 +19672,36 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -19846,7 +19846,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 91 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -19857,34 +19857,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contcor2", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contcor2", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -20016,7 +20016,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 91 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -20027,34 +20027,34 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contcor2", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contcor2", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -20181,7 +20181,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 92 - continuous works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -20192,44 +20192,44 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contcor2", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contcor2", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contcor2", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contGamma",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contcor2", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "contcor1"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "contcor1")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
@@ -20418,7 +20418,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
 })
 test_that("Test that model number 92 - factor works", {
- 
+
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -20429,44 +20429,44 @@ options$estimator <- "default"
 options$dependent <- "contNormal"
 options$covariates <- list("contGamma", "contcor1", "contcor2", "debCollin1", "debMiss1")
 options$factors <- list("facGender", "facExperim")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
     value = "50"), list(probePercentile = 84, value = "84"))
-options$statisticalPathPlotsParameterEstimates <- TRUE
+options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
-options$pathPlotsLegend <- TRUE
+options$pathPlotsLegend <- FALSE
 options$pathPlotsLegendLabels <- FALSE
-options$pathPlotsLegendColor <- TRUE
+options$pathPlotsLegendColor <- FALSE
 options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
-    modelNumberIndependent = "", modelNumberMediators = list(), 
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
+    modelNumberIndependent = "", modelNumberMediators = list(),
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contcor2", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contcor2", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
-            processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
-            processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "debCollin1"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "mediators", processVariable = "contcor2"),
+        list(processDependent = "debCollin1", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contcor2", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "facGender",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contcor2", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "debCollin1",
+            processType = "moderators", processVariable = "facExperim"),
+        list(processDependent = "contNormal", processIndependent = "contcor2",
+            processType = "moderators", processVariable = "facExperim")),
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
 results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
