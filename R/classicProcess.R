@@ -2245,7 +2245,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   procPathPlot <- createJaspPlot(title = gettext("Conceptual path plot"), height = 480, width = 480)
   procPathPlot$dependOn(
-    options = c("pathPlotsLegendLabels", "pathPlotsLegendColor", "pathPlotsLabelLength", "pathPlotsColor", "pathPlotsColorPalette"),
+    options = c("pathPlotsLegendLabels", "pathPlotsLegendColor", "pathPlotsLabelLength", "useColorPalette", "colorPalette"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "conceptualPathPlot"))
   )
   container[["conceptPathPlot"]] <- procPathPlot
