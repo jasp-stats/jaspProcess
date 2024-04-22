@@ -243,26 +243,30 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   logLikResults <- lapply(procResults, .procBayesCalcModelCaseLogLik)
 
+  # Try to calc loo, will fail if LL contains NAs
   looResults <- mapply(function(mod, ll) {
-    rEff <- .procBayesCalcRelEff(mod, ll)
-    return(loo::loo(ll, r_eff = rEff))
+    rEff <- try(.procBayesCalcRelEff(mod, ll), silent = TRUE)
+    return(try(loo::loo(ll, r_eff = rEff), silent = TRUE))
   }, mod = procResults, ll = logLikResults, SIMPLIFY = FALSE)
 
   names(looResults) <- modelNames[tableRowIsValid]
 
-  waicResults <- lapply(logLikResults, loo::waic)
+  # Check if loo is error to filter out from table
+  looIsValid <- !sapply(looResults, jaspBase:::isTryError)
 
-  if (length(looResults) > 1) {
+  waicResults <- lapply(logLikResults, function(mod) try(loo::waic(mod)))
+
+  if (length(looResults[looIsValid]) > 1) {
     ovtDiff <- gettext("LOO Difference")
 
     summaryTable$addColumnInfo(name = "elpdDiff", title = gettext("ELPD"), type = "number", overtitle = ovtDiff)
     summaryTable$addColumnInfo(name = "seDiff", title = gettext("SE"), type = "number", overtitle = ovtDiff)
     summaryTable$addColumnInfo(name = "ratioDiff", title = gettext("Ratio"), type = "number", overtitle = ovtDiff)
 
-    looCompare <- loo::loo_compare(looResults)
+    looCompare <- loo::loo_compare(looResults[looIsValid])
 
-    elpdDiff <- looCompare[match(names(looResults), row.names(looCompare)), "elpd_diff"]
-    seDiff <- looCompare[match(names(looResults), row.names(looCompare)), "se_diff"]
+    elpdDiff <- looCompare[match(names(looResults)[looIsValid], row.names(looCompare)), "elpd_diff"]
+    seDiff <- looCompare[match(names(looResults)[looIsValid], row.names(looCompare)), "se_diff"]
     ratioDiff <- abs(elpdDiff / seDiff)
     ratioDiff[!is.finite(ratioDiff)] <- NA
 
@@ -271,14 +275,14 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     summaryTable[["ratioDiff"]] <- ratioDiff
   }
 
-  isBadWaic <- sapply(waicResults, function(mod) sum(mod$pointwise[, 2] > 0.4))
-  isBadLoo <- sapply(looResults, function(mod) length(loo::pareto_k_ids(mod, threshold = 0.7)))
+  isBadWaic <- sapply(waicResults[looIsValid], function(mod) sum(mod$pointwise[, 2] > 0.4))
+  isBadLoo <- sapply(looResults[looIsValid], function(mod) length(loo::pareto_k_ids(mod, threshold = 0.7)))
 
   if (any(isBadWaic)) {
     summaryTable$addFootnote(
       message = gettext("Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."),
       colNames = "waicEst",
-      rowNames = names(looResults)[isBadWaic]
+      rowNames = names(looResults)[looIsValid][isBadWaic]
     )
   }
 
@@ -286,14 +290,24 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     summaryTable$addFootnote(
       message = gettext("Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."),
       colNames = "looEst",
-      rowNames = names(looResults)[isBadLoo]
+      rowNames = names(looResults)[looIsValid][isBadLoo]
     )
   }
 
-  summaryTable[["waicEst"]] <- sapply(waicResults, function(mod) mod$estimates["waic", "Estimate"])
-  summaryTable[["waicSE"]] <- sapply(waicResults, function(mod) mod$estimates["waic", "SE"])
-  summaryTable[["looEst"]] <- sapply(looResults, function(mod) mod$estimates["looic", "Estimate"])
-  summaryTable[["looSE"]] <- sapply(looResults, function(mod) mod$estimates["looic", "SE"])
+  if (any(!looIsValid)) {
+    summaryTable$addFootnote(
+      message = gettext("WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."),
+      colNames = "Model",
+      rowNames = names(looResults)[!looIsValid]
+    )
+  }
+
+  if (any(looIsValid)) {
+    summaryTable[["waicEst"]][looIsValid] <- sapply(waicResults[looIsValid], function(mod) mod$estimates["waic", "Estimate"])
+    summaryTable[["waicSE"]][looIsValid] <- sapply(waicResults[looIsValid], function(mod) mod$estimates["waic", "SE"])
+    summaryTable[["looEst"]][looIsValid] <- sapply(looResults[looIsValid], function(mod) mod$estimates["looic", "Estimate"])
+    summaryTable[["looSE"]][looIsValid] <- sapply(looResults[looIsValid], function(mod) mod$estimates["looic", "SE"])
+  }
 
   summaryTable$addColumnInfo(name = "N", title = gettext("n"), type = "integer")
 
@@ -367,8 +381,16 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     includePars <- parTable$lhs
   }
 
+  # Check which parameters are estimated
+  isEstimated <- parTable$start != parTable$est
+
+  parStatsNames <- c("mean", "median", "sd", "ci.lower", "ci.upper", "Rhat", "Bulk_ESS", "Tail_ESS")
+
+  # Create empty data frame
+  parStats <- data.frame(matrix(ncol = length(parStatsNames), nrow = nrow(parTable)))
+
   # Suppress console output
-  invisible(capture.output(parStats <- as.data.frame(
+  invisible(capture.output(parStats[isEstimated, ] <- as.data.frame(
     rstan::monitor(
       as.array(stanFit)[, , na.omit(includePars), drop = FALSE],
       probs = c(0.5, ci), # also compute median
@@ -377,8 +399,11 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     )
   )[, c("mean", "50%", "sd", ciNames, "Rhat", "Bulk_ESS", "Tail_ESS")]))
 
-  names(parStats) <- c("mean", "median", "sd", "ci.lower", "ci.upper", "Rhat", "Bulk_ESS", "Tail_ESS")
-  
+  names(parStats) <- parStatsNames
+
+  # For not-estimated pars, fill mean, median with data estimate, and SD with zero
+  parStats[!isEstimated, 1:3] <- cbind(parTable[!isEstimated, c("est", "est")], rep(0, sum(!isEstimated)))
+
   # Add prior dist to output
   return(cbind(parStats, prior = parTable$prior))
 }
@@ -387,13 +412,13 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   divIterations <- rstan::get_num_divergent(stanFit)
   lowBmfi       <- rstan::get_low_bfmi_chains(stanFit)
   maxTreedepth  <- rstan::get_num_max_treedepth(stanFit)
-  minBulkESS    <- min(parStats[, "Bulk_ESS"])
-  minTailESS    <- min(parStats[, "Tail_ESS"])
+  minBulkESS    <- min(parStats[, "Bulk_ESS"], na.rm = TRUE)
+  minTailESS    <- min(parStats[, "Tail_ESS"], na.rm = TRUE)
 
   if (any(is.infinite(parStats[, "Rhat"])))
     maxRhat     <- Inf
   else
-    maxRhat     <- max(parStats[, "Rhat"])
+    maxRhat     <- max(parStats[, "Rhat"], na.rm = TRUE)
 
   symbol <- gettext("Warning:")
 
