@@ -280,7 +280,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(isBadWaic)) {
     summaryTable$addFootnote(
-      message = gettext("Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."),
+      message = .procBayesBadWaicFootnote(),
       colNames = "waicEst",
       rowNames = names(looResults)[looIsValid][isBadWaic]
     )
@@ -288,7 +288,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(isBadLoo)) {
     summaryTable$addFootnote(
-      message = gettext("Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."),
+      message = .procBayesBadLooFootnote(),
       colNames = "looEst",
       rowNames = names(looResults)[looIsValid][isBadLoo]
     )
@@ -296,7 +296,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (any(!looIsValid)) {
     summaryTable$addFootnote(
-      message = gettext("WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."),
+      message = .procBayesMissingCovFootnote(),
       colNames = "Model",
       rowNames = names(looResults)[!looIsValid]
     )
@@ -660,6 +660,12 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 # Footnotes ----
+
+.procBayesBadWaicFootnote <- function() gettext("Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead.")
+
+.procBayesBadLooFootnote <- function() gettext("Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5.")
+
+.procBayesMissingCovFootnote <- function() gettext("WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data.")
 
 .procBayesDivergentTransitionsFootnote <- function(n) gettextf("Estimates might be biased -- %i divergent transitions after warmup.", n)
 

@@ -2719,7 +2719,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procDagMsg <- function() gettext("Model must be a directed acyclic graph -- it must not contain loops.")
 
-.procHayesModelMsg <- function(modelName, modelNumber) gettextf("%1$s: Hayes model %2$s not implemented", modelName, modelNumber)
+.procHayesModelMsg <- function(modelName, modelNumber) gettextf("%1$s: Hayes configuration %2$s not implemented", modelName, modelNumber)
 
 .procEstimationMsg <- function(graph) gettextf("Estimation failed: %s", jaspBase::.extractErrorMessage(graph))
 
