@@ -632,7 +632,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     # Names of parameters in MCMC output
     mcmcParams <- parTbl[, "pxnames"]
     # Names of parameters to display
-    dispParams <- paste(parTbl$rhs, ifelse(parTbl$op == "~", "\u2192", "\u2194"), parTbl$lhs)
+    dispParams <- paste(gsub("__", ":", parTbl$rhs), ifelse(parTbl$op == "~", "\u2192", "\u2194"), gsub("__", ":", parTbl$lhs))
     # Get MCMC samples
     mcmcArray <- as.array(procResults[[i]]@external$mcmcout)
     # Replace parameter names
