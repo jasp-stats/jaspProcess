@@ -2056,6 +2056,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   # Only test variables in dataset that are part of model
   dataset <- dataset[procResults@Data@ov$name]
+  # Exclude completely empty rows because dagitty cannot handle them
+  dataset <- dataset[!apply(dataset, 1, function(x) all(is.na(x))),]
 
   if (!procResults@Fit@converged) {
     localTestTable$addFootnote(gettext("Model did not converge."))
