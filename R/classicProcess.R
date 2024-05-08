@@ -1109,8 +1109,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   allTotEffects <- list()
   allTotIndEffects <- list()
 
+  # Check if any treatment vars, otherwise take first exo
+  if (sum(igraph::V(graph)$isTreat) > 0) {
+    trtVars <- igraph::V(graph)[isTreat]$name
+  } else {
+    trtVars <- igraph::V(graph)[isExo]$name[1]
+  }
   # Iterate over all combinations of treatment and dependent variables
-  for (trt in igraph::V(graph)[isTreat]$name) {
+  for (trt in trtVars) {
     for (dep in igraph::V(graph)[isDep]$name) {
       # Get all simple paths from X to Y
       medPaths <- igraph::all_simple_paths(graph,
@@ -1447,8 +1453,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modW        <- if (length(moderators) > 0)  moderators[1] else ""
   # Second moderator is Z
   modZ        <- if (length(moderators) > 1)  moderators[2] else ""
-  # First treatment term is independent
-  independent <- igraph::V(graph)[isTreat]$name[1]
+  # First treatment term is independent, take first exo if no treatment
+  if (sum(igraph::V(graph)$isTreat) > 0) {
+    independent <- igraph::V(graph)[isTreat]$name[1]
+  } else {
+    independent <- igraph::V(graph)[isExo]$name[1]
+  }
   
   # Create model options dummy object
   modelOptions <- list(
@@ -2305,12 +2315,16 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::V(graph)$posX <- NA
   igraph::V(graph)$posY <- NA
 
-  # Calc pos of treat nodes
-  igraph::V(graph)[isTreat]$posX <- 0
-  igraph::V(graph)[isTreat]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isTreat))
-  
-  # Set y pos of first treat node to 0
-  igraph::V(graph)[isTreat]$posY[1] <- 0
+  # Calc pos of treat nodes, if not treats take first exo
+  if (sum(igraph::V(graph)$isTreat) > 0) {
+    igraph::V(graph)[isTreat]$posX <- 0
+    igraph::V(graph)[isTreat]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isTreat))
+    # Set y pos of first treat node to 0
+    igraph::V(graph)[isTreat]$posY[1] <- 0
+  } else {
+    igraph::V(graph)[isExo]$posX[1] <- 0
+    igraph::V(graph)[isExo]$posY[1] <- 0
+  }
 
   igraph::V(graph)[isDep]$posX <- 1
   igraph::V(graph)[isDep]$posY <- .procMainGraphLayoutPosHelper(1:sum(igraph::V(graph)$isDep))
@@ -2324,9 +2338,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   graph <- .procMainGraphLayout(graph)
 
   # Get all simple paths (each node only visited once) from exo nodes to dep var node
+  if (sum(igraph::V(graph)$isTreat) > 0) {
+    sourceNode <- igraph::V(graph)[isTreat]$name[1]
+  } else {
+    sourceNode <- igraph::V(graph)[isExo]$name[1]
+  }
+
   medPaths <- igraph::all_simple_paths(
     graph,
-    from = igraph::V(graph)[isTreat]$name[1],
+    from = sourceNode,
     to = igraph::V(graph)[isDep]$name,
     mode = "out"
   )
@@ -2373,7 +2393,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       
       for (l in 1:length(target)) {
         # Delete edges from moderators to target variable
-        modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]) && !igraph::V(graph)[name == v]$isMed)
+        modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]) &&
+          # Don't delete if moderator is mediator
+          !igraph::V(graph)[name == v]$isMed && 
+          # Don't delete if moderator has edge to independent variable
+          !igraph::are_adjacent(graph, v, modIntVars[[1]])
+        )
         
         if (any(modIntVarHasEdgeToTarget)) {
           graph <- igraph::delete_edges(graph,

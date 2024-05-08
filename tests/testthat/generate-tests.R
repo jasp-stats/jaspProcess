@@ -112,6 +112,34 @@ customModels <- list(
       processType = "confounders",
       processVariable = "Z"
     )
+  ),
+  "mediator_is_moderator" = list(
+    list(
+      processDependent = "Y",
+      processIndependent = "W",
+      processType = "mediators",
+      processVariable = "M"
+    ),
+    list(
+      processDependent = "Y",
+      processIndependent = "W",
+      processType = "moderators",
+      processVariable = "M"
+    )
+  ),
+  "independent_is_moderator" = list(
+    list(
+      processDependent = "Y",
+      processIndependent = "W",
+      processType = "mediators",
+      processVariable = "M"
+    ),
+    list(
+      processDependent = "Y",
+      processIndependent = "M",
+      processType = "moderators",
+      processVariable = "W"
+    )
   )
 )
 
