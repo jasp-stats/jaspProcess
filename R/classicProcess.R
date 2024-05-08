@@ -469,7 +469,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procReadData <- function(options) {
   # Read in selected variables from dataset
   dataset <- .readDataSetToEnd(
-    columns = c(options[['dependent']], options[['covariates']]),
+    columns.as.numeric = c(options[['dependent']], options[['covariates']]),
     columns.as.factor = options[['factors']]
   )
 
