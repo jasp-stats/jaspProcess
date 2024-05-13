@@ -1401,3 +1401,23 @@ test_that("Directed acyclic graph error message works", {
   msg <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["error"]][["errorMessage"]]
   expect_equal(msg, refMsg)
 })
+
+test_that("Incomplete Hayes configuration works", {
+  modelNumber <- 5
+  options <- getOptionsClassical()
+  options$standardizedModelEstimates <- FALSE
+  options$processModels <- list(getProcessModel(list()))
+  options$processModels[[1]]$inputType <- "inputModelNumber"
+  options$processModels[[1]]$modelNumber <- 5
+  options$processModels[[1]]$localTests <- TRUE
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+
+  plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
+	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+	jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot-incomplete")
+
+	plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
+	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+	jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-incomplete")
+})

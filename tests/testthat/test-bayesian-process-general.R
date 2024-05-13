@@ -80,3 +80,23 @@ test_that("Missing values work without independent covariances", {
 			 "debMiss1", "debMiss80", 2.83446089538845e-05, 2.83446088828221e-05,
 			 "<unicode>", 1.47813384110761, 1.25333611660017e-12, 20))
 })
+
+test_that("Incomplete Hayes configuration works", {
+  modelNumber <- 5
+  options <- getOptionsBayesian()
+  options$standardizedModelEstimates <- FALSE
+  options$processModels <- list(getProcessModel(list()))
+  options$processModels[[1]]$inputType <- "inputModelNumber"
+  options$processModels[[1]]$modelNumber <- 5
+  options$processModels[[1]]$localTests <- TRUE
+  set.seed(1)
+  results <- jaspTools::runAnalysis("BayesianProcess", "debug", options)
+
+  plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
+	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+	jaspTools::expect_equal_plots(testPlot, "conceptual-path-plot-incomplete")
+
+	plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_statPathPlot"]][["data"]]
+	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+	jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-incomplete")
+})
