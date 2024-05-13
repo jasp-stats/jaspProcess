@@ -118,26 +118,38 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (!doFit) {
     dataset <- NULL
+
+    # We need to build the model with lavaan because blavaan does not accept do.fit
+    # This is okay because we only need model structure for plotting but no estimates
+    fittedModel <- try(lavaan::sem(
+      model           = container[["syntax"]]$object,
+      data            = dataset,
+      se              = "none",
+      fixed.x         = !modelOptions$independentCovariances,
+      auto.cov.y      = FALSE,
+      meanstructure   = modelOptions$intercepts,
+      do.fit          = doFit
+    ))
+  } else {
+    # Necessary for JASP to find function blavaan
+    blavaan <- blavaan::blavaan
+
+    # Suppress console output
+    invisible(capture.output(fittedModel <- try(blavaan::bsem(
+      model           = container[["syntax"]]$object,
+      data            = dataset,
+      n.chains        = options$mcmcChains,
+      burnin          = options$mcmcBurnin,
+      sample          = options$mcmcSamples,
+      # do.fit          = doFit, # do.fit argument does not work in blavaan
+      target          = "stan",
+      dp              = .procBayesGetPriors(options),
+      seed            = .getSeedJASP(options),
+      fixed.x         = !modelOptions$independentCovariances,
+      auto.cov.y      = FALSE,
+      meanstructure   = modelOptions$intercepts
+    ))))
   }
-
-  # Necessary for JASP to find function blavaan
-  blavaan <- blavaan::blavaan
-
-  # Suppress console output
-  invisible(capture.output(fittedModel <- try(blavaan::bsem(
-    model           = container[["syntax"]]$object,
-    data            = dataset,
-    n.chains        = options$mcmcChains,
-    burnin          = options$mcmcBurnin,
-    sample          = options$mcmcSamples,
-    do.fit          = doFit,
-    target          = "stan",
-    dp              = .procBayesGetPriors(options),
-    seed            = .getSeedJASP(options),
-    fixed.x         = !modelOptions$independentCovariances,
-    auto.cov.y      = FALSE,
-    meanstructure   = modelOptions$intercepts
-  ))))
   
   if (jaspBase::isTryError(fittedModel)) {
     return(.procLavaanMsg(fittedModel))
