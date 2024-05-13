@@ -2517,7 +2517,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     .procDecodeVarNames(nodeLabels),
     minlength = options[["pathPlotsLabelLength"]]
   )
-
+  
   # Get edge labels for statistical plot
   if (type == "conceptual") {
     edgeLabels <- ""
@@ -2684,13 +2684,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     nodeLabelUnique <- unique(nodeLabels[!is.na(igraph::V(graph)$posX)])
     nodeLabelUnique[nodeLabelUnique == ""] <- NA
     nodeLabelUniqueSorted <- sort(nodeLabelUnique, index.return = TRUE)
+
     # Add legend for label abbreviations by manually overiding dummy alpha variable
     p <- p + ggplot2::scale_alpha_manual(
       name = "",
       na.translate = FALSE,
       # Make all labels fully visible
       values = rep(1, length(nodeLabelUnique)),
-      limits = abbreviate(.procDecodeVarNames(sort(nodeLabelUnique)), minlength = 15),
+      limits = .procDecodeVarNames(sort(nodeLabelUnique)),
       guide = ggplot2::guide_legend(
         # Sort abbreviated labels according to sort index of full labels
         override.aes = list(
