@@ -484,8 +484,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelName <- modelOptions[["name"]]
     graph <- modelsContainer[[modelName]][["graph"]]$object
 
-    # Skip if syntax hasn't changed, no need to add dummy and int variables again
-    if (!.procCheckFitModel(graph) || !is.null(modelsContainer[[modelName]][["syntax"]])) next
+    # Do not add dummy and interaction vars ONLY if model is not fitted
+    # We need these vars for local tests etc later
+    if (!.procCheckFitModel(graph)) next
 
     # Get all predictor vars
     sourceVars <- unique(igraph::E(graph)$source)
@@ -2063,7 +2064,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   container[["localTestTable"]] <- localTestTable
   
   if (!.procIsValidModel(container, procResults)) return()
-
   # Only test variables in dataset that are part of model
   dataset <- dataset[procResults@Data@ov$name]
   # Exclude completely empty rows because dagitty cannot handle them
