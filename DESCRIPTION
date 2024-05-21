@@ -17,7 +17,8 @@ Imports:
   grid,
   jaspBase,
   jaspGraphs,
-  jaspJags
+  jaspJags,
+  runjags(>= 2.0.4-3)
 Suggests:
   testthat
 Remotes:
