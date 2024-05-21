@@ -52,6 +52,8 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     .procModelSyntax(jaspResults, options)
     # Fit lavaan models based on syntax and dataset and update models container
     modelsContainer <- .procBayesComputeResults(jaspResults, dataset, options)
+    # Add parameter estimates from fitted models to graphs
+    .procGraphAddEstimates(modelsContainer, options)
     # Create container for path plots for each model
     pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
     # Create path plots for each model and add to container
@@ -153,11 +155,6 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   
   if (jaspBase::isTryError(fittedModel)) {
     return(.procLavaanMsg(fittedModel))
-  }
-
-  if (doFit) {
-    container[["graph"]]$object <- .procGraphAddEstimates(container[["graph"]]$object, fittedModel)
-    container[["resCovGraph"]]$object <- .procGraphAddEstimates(container[["resCovGraph"]]$object, fittedModel, type = "variances")
   }
 
   return(fittedModel)

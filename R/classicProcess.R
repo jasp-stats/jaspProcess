@@ -51,6 +51,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     .procModelSyntax(jaspResults, options)
     # Fit lavaan models based on syntax and dataset and update models container
     modelsContainer <- .procComputeResults(jaspResults, dataset, options)
+    # Add parameter estimates from fitted models to graphs
+    .procGraphAddEstimates(modelsContainer, options)
     # Create container for path plots for each model
     pathPlotContainer <- .procContainerPathPlots(jaspResults, options)
     # Create path plots for each model and add to container
@@ -598,10 +600,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     
     if (!.procCheckGraph(graph)) next
 
-    if (is.null(modelsContainer[[modelName]][["syntax"]])) {
-      graph <- .procGraphAddParNamesSingleModel(graph)
-      modelsContainer[[modelName]][["graph"]]$object <- graph
-    }
+    graph <- .procGraphAddParNamesSingleModel(graph)
+    modelsContainer[[modelName]][["graph"]]$object <- graph
   }
 }
 
@@ -1222,25 +1222,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(allSourcesValid && allTargetsValid)
 }
 
-.procGraphAddEstimates <- function(graph, fittedModel, type = "effects") {
-  parTbl <- lavaan::parameterTable(fittedModel)
-  if (type == "effects") {
-    est <- parTbl[parTbl$op == "~", ]
-  } else {
-    est <- parTbl[parTbl$op == "~~", ]
-  }
-
-  igraph::E(graph)$parEst <- NA
-  
-  for (i in 1:nrow(est)) {
-    if (all(c(est$rhs[i], est$lhs[i]) %in% igraph::V(graph)$name)) {
-      igraph::E(graph)[est$rhs[i] %--% est$lhs[i]]$parEst <- est$est[i]
-    }
-  }
-
-  return(graph)
-}
-
 .procStandardizedEstimates <- function(fittedModel, options) {
   # Gets standardized estimates with appropriate interaction terms
   # Note that we don't use lavaan::standardizedSolution: 
@@ -1369,8 +1350,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (options$errorCalculationMethod == "bootstrap") {
       fittedModel <- .procBootstrap(fittedModel, options$bootstrapSamples)
     }
-    container[["graph"]]$object <- .procGraphAddEstimates(container[["graph"]]$object, fittedModel)
-    container[["resCovGraph"]]$object <- .procGraphAddEstimates(container[["resCovGraph"]]$object, fittedModel, type = "variances")
   }
 
   return(fittedModel)
@@ -1418,6 +1397,40 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 
   return(modelsContainer)
+}
+
+.procGraphAddEstimatesSingleModel <- function(graph, fittedModel, type = "effects") {
+  parTbl <- lavaan::parameterTable(fittedModel)
+  if (type == "effects") {
+    est <- parTbl[parTbl$op == "~", ]
+  } else {
+    est <- parTbl[parTbl$op == "~~", ]
+  }
+
+  igraph::E(graph)$parEst <- NA
+  
+  for (i in 1:nrow(est)) {
+    if (all(c(est$rhs[i], est$lhs[i]) %in% igraph::V(graph)$name)) {
+      igraph::E(graph)[est$rhs[i] %--% est$lhs[i]]$parEst <- est$est[i]
+    }
+  }
+
+  return(graph)
+}
+
+.procGraphAddEstimates <- function(modelsContainer, options) {
+  nModels <- length(options[["processModels"]])
+
+  for (i in 1:nModels) {
+    modelOptions <- options[["processModels"]][[i]]
+    modelName <- modelOptions[["name"]]
+
+    if (!is.null(modelsContainer[[modelName]][["fittedModel"]]) && !is.null(modelsContainer[[modelName]][["graph"]]$object)) {
+      fittedModel <- modelsContainer[[modelName]][["fittedModel"]]$object
+      modelsContainer[[modelName]][["graph"]]$object <- .procGraphAddEstimatesSingleModel(modelsContainer[[modelName]][["graph"]]$object, fittedModel)
+      modelsContainer[[modelName]][["resCovGraph"]]$object <- .procGraphAddEstimatesSingleModel(modelsContainer[[modelName]][["resCovGraph"]]$object, fittedModel, type = "variances")
+    }
+  }
 }
 
 # Output functions ----
