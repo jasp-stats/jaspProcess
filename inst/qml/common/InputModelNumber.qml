@@ -34,7 +34,7 @@ Group
 	}
 	VariablesForm
 	{
-		preferredWidth: adjustedWidth
+		implicitWidth: adjustedWidth
 
 		AvailableVariablesList
 		{
