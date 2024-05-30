@@ -27,7 +27,7 @@ VariablesForm
 	{
 		name:				"dependent"
 		title:				qsTr("Dependent Variable")
-		suggestedColumns:	["scale"]
+		allowedColumns:		["ordinal", "scale"]
 		singleVariable:		true
 	}
 	AssignedVariablesList
