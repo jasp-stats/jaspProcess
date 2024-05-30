@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.3.3",
+    "Version": "4.4.0",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -9,6 +9,16 @@
     ]
   },
   "Packages": {
+    "BH": {
+      "Package": "BH",
+      "Version": "1.84.0-0",
+      "Source": "Repository"
+    },
+    "CompQuadForm": {
+      "Package": "CompQuadForm",
+      "Version": "1.4.3",
+      "Source": "Repository"
+    },
     "Formula": {
       "Package": "Formula",
       "Version": "1.2-5",
@@ -16,7 +26,12 @@
     },
     "Hmisc": {
       "Package": "Hmisc",
-      "Version": "5.1-2",
+      "Version": "5.1-3",
+      "Source": "Repository"
+    },
+    "QuickJSR": {
+      "Package": "QuickJSR",
+      "Version": "1.1.3",
       "Source": "Repository"
     },
     "R6": {
@@ -36,12 +51,22 @@
     },
     "RcppArmadillo": {
       "Package": "RcppArmadillo",
-      "Version": "0.12.8.2.1",
+      "Version": "0.12.8.3.0",
       "Source": "Repository"
     },
     "RcppEigen": {
       "Package": "RcppEigen",
       "Version": "0.3.4.0.0",
+      "Source": "Repository"
+    },
+    "RcppParallel": {
+      "Package": "RcppParallel",
+      "Version": "5.1.7",
+      "Source": "Repository"
+    },
+    "StanHeaders": {
+      "Package": "StanHeaders",
+      "Version": "2.32.8",
       "Source": "Repository"
     },
     "V8": {
@@ -61,13 +86,29 @@
     },
     "backports": {
       "Package": "backports",
-      "Version": "1.4.1",
+      "Version": "1.5.0",
       "Source": "Repository"
     },
     "base64enc": {
       "Package": "base64enc",
       "Version": "0.1-3",
       "Source": "Repository"
+    },
+    "bayesplot": {
+      "Package": "bayesplot",
+      "Version": "1.11.1",
+      "Source": "Repository"
+    },
+    "blavaan": {
+      "Package": "blavaan",
+      "Version": "0.5-2",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "nlesc-jasp-projects",
+      "RemoteRepo": "blavaan",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "964b6970d812c515990814b2780dd89d35755c9a"
     },
     "bslib": {
       "Package": "bslib",
@@ -76,7 +117,7 @@
     },
     "cachem": {
       "Package": "cachem",
-      "Version": "1.0.8",
+      "Version": "1.1.0",
       "Source": "Repository"
     },
     "callr": {
@@ -92,6 +133,11 @@
     "cli": {
       "Package": "cli",
       "Version": "3.6.2",
+      "Source": "Repository"
+    },
+    "coda": {
+      "Package": "coda",
+      "Version": "0.19-4.1",
       "Source": "Repository"
     },
     "colorspace": {
@@ -149,6 +195,11 @@
       "Version": "0.6.35",
       "Source": "Repository"
     },
+    "distributional": {
+      "Package": "distributional",
+      "Version": "0.4.0",
+      "Source": "Repository"
+    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",
@@ -166,12 +217,12 @@
     },
     "farver": {
       "Package": "farver",
-      "Version": "2.1.1",
+      "Version": "2.1.2",
       "Source": "Repository"
     },
     "fastmap": {
       "Package": "fastmap",
-      "Version": "1.1.1",
+      "Version": "1.2.0",
       "Source": "Repository"
     },
     "fdrtool": {
@@ -201,7 +252,17 @@
     },
     "fs": {
       "Package": "fs",
-      "Version": "1.6.3",
+      "Version": "1.6.4",
+      "Source": "Repository"
+    },
+    "future": {
+      "Package": "future",
+      "Version": "1.33.2",
+      "Source": "Repository"
+    },
+    "future.apply": {
+      "Package": "future.apply",
+      "Version": "1.11.2",
       "Source": "Repository"
     },
     "gdtools": {
@@ -226,7 +287,7 @@
     },
     "ggplot2": {
       "Package": "ggplot2",
-      "Version": "3.5.0",
+      "Version": "3.5.1",
       "Source": "Repository"
     },
     "ggraph": {
@@ -239,9 +300,24 @@
       "Version": "0.9.5",
       "Source": "Repository"
     },
+    "ggridges": {
+      "Package": "ggridges",
+      "Version": "0.5.6",
+      "Source": "Repository"
+    },
+    "ggtext": {
+      "Package": "ggtext",
+      "Version": "0.1.2",
+      "Source": "Repository"
+    },
     "glasso": {
       "Package": "glasso",
       "Version": "1.11",
+      "Source": "Repository"
+    },
+    "globals": {
+      "Package": "globals",
+      "Version": "0.16.3",
       "Source": "Repository"
     },
     "glue": {
@@ -264,9 +340,14 @@
       "Version": "0.5-1",
       "Source": "Repository"
     },
+    "gridtext": {
+      "Package": "gridtext",
+      "Version": "0.1.5",
+      "Source": "Repository"
+    },
     "gtable": {
       "Package": "gtable",
-      "Version": "0.3.4",
+      "Version": "0.3.5",
       "Source": "Repository"
     },
     "gtools": {
@@ -274,9 +355,14 @@
       "Version": "3.9.5",
       "Source": "Repository"
     },
+    "hexbin": {
+      "Package": "hexbin",
+      "Version": "1.28.3",
+      "Source": "Repository"
+    },
     "highr": {
       "Package": "highr",
-      "Version": "0.10",
+      "Version": "0.11",
       "Source": "Repository"
     },
     "htmlTable": {
@@ -309,6 +395,11 @@
       "Version": "2.0.3",
       "Source": "Repository"
     },
+    "inline": {
+      "Package": "inline",
+      "Version": "0.3.19",
+      "Source": "Repository"
+    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.2.7",
@@ -316,36 +407,36 @@
     },
     "jaspBase": {
       "Package": "jaspBase",
-      "Version": "0.19.0_Local_JASP",
-      "Source": "Local",
-      "RemoteType": "local",
-      "RemoteUrl": "/home/sp42/jasp-desktop/Engine/jaspBase",
-      "Cacheable": true,
-      "Hash": {
-        "jaspBase": "40aff473736156fe2872cbf0606433f5"
-      }
+      "Version": "0.19.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "jasp-stats",
+      "RemoteRepo": "jaspBase",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "b9c1808d9bc72109359074cfe3b8badde3f0bfdd"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
-      "Version": "0.18.3_Local_JASP",
-      "Source": "Local",
-      "RemoteType": "local",
-      "RemoteUrl": "/home/sp42/jasp-desktop/Engine/jaspGraphs",
-      "Cacheable": true,
-      "Hash": {
-        "jaspGraphs": "e87d6ee3fe9ddd0e28aac07e5272b8bf"
-      }
+      "Version": "0.19.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "jasp-stats",
+      "RemoteRepo": "jaspGraphs",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "764f90f6d7781c4087a757254facc8125f5b600b"
     },
-    "jaspProcess": {
-      "Package": "jaspProcess",
-      "Version": "0.19.0_Local_JASP",
-      "Source": "Local",
-      "RemoteType": "local",
-      "RemoteUrl": "/home/sp42/jasp-desktop/Modules/jaspProcess",
-      "Cacheable": true,
-      "Hash": {
-        "jaspProcess": "c442ff41e41c8ac815460bebfa532f77"
-      }
+    "jaspJags": {
+      "Package": "jaspJags",
+      "Version": "0.19.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "jasp-stats",
+      "RemoteRepo": "jaspJags",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "37b29a25e930e1cfadc34ef21fc5f030a444c071"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -364,7 +455,7 @@
     },
     "knitr": {
       "Package": "knitr",
-      "Version": "1.46",
+      "Version": "1.47",
       "Source": "Repository"
     },
     "labeling": {
@@ -387,9 +478,29 @@
       "Version": "1.0.4",
       "Source": "Repository"
     },
+    "listenv": {
+      "Package": "listenv",
+      "Version": "0.9.1",
+      "Source": "Repository"
+    },
+    "loo": {
+      "Package": "loo",
+      "Version": "2.7.0",
+      "Source": "Repository"
+    },
     "magrittr": {
       "Package": "magrittr",
       "Version": "2.0.3",
+      "Source": "Repository"
+    },
+    "markdown": {
+      "Package": "markdown",
+      "Version": "1.12",
+      "Source": "Repository"
+    },
+    "matrixStats": {
+      "Package": "matrixStats",
+      "Version": "1.3.0",
       "Source": "Repository"
     },
     "memoise": {
@@ -417,6 +528,16 @@
       "Version": "0.5.1",
       "Source": "Repository"
     },
+    "mvtnorm": {
+      "Package": "mvtnorm",
+      "Version": "1.2-5",
+      "Source": "Repository"
+    },
+    "nonnest2": {
+      "Package": "nonnest2",
+      "Version": "0.5-7",
+      "Source": "Repository"
+    },
     "numDeriv": {
       "Package": "numDeriv",
       "Version": "2016.8-1.1",
@@ -424,12 +545,17 @@
     },
     "officer": {
       "Package": "officer",
-      "Version": "0.6.5",
+      "Version": "0.6.6",
       "Source": "Repository"
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.1.1",
+      "Version": "2.2.0",
+      "Source": "Repository"
+    },
+    "parallelly": {
+      "Package": "parallelly",
+      "Version": "1.37.1",
       "Source": "Repository"
     },
     "pbapply": {
@@ -472,6 +598,11 @@
       "Version": "1.10-6",
       "Source": "Repository"
     },
+    "posterior": {
+      "Package": "posterior",
+      "Version": "1.5.0",
+      "Source": "Repository"
+    },
     "processx": {
       "Package": "processx",
       "Version": "3.8.4",
@@ -509,7 +640,7 @@
     },
     "ragg": {
       "Package": "ragg",
-      "Version": "1.3.0",
+      "Version": "1.3.2",
       "Source": "Repository"
     },
     "rappdirs": {
@@ -527,6 +658,11 @@
       "Version": "1.4.4",
       "Source": "Repository"
     },
+    "rjags": {
+      "Package": "rjags",
+      "Version": "4-15",
+      "Source": "Repository"
+    },
     "rjson": {
       "Package": "rjson",
       "Version": "0.2.21",
@@ -539,7 +675,17 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.26",
+      "Version": "2.27",
+      "Source": "Repository"
+    },
+    "rstan": {
+      "Package": "rstan",
+      "Version": "2.32.6",
+      "Source": "Repository"
+    },
+    "rstantools": {
+      "Package": "rstantools",
+      "Version": "2.4.0",
       "Source": "Repository"
     },
     "rstudioapi": {
@@ -547,9 +693,19 @@
       "Version": "0.16.0",
       "Source": "Repository"
     },
+    "runjags": {
+      "Package": "runjags",
+      "Version": "2.2.2-4",
+      "Source": "Repository"
+    },
     "rvg": {
       "Package": "rvg",
       "Version": "0.3.3",
+      "Source": "Repository"
+    },
+    "sandwich": {
+      "Package": "sandwich",
+      "Version": "3.1-0",
       "Source": "Repository"
     },
     "sass": {
@@ -574,7 +730,7 @@
     },
     "stringi": {
       "Package": "stringi",
-      "Version": "1.8.3",
+      "Version": "1.8.4",
       "Source": "Repository"
     },
     "stringr": {
@@ -594,12 +750,17 @@
     },
     "systemfonts": {
       "Package": "systemfonts",
-      "Version": "1.0.6",
+      "Version": "1.1.0",
+      "Source": "Repository"
+    },
+    "tensorA": {
+      "Package": "tensorA",
+      "Version": "0.36.2.1",
       "Source": "Repository"
     },
     "textshaping": {
       "Package": "textshaping",
-      "Version": "0.3.7",
+      "Version": "0.4.0",
       "Source": "Repository"
     },
     "tibble": {
@@ -624,7 +785,12 @@
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.50",
+      "Version": "0.51",
+      "Source": "Repository"
+    },
+    "tmvnsim": {
+      "Package": "tmvnsim",
+      "Version": "1.0-2",
       "Source": "Repository"
     },
     "triebeard": {
@@ -674,7 +840,7 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.43",
+      "Version": "0.44",
       "Source": "Repository"
     },
     "xml2": {
@@ -695,6 +861,11 @@
     "zip": {
       "Package": "zip",
       "Version": "2.3.1",
+      "Source": "Repository"
+    },
+    "zoo": {
+      "Package": "zoo",
+      "Version": "1.8-12",
       "Source": "Repository"
     }
   }
