@@ -1425,7 +1425,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (!is.null(modelsContainer[[modelName]][["fittedModel"]]) && !is.null(modelsContainer[[modelName]][["graph"]]$object)) {
+    if (
+      !is.null(modelsContainer[[modelName]][["fittedModel"]]) &&
+      !is.null(modelsContainer[[modelName]][["graph"]]) &&
+      inherits(modelsContainer[[modelName]][["fittedModel"]]$object, "lavaan") &&
+      .procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)
+    ) {
       fittedModel <- modelsContainer[[modelName]][["fittedModel"]]$object
       modelsContainer[[modelName]][["graph"]]$object <- .procGraphAddEstimatesSingleModel(modelsContainer[[modelName]][["graph"]]$object, fittedModel)
       modelsContainer[[modelName]][["resCovGraph"]]$object <- .procGraphAddEstimatesSingleModel(modelsContainer[[modelName]][["resCovGraph"]]$object, fittedModel, type = "variances")
