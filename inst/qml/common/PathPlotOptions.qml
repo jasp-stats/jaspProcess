@@ -23,11 +23,11 @@ import JASP.Controls
 
 Group
 {
-	title: qsTr("Path Plots")
 	columns: 1
 
 	Group
 	{
+		title: qsTr("Statistical Path Plots")
 		columns: 3
 		CheckBox
 		{
