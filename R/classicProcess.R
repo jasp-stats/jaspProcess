@@ -151,11 +151,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (is.null(modelsContainer[[modelName]][["graph"]])) {
-      graph <- try(.procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
-      state <- createJaspState(object = graph)
-      modelsContainer[[modelName]][["graph"]] <- state
-    }
+    # We need to regenerate the model graph everytime because it gets
+    # modified in a later step
+    graph <- try(.procModelGraphSingleModel(options[["processModels"]][[i]], globalDependent = options[["dependent"]]))
+    state <- createJaspState(object = graph)
+    modelsContainer[[modelName]][["graph"]] <- state
   }
 }
 
@@ -188,7 +188,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     type            <- path[["processType"       ]]
     processVariable <- path[["processVariable"   ]]
 
-    # Encode variable names if the model is defined through the "Variables" dialog
+    # Encode variable names if the model is defined through the "Paths" dialog
     if (inputVariables) {
       dependent       <- encodeColNames(dependent)
       independent     <- encodeColNames(independent)
@@ -1425,7 +1425,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (!is.null(modelsContainer[[modelName]][["fittedModel"]]) && !is.null(modelsContainer[[modelName]][["graph"]]$object)) {
+    if (
+      !is.null(modelsContainer[[modelName]][["fittedModel"]]) &&
+      !is.null(modelsContainer[[modelName]][["graph"]]) &&
+      inherits(modelsContainer[[modelName]][["fittedModel"]]$object, "lavaan") &&
+      .procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)
+    ) {
       fittedModel <- modelsContainer[[modelName]][["fittedModel"]]$object
       modelsContainer[[modelName]][["graph"]]$object <- .procGraphAddEstimatesSingleModel(modelsContainer[[modelName]][["graph"]]$object, fittedModel)
       modelsContainer[[modelName]][["resCovGraph"]]$object <- .procGraphAddEstimatesSingleModel(modelsContainer[[modelName]][["resCovGraph"]]$object, fittedModel, type = "variances")
