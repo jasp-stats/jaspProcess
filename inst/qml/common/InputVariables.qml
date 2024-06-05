@@ -32,8 +32,7 @@ Group
 
 	RowLayout
 	{
-		anchors.left: 		parent.left
-		anchors.margins: 	jaspTheme.contentMargin
+		Layout.margins: 	jaspTheme.contentMargin
 		Label
 		{
 			text: qsTr("From")
