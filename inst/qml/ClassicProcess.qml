@@ -43,7 +43,7 @@ Form
 
 			content: Group
 			{
-				childControlsArea.anchors.leftMargin: jaspTheme.groupContentPadding
+				childControlsArea.anchors.leftMargin: jaspTheme.contentMargin
 				Common.InputType
 				{
 					id: inputType
