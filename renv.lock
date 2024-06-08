@@ -101,14 +101,8 @@
     },
     "blavaan": {
       "Package": "blavaan",
-      "Version": "0.5-2",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "nlesc-jasp-projects",
-      "RemoteRepo": "blavaan",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "964b6970d812c515990814b2780dd89d35755c9a"
+      "Version": "0.5-4",
+      "Source": "Repository",
     },
     "bslib": {
       "Package": "bslib",
