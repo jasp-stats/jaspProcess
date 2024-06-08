@@ -102,7 +102,7 @@
     "blavaan": {
       "Package": "blavaan",
       "Version": "0.5-4",
-      "Source": "Repository",
+      "Source": "Repository"
     },
     "bslib": {
       "Package": "bslib",
