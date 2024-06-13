@@ -27,19 +27,19 @@ VariablesForm
 	{
 		name:				"dependent"
 		title:				qsTr("Dependent Variable")
-		allowedColumns:		["ordinal", "scale"]
+		allowedColumns:		["scale"]
 		singleVariable:		true
 	}
 	AssignedVariablesList
 	{
 		name:			"covariates"
 		title:			qsTr("Continuous Predictors")
-		allowedColumns:	["ordinal", "scale"]
+		allowedColumns:	["scale"]
 	}
 	AssignedVariablesList
 	{
 		name:			"factors"
 		title:			qsTr("Categorical Predictors")
-		allowedColumns:	["ordinal", "nominal"]
+		allowedColumns:	["nominal"]
 	}
 }
