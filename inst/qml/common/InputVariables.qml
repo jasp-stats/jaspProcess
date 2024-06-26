@@ -161,7 +161,8 @@ Group
 			{
 				if (parent)
 				{
-					parent.isDeletable = 		Qt.binding(function() { return rowComp.enabled })
+					if (parent.hasOwnProperty("isDeletable"))
+						parent.isDeletable		= Qt.binding(function() { return rowComp.enabled })
 					relations.addItemManually = Qt.binding(enableAddItemManually)
 				}
 			}

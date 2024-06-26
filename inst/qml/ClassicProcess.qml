@@ -240,6 +240,7 @@ Form
 		{
 			title: qsTr("Set for All Models")
 			columns: 4
+			preferredWidth: parent.width
 
 			Group
 			{
