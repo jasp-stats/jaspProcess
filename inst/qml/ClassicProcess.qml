@@ -41,6 +41,9 @@ Form
 			newItemName:	qsTr("Model 1")
 			optionKey:		"name"
 
+			width:			parent.implicitWidth    //will crash if not set this
+			height: 		parent.implicitHeight
+
 			content: Group
 			{
 				childControlsArea.anchors.leftMargin: jaspTheme.contentMargin
