@@ -394,10 +394,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get encoding
   encoding <- .procVarEncoding()
 
-  independent <-        modelOptions[["modelNumberIndependent"]]
-  mediators   <- unlist(modelOptions[["modelNumberMediators"  ]])
-  modW        <-        modelOptions[["modelNumberModeratorW" ]]
-  modZ        <-        modelOptions[["modelNumberModeratorZ" ]]
+  independent <- modelOptions[["modelNumberIndependent"]][["value"]]
+  mediators   <- modelOptions[["modelNumberMediators"  ]][["value"]]
+  modW        <- modelOptions[["modelNumberModeratorW" ]][["value"]]
+  modZ        <- modelOptions[["modelNumberModeratorZ" ]][["value"]]
 
   # Apply the JASP coding to X, W, Z, and M if the user has specified the variables and 'vars' still contains the dummy version
   if (independent != "" && encoding$X %in% vars) {
@@ -1481,10 +1481,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   # Create model options dummy object
   modelOptions <- list(
-    modelNumberIndependent = independent,
-    modelNumberMediators = mediators,
-    modelNumberModeratorW = modW,
-    modelNumberModeratorZ = modZ
+    modelNumberIndependent = list(value = independent),
+    modelNumberMediators = list(value = mediators),
+    modelNumberModeratorW = list(value = modW),
+    modelNumberModeratorZ = list(value = modZ)
   )
 
   # Check which hard-coded model matches user model
@@ -1492,8 +1492,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   # If no match swap W and Z and check again
   if (!any(modelMatch)) {
-    modelOptions[["modelNumberModeratorW"]] <- modZ
-    modelOptions[["modelNumberModeratorZ"]] <- modW
+    modelOptions[["modelNumberModeratorW"]][["value"]] <- modZ
+    modelOptions[["modelNumberModeratorZ"]][["value"]] <- modW
 
     modelMatch <- sapply(.procHardCodedModelNumbers(), .procIsModelNumberGraph, graph = graph, modelOptions = modelOptions, globalDependent = globalDependent)
   }

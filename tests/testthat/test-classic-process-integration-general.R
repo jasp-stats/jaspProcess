@@ -1262,8 +1262,8 @@ test_that("Path plots for empty moderator model works", {
   options$processModels <- list(getProcessModel(list()))
   options$processModels[[1]]$inputType <- "inputModelNumber"
   options$processModels[[1]]$modelNumber <- 91
-  options$processModels[[1]]$modelNumberIndependent <- "contGamma"
-  options$processModels[[1]]$modelNumberMediators <- list("debCollin1")
+  options$processModels[[1]]$modelNumberIndependent <- list(value = "contGamma")
+  options$processModels[[1]]$modelNumberMediators <- list(value = "debCollin1")
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 
@@ -1410,6 +1410,7 @@ test_that("Incomplete Hayes configuration works", {
   options$processModels[[1]]$inputType <- "inputModelNumber"
   options$processModels[[1]]$modelNumber <- 5
   options$processModels[[1]]$localTests <- TRUE
+  options$processModels[[1]]$modelNumberIndependent <- list(value = "contGamma")
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
 

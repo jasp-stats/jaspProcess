@@ -423,10 +423,10 @@ test_that("Test that .procModelGraphInputModelNumber works", {
   igraph::E(graph)$target <- edgeList[,2]
 
   modelOptions <-  list(
-    modelNumberIndependent = "contGamma",
-    modelNumberMediators = list("contcor1"),
-    modelNumberModeratorW = "contcor2",
-    modelNumberModeratorZ = ""
+    modelNumberIndependent = list(value = "contGamma"),
+    modelNumberMediators = list(value = "contcor1"),
+    modelNumberModeratorW = list(value = "contcor2"),
+    modelNumberModeratorZ = list(value = "")
   )
 
   globalDependent <- "contNormal"
@@ -602,10 +602,10 @@ test_that("Test that .procIsModelNumberGraph works", {
   modelNumberTrue <- 5
   modelNumberFalse <- 6
   modelOptions <-  list(
-    modelNumberIndependent = "contGamma",
-    modelNumberMediators = list("contcor1"),
-    modelNumberModeratorW = "contcor2",
-    modelNumberModeratorZ = ""
+    modelNumberIndependent = list(value = "contGamma"),
+    modelNumberMediators = list(value = "contcor1"),
+    modelNumberModeratorW = list(value = "contcor2"),
+    modelNumberModeratorZ = list(value = "")
   )
   globalDependent <- "contNormal"
 
