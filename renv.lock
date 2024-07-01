@@ -470,7 +470,7 @@
     },
     "lavaan": {
       "Package": "lavaan",
-      "Version": "0.6-18",
+      "Version": "0.6-17",
       "Source": "Repository"
     },
     "lifecycle": {
