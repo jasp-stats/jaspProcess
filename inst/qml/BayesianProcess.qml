@@ -42,9 +42,8 @@ Form
             content: Group
             {
                 Group {
-                    anchors.left: 		parent.left
-                    anchors.margins: 	jaspTheme.contentMargin
-                    
+					Layout.leftMargin: jaspTheme.contentMargin
+
 					Common.InputType
 					{
 						id: inputType
