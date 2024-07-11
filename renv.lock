@@ -36,7 +36,7 @@
     },
     "QuickJSR": {
       "Package": "QuickJSR",
-      "Version": "1.2.2",
+      "Version": "1.3.0",
       "Source": "Repository"
     },
     "R6": {
@@ -441,7 +441,7 @@
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
       "RemoteRef": "HEAD",
-      "RemoteSha": "bc497e7ad417d9c6411aab87c993dde0713b04d0"
+      "RemoteSha": "192504bb6a6bbe2671b663cce74ef634706110ef"
     },
     "jpeg": {
       "Package": "jpeg",
