@@ -34,9 +34,19 @@
       "Version": "5.1-3",
       "Source": "Repository"
     },
+    "MASS": {
+      "Package": "MASS",
+      "Version": "7.3-61",
+      "Source": "Repository"
+    },
+    "Matrix": {
+      "Package": "Matrix",
+      "Version": "1.7-0",
+      "Source": "Repository"
+    },
     "QuickJSR": {
       "Package": "QuickJSR",
-      "Version": "1.3.0",
+      "Version": "1.3.1",
       "Source": "Repository"
     },
     "R6": {
@@ -51,7 +61,7 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.12",
+      "Version": "1.0.13",
       "Source": "Repository"
     },
     "RcppArmadillo": {
@@ -71,7 +81,7 @@
     },
     "StanHeaders": {
       "Package": "StanHeaders",
-      "Version": "2.32.9",
+      "Version": "2.32.10",
       "Source": "Repository"
     },
     "V8": {
@@ -115,6 +125,11 @@
       "RemoteRef": "HEAD",
       "RemoteSha": "520443b37e75473985c48b1160df80cc911ff4db"
     },
+    "boot": {
+      "Package": "boot",
+      "Version": "1.3-30",
+      "Source": "Repository"
+    },
     "bslib": {
       "Package": "bslib",
       "Version": "0.7.0",
@@ -140,9 +155,19 @@
       "Version": "3.6.3",
       "Source": "Repository"
     },
+    "cluster": {
+      "Package": "cluster",
+      "Version": "2.1.6",
+      "Source": "Repository"
+    },
     "coda": {
       "Package": "coda",
       "Version": "0.19-4.1",
+      "Source": "Repository"
+    },
+    "codetools": {
+      "Package": "codetools",
+      "Version": "0.2-20",
       "Source": "Repository"
     },
     "colorspace": {
@@ -172,7 +197,7 @@
     },
     "crul": {
       "Package": "crul",
-      "Version": "1.4.2",
+      "Version": "1.5.0",
       "Source": "Repository"
     },
     "curl": {
@@ -253,6 +278,11 @@
     "fontquiver": {
       "Package": "fontquiver",
       "Version": "0.2.1",
+      "Source": "Repository"
+    },
+    "foreign": {
+      "Package": "foreign",
+      "Version": "0.8-87",
       "Source": "Repository"
     },
     "fs": {
@@ -372,7 +402,7 @@
     },
     "htmlTable": {
       "Package": "htmlTable",
-      "Version": "2.4.2",
+      "Version": "2.4.3",
       "Source": "Repository"
     },
     "htmltools": {
@@ -441,7 +471,7 @@
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
       "RemoteRef": "HEAD",
-      "RemoteSha": "6faa88d87679764471498c688dd550470fefee81"
+      "RemoteSha": "4281a1bc0d88552aba2a4dfa36c7a2a3d53142f3"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -471,6 +501,11 @@
     "later": {
       "Package": "later",
       "Version": "1.3.2",
+      "Source": "Repository"
+    },
+    "lattice": {
+      "Package": "lattice",
+      "Version": "0.22-6",
       "Source": "Repository"
     },
     "lavaan": {
@@ -513,6 +548,11 @@
       "Version": "2.0.1",
       "Source": "Repository"
     },
+    "mgcv": {
+      "Package": "mgcv",
+      "Version": "1.9-1",
+      "Source": "Repository"
+    },
     "mime": {
       "Package": "mime",
       "Version": "0.12",
@@ -536,6 +576,16 @@
     "mvtnorm": {
       "Package": "mvtnorm",
       "Version": "1.2-5",
+      "Source": "Repository"
+    },
+    "nlme": {
+      "Package": "nlme",
+      "Version": "3.1-165",
+      "Source": "Repository"
+    },
+    "nnet": {
+      "Package": "nnet",
+      "Version": "7.3-19",
       "Source": "Repository"
     },
     "nonnest2": {
@@ -600,7 +650,7 @@
     },
     "polyclip": {
       "Package": "polyclip",
-      "Version": "1.10-6",
+      "Version": "1.10-7",
       "Source": "Repository"
     },
     "posterior": {
@@ -681,6 +731,11 @@
     "rmarkdown": {
       "Package": "rmarkdown",
       "Version": "2.27",
+      "Source": "Repository"
+    },
+    "rpart": {
+      "Package": "rpart",
+      "Version": "4.1.23",
       "Source": "Repository"
     },
     "rstan": {
@@ -790,7 +845,7 @@
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.51",
+      "Version": "0.52",
       "Source": "Repository"
     },
     "tmvnsim": {
@@ -845,7 +900,7 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.45",
+      "Version": "0.46",
       "Source": "Repository"
     },
     "xml2": {
@@ -860,7 +915,7 @@
     },
     "yaml": {
       "Package": "yaml",
-      "Version": "2.3.9",
+      "Version": "2.3.10",
       "Source": "Repository"
     },
     "zip": {
