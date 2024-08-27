@@ -122,7 +122,6 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "nlesc-jasp-projects",
       "RemoteRepo": "blavaan",
-      "RemoteRef": "HEAD",
       "RemoteSha": "520443b37e75473985c48b1160df80cc911ff4db"
     },
     "boot": {
@@ -448,7 +447,6 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
-      "RemoteRef": "HEAD",
       "RemoteSha": "7de02c442478e028fe2036e3b906059bf504c13e"
     },
     "jaspGraphs": {
@@ -459,7 +457,6 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
-      "RemoteRef": "HEAD",
       "RemoteSha": "e439c080e3841e0719c00ce35c376b34c833b546"
     },
     "jaspJags": {
@@ -470,8 +467,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "cbe169441437f4a66fd4619b320272b1d42d80de"
+      "RemoteSha": "b5d93fd73a1065f1a2a226c74042f7c88279e407"
     },
     "jpeg": {
       "Package": "jpeg",
