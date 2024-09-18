@@ -216,7 +216,7 @@
     },
     "distributional": {
       "Package": "distributional",
-      "Version": "0.4.0",
+      "Version": "0.5.0",
       "Source": "Repository"
     },
     "dplyr": {
@@ -226,7 +226,7 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "0.24.0",
+      "Version": "1.0.0",
       "Source": "Repository"
     },
     "fansi": {
@@ -432,7 +432,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
-      "RemoteSha": "17b7eeaf2e0c589aa182f0db807054ca37cc2d51"
+      "RemoteSha": "b2e1799265a0741b49a1ca356f96448091dd8db0"
     },
     "jaspJags": {
       "Package": "jaspJags",
@@ -442,7 +442,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "7643ff465a14b673d668e05df3b9f665f4086522"
+      "RemoteSha": "f7e38d25109649677857d78cfaae44b0176b8677"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -681,7 +681,7 @@
     },
     "rjson": {
       "Package": "rjson",
-      "Version": "0.2.22",
+      "Version": "0.2.23",
       "Source": "Repository"
     },
     "rlang": {
