@@ -26,8 +26,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     .procModelSummaryTable(jaspResults, options, NULL)
     return()
   }
-  # Read dataset
-  dataset <- .procReadData(options)
   # Check for errors in dataset
   .procErrorHandling(dataset, options)
   # Create a container for each model
@@ -468,7 +466,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procReadData <- function(options) {
+.procReadData <- function(dataset, options) {
   # Read in selected variables from dataset
   dataset <- .readDataSetToEnd(
     columns.as.numeric = c(options[['dependent']], options[['covariates']]),
