@@ -37,7 +37,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -142,7 +142,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -251,7 +251,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -343,7 +343,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -437,7 +437,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -566,7 +566,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -698,7 +698,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -817,7 +817,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -937,7 +937,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1057,7 +1057,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1179,7 +1179,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1308,7 +1308,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1437,7 +1437,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1584,7 +1584,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1723,7 +1723,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1852,7 +1852,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -1985,7 +1985,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
@@ -2119,7 +2119,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 
