@@ -393,10 +393,10 @@ test_that("Test that .procReplaceDummyVars works", {
                   "JaspProcess_ModeratorW_Encoded", "JaspProcess_ModeratorZ_Encoded")
 
   modelOptions <-  list(
-    modelNumberIndependent = "contGamma",
-    modelNumberMediators = list("contcor1", "contcor2"),
-    modelNumberModeratorW = "debCollin1",
-    modelNumberModeratorZ = "debCollin2"
+    modelNumberIndependent = list(value = "contGamma"),
+    modelNumberMediators = list(value = list("contcor1", "contcor2")),
+    modelNumberModeratorW = list(value = "debCollin1"),
+    modelNumberModeratorZ = list(value = "debCollin2")
   )
 
   globalDependent <- "contNormal"
