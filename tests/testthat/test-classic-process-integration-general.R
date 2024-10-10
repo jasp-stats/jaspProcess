@@ -8,13 +8,13 @@ test_that("Error handling works - observations", {
           list(processDependent = "contNormal", processIndependent = "contGamma",
               processType = "moderators", processVariable = "debNaN"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   expect_identical(results[["status"]], "validationError", label = "Observations check")
 
   options$covariates <- list("contGamma")
   options$factors <- list("debNaN")
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   expect_identical(results[["status"]], "validationError", label = "Observations check")
 })
 
@@ -27,7 +27,7 @@ test_that("Error handling works - variance", {
           list(processDependent = "contNormal", processIndependent = "contGamma",
               processType = "moderators", processVariable = "debSame"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   expect_identical(results[["status"]], "validationError", label = "Variance check")
 })
 
@@ -40,7 +40,7 @@ test_that("Error handling works - infinity", {
           list(processDependent = "contNormal", processIndependent = "contGamma",
               processType = "moderators", processVariable = "debInf"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   expect_identical(results[["status"]], "validationError", label = "Infinity check")
 })
 
@@ -52,7 +52,7 @@ test_that("Error handling works - covariance", {
           list(processDependent = "contNormal", processIndependent = "debCollin1",
               processType = "moderators", processVariable = "debCollin2"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   expect_identical(results[["status"]], "validationError", label = "Covariance check")
 })
 
@@ -834,7 +834,7 @@ test_that("Bootstrapping works", {
                                                                                                             processIndependent = "contGamma", processType = "moderators",
                                                                                                             processVariable = "contcor1"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
@@ -919,7 +919,7 @@ test_that("Bootstrapping works (percentile interval)", {
                                                                                                             processVariable = "contcor1"))))
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
@@ -1002,7 +1002,7 @@ test_that("Missing values work", {
                                                                                                             processIndependent = "debMiss1", processType = "moderators",
                                                                                                             processVariable = "debMiss30"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
@@ -1097,7 +1097,7 @@ test_that("Not implemented Hayes models error message work", {
   options$processModels[[1]]$localTests <- TRUE
   options$processModels[[2]]$localTests <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   refMsg <- jaspProcess:::.procHayesModelMsg("Model 1", modelNumber)
 
@@ -1199,7 +1199,7 @@ test_that("No implied conditional independencies error message works", {
                                                                       processVariable = "debCollin1"))))
   options$processModels[[1]]$localTests <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   refMsg <- jaspProcess:::.procNoImpliedTestsMsg()
 
@@ -1223,7 +1223,7 @@ test_that("Invalid test type error message works", {
                                                                                                             processVariable = "facGender"))))
   options$processModels[[1]]$localTests <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   refMsg <- jaspProcess:::.procLocalTestLinearMsg()
 
@@ -1248,7 +1248,7 @@ test_that("Local tests work for factors with loess test type", {
   options$processModels[[1]]$localTests <- TRUE
   options$processModels[[1]]$localTestType <- "cis.loess"
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   table <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(-0.206103108541346, 0.17035274701811, "contGamma", -0.0139864082891252,
@@ -1265,7 +1265,7 @@ test_that("Path plots for empty moderator model works", {
   options$processModels[[1]]$modelNumberIndependent <- list(value = "contGamma")
   options$processModels[[1]]$modelNumberMediators <- list(value = "debCollin1")
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
@@ -1289,7 +1289,7 @@ test_that("Path plot for multiple dependent variables work", {
                                                                                                                                                   processVariable = "debCollin1"))))
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
@@ -1314,7 +1314,7 @@ test_that("R-squared table matches", {
                                                                                                                                                   processIndependent = "contGamma", processType = "mediators",
                                                                                                                                                   processVariable = "debCollin1"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
@@ -1338,7 +1338,7 @@ test_that("Path coefficients table with intercepts matches", {
                                                                                                                                                   processVariable = "debCollin1"))))
   options$processModels[[1]]$intercepts <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
@@ -1388,7 +1388,7 @@ test_that("Directed acyclic graph error message works", {
               processType = "mediators", processVariable = "debCollin1")), name = "Model 2"))
   options$processModels[[1]]$localTests <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   refMsg <- jaspProcess:::.procEstimationMsg(jaspProcess:::.procDagMsg())
 
@@ -1412,7 +1412,7 @@ test_that("Incomplete Hayes configuration works", {
   options$processModels[[1]]$localTests <- TRUE
   options$processModels[[1]]$modelNumberIndependent <- list(value = "contGamma")
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug", options)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
 	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
