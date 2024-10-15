@@ -86,7 +86,7 @@
     },
     "V8": {
       "Package": "V8",
-      "Version": "5.0.1",
+      "Version": "6.0.0",
       "Source": "Repository"
     },
     "abind": {
@@ -201,7 +201,7 @@
     },
     "data.table": {
       "Package": "data.table",
-      "Version": "1.16.0",
+      "Version": "1.16.2",
       "Source": "Repository"
     },
     "desc": {
@@ -226,7 +226,7 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "1.0.0",
+      "Version": "1.0.1",
       "Source": "Repository"
     },
     "fansi": {
@@ -442,7 +442,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "5e9c560274b3a08e96e41d784882ffd9b3107785"
+      "RemoteSha": "927e7fa34df49327dc8c05053272000de9ec92ee"
     },
     "jpeg": {
       "Package": "jpeg",
