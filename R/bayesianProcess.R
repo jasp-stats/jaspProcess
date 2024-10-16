@@ -27,8 +27,6 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     return()
   }
   options$naAction <- "listwise"
-  # Read dataset
-  dataset <- .procReadData(options)
   # Check for errors in dataset
   .procErrorHandling(dataset, options)
   # Create a container for each model

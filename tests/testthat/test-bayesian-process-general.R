@@ -10,7 +10,7 @@ test_that("Missing values work without independent covariances", {
   options$processModels[[1]]$independentCovariances <- FALSE
   options$processModels[[1]]$intercepts <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("BayesianProcess", "debug", options)
+  results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
   table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
@@ -90,7 +90,7 @@ test_that("Incomplete Hayes configuration works", {
   options$processModels[[1]]$modelNumber <- 5
   options$processModels[[1]]$localTests <- TRUE
   set.seed(1)
-  results <- jaspTools::runAnalysis("BayesianProcess", "debug", options)
+  results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
   plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][["pathPlotContainer_Model 1_conceptPathPlot"]][["data"]]
 	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
