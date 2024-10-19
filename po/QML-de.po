@@ -1,114 +1,126 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-10-19 09:24+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/"
+"jaspprocess-qml/de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8-rc\n"
 "X-Qt-Contexts: true\n"
 "X-Language: de\n"
 
+#, fuzzy
 msgctxt "Description|"
 msgid "Process (beta)"
-msgstr ""
+msgstr "Prozess (Beta)"
 
+#, fuzzy
 msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
-msgstr ""
+msgstr "Prüfung und Vergleich von kausalen und bedingten Prozessmodellen."
 
 msgctxt "Description|"
 msgid "Classical"
-msgstr ""
+msgstr "Klassisch"
 
+#, fuzzy
 msgctxt "Description|"
 msgid "Classical Process Model"
-msgstr ""
+msgstr "Klassisches Prozessmodell"
 
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr ""
+msgstr "Bayesianisch"
 
+#, fuzzy
 msgctxt "Description|"
 msgid "Bayesian Process Model"
-msgstr ""
+msgstr "Bayessches Prozessmodell"
 
 msgctxt "BayesianProcess|"
 msgid "Models"
-msgstr ""
+msgstr "Modelle"
 
 msgctxt "BayesianProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "Modell 1"
 
 msgctxt "BayesianProcess|"
 msgid "Options"
-msgstr ""
+msgstr "Optionen"
 
 msgctxt "BayesianProcess|"
 msgid "Prior distributions"
-msgstr ""
+msgstr "Prior-Verteilungen"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "Parameterbezeichnungen"
 
 msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Lavaan-Syntax"
 
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "BIC-Gewichte"
 
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes-Konfigurationszahl"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
-msgstr ""
+msgstr "Vorlauf"
 
 msgctxt "BayesianProcess|"
 msgid "Samples"
-msgstr ""
+msgstr "Stichproben"
 
 msgctxt "BayesianProcess|"
 msgid "Chains"
-msgstr ""
+msgstr "Ketten"
 
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
-msgstr ""
+msgstr "Glaubwürdigkeitsintervalle"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "Mittel-zentrierte Moderation"
 
 msgctxt "BayesianProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "Diagramme"
 
 msgctxt "BayesianProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "Farbpalette"
 
 msgctxt "BayesianProcess|"
 msgid "MCMC Plots"
-msgstr ""
+msgstr "MCMC-Diagramme"
 
 msgctxt "BayesianProcess|"
 msgid "Aggregate chains for densities and histograms"
-msgstr ""
+msgstr "Ketten für Dichten und Histogramme aggregieren"
 
 msgctxt "BayesianProcess|"
 msgid "Show legends"
-msgstr ""
+msgstr "Legenden anzeigen"
 
 msgctxt "BayesianProcess|"
 msgid "Density"
-msgstr ""
+msgstr "Dichte"
 
 msgctxt "BayesianProcess|"
 msgid "Histogram"
-msgstr ""
+msgstr "Histogramm"
 
 msgctxt "BayesianProcess|"
 msgid "Trace"
@@ -116,167 +128,167 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Autocorrelation"
-msgstr ""
+msgstr "Autokorrelation"
 
 msgctxt "BayesianProcess|"
 msgid "No. lags"
-msgstr ""
+msgstr "Anzahl Verzögerungen"
 
 msgctxt "BayesianProcess|"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgctxt "BayesianProcess|"
 msgid "line"
-msgstr ""
+msgstr "Linie"
 
 msgctxt "BayesianProcess|"
 msgid "bar"
-msgstr ""
+msgstr "Balken"
 
 msgctxt "BayesianProcess|"
 msgid "Bivariate scatter"
-msgstr ""
+msgstr "Bivariate Streuung"
 
 msgctxt "BayesianProcess|"
 msgid "Diagonal plot type"
-msgstr ""
+msgstr "Diagrammtyp der Diagonale"
 
 msgctxt "BayesianProcess|"
 msgid "Off-diagonal plot type"
-msgstr ""
+msgstr "Diagrammtyp der Nebendiagonale"
 
 msgctxt "BayesianProcess|"
 msgid "Hexagonal"
-msgstr ""
+msgstr "Hexagonal"
 
 msgctxt "BayesianProcess|"
 msgid "Contour"
-msgstr ""
+msgstr "Kontouren"
 
 msgctxt "BayesianProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "Erweitert"
 
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "Für alle Modelle setzen"
 
 msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "Residualkovarianzen"
 
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "Unabhängige Variablen"
 
 msgctxt "BayesianProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediatoren"
 
 msgctxt "BayesianProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "Abhängige Variablen"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Parameterschätzungen"
 
 msgctxt "BayesianProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "Pfade"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "Konstanten"
 
 msgctxt "BayesianProcess|"
 msgid "Mediation"
-msgstr ""
+msgstr "Mediation"
 
 msgctxt "BayesianProcess|"
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 msgctxt "BayesianProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Residualkovarianzen"
 
 msgctxt "BayesianProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "Pfaddiagramme"
 
 msgctxt "BayesianProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "Konzeptuell"
 
 msgctxt "BayesianProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "Statistisch"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts:"
-msgstr ""
+msgstr "Konstanten:"
 
 msgctxt "BayesianProcess|"
 msgid "v ~ Normal(μ,σ)"
-msgstr ""
+msgstr "v ~ Normal(μ,σ)"
 
 msgctxt "BayesianProcess|"
 msgid "Path coefficients:"
-msgstr ""
+msgstr "Pfadkoeffizienten:"
 
 msgctxt "BayesianProcess|"
 msgid "β ~ Normal(μ,σ)"
-msgstr ""
+msgstr "β ~ Normal(μ,σ)"
 
 msgctxt "BayesianProcess|"
 msgid "Standard deviations:"
-msgstr ""
+msgstr "Standardabweichungen:"
 
 msgctxt "BayesianProcess|"
 msgid "ψ ~ Gamma(α,β)"
-msgstr ""
+msgstr "ψ ~ Gamma(α,β)"
 
 msgctxt "BayesianProcess|"
 msgid "Correlations:"
-msgstr ""
+msgstr "Korrelationen:"
 
 msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
-msgstr ""
+msgstr "ρ ~ Beta(α,β)"
 
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr ""
+msgstr "Modelle"
 
 msgctxt "ClassicProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "Modell 1"
 
 msgctxt "ClassicProcess|"
 msgid "Tests"
-msgstr ""
+msgstr "Tests"
 
 msgctxt "ClassicProcess|"
 msgid "Local tests"
-msgstr ""
+msgstr "Lokale Tests"
 
 msgctxt "ClassicProcess|"
 msgid "Test type"
-msgstr ""
+msgstr "Test-Typ"
 
 msgctxt "ClassicProcess|"
 msgid "Linear"
-msgstr ""
+msgstr "Linear"
 
 msgctxt "ClassicProcess|"
 msgid "Loess"
-msgstr ""
+msgstr "Loess"
 
 msgctxt "ClassicProcess|"
 msgid "Chi-square"
-msgstr ""
+msgstr "Chi-Quadrat"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad"
@@ -296,179 +308,179 @@ msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap"
 
 msgctxt "ClassicProcess|"
 msgid "Replications"
-msgstr ""
+msgstr "Wiederholungen"
 
 msgctxt "ClassicProcess|"
 msgid "Options"
-msgstr ""
+msgstr "Optionen"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "Parameterbezeichnungen"
 
 msgctxt "ClassicProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Lavaan-Syntax"
 
 msgctxt "ClassicProcess|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-Quadrat"
 
 msgctxt "ClassicProcess|"
 msgid "AIC weights"
-msgstr ""
+msgstr "AIC-Gewichte"
 
 msgctxt "ClassicProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "BIC-Gewichte"
 
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes-Konfigurationszahl"
 
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "Mittel-zentrierte Moderation"
 
 msgctxt "ClassicProcess|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "Standardisierte Schätzungen"
 
 msgctxt "ClassicProcess|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Konfidenzintervalle"
 
 msgctxt "ClassicProcess|"
 msgid "Method"
-msgstr ""
+msgstr "Methode"
 
 msgctxt "ClassicProcess|"
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 msgctxt "ClassicProcess|"
 msgid "Robust"
-msgstr ""
+msgstr "Robust"
 
 msgctxt "ClassicProcess|"
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgctxt "ClassicProcess|"
 msgid "Percentile"
-msgstr ""
+msgstr "Perzentil"
 
 msgctxt "ClassicProcess|"
 msgid "Bias-corrected percentile"
-msgstr ""
+msgstr "Verzerrungskorrigierte Perzentile"
 
 msgctxt "ClassicProcess|"
 msgid "Normal theory"
-msgstr ""
+msgstr "Normal-Theorie"
 
 msgctxt "ClassicProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "Diagramme"
 
 msgctxt "ClassicProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "Farbpalette"
 
 msgctxt "ClassicProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "Weiteres"
 
 msgctxt "ClassicProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "Für alle Modelle setzen"
 
 msgctxt "ClassicProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "Residualkovarianzen"
 
 msgctxt "ClassicProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "Unabhängige Variablen"
 
 msgctxt "ClassicProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediatoren"
 
 msgctxt "ClassicProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "Abhängige Variablen"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Parameterschätzungen"
 
 msgctxt "ClassicProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "Pfade"
 
 msgctxt "ClassicProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "Konstanten"
 
 msgctxt "ClassicProcess|"
 msgid "Indirect"
-msgstr ""
+msgstr "Indirekt"
 
 msgctxt "ClassicProcess|"
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 msgctxt "ClassicProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Residualkovarianzen"
 
 msgctxt "ClassicProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "Pfaddiagramme"
 
 msgctxt "ClassicProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "Konzeptuell"
 
 msgctxt "ClassicProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "Statistisch"
 
 msgctxt "ClassicProcess|"
 msgid "Adjustment method"
-msgstr ""
+msgstr "Korrekturmethode"
 
 msgctxt "ClassicProcess|"
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 msgctxt "ClassicProcess|"
 msgid "Holm"
-msgstr ""
+msgstr "Holm"
 
 msgctxt "ClassicProcess|"
 msgid "Hochberg"
-msgstr ""
+msgstr "Hochberg"
 
 msgctxt "ClassicProcess|"
 msgid "Hommel"
-msgstr ""
+msgstr "Hommel"
 
 msgctxt "ClassicProcess|"
 msgid "Bonferroni"
-msgstr ""
+msgstr "Bonferroni"
 
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Hochberg"
-msgstr ""
+msgstr "Benjamini-Hochberg"
 
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Yekuteli"
-msgstr ""
+msgstr "Benjamini-Yekuteli"
 
 msgctxt "ClassicProcess|"
 msgid "Missing Value Handling"
