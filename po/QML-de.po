@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-10-19 09:24+0000\n"
+"PO-Revision-Date: 2024-10-21 07:15+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-qml/de/>\n"
@@ -484,11 +484,11 @@ msgstr "Benjamini-Yekuteli"
 
 msgctxt "ClassicProcess|"
 msgid "Missing Value Handling"
-msgstr ""
+msgstr "Behandlung fehlender Werte"
 
 msgctxt "ClassicProcess|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "Fälle listenweise ausschließen"
 
 msgctxt "ClassicProcess|"
 msgid "Full Information Maximum Likelihood"
@@ -496,27 +496,27 @@ msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Emulation"
-msgstr ""
+msgstr "Emulation"
 
 msgctxt "ClassicProcess|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus"
 
 msgctxt "ClassicProcess|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS"
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
-msgstr ""
+msgstr "Schätzer"
 
 msgctxt "ClassicProcess|"
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 msgctxt "ClassicProcess|"
 msgid "ML"
-msgstr ""
+msgstr "ML"
 
 msgctxt "ClassicProcess|"
 msgid "GLS"
@@ -536,184 +536,186 @@ msgstr ""
 
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes-Konfigurationszahl"
 
 msgctxt "InputModelNumber|"
 msgid "Independent X"
-msgstr ""
+msgstr "Unabhängige X"
 
 msgctxt "InputModelNumber|"
 msgid "Mediators M"
-msgstr ""
+msgstr "Mediatoren M"
 
 msgctxt "InputModelNumber|"
 msgid "Moderator W"
-msgstr ""
+msgstr "Moderator W"
 
 msgctxt "InputModelNumber|"
 msgid "Moderator Z"
-msgstr ""
+msgstr "Moderator Z"
 
 msgctxt "InputType|"
 msgid "Input type"
-msgstr ""
+msgstr "Eingabetyp"
 
 msgctxt "InputType|"
 msgid "Paths"
-msgstr ""
+msgstr "Pfade"
 
 msgctxt "InputType|"
 msgid "Hayes configuration"
-msgstr ""
+msgstr "Hayes-Konfiguration"
 
 msgctxt "InputVariables|"
 msgid "From"
-msgstr ""
+msgstr "Von"
 
 msgctxt "InputVariables|"
 msgid "To"
-msgstr ""
+msgstr "Bis"
 
+#, fuzzy
 msgctxt "InputVariables|"
 msgid "Process Type"
-msgstr ""
+msgstr "Prozess-Typ"
 
+#, fuzzy
 msgctxt "InputVariables|"
 msgid "Process Variable"
-msgstr ""
+msgstr "Prozess-Variable"
 
 msgctxt "InputVariables|"
 msgid "Mediator"
-msgstr ""
+msgstr "Mediator"
 
 msgctxt "InputVariables|"
 msgid "Moderator"
-msgstr ""
+msgstr "Moderator"
 
 msgctxt "InputVariables|"
 msgid "Confounder"
-msgstr ""
+msgstr "Störvariable"
 
 msgctxt "InputVariables|"
 msgid "Direct"
-msgstr ""
+msgstr "Direkt"
 
 msgctxt "ModerationProbes|"
 msgid "Probe Conditional Continuous Effects"
-msgstr ""
+msgstr "Prüfung bedingter kontinuierlicher Effekte"
 
 msgctxt "ModerationProbes|"
 msgid "th percentile"
-msgstr ""
+msgstr "tes Perzentil"
 
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Parameterschätzungen"
 
 msgctxt "ParameterEstimates|"
 msgid "Paths"
-msgstr ""
+msgstr "Pfade"
 
 msgctxt "ParameterEstimates|"
 msgid "Intercepts"
-msgstr ""
+msgstr "Konstanten"
 
 msgctxt "ParameterEstimates|"
 msgid "Indirect"
-msgstr ""
+msgstr "Indirekt"
 
 msgctxt "ParameterEstimates|"
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 msgctxt "ParameterEstimates|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Residualkovarianzen"
 
 msgctxt "PathPlotOptions|"
 msgid "Statistical Path Plots"
-msgstr ""
+msgstr "Statistische Pfaddiagramme"
 
 msgctxt "PathPlotOptions|"
 msgid "Covariances"
-msgstr ""
+msgstr "Kovarianzen"
 
 msgctxt "PathPlotOptions|"
 msgid "Residual variances"
-msgstr ""
+msgstr "Residualvarianzen"
 
 msgctxt "PathPlotOptions|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "Parameterschätzungen"
 
 msgctxt "PathPlotOptions|"
 msgid "Legend"
-msgstr ""
+msgstr "Legende"
 
 msgctxt "PathPlotOptions|"
 msgid "Labels"
-msgstr ""
+msgstr "Beschriftungen"
 
 msgctxt "PathPlotOptions|"
 msgid "Color"
-msgstr ""
+msgstr "Farbe"
 
 msgctxt "PathPlotOptions|"
 msgid "Label length"
-msgstr ""
+msgstr "Beschriftungslänge"
 
 msgctxt "PathPlots|"
 msgid "Path Plots"
-msgstr ""
+msgstr "Pfaddiagramme"
 
 msgctxt "PathPlots|"
 msgid "Conceptual"
-msgstr ""
+msgstr "Konzeptuell"
 
 msgctxt "PathPlots|"
 msgid "Statistical"
-msgstr ""
+msgstr "Statistisch"
 
 msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "Residualkovarianzen"
 
 msgctxt "ResidualCovariances|"
 msgid "Independent variables"
-msgstr ""
+msgstr "Unabhängige Variablen"
 
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediatoren"
 
 msgctxt "ResidualCovariances|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "Abhängige Variablen"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "Standardisierte Schätzungen"
 
 msgctxt "StandardizedEstimates|"
 msgid "Unstandardized"
-msgstr ""
+msgstr "Unstandardisiert"
 
 msgctxt "StandardizedEstimates|"
 msgid "Mean-centered"
-msgstr ""
+msgstr "Mittelwert-zentriert"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized"
-msgstr ""
+msgstr "Standardisiert"
 
 msgctxt "VariablesForm|"
 msgid "Dependent Variable"
-msgstr ""
+msgstr "Abhängige Variable"
 
 msgctxt "VariablesForm|"
 msgid "Continuous Predictors"
-msgstr ""
+msgstr "Kontinuierliche Prädiktoren"
 
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
-msgstr ""
+msgstr "Kategoriale Prädiktoren"
