@@ -41,7 +41,7 @@
     },
     "Hmisc": {
       "Package": "Hmisc",
-      "Version": "5.1-3",
+      "Version": "5.2-0",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -67,7 +67,7 @@
     },
     "MASS": {
       "Package": "MASS",
-      "Version": "7.3-61",
+      "Version": "7.3-60.2",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -80,7 +80,7 @@
     },
     "Matrix": {
       "Package": "Matrix",
-      "Version": "1.7-1",
+      "Version": "1.7-0",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -267,7 +267,7 @@
     },
     "boot": {
       "Package": "boot",
-      "Version": "1.3-31",
+      "Version": "1.3-30",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -567,7 +567,7 @@
     },
     "foreign": {
       "Package": "foreign",
-      "Version": "0.8-87",
+      "Version": "0.8-86",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -578,7 +578,7 @@
     },
     "fs": {
       "Package": "fs",
-      "Version": "1.6.4",
+      "Version": "1.6.5",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -600,7 +600,7 @@
     },
     "future.apply": {
       "Package": "future.apply",
-      "Version": "1.11.2",
+      "Version": "1.11.3",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -826,7 +826,7 @@
     },
     "gtable": {
       "Package": "gtable",
-      "Version": "0.3.5",
+      "Version": "0.3.6",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -834,7 +834,8 @@
         "glue",
         "grid",
         "lifecycle",
-        "rlang"
+        "rlang",
+        "stats"
       ]
     },
     "gtools": {
@@ -985,7 +986,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
-      "RemoteSha": "490c3729f1c34406fc662bb20aa872c99a88eeac"
+      "RemoteSha": "f8bfb18768b3a62e8dafca47e523c3c621edd68a"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
@@ -1032,7 +1033,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "3435407dac7a4b605c21a6080d67f12dc74933e6"
+      "RemoteSha": "8788067bbff521985f88ca09dffc019d046861c7"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -1240,7 +1241,7 @@
     },
     "nlme": {
       "Package": "nlme",
-      "Version": "3.1-166",
+      "Version": "3.1-164",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -1349,7 +1350,7 @@
     },
     "pkgbuild": {
       "Package": "pkgbuild",
-      "Version": "1.4.4",
+      "Version": "1.4.5",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -1426,7 +1427,7 @@
     },
     "ps": {
       "Package": "ps",
-      "Version": "1.8.0",
+      "Version": "1.8.1",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -1632,7 +1633,7 @@
     },
     "rstudioapi": {
       "Package": "rstudioapi",
-      "Version": "0.17.0",
+      "Version": "0.17.1",
       "Source": "Repository",
       "Requirements": []
     },
@@ -1925,7 +1926,7 @@
     },
     "withr": {
       "Package": "withr",
-      "Version": "3.0.1",
+      "Version": "3.0.2",
       "Source": "Repository",
       "Requirements": [
         "R",
