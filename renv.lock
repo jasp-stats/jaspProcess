@@ -1033,7 +1033,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "8788067bbff521985f88ca09dffc019d046861c7"
+      "RemoteSha": "464119170907b4c43799a78c61c1a9d3e0dc5df6"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -1936,7 +1936,7 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.48",
+      "Version": "0.49",
       "Source": "Repository",
       "Requirements": [
         "R",
