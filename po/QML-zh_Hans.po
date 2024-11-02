@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-11-03 16:00+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspprocess-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.8.2\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -13,55 +19,55 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
-msgstr ""
+msgstr "检验并比较因果和条件过程模型。"
 
 msgctxt "Description|"
 msgid "Classical"
-msgstr ""
+msgstr "经典"
 
 msgctxt "Description|"
 msgid "Classical Process Model"
-msgstr ""
+msgstr "经典 Process 模型"
 
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr ""
+msgstr "贝叶斯"
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
-msgstr ""
+msgstr "贝叶斯 Process 模型"
 
 msgctxt "BayesianProcess|"
 msgid "Models"
-msgstr ""
+msgstr "模型"
 
 msgctxt "BayesianProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "模型 1"
 
 msgctxt "BayesianProcess|"
 msgid "Options"
-msgstr ""
+msgstr "选项"
 
 msgctxt "BayesianProcess|"
 msgid "Prior distributions"
-msgstr ""
+msgstr "先验分布"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "参数标签"
 
 msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Lavaan 语法"
 
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "BIC 权重"
 
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes 配置编号"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
@@ -77,7 +83,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
-msgstr ""
+msgstr "可信区间"
 
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
@@ -85,31 +91,31 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "绘图"
 
 msgctxt "BayesianProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "调色板"
 
 msgctxt "BayesianProcess|"
 msgid "MCMC Plots"
-msgstr ""
+msgstr "MCMC 绘图"
 
 msgctxt "BayesianProcess|"
 msgid "Aggregate chains for densities and histograms"
-msgstr ""
+msgstr "密度和直方图的聚合链"
 
 msgctxt "BayesianProcess|"
 msgid "Show legends"
-msgstr ""
+msgstr "显示图例"
 
 msgctxt "BayesianProcess|"
 msgid "Density"
-msgstr ""
+msgstr "密度"
 
 msgctxt "BayesianProcess|"
 msgid "Histogram"
-msgstr ""
+msgstr "直方图"
 
 msgctxt "BayesianProcess|"
 msgid "Trace"
@@ -117,7 +123,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Autocorrelation"
-msgstr ""
+msgstr "自相关"
 
 msgctxt "BayesianProcess|"
 msgid "No. lags"
@@ -125,23 +131,23 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 msgctxt "BayesianProcess|"
 msgid "line"
-msgstr ""
+msgstr "线形"
 
 msgctxt "BayesianProcess|"
 msgid "bar"
-msgstr ""
+msgstr "柱形"
 
 msgctxt "BayesianProcess|"
 msgid "Bivariate scatter"
-msgstr ""
+msgstr "双变量散点"
 
 msgctxt "BayesianProcess|"
 msgid "Diagonal plot type"
-msgstr ""
+msgstr "对角线图类型"
 
 msgctxt "BayesianProcess|"
 msgid "Off-diagonal plot type"
