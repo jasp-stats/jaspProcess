@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
 "POT-Creation-Date: 2024-10-19 03:45\n"
-"PO-Revision-Date: 2024-10-28 08:17+0000\n"
+"PO-Revision-Date: 2024-11-03 08:00+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/de/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #, fuzzy
 msgid "Process Analysis"
@@ -178,85 +178,101 @@ msgid "p"
 msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% Konfidenzintervall"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "Std.-Schätzung"
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "Verzerrungskorrigierte Perzentile"
 
 msgid "percentile"
-msgstr ""
+msgstr "Perzentil"
 
 msgid "normal theory"
-msgstr ""
+msgstr "Normal-Theorie"
 
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "Gesamt indirekt"
 
 msgid "Local tests"
-msgstr ""
+msgstr "Lokale Tests"
 
 msgid "Conditional independence tests"
 msgstr ""
 
 msgid "Model did not converge."
-msgstr ""
+msgstr "Modell ist nicht konvergiert."
 
+#, fuzzy
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
-msgstr ""
+msgstr "Std.-Fehler"
 
 msgid "R-squared"
-msgstr ""
+msgstr "R-Quadrat"
 
 msgid "Conceptual path plot"
-msgstr ""
+msgstr "Konzeptuelles Pfaddiagramm"
 
 msgid "Statistical path plot"
-msgstr ""
+msgstr "Statistisches Pfaddiagramm"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Modell-Syntax"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr ""
+"Modell muss ein gerichteter, azyklischer Graph sein -- er darf keine Zyklen "
+"enthalten."
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr ""
+msgstr "%1$s: Hayes-Konfiguration %2$s nicht implementiert"
 
 msgid "Estimation failed: %s"
-msgstr ""
+msgstr "Schätzung fehlgeschlagen: %s"
 
 msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
 msgstr ""
 
 msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
 msgstr ""
+"Mindestens ein Modell ist unvollständig oder es ist kein Modell angegeben. "
+"Bitte fügen Sie mindestens ein Modell und vollständig spezifizierte Modelle "
+"hinzu."
 
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
 msgstr ""
+"Das AIC, BIC und weitere Informationskriterien sind nur bei ML-Schätzern "
+"verfügbar."
 
 msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
 msgstr ""
+"<b>Wichtig</b>: Parameterschätzungen können nur dann als kausale Effekte "
+"interpretiert werden, falls alle Störeffekte berücksichtigt sind und die "
+"Richtungen der kausalen Effekte korrekt angegeben sind."
 
 msgid "Please check the model specification and lavaan syntax."
-msgstr ""
+msgstr "Bitte prüfen Sie die Modellspezifikation und lavaan-Syntax."
 
 msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
 msgstr ""
+"Linearer Test-Typ kann nicht für Faktorvariablen angewandt werden. Wählen "
+"Sie einen anderen Testtyp oder entfernen Sie alle Faktorvariablen aus dem "
+"Modell."
 
 msgid "The specified model does not imply any (conditional) independencies that can be tested."
 msgstr ""
+"Das angegebene Modell impliziert keine (bedingten) Unabhängigkeiten, die "
+"getestet werden können."
 
 msgid "Partially standardized estimate because effect involves categorical predictor."
 msgstr ""
