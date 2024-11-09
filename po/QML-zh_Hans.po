@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-11-03 16:00+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
-"projects/jasp/jaspprocess-qml/zh_Hans/>\n"
-"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.2\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -253,13 +247,15 @@ msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr ""
+msgstr "模型"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "模型 1"
 
 msgctxt "ClassicProcess|"
 msgid "Tests"
@@ -309,17 +305,20 @@ msgctxt "ClassicProcess|"
 msgid "Replications"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Options"
-msgstr ""
+msgstr "选项"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "参数标签"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Lavaan 语法"
 
 msgctxt "ClassicProcess|"
 msgid "R-squared"
@@ -329,13 +328,15 @@ msgctxt "ClassicProcess|"
 msgid "AIC weights"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "BIC 权重"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes 配置编号"
 
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
@@ -361,9 +362,10 @@ msgctxt "ClassicProcess|"
 msgid "Robust"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 msgctxt "ClassicProcess|"
 msgid "Percentile"
@@ -377,13 +379,15 @@ msgctxt "ClassicProcess|"
 msgid "Normal theory"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "绘图"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "调色板"
 
 msgctxt "ClassicProcess|"
 msgid "Advanced"
@@ -529,9 +533,10 @@ msgctxt "ClassicProcess|"
 msgid "DWLS"
 msgstr ""
 
+#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes 配置编号"
 
 msgctxt "InputModelNumber|"
 msgid "Independent X"
