@@ -649,7 +649,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (length(options[["covariates"]]) > 1) {
     .hasErrors(dataset, "run",
       type = "varCovData",
-      varCovData.target = options[["covariates"]],
+      varCovData.target = c(options[["dependent"]], options[["covariates"]]),
       varCovData.corFun = stats::cov,
       varCovData.corArgs = list(use = "complete.obs"),
       exitAnalysisIfErrors = TRUE
@@ -1312,6 +1312,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(fittedModel)
 }
 
+.procCheckImpliedVarianceRatios <- function(fittedModel) {
+  impliedVariances <- diag(fittedModel@implied[["cov"]][[1]])
+
+  return(any(outer(impliedVariances, impliedVariances, FUN = "/") > 1000))
+}
+
+.procCheckImpliedVarianceMagnitudes <- function(fittedModel) {
+  impliedVariances <- diag(fittedModel@implied[["cov"]][[1]])
+
+  return(any(impliedVariances > 1000000))
+}
+
 .procResultsFitModel <- function(container, dataset, options, modelOptions) {
   # Check if graph has error message
   if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
@@ -1342,6 +1354,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (jaspBase::isTryError(fittedModel)) {
     return(.procLavaanMsg(fittedModel))
+  }
+
+  if (doFit && is.null(lavaan::vcov(fittedModel))) {
+    checkImpliedVarianceRatios <- .procCheckImpliedVarianceRatios(fittedModel)
+    checkImpliedVarianceMagnitudes <- .procCheckImpliedVarianceMagnitudes(fittedModel)
+    return(.procNotIdentifiedMsg(
+      impliedVarianceRatios = checkImpliedVarianceRatios,
+      impliedVarianceMagnitudes = checkImpliedVarianceMagnitudes
+    ))
   }
 
   if (doFit) {
@@ -1509,7 +1530,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procModelSummaryTable <- function(jaspResults, options, modelsContainer) {
+.procModelSummaryTable <- function(jaspResults, options, modelsContainer, errors) {
   if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
@@ -1523,7 +1544,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
-  
+
   if (length(procResults) == 0) return()
 
   # Remove invalid models
@@ -2772,6 +2793,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procFimlMsg <- function() gettext("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
 
 .procConvergenceMsg <- function() gettext("Model did not converge.")
+
+.procNotIdentifiedMsg <- function(impliedVarianceRatios = FALSE, impliedVarianceMagnitudes = FALSE) {
+  reasons <- c()
+  if (impliedVarianceRatios) {
+    reasons <- c(reasons, gettext("<li>Some implied model variances are > 1,000,000</li>"))
+  }
+  if (impliedVarianceMagnitudes) {
+    reasons <- c(reasons, gettext("<li>Some implied model variances are at least a factor 1000 times larger than others</li>"))
+  }
+  gettextf("The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>", paste(reasons, collapse = ""))
+}
 
 .procModelIncompleteMsg <- function() gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models.")
 
