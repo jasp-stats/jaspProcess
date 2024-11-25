@@ -81,7 +81,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     "meanCenteredModeration", "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType",
     "mcmcBurnin", "mcmcSamples", "mcmcChains", "seed", "setSeed", "nuPriorMu",
     "nuPriorSigma", "betaPriorMu", "betaPriorSigma", "psiPriorAlpha",
-    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta"
+    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta", "moderationProbes"
   ))
 }
 
