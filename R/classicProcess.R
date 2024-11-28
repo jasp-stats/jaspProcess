@@ -466,16 +466,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
-.procReadData <- function(dataset, options) {
-  # Read in selected variables from dataset
-  dataset <- .readDataSetToEnd(
-    columns.as.numeric = c(options[['dependent']], options[['covariates']]),
-    columns.as.factor = options[['factors']]
-  )
-
-  return(dataset)
-}
-
 .procAddFactorDummyIntVars <- function(jaspResults, dataset, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
