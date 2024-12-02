@@ -26,12 +26,10 @@ Form
 {
 	Common.VariablesForm {}
 
-
 	Section
 	{
 		title: qsTr("Models")
 		columns: 1
-
 
 		TabView
 		{
@@ -44,6 +42,7 @@ Form
 			content: Group
 			{
 				childControlsArea.anchors.leftMargin: jaspTheme.contentMargin
+
 				Common.InputType
 				{
 					id: inputType
@@ -56,7 +55,6 @@ Form
 				{
 					visible: inputType.value == "inputVariables"
 					adjustedWidth: models.width - 2 * jaspTheme.contentMargin
-					colWidth: (models.width - 3 * 40 * preferencesModel.uiScale) / 4
 				}
 
 				Common.InputModelNumber
@@ -230,6 +228,7 @@ Form
 
 		Common.PathPlotOptions {}
 	}
+
 	Section
 	{
 		id: advanced

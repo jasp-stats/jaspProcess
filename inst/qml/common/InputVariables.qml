@@ -23,38 +23,10 @@ import JASP.Controls
 
 Group
 {
-	property int adjustedWidth: parent.width
-
 	id: 		modelsGroup
 
-	property int colWidth: parent.width / 4 - jaspTheme.contentMargin
-	property int labelWidth: modelsGroup.colWidth + jaspTheme.contentMargin
-
-	RowLayout
-	{
-		Layout.margins: 	jaspTheme.contentMargin
-		Label
-		{
-			text: qsTr("From")
-			Layout.preferredWidth: modelsGroup.labelWidth
-		}
-		Label
-		{
-			
-			text: qsTr("To")
-			Layout.preferredWidth: modelsGroup.labelWidth
-		}
-		Label
-		{
-			text: qsTr("Process Type")
-			Layout.preferredWidth: modelsGroup.labelWidth
-		}
-		Label
-		{
-			text: qsTr("Process Variable")
-			Layout.preferredWidth: modelsGroup.labelWidth
-		}
-	}
+	property int adjustedWidth: parent.width
+	property int colWidth: (adjustedWidth / 4)  - 4 * jaspTheme.contentMargin
 
 	ComponentsList
 	{
@@ -63,10 +35,12 @@ Group
 		preferredWidth: 		adjustedWidth
 		itemRectangle.color: 	jaspTheme.controlBackgroundColor
 		minimumItems:           1
+		headerLabels:			[qsTr("From "), qsTr("To"), qsTr("Process Type"), qsTr("Process Variable")]
 		rowComponent: 			RowLayout
 		{
 			id: 		rowComp
 			enabled: 	rowIndex === relations.count - 1
+			spacing:	jaspTheme.contentMargin
 
 			Layout.columnSpan: 4
 			DropDown
@@ -74,7 +48,8 @@ Group
 				id: 				    procIndep
 				name: 				    'processIndependent'
 				source: 			    ['covariates', 'factors']
-				controlMinWidth: 	    modelsGroup.colWidth
+				fieldWidth:				modelsGroup.colWidth
+				fixedWidth:				true
 				addEmptyValue: 		    true
 				onCurrentValueChanged:
 				{
@@ -93,8 +68,9 @@ Group
 				id: 				procDep
 				name: 				'processDependent'
 				source: 			["dependent", "processVariable"] //, {name: "processRelationships.processVariable", use: "discardIndex=" + (relations.count - 1)}]
-				controlMinWidth: 	modelsGroup.colWidth
 				addEmptyValue: 		true
+				fieldWidth:			modelsGroup.colWidth
+				fixedWidth:			true
 				onCurrentValueChanged:
 				{
 					if (currentIndex > 0 && (procVar.currentValue == currentValue || procIndep.currentValue == currentValue))
@@ -118,7 +94,8 @@ Group
 					{ label: qsTr("Confounder"), 	value: 'confounders'	},
 					{ label: qsTr("Direct"), 		value: 'directs'		}
 				]
-				controlMinWidth: 	modelsGroup.colWidth
+				fieldWidth:			modelsGroup.colWidth
+				fixedWidth:			true
 				addEmptyValue: 		true
 				onCurrentValueChanged:
 				{
@@ -134,7 +111,8 @@ Group
 				name: 				    'processVariable'
 				enabled: 			    procType.currentValue != "directs"
 				source: 			    procType.currentValue == 'mediators' ? ['covariates'] : ['covariates', 'factors']
-				controlMinWidth: 	    modelsGroup.colWidth
+				fieldWidth:				modelsGroup.colWidth
+				fixedWidth:				true
 				addEmptyValue: 		    true
 				onCurrentValueChanged:
 				{
