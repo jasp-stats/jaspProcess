@@ -48,8 +48,7 @@ Group
 				id: 				    procIndep
 				name: 				    'processIndependent'
 				source: 			    ['covariates', 'factors']
-				fieldWidth:				modelsGroup.colWidth
-				fixedWidth:				true
+				fieldWidth:			    modelsGroup.colWidth
 				addEmptyValue: 		    true
 				onCurrentValueChanged:
 				{
@@ -68,9 +67,8 @@ Group
 				id: 				procDep
 				name: 				'processDependent'
 				source: 			["dependent", "processVariable"] //, {name: "processRelationships.processVariable", use: "discardIndex=" + (relations.count - 1)}]
-				addEmptyValue: 		true
 				fieldWidth:			modelsGroup.colWidth
-				fixedWidth:			true
+				addEmptyValue: 		true
 				onCurrentValueChanged:
 				{
 					if (currentIndex > 0 && (procVar.currentValue == currentValue || procIndep.currentValue == currentValue))
@@ -95,7 +93,6 @@ Group
 					{ label: qsTr("Direct"), 		value: 'directs'		}
 				]
 				fieldWidth:			modelsGroup.colWidth
-				fixedWidth:			true
 				addEmptyValue: 		true
 				onCurrentValueChanged:
 				{
@@ -112,7 +109,6 @@ Group
 				enabled: 			    procType.currentValue != "directs"
 				source: 			    procType.currentValue == 'mediators' ? ['covariates'] : ['covariates', 'factors']
 				fieldWidth:				modelsGroup.colWidth
-				fixedWidth:				true
 				addEmptyValue: 		    true
 				onCurrentValueChanged:
 				{
