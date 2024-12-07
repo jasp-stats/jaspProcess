@@ -8,10 +8,6 @@ msgstr ""
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
-msgid "Process (beta)"
-msgstr "Proceso (beta)"
-
-msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
 msgstr "Probar e comparar modelos de proceso causais e condicionais."
 
@@ -706,3 +702,7 @@ msgstr "Preditores continuos"
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
 msgstr "Preditores con categorías"
+
+msgctxt "Description|"
+msgid "Process"
+msgstr ""
