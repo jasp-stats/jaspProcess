@@ -78,31 +78,11 @@
   }
 
   if (number == 4) {
-    processRelationships <- list(
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M"
-      )
-    )
+    processRelationships <- .generateProcessRelationships_4(k)
   }
 
   if (number == 5) {
-    processRelationships <- list(
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "mediators",
-        processVariable = "M"
-      ),
-      list(
-        processDependent = "Y",
-        processIndependent = "X",
-        processType = "moderators",
-        processVariable = "W"
-      )
-    )
+    processRelationships <- .generateProcessRelationships_5(k)
   }
 
   if (number == 6) {
@@ -1567,6 +1547,42 @@
 
   return(.procEncodeProcessRelationships(processRelationships))
 } # end of function on hardcoded models
+
+.generateProcessRelationships_4 <- function(k) {
+  k <- max(k, 1)
+  processRelationships <- lapply(1:k, function(i) {
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = paste0("M", i)
+    )
+  })
+  return(processRelationships)
+}
+
+.generateProcessRelationships_5 <- function(k) {
+  k <- max(k, 1)
+  processRelationships <- lapply(1:k, function(i) {
+    list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "mediators",
+      processVariable = paste0("M", i)
+    )
+  })
+
+  processRelationships <- append(processRelationships,
+    list(list(
+      processDependent = "Y",
+      processIndependent = "X",
+      processType = "moderators",
+      processVariable = "W"
+    ))
+  )
+
+  return(processRelationships)
+}
 
 # model 6
 .generateProcessRelationships_6 <- function(k) {

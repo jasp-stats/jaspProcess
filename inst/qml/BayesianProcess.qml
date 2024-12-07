@@ -55,7 +55,6 @@ Form
                     Common.InputVariables {
 						visible: inputType.value == "inputVariables"
 						adjustedWidth: models.width - 2 * jaspTheme.contentMargin
-						colWidth: (models.width - 3 * 40 * preferencesModel.uiScale) / 4
 					}
 
                     Common.InputModelNumber {

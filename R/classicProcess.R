@@ -26,8 +26,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     .procModelSummaryTable(jaspResults, options, NULL)
     return()
   }
-  # Read dataset
-  dataset <- .procReadData(options)
   # Check for errors in dataset
   .procErrorHandling(dataset, options)
   # Create a container for each model
@@ -83,7 +81,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     "meanCenteredModeration", "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType",
     "mcmcBurnin", "mcmcSamples", "mcmcChains", "seed", "setSeed", "nuPriorMu",
     "nuPriorSigma", "betaPriorMu", "betaPriorSigma", "psiPriorAlpha",
-    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta"
+    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta", "moderationProbes"
   ))
 }
 
@@ -394,10 +392,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get encoding
   encoding <- .procVarEncoding()
 
-  independent <- modelOptions[["modelNumberIndependent"]][["value"]]
-  mediators   <- modelOptions[["modelNumberMediators"  ]][["value"]]
-  modW        <- modelOptions[["modelNumberModeratorW" ]][["value"]]
-  modZ        <- modelOptions[["modelNumberModeratorZ" ]][["value"]]
+  independent <- modelOptions[["modelNumberIndependent"]]
+  mediators   <- modelOptions[["modelNumberMediators"  ]]
+  modW        <- modelOptions[["modelNumberModeratorW" ]]
+  modZ        <- modelOptions[["modelNumberModeratorZ" ]]
 
   # Apply the JASP coding to X, W, Z, and M if the user has specified the variables and 'vars' still contains the dummy version
   if (independent != "" && encoding$X %in% vars) {
@@ -466,16 +464,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
   
   return(graph)
-}
-
-.procReadData <- function(options) {
-  # Read in selected variables from dataset
-  dataset <- .readDataSetToEnd(
-    columns.as.numeric = c(options[['dependent']], options[['covariates']]),
-    columns.as.factor = options[['factors']]
-  )
-
-  return(dataset)
 }
 
 .procAddFactorDummyIntVars <- function(jaspResults, dataset, options) {
@@ -651,7 +639,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (length(options[["covariates"]]) > 1) {
     .hasErrors(dataset, "run",
       type = "varCovData",
-      varCovData.target = options[["covariates"]],
+      varCovData.target = c(options[["dependent"]], options[["covariates"]]),
       varCovData.corFun = stats::cov,
       varCovData.corArgs = list(use = "complete.obs"),
       exitAnalysisIfErrors = TRUE
@@ -1314,6 +1302,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(fittedModel)
 }
 
+.procCheckImpliedVarianceRatios <- function(fittedModel) {
+  impliedVariances <- diag(fittedModel@implied[["cov"]][[1]])
+
+  return(any(outer(impliedVariances, impliedVariances, FUN = "/") > 1000))
+}
+
+.procCheckImpliedVarianceMagnitudes <- function(fittedModel) {
+  impliedVariances <- diag(fittedModel@implied[["cov"]][[1]])
+
+  return(any(impliedVariances > 1000000))
+}
+
 .procResultsFitModel <- function(container, dataset, options, modelOptions) {
   # Check if graph has error message
   if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
@@ -1344,6 +1344,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (jaspBase::isTryError(fittedModel)) {
     return(.procLavaanMsg(fittedModel))
+  }
+
+  if (doFit && is.null(lavaan::vcov(fittedModel))) {
+    checkImpliedVarianceRatios <- .procCheckImpliedVarianceRatios(fittedModel)
+    checkImpliedVarianceMagnitudes <- .procCheckImpliedVarianceMagnitudes(fittedModel)
+    return(.procNotIdentifiedMsg(
+      impliedVarianceRatios = checkImpliedVarianceRatios,
+      impliedVarianceMagnitudes = checkImpliedVarianceMagnitudes
+    ))
   }
 
   if (doFit) {
@@ -1481,10 +1490,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   # Create model options dummy object
   modelOptions <- list(
-    modelNumberIndependent = list(value = independent),
-    modelNumberMediators = list(value = mediators),
-    modelNumberModeratorW = list(value = modW),
-    modelNumberModeratorZ = list(value = modZ)
+    modelNumberIndependent = independent,
+    modelNumberMediators = mediators,
+    modelNumberModeratorW = modW,
+    modelNumberModeratorZ = modZ
   )
 
   # Check which hard-coded model matches user model
@@ -1511,7 +1520,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procModelSummaryTable <- function(jaspResults, options, modelsContainer) {
+.procModelSummaryTable <- function(jaspResults, options, modelsContainer, errors) {
   if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
   modelNumbers <- lapply(options[["processModels"]], function(mod) {
@@ -1525,7 +1534,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modelNames <- sapply(options[["processModels"]], function(mod) mod[["name"]])
 
   procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
-  
+
   if (length(procResults) == 0) return()
 
   # Remove invalid models
@@ -2774,6 +2783,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procFimlMsg <- function() gettext("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
 
 .procConvergenceMsg <- function() gettext("Model did not converge.")
+
+.procNotIdentifiedMsg <- function(impliedVarianceRatios = FALSE, impliedVarianceMagnitudes = FALSE) {
+  reasons <- c()
+  if (impliedVarianceRatios) {
+    reasons <- c(reasons, gettext("<li>Some implied model variances are > 1,000,000</li>"))
+  }
+  if (impliedVarianceMagnitudes) {
+    reasons <- c(reasons, gettext("<li>Some implied model variances are at least a factor 1000 times larger than others</li>"))
+  }
+  gettextf("The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>", paste(reasons, collapse = ""))
+}
 
 .procModelIncompleteMsg <- function() gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models.")
 
