@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.0\n"
-"POT-Creation-Date: 2024-10-19 03:45\n"
+"POT-Creation-Date: 2024-12-14 03:49\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -233,6 +233,19 @@ msgid ""
 "Full Information Maximum Likelihood estimation only available with 'ML' or "
 "'Auto' estimators. Please choose a different estimator or option for missing "
 "value handling."
+msgstr ""
+
+msgid "<li>Some implied model variances are > 1,000,000</li>"
+msgstr ""
+
+msgid ""
+"<li>Some implied model variances are at least a factor 1000 times larger "
+"than others</li>"
+msgstr ""
+
+msgid ""
+"The information matrix could not be inverted. This may be a symptom that the "
+"model is not identified. Possible reasons: <ul>%s</ul>"
 msgstr ""
 
 msgid ""

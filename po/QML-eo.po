@@ -552,10 +552,6 @@ msgid "Hayes configuration"
 msgstr ""
 
 msgctxt "InputVariables|"
-msgid "From"
-msgstr ""
-
-msgctxt "InputVariables|"
 msgid "To"
 msgstr ""
 
@@ -705,4 +701,8 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "Process"
+msgstr ""
+
+msgctxt "InputVariables|"
+msgid "From "
 msgstr ""

@@ -556,10 +556,6 @@ msgid "Hayes configuration"
 msgstr "Hayes-Konfiguration"
 
 msgctxt "InputVariables|"
-msgid "From"
-msgstr "Von"
-
-msgctxt "InputVariables|"
 msgid "To"
 msgstr "Bis"
 
@@ -711,4 +707,8 @@ msgstr "Kategoriale Prädiktoren"
 
 msgctxt "Description|"
 msgid "Process"
+msgstr ""
+
+msgctxt "InputVariables|"
+msgid "From "
 msgstr ""
