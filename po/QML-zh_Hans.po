@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-12-22 21:07+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspprocess-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10-dev\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -65,7 +71,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Samples"
-msgstr ""
+msgstr "样本"
 
 msgctxt "BayesianProcess|"
 msgid "Chains"
@@ -153,7 +159,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "高级选项"
 
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
@@ -165,7 +171,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "BayesianProcess|"
 msgid "Mediators"
