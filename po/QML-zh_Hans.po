@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-12-22 21:07+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
-"projects/jasp/jaspprocess-qml/zh_Hans/>\n"
-"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -391,9 +385,10 @@ msgctxt "ClassicProcess|"
 msgid "Color palette"
 msgstr "调色板"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "高级选项"
 
 msgctxt "ClassicProcess|"
 msgid "Set for All Models"
@@ -403,9 +398,10 @@ msgctxt "ClassicProcess|"
 msgid "Residual Covariances"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "ClassicProcess|"
 msgid "Mediators"
@@ -676,9 +672,10 @@ msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
 msgstr ""
 
+#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Independent variables"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
