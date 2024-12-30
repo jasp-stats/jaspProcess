@@ -405,12 +405,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     vars       <- gsub(encoding$X, jaspCodedX, vars)
   }
 
-  if (modW != "" && encoding$W %in% vars) {
+  if (all(modW != "") && encoding$W %in% vars) {
     jaspCodedW <- encodeColNames(modW)
     vars       <- gsub(encoding$W, jaspCodedW, vars)
   }
 
-  if (modZ != "" && encoding$Z %in% vars) {
+  if (all(modZ != "") && encoding$Z %in% vars) {
     jaspCodedZ <- encodeColNames(modZ)
     vars       <- gsub(encoding$Z, jaspCodedZ, vars)
   }
