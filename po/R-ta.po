@@ -1,0 +1,302 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jaspProcess 0.19.2\n"
+"POT-Creation-Date: 2024-12-14 03:49\n"
+"PO-Revision-Date: 2025-01-04 03:43+0000\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspprocess-r/"
+"ta/>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
+
+msgid "Process Analysis"
+msgstr "செயல்முறை பகுப்பாய்வு"
+
+msgid "Model summary"
+msgstr "மாதிரி சுருக்கம்"
+
+msgid "WAIC"
+msgstr "Waic"
+
+msgid "LOOIC"
+msgstr "Looioy"
+
+msgid "PPP"
+msgstr "பிபிபி"
+
+msgid "BIC"
+msgstr ""
+
+msgid "BIC weight"
+msgstr "பிக் எடை"
+
+msgid "Estimate"
+msgstr "மதிப்பீடு"
+
+msgid "SE"
+msgstr ""
+
+msgid "LOO Difference"
+msgstr "லூ வேறுபாடு"
+
+msgid "ELPD"
+msgstr "ஆல்கஆல்"
+
+msgid "Ratio"
+msgstr "விகிதம்"
+
+msgid "n"
+msgstr "n"
+
+msgid "Posterior"
+msgstr "பின்புறம்"
+
+msgid "%s%% Credible Interval"
+msgstr "%s %% நம்பகமான இடைவெளி"
+
+msgid "Mean"
+msgstr "இடை, சராசரி"
+
+msgid "Median"
+msgstr ""
+
+msgid "SD"
+msgstr ""
+
+msgid "Lower"
+msgstr "கீழ்"
+
+msgid "Upper"
+msgstr "மேல்"
+
+msgid "R-hat"
+msgstr "ஆர்-தொப்பி"
+
+msgid "ESS (bulk)"
+msgstr "ESS (மொத்த)"
+
+msgid "ESS (tail)"
+msgstr "கட்டு"
+
+msgid "Warning:"
+msgstr "எச்சரிக்கை:"
+
+msgid "Path coefficients"
+msgstr ""
+
+msgid "Label"
+msgstr "சிட்டை"
+
+msgid "Prior"
+msgstr "முன்"
+
+msgid "Direct and indirect effects"
+msgstr "நேரடி மற்றும் மறைமுக விளைவுகள்"
+
+msgid "Total effects"
+msgstr "மொத்த விளைவுகள்"
+
+msgid "Residual covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgid "MCMC Plots"
+msgstr "MCMC அடுக்கு"
+
+msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
+msgstr ""
+"எச்சரிக்கை: WAIC மதிப்பீடு நம்பமுடியாதது - குறைந்தது ஒரு பயனுள்ள அளவுரு மதிப்பீடு "
+"(P_WAIC) 0.4 ஐ விட பெரியது. அதற்கு பதிலாக லோ ஐப் பயன்படுத்த பரிந்துரைக்கிறோம்."
+
+msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
+msgstr ""
+"எச்சரிக்கை: லூ மதிப்பீடு நம்பமுடியாதது - 0.5 ஐ விட அதிகமான பொதுவான பரேட்டோ "
+"விநியோகத்தின் வடிவ அளவுரு (கே) உடன் குறைந்தது ஒரு அவதானிப்பு."
+
+msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
+msgstr ""
+"காணாமல் போன தரவைக் கொண்ட சுயாதீன மாறிகளுக்கு எந்த கோவாரியன்களும் மதிப்பிடப்படாவிட்டால் "
+"WAIC மற்றும் லோ ஐ கணக்கிட முடியாது."
+
+msgid "Estimates might be biased -- %i divergent transitions after warmup."
+msgstr ""
+"மதிப்பீடுகள் பக்கச்சார்பாக இருக்கலாம் - %நான் வெப்பமயமாதலுக்குப் பிறகு வேறுபட்ட மாற்றங்கள்."
+
+msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
+msgstr ""
+"காணாமல் போன தகவல்களின் (பி.எஃப்.எம்.ஐ) பேய்சியன் பின்னம் %i சங்கிலிகளில் மிகக் குறைவாக "
+"இருந்தது - பின்புற வழங்கல் திறமையாக ஆராயப்படவில்லை."
+
+msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
+msgstr ""
+"ஆமில்டோனிய மான்டே கார்லோ செயல்முறை திறமையற்றதாக இருக்கலாம் - %i மாற்றம் அதிகபட்ச மர "
+"ஆழத்தை மீறியது."
+
+msgid "Low estimation accuracy for %s quantities -- the smallest Effective Sample Size (ESS) is %.2f < %1.0f."
+msgstr ""
+"%s அளவுகளுக்கான குறைந்த மதிப்பீட்டு துல்லியம் - மிகச்சிறிய பயனுள்ள மாதிரி அளவு (ESS) "
+"%.2F < %1.0F."
+
+msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %.3f > %.2f."
+msgstr ""
+"அனுமானம் நம்பமுடியாதது - எம்.சி.எம்.சி சங்கிலிகள் ஒன்றிணைந்திருக்காது; மிகப்பெரிய R-"
+"HAT %.3f> %.2f."
+
+msgid "Hayes number"
+msgstr "ஏய்ச் எண்"
+
+msgid "Model configuration number defined by Hayes (2022)."
+msgstr "ஏய்ச் (2022) வரையறுக்கப்பட்ட மாதிரி உள்ளமைவு எண்."
+
+msgid "AIC"
+msgstr "Aic"
+
+msgid "AIC weight"
+msgstr "AIC எடை"
+
+msgid "Log-likelihood"
+msgstr "பதிவு-சாத்தியக்கூறு"
+
+msgid "df"
+msgstr ""
+
+msgid "Std. Error"
+msgstr "Std. பிழை"
+
+msgid "z-value"
+msgstr "z- மதிப்பு"
+
+msgid "p"
+msgstr ""
+
+msgid "%s%% Confidence Interval"
+msgstr "%s %% நம்பிக்கை இடைவெளி"
+
+msgid "Std. Estimate"
+msgstr "நிலை. மதிப்பீடு"
+
+msgid "bias-corrected percentile"
+msgstr "சார்பு-திருத்தப்பட்ட விழுக்காடு"
+
+msgid "percentile"
+msgstr "விழுக்காடு"
+
+msgid "normal theory"
+msgstr "சாதாரண கோட்பாடு"
+
+msgid "Total"
+msgstr "மொத்தம்"
+
+msgid "Total indirect"
+msgstr "மொத்த மறைமுக"
+
+msgid "Local tests"
+msgstr "உள்ளக சோதனைகள்"
+
+msgid "Conditional independence tests"
+msgstr "நிபந்தனை சுதந்திர சோதனைகள்"
+
+msgid "Model did not converge."
+msgstr "மாதிரி ஒன்றிணைக்கவில்லை."
+
+msgid "RMSEA"
+msgstr ""
+
+msgid "&#967;&sup2;"
+msgstr "&#967; &sup2;"
+
+msgid "Std. error"
+msgstr "நிலை. பிழை"
+
+msgid "R-squared"
+msgstr "ஆர்-சதுரமானது"
+
+msgid "Conceptual path plot"
+msgstr "கருத்தியல் பாதை சூழ்ச்சி"
+
+msgid "Statistical path plot"
+msgstr "புள்ளிவிவர பாதை சூழ்ச்சி"
+
+msgid "Model syntax"
+msgstr "மாதிரி தொடரியல்"
+
+msgid "Model must be a directed acyclic graph -- it must not contain loops."
+msgstr ""
+"மாதிரி ஒரு இயக்கப்பட்ட அசைக்ளிக் வரைபடமாக இருக்க வேண்டும் - அதில் சுழல்கள் இருக்கக்கூடாது."
+
+msgid "%1$s: Hayes configuration %2$s not implemented"
+msgstr "%1$s: ஏய்ச் உள்ளமைவு %2$s செயல்படுத்தப்படவில்லை"
+
+msgid "Estimation failed: %s"
+msgstr "மதிப்பீடு தோல்வியுற்றது: %s"
+
+msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
+msgstr ""
+"முழு செய்தி அதிகபட்ச சாத்தியக்கூறு மதிப்பீடு 'எம்.எல்' அல்லது 'ஆட்டோ' மதிப்பீட்டாளர்களுடன் "
+"மட்டுமே கிடைக்கிறது. மதிப்பு கையாளுதலைக் காணவில்லை என்பதற்கான வேறு மதிப்பீட்டாளர் அல்லது "
+"விருப்பத்தைத் தேர்வுசெய்க."
+
+msgid "<li>Some implied model variances are > 1,000,000</li>"
+msgstr "<li> சில மறைமுகமான மாதிரி மாறுபாடுகள்> 1,000,000 </li>"
+
+msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
+msgstr ""
+"<li> சில மறைமுகமான மாதிரி மாறுபாடுகள் மற்றவர்களை விட 1000 மடங்கு பெரிய காரணி "
+"</li>"
+
+msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
+msgstr ""
+"செய்தி மேட்ரிக்ச் தலைகீழாக இருக்க முடியாது. இது மாதிரி அடையாளம் காணப்படாத அறிகுறியாக "
+"இருக்கலாம். சாத்தியமான காரணங்கள்: <ul>%s </ul>"
+
+msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
+msgstr ""
+"குறைந்தது ஒரு மாதிரி முழுமையடையாது அல்லது எந்த மாதிரியும் குறிப்பிடப்படவில்லை. "
+"தயவுசெய்து குறைந்தது ஒரு மாதிரி மற்றும் குறிப்பிட்ட மாதிரிகளை முடிக்கவும்."
+
+msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
+msgstr ""
+"AIC, BIC மற்றும் கூடுதல் செய்தி அளவுகோல்கள் ML- வகை மதிப்பீட்டாளர்களுடன் மட்டுமே "
+"கிடைக்கின்றன."
+
+msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
+msgstr ""
+"<b> முக்கியமானது </b>: அனைத்து குழப்பமான விளைவுகளுக்கும் கணக்கிடப்பட்டால் மற்றும் காரண "
+"விளைவு திசைகள் சரியாகக் குறிப்பிடப்பட்டால் மட்டுமே அளவுரு மதிப்பீடுகளை காரண விளைவுகளா"
+"க விளக்க முடியும்."
+
+msgid "Please check the model specification and lavaan syntax."
+msgstr "மாதிரி விவரக்குறிப்பு மற்றும் லாவான் தொடரியல் சரிபார்க்கவும்."
+
+msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
+msgstr ""
+"நேரியல் சோதனை வகையை காரணி மாறிகள் பயன்படுத்த முடியாது. வேறு சோதனை வகையைத் தேர்வுசெய்"
+"க அல்லது மாதிரியிலிருந்து அனைத்து காரணி மாறிகளையும் அகற்றவும்."
+
+msgid "The specified model does not imply any (conditional) independencies that can be tested."
+msgstr ""
+"குறிப்பிட்ட மாதிரி சோதிக்கக்கூடிய எந்தவொரு (நிபந்தனை) சுயாதீனங்களையும் குறிக்கவில்லை."
+
+msgid "Partially standardized estimate because effect involves categorical predictor."
+msgstr ""
+"ஓரளவு தரப்படுத்தப்பட்ட மதிப்பீடு, ஏனெனில் விளைவு வகைப்படுத்தப்பட்ட முன்கணிப்பாளரை "
+"உள்ளடக்கியது."
+
+msgid "Moderation effect estimates are based on mean-centered variables."
+msgstr ""
+"மிதமான விளைவு மதிப்பீடுகள் சராசரி மையப்படுத்தப்பட்ட மாறிகளை அடிப்படையாகக் கொண்டவை."
+
+msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
+msgstr ""
+"நம்பிக்கை இடைவெளிகள் %s தொடக்கவார். நிலையான பிழைகள், <em> சட் </em>-மதிப்புகள் மற்றும் "
+"<em> ப </em>-மதிப்புகள் டெல்டா முறையை அடிப்படையாகக் கொண்டவை."
+
+msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
+msgstr ""
+"எல்லா தொடக்கவார் மாதிரிகளும் வெற்றிகரமாக இல்லை: %.0f மாதிரிகளின் அடிப்படையில் தொஒ."
+
+msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
+msgstr "<em> ப </em>- %s முறையுடன் பல ஒப்பீடுகளுக்கு சரிசெய்யப்பட்ட மதிப்புகள்."
