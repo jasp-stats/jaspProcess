@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-08 15:02+0000\n"
+"PO-Revision-Date: 2025-01-09 23:00+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspprocess-qml/zh_Hant/>\n"
@@ -163,7 +163,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "設定至所有模型"
 
 msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
@@ -491,11 +491,11 @@ msgstr "模擬"
 
 msgctxt "ClassicProcess|"
 msgid "Mplus"
-msgstr "Mplus 軟體"
+msgstr "Mplus 套裝軟體"
 
 msgctxt "ClassicProcess|"
 msgid "EQS"
-msgstr "EQS 軟體"
+msgstr "EQS 套裝軟體"
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
