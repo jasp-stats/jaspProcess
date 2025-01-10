@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-09 23:00+0000\n"
+"PO-Revision-Date: 2025-01-11 03:44+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspprocess-qml/zh_Hant/>\n"
@@ -319,7 +319,7 @@ msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "R-squared"
-msgstr ""
+msgstr "R平方"
 
 msgctxt "ClassicProcess|"
 msgid "AIC weights"
@@ -499,7 +499,7 @@ msgstr "EQS 套裝軟體"
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
-msgstr "估計式"
+msgstr "估計方法"
 
 msgctxt "ClassicProcess|"
 msgid "Auto"
