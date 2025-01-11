@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-11 03:44+0000\n"
-"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
-"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
-"projects/jasp/jaspprocess-qml/zh_Hant/>\n"
-"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -57,13 +51,15 @@ msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
 msgstr ""
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "貝氏資訊量準則權重(BIC權重)"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Hayes 配置數"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
@@ -81,17 +77,20 @@ msgctxt "BayesianProcess|"
 msgid "Credible intervals"
 msgstr ""
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "均數平減化的調節效果"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "繪圖"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "調色盤"
 
 msgctxt "BayesianProcess|"
 msgid "MCMC Plots"
@@ -125,9 +124,10 @@ msgctxt "BayesianProcess|"
 msgid "No. lags"
 msgstr ""
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Type"
-msgstr ""
+msgstr "型態"
 
 msgctxt "BayesianProcess|"
 msgid "line"
@@ -157,65 +157,78 @@ msgctxt "BayesianProcess|"
 msgid "Contour"
 msgstr ""
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "進階設定"
 
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
 msgstr "設定至所有模型"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "殘差共變數"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "自變數(IV)"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "中介變數"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "依變數(DV)"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "參數估計"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "路徑"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "截距"
 
 msgctxt "BayesianProcess|"
 msgid "Mediation"
 msgstr ""
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Total"
-msgstr ""
+msgstr "總效果"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "殘差共變數"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "路徑圖"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "概念模型圖"
 
+#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "統計模型圖"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts:"
@@ -549,9 +562,10 @@ msgctxt "InputType|"
 msgid "Input type"
 msgstr ""
 
+#, fuzzy
 msgctxt "InputType|"
 msgid "Paths"
-msgstr ""
+msgstr "路徑"
 
 msgctxt "InputType|"
 msgid "Hayes configuration"
@@ -593,29 +607,35 @@ msgctxt "ModerationProbes|"
 msgid "th percentile"
 msgstr ""
 
+#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "參數估計"
 
+#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Paths"
-msgstr ""
+msgstr "路徑"
 
+#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Intercepts"
-msgstr ""
+msgstr "截距"
 
+#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Indirect"
-msgstr ""
+msgstr "間接"
 
+#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Total"
-msgstr ""
+msgstr "總效果"
 
+#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "殘差共變數"
 
 msgctxt "PathPlotOptions|"
 msgid "Statistical Path Plots"
@@ -649,37 +669,45 @@ msgctxt "PathPlotOptions|"
 msgid "Label length"
 msgstr ""
 
+#, fuzzy
 msgctxt "PathPlots|"
 msgid "Path Plots"
-msgstr ""
+msgstr "路徑圖"
 
+#, fuzzy
 msgctxt "PathPlots|"
 msgid "Conceptual"
-msgstr ""
+msgstr "概念模型圖"
 
+#, fuzzy
 msgctxt "PathPlots|"
 msgid "Statistical"
-msgstr ""
+msgstr "統計模型圖"
 
+#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "殘差共變數"
 
+#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Independent variables"
-msgstr ""
+msgstr "自變數(IV)"
 
+#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
-msgstr ""
+msgstr "中介變數"
 
+#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "依變數(DV)"
 
+#, fuzzy
 msgctxt "StandardizedEstimates|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "標準化估計"
 
 msgctxt "StandardizedEstimates|"
 msgid "Unstandardized"
