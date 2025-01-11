@@ -1,0 +1,715 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-01-04 21:55+0000\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/"
+"jaspprocess-qml/ta/>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10-dev\n"
+"X-Language: zh_Hans\n"
+"X-Qt-Contexts: true\n"
+
+msgctxt "Description|"
+msgid "Test and compare causal and conditional process models."
+msgstr ""
+"காரண மற்றும் நிபந்தனை செயல்முறை மாதிரிகளை சோதித்து ஒப்பிட்டுப் பாருங்கள்."
+
+msgctxt "Description|"
+msgid "Classical"
+msgstr "பாரம்பரிய"
+
+msgctxt "Description|"
+msgid "Classical Process Model"
+msgstr "பாரம்பரிய செயல்முறை மாதிரி"
+
+msgctxt "Description|"
+msgid "Bayesian"
+msgstr "பேய்சியன்"
+
+msgctxt "Description|"
+msgid "Bayesian Process Model"
+msgstr "பேய்சியன் செயல்முறை மாதிரி"
+
+msgctxt "BayesianProcess|"
+msgid "Models"
+msgstr "மாதிரிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Model 1"
+msgstr "மாதிரி 1"
+
+msgctxt "BayesianProcess|"
+msgid "Options"
+msgstr "விருப்பங்கள்"
+
+msgctxt "BayesianProcess|"
+msgid "Prior distributions"
+msgstr "முன் வழங்கல்"
+
+msgctxt "BayesianProcess|"
+msgid "Parameter labels"
+msgstr "அளவுரு லேபிள்கள்"
+
+msgctxt "BayesianProcess|"
+msgid "Lavaan syntax"
+msgstr "லாவான் தொடரியல்"
+
+msgctxt "BayesianProcess|"
+msgid "BIC weights"
+msgstr "பிக் எடைகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Hayes configuration number"
+msgstr "ஏய்ச் உள்ளமைவு எண்"
+
+msgctxt "BayesianProcess|"
+msgid "Burnin"
+msgstr "பர்னின்"
+
+msgctxt "BayesianProcess|"
+msgid "Samples"
+msgstr "மாதிரிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Chains"
+msgstr "சங்கிலிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Credible intervals"
+msgstr "நம்பகமான இடைவெளிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Mean-centered moderation"
+msgstr "சராசரி மையப்படுத்தப்பட்ட மிதமான"
+
+msgctxt "BayesianProcess|"
+msgid "Plots"
+msgstr "அடுக்கு"
+
+msgctxt "BayesianProcess|"
+msgid "Color palette"
+msgstr "வண்ண தட்டு"
+
+msgctxt "BayesianProcess|"
+msgid "MCMC Plots"
+msgstr "MCMC அடுக்கு"
+
+msgctxt "BayesianProcess|"
+msgid "Aggregate chains for densities and histograms"
+msgstr "அடர்த்தி மற்றும் இச்டோகிராம்களுக்கான மொத்த சங்கிலிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Show legends"
+msgstr "புராணங்களைக் காட்டு"
+
+msgctxt "BayesianProcess|"
+msgid "Density"
+msgstr "அடர்த்தி"
+
+msgctxt "BayesianProcess|"
+msgid "Histogram"
+msgstr "செவ்வகப்படம்"
+
+msgctxt "BayesianProcess|"
+msgid "Trace"
+msgstr "சுவடு"
+
+msgctxt "BayesianProcess|"
+msgid "Autocorrelation"
+msgstr "தன்னொட்டுறவு"
+
+msgctxt "BayesianProcess|"
+msgid "No. lags"
+msgstr "இல்லை"
+
+msgctxt "BayesianProcess|"
+msgid "Type"
+msgstr "வகை"
+
+msgctxt "BayesianProcess|"
+msgid "line"
+msgstr "வரி"
+
+msgctxt "BayesianProcess|"
+msgid "bar"
+msgstr "மதுக்கூடம்"
+
+msgctxt "BayesianProcess|"
+msgid "Bivariate scatter"
+msgstr "பிவாரேட் சிதறல்"
+
+msgctxt "BayesianProcess|"
+msgid "Diagonal plot type"
+msgstr "மூலைவிட்ட சூழ்ச்சி வகை"
+
+msgctxt "BayesianProcess|"
+msgid "Off-diagonal plot type"
+msgstr "ஆஃப்-மூலைவிட்ட சூழ்ச்சி வகை"
+
+msgctxt "BayesianProcess|"
+msgid "Hexagonal"
+msgstr "அறுகோண"
+
+msgctxt "BayesianProcess|"
+msgid "Contour"
+msgstr "விளிம்பு"
+
+msgctxt "BayesianProcess|"
+msgid "Advanced"
+msgstr "மேம்பட்ட"
+
+msgctxt "BayesianProcess|"
+msgid "Set for All Models"
+msgstr "அனைத்து மாடல்களுக்கும் அமைக்கவும்"
+
+msgctxt "BayesianProcess|"
+msgid "Residual Covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgctxt "BayesianProcess|"
+msgid "Independent variables"
+msgstr "சுயாதீன மாறிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Mediators"
+msgstr "மத்தியச்தர்கள்"
+
+msgctxt "BayesianProcess|"
+msgid "Dependent variables"
+msgstr "சார்பு மாறிகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Parameter Estimates"
+msgstr "அளவுரு மதிப்பீடுகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Paths"
+msgstr "பாதைகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Intercepts"
+msgstr "இடைமறிப்புகள்"
+
+msgctxt "BayesianProcess|"
+msgid "Mediation"
+msgstr "மத்தியச்தம்"
+
+msgctxt "BayesianProcess|"
+msgid "Total"
+msgstr "மொத்தம்"
+
+msgctxt "BayesianProcess|"
+msgid "Residual covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgctxt "BayesianProcess|"
+msgid "Path Plots"
+msgstr "பாதை அடுக்கு"
+
+msgctxt "BayesianProcess|"
+msgid "Conceptual"
+msgstr "கருத்தியல்"
+
+msgctxt "BayesianProcess|"
+msgid "Statistical"
+msgstr "புள்ளிவிவர"
+
+msgctxt "BayesianProcess|"
+msgid "Intercepts:"
+msgstr "இடைமறிப்புகள்:"
+
+msgctxt "BayesianProcess|"
+msgid "v ~ Normal(μ,σ)"
+msgstr "V ~ இயல்பானது (மீ, கள்)"
+
+msgctxt "BayesianProcess|"
+msgid "Path coefficients:"
+msgstr "பாதை குணகங்கள்:"
+
+msgctxt "BayesianProcess|"
+msgid "β ~ Normal(μ,σ)"
+msgstr "B ~ இயல்பானது (மீ, கள்)"
+
+msgctxt "BayesianProcess|"
+msgid "Standard deviations:"
+msgstr "நிலையான விலகல்கள்:"
+
+msgctxt "BayesianProcess|"
+msgid "ψ ~ Gamma(α,β)"
+msgstr "~ ~ காமா (அ, பி)"
+
+msgctxt "BayesianProcess|"
+msgid "Correlations:"
+msgstr "தொடர்புகள்:"
+
+msgctxt "BayesianProcess|"
+msgid "ρ ~ Beta(α,β)"
+msgstr "பி ~ பீட்டா (ஏ, பி)"
+
+msgctxt "ClassicProcess|"
+msgid "Models"
+msgstr "மாதிரிகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Model 1"
+msgstr "மாதிரி 1"
+
+msgctxt "ClassicProcess|"
+msgid "Tests"
+msgstr "தேர்வுகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Local tests"
+msgstr "உள்ளக சோதனைகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Test type"
+msgstr "சோதனை வகை"
+
+msgctxt "ClassicProcess|"
+msgid "Linear"
+msgstr "நேரியல்"
+
+msgctxt "ClassicProcess|"
+msgid "Loess"
+msgstr "தளர்வு"
+
+msgctxt "ClassicProcess|"
+msgid "Chi-square"
+msgstr "சி-சதுரம்"
+
+msgctxt "ClassicProcess|"
+msgid "Tetrad"
+msgstr "டெட்ராட்"
+
+msgctxt "ClassicProcess|"
+msgid "Tetrad within"
+msgstr "டெட்ராட் உள்ளே"
+
+msgctxt "ClassicProcess|"
+msgid "Tetrad between"
+msgstr "இடையில் டெட்ராட்"
+
+msgctxt "ClassicProcess|"
+msgid "Tetrad epistemic"
+msgstr "டெட்ராட் எபிச்டெமிக்"
+
+msgctxt "ClassicProcess|"
+msgid "Bootstrap"
+msgstr "தொடக்கவார்"
+
+msgctxt "ClassicProcess|"
+msgid "Replications"
+msgstr "பிரதி"
+
+msgctxt "ClassicProcess|"
+msgid "Options"
+msgstr "விருப்பங்கள்"
+
+msgctxt "ClassicProcess|"
+msgid "Parameter labels"
+msgstr "அளவுரு லேபிள்கள்"
+
+msgctxt "ClassicProcess|"
+msgid "Lavaan syntax"
+msgstr "லாவான் தொடரியல்"
+
+msgctxt "ClassicProcess|"
+msgid "R-squared"
+msgstr "ஆர்-ச்கொயர்"
+
+msgctxt "ClassicProcess|"
+msgid "AIC weights"
+msgstr "AIC எடைகள்"
+
+msgctxt "ClassicProcess|"
+msgid "BIC weights"
+msgstr "பிக் எடைகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Hayes configuration number"
+msgstr "ஏய்ச் உள்ளமைவு எண்"
+
+msgctxt "ClassicProcess|"
+msgid "Mean-centered moderation"
+msgstr "சராசரி மையப்படுத்தப்பட்ட மிதமான"
+
+msgctxt "ClassicProcess|"
+msgid "Standardized estimates"
+msgstr "தரப்படுத்தப்பட்ட மதிப்பீடுகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Confidence intervals"
+msgstr "நம்பிக்கை இடைவெளிகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Method"
+msgstr "முறை"
+
+msgctxt "ClassicProcess|"
+msgid "Standard"
+msgstr "தரநிலை"
+
+msgctxt "ClassicProcess|"
+msgid "Robust"
+msgstr "வலுவான"
+
+msgctxt "ClassicProcess|"
+msgid "Type"
+msgstr "வகை"
+
+msgctxt "ClassicProcess|"
+msgid "Percentile"
+msgstr "விழுக்காடு"
+
+msgctxt "ClassicProcess|"
+msgid "Bias-corrected percentile"
+msgstr "சார்பு-திருத்தப்பட்ட விழுக்காடு"
+
+msgctxt "ClassicProcess|"
+msgid "Normal theory"
+msgstr "சாதாரண கோட்பாடு"
+
+msgctxt "ClassicProcess|"
+msgid "Plots"
+msgstr "அடுக்கு"
+
+msgctxt "ClassicProcess|"
+msgid "Color palette"
+msgstr "வண்ண தட்டு"
+
+msgctxt "ClassicProcess|"
+msgid "Advanced"
+msgstr "மேம்பட்ட"
+
+msgctxt "ClassicProcess|"
+msgid "Set for All Models"
+msgstr "அனைத்து மாடல்களுக்கும் அமைக்கவும்"
+
+msgctxt "ClassicProcess|"
+msgid "Residual Covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgctxt "ClassicProcess|"
+msgid "Independent variables"
+msgstr "சுயாதீன மாறிகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Mediators"
+msgstr "மத்தியச்தர்கள்"
+
+msgctxt "ClassicProcess|"
+msgid "Dependent variables"
+msgstr "சார்பு மாறிகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Parameter Estimates"
+msgstr "அளவுரு மதிப்பீடுகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Paths"
+msgstr "பாதைகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Intercepts"
+msgstr "இடைமறிப்புகள்"
+
+msgctxt "ClassicProcess|"
+msgid "Indirect"
+msgstr "மறைமுக"
+
+msgctxt "ClassicProcess|"
+msgid "Total"
+msgstr "மொத்தம்"
+
+msgctxt "ClassicProcess|"
+msgid "Residual covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgctxt "ClassicProcess|"
+msgid "Path Plots"
+msgstr "பாதை அடுக்கு"
+
+msgctxt "ClassicProcess|"
+msgid "Conceptual"
+msgstr "கருத்தியல்"
+
+msgctxt "ClassicProcess|"
+msgid "Statistical"
+msgstr "புள்ளிவிவர"
+
+msgctxt "ClassicProcess|"
+msgid "Adjustment method"
+msgstr "சரிசெய்தல் முறை"
+
+msgctxt "ClassicProcess|"
+msgid "None"
+msgstr "எதுவுமில்லை"
+
+msgctxt "ClassicProcess|"
+msgid "Holm"
+msgstr "ஓல்ம்"
+
+msgctxt "ClassicProcess|"
+msgid "Hochberg"
+msgstr "ஓட்ச்பெர்க்"
+
+msgctxt "ClassicProcess|"
+msgid "Hommel"
+msgstr "பம்பல்பீ"
+
+msgctxt "ClassicProcess|"
+msgid "Bonferroni"
+msgstr "போன்பெரோரோனி"
+
+msgctxt "ClassicProcess|"
+msgid "Benjamini-Hochberg"
+msgstr "பெஞ்சமினி-ஓச்ச்பெர்க்"
+
+msgctxt "ClassicProcess|"
+msgid "Benjamini-Yekuteli"
+msgstr "என்ன"
+
+msgctxt "ClassicProcess|"
+msgid "Missing Value Handling"
+msgstr "மதிப்பு கையாளுதல் இல்லை"
+
+msgctxt "ClassicProcess|"
+msgid "Exclude cases listwise"
+msgstr "வழக்குகளை பட்டியலிடுங்கள்"
+
+msgctxt "ClassicProcess|"
+msgid "Full Information Maximum Likelihood"
+msgstr "முழு செய்தி அதிகபட்ச வாய்ப்பு"
+
+msgctxt "ClassicProcess|"
+msgid "Emulation"
+msgstr "போன்மம்"
+
+msgctxt "ClassicProcess|"
+msgid "Mplus"
+msgstr "Mplus"
+
+msgctxt "ClassicProcess|"
+msgid "EQS"
+msgstr "Eqs"
+
+msgctxt "ClassicProcess|"
+msgid "Estimator"
+msgstr "மதிப்பீட்டாளர்"
+
+msgctxt "ClassicProcess|"
+msgid "Auto"
+msgstr "தானி"
+
+msgctxt "ClassicProcess|"
+msgid "ML"
+msgstr "எம்.எல்"
+
+msgctxt "ClassicProcess|"
+msgid "GLS"
+msgstr "சி.எல்.எச்"
+
+msgctxt "ClassicProcess|"
+msgid "WLS"
+msgstr "WLS"
+
+msgctxt "ClassicProcess|"
+msgid "ULS"
+msgstr "Uls"
+
+msgctxt "ClassicProcess|"
+msgid "DWLS"
+msgstr "லேடி"
+
+msgctxt "InputModelNumber|"
+msgid "Hayes configuration number"
+msgstr "ஏய்ச் உள்ளமைவு எண்"
+
+msgctxt "InputModelNumber|"
+msgid "Independent X"
+msgstr "சுயாதீன ஃச்"
+
+msgctxt "InputModelNumber|"
+msgid "Mediators M"
+msgstr "மத்தியச்தர்கள் மீ"
+
+msgctxt "InputModelNumber|"
+msgid "Moderator W"
+msgstr "மதிப்பீட்டாளர்"
+
+msgctxt "InputModelNumber|"
+msgid "Moderator Z"
+msgstr "மதிப்பீட்டாளர் சட்"
+
+msgctxt "InputType|"
+msgid "Input type"
+msgstr "உள்ளீட்டு வகை"
+
+msgctxt "InputType|"
+msgid "Paths"
+msgstr "பாதைகள்"
+
+msgctxt "InputType|"
+msgid "Hayes configuration"
+msgstr "ஏய்ச் உள்ளமைவு"
+
+msgctxt "InputVariables|"
+msgid "To"
+msgstr "பெறுநர்"
+
+msgctxt "InputVariables|"
+msgid "Process Type"
+msgstr "செயல்முறை வகை"
+
+msgctxt "InputVariables|"
+msgid "Process Variable"
+msgstr "செயல்முறை மாறி"
+
+msgctxt "InputVariables|"
+msgid "Mediator"
+msgstr "உடன்படுத்துபவர்"
+
+msgctxt "InputVariables|"
+msgid "Moderator"
+msgstr "மதிப்பீட்டாளர்"
+
+msgctxt "InputVariables|"
+msgid "Confounder"
+msgstr "குழப்பமானவர்"
+
+msgctxt "InputVariables|"
+msgid "Direct"
+msgstr "நேரடி"
+
+msgctxt "ModerationProbes|"
+msgid "Probe Conditional Continuous Effects"
+msgstr "நிபந்தனை தொடர்ச்சியான விளைவுகளை ஆய்வு செய்யுங்கள்"
+
+msgctxt "ModerationProbes|"
+msgid "th percentile"
+msgstr "வது விழுக்காடு"
+
+msgctxt "ParameterEstimates|"
+msgid "Parameter Estimates"
+msgstr "அளவுரு மதிப்பீடுகள்"
+
+msgctxt "ParameterEstimates|"
+msgid "Paths"
+msgstr "பாதைகள்"
+
+msgctxt "ParameterEstimates|"
+msgid "Intercepts"
+msgstr "இடைமறிப்புகள்"
+
+msgctxt "ParameterEstimates|"
+msgid "Indirect"
+msgstr "மறைமுக"
+
+msgctxt "ParameterEstimates|"
+msgid "Total"
+msgstr "மொத்தம்"
+
+msgctxt "ParameterEstimates|"
+msgid "Residual covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgctxt "PathPlotOptions|"
+msgid "Statistical Path Plots"
+msgstr "புள்ளிவிவர பாதை அடுக்கு"
+
+msgctxt "PathPlotOptions|"
+msgid "Covariances"
+msgstr "கோவாரியன்ச்"
+
+msgctxt "PathPlotOptions|"
+msgid "Residual variances"
+msgstr "மீதமுள்ள மாறுபாடுகள்"
+
+msgctxt "PathPlotOptions|"
+msgid "Parameter estimates"
+msgstr "அளவுரு மதிப்பீடுகள்"
+
+msgctxt "PathPlotOptions|"
+msgid "Legend"
+msgstr "புராணக்கதை"
+
+msgctxt "PathPlotOptions|"
+msgid "Labels"
+msgstr "சிட்டைகள்"
+
+msgctxt "PathPlotOptions|"
+msgid "Color"
+msgstr "நிறம்"
+
+msgctxt "PathPlotOptions|"
+msgid "Label length"
+msgstr "சிட்டை நீளம்"
+
+msgctxt "PathPlots|"
+msgid "Path Plots"
+msgstr "பாதை அடுக்கு"
+
+msgctxt "PathPlots|"
+msgid "Conceptual"
+msgstr "கருத்தியல்"
+
+msgctxt "PathPlots|"
+msgid "Statistical"
+msgstr "புள்ளிவிவர"
+
+msgctxt "ResidualCovariances|"
+msgid "Residual Covariances"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
+
+msgctxt "ResidualCovariances|"
+msgid "Independent variables"
+msgstr "சுயாதீன மாறிகள்"
+
+msgctxt "ResidualCovariances|"
+msgid "Mediators"
+msgstr "மத்தியச்தர்கள்"
+
+msgctxt "ResidualCovariances|"
+msgid "Dependent variables"
+msgstr "சார்பு மாறிகள்"
+
+msgctxt "StandardizedEstimates|"
+msgid "Standardized estimates"
+msgstr "தரப்படுத்தப்பட்ட மதிப்பீடுகள்"
+
+msgctxt "StandardizedEstimates|"
+msgid "Unstandardized"
+msgstr "நிலையற்ற"
+
+msgctxt "StandardizedEstimates|"
+msgid "Mean-centered"
+msgstr "சராசரி மையப்படுத்தப்பட்ட"
+
+msgctxt "StandardizedEstimates|"
+msgid "Standardized"
+msgstr "தரப்படுத்தப்பட்ட"
+
+msgctxt "VariablesForm|"
+msgid "Dependent Variable"
+msgstr "சார்பு மாறி"
+
+msgctxt "VariablesForm|"
+msgid "Continuous Predictors"
+msgstr "தொடர்ச்சியான முன்னறிவிப்பாளர்கள்"
+
+msgctxt "VariablesForm|"
+msgid "Categorical Predictors"
+msgstr "வகைப்படுத்தப்பட்ட முன்கணிப்பாளர்கள்"
+
+msgctxt "Description|"
+msgid "Process"
+msgstr "செயல்முறை"
+
+msgctxt "InputVariables|"
+msgid "From "
+msgstr "இருந்து "
