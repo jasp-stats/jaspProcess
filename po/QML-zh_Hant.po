@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-22 11:01+0000\n"
+"PO-Revision-Date: 2025-01-24 23:01+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspprocess-qml/zh_Hant/>\n"
@@ -190,10 +190,9 @@ msgctxt "BayesianProcess|"
 msgid "Dependent variables"
 msgstr "依變項(DV)"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
@@ -424,7 +423,7 @@ msgstr "依變項(DV)"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgctxt "ClassicProcess|"
 msgid "Paths"
@@ -611,10 +610,9 @@ msgctxt "ModerationProbes|"
 msgid "th percentile"
 msgstr ""
 
-#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 #, fuzzy
 msgctxt "ParameterEstimates|"
@@ -655,7 +653,7 @@ msgstr ""
 
 msgctxt "PathPlotOptions|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "參數估計值"
 
 msgctxt "PathPlotOptions|"
 msgid "Legend"
