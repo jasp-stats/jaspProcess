@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-01-24 23:01+0000\n"
+"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspprocess-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -13,7 +19,7 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "Classical"
-msgstr ""
+msgstr "古典"
 
 msgctxt "Description|"
 msgid "Classical Process Model"
@@ -171,25 +177,22 @@ msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
 msgstr "殘差共變數"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
-msgstr "自變數(IV)"
+msgstr "自變項(IV)"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mediators"
 msgstr "中介變數"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Dependent variables"
-msgstr "依變數(DV)"
+msgstr "依變項(DV)"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
@@ -408,7 +411,7 @@ msgstr "殘差共變數"
 
 msgctxt "ClassicProcess|"
 msgid "Independent variables"
-msgstr "自變數(IV)"
+msgstr "自變項(IV)"
 
 msgctxt "ClassicProcess|"
 msgid "Mediators"
@@ -416,11 +419,11 @@ msgstr "中介變數"
 
 msgctxt "ClassicProcess|"
 msgid "Dependent variables"
-msgstr "依變數(DV)"
+msgstr "依變項(DV)"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgctxt "ClassicProcess|"
 msgid "Paths"
@@ -607,10 +610,9 @@ msgctxt "ModerationProbes|"
 msgid "th percentile"
 msgstr ""
 
-#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 #, fuzzy
 msgctxt "ParameterEstimates|"
@@ -651,7 +653,7 @@ msgstr ""
 
 msgctxt "PathPlotOptions|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "參數估計值"
 
 msgctxt "PathPlotOptions|"
 msgid "Legend"
@@ -689,20 +691,18 @@ msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
 msgstr "殘差共變數"
 
-#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Independent variables"
-msgstr "自變數(IV)"
+msgstr "自變項(IV)"
 
 #, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
 msgstr "中介變數"
 
-#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Dependent variables"
-msgstr "依變數(DV)"
+msgstr "依變項(DV)"
 
 #, fuzzy
 msgctxt "StandardizedEstimates|"
