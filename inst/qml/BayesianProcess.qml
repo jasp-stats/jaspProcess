@@ -170,6 +170,7 @@ Form
 			{
 				label: qsTr("Mean-centered moderation")
 				name: "meanCenteredModeration"
+				checked: true
 			}
 		}
 	}
