@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-03-07 02:27+0000\n"
+"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspprocess-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -17,7 +23,7 @@ msgstr "古典"
 
 msgctxt "Description|"
 msgid "Classical Process Model"
-msgstr ""
+msgstr "經典Process模組"
 
 msgctxt "Description|"
 msgid "Bayesian"
@@ -29,15 +35,15 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Models"
-msgstr ""
+msgstr "模型設定"
 
 msgctxt "BayesianProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "模型 1"
 
 msgctxt "BayesianProcess|"
 msgid "Options"
-msgstr ""
+msgstr "選項設定"
 
 msgctxt "BayesianProcess|"
 msgid "Prior distributions"
@@ -45,21 +51,20 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "參數標籤"
 
 msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Lavaan 語法"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
 msgstr "貝氏資訊量準則權重(BIC權重)"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr "Hayes 配置數"
+msgstr "Hayes 模型編號"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
@@ -77,7 +82,6 @@ msgctxt "BayesianProcess|"
 msgid "Credible intervals"
 msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
 msgstr "均數平減化的調節效果"
@@ -175,7 +179,6 @@ msgctxt "BayesianProcess|"
 msgid "Independent variables"
 msgstr "自變項(IV)"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mediators"
 msgstr "中介變數"
@@ -188,19 +191,17 @@ msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
 msgstr "參數估計值"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Paths"
 msgstr "路徑"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Intercepts"
 msgstr "截距"
 
 msgctxt "BayesianProcess|"
 msgid "Mediation"
-msgstr ""
+msgstr "中介"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
@@ -229,7 +230,7 @@ msgstr "統計模型圖"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts:"
-msgstr ""
+msgstr "截距："
 
 msgctxt "BayesianProcess|"
 msgid "v ~ Normal(μ,σ)"
@@ -237,7 +238,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Path coefficients:"
-msgstr ""
+msgstr "路徑係數："
 
 msgctxt "BayesianProcess|"
 msgid "β ~ Normal(μ,σ)"
@@ -245,7 +246,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Standard deviations:"
-msgstr ""
+msgstr "標準差："
 
 msgctxt "BayesianProcess|"
 msgid "ψ ~ Gamma(α,β)"
@@ -253,7 +254,7 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Correlations:"
-msgstr ""
+msgstr "相關："
 
 msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
@@ -261,23 +262,23 @@ msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr ""
+msgstr "模型設定"
 
 msgctxt "ClassicProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "模型 1"
 
 msgctxt "ClassicProcess|"
 msgid "Tests"
-msgstr ""
+msgstr "檢定"
 
 msgctxt "ClassicProcess|"
 msgid "Local tests"
-msgstr ""
+msgstr "局部檢定"
 
 msgctxt "ClassicProcess|"
 msgid "Test type"
-msgstr ""
+msgstr "檢定型態"
 
 msgctxt "ClassicProcess|"
 msgid "Linear"
@@ -341,7 +342,7 @@ msgstr "貝氏資訊量準則權重(BIC權重)"
 
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
-msgstr "Hayes 配置數"
+msgstr "Hayes 模型編號"
 
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
@@ -453,7 +454,7 @@ msgstr "統計模型圖"
 
 msgctxt "ClassicProcess|"
 msgid "Adjustment method"
-msgstr "調整方法"
+msgstr "族系調整方法"
 
 msgctxt "ClassicProcess|"
 msgid "None"
@@ -537,7 +538,7 @@ msgstr "對角線加權最小平方法 (DWLS)"
 
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
-msgstr "Hayes 配置數"
+msgstr "Hayes 模型編號"
 
 msgctxt "InputModelNumber|"
 msgid "Independent X"
@@ -557,7 +558,7 @@ msgstr "干擾變數：Z"
 
 msgctxt "InputType|"
 msgid "Input type"
-msgstr ""
+msgstr "輸入的型態"
 
 #, fuzzy
 msgctxt "InputType|"
@@ -566,43 +567,43 @@ msgstr "路徑"
 
 msgctxt "InputType|"
 msgid "Hayes configuration"
-msgstr ""
+msgstr "Hayes 模型框架"
 
 msgctxt "InputVariables|"
 msgid "To"
-msgstr ""
+msgstr "到"
 
 msgctxt "InputVariables|"
 msgid "Process Type"
-msgstr ""
+msgstr "處理型態"
 
 msgctxt "InputVariables|"
 msgid "Process Variable"
-msgstr ""
+msgstr "處理變數"
 
 msgctxt "InputVariables|"
 msgid "Mediator"
-msgstr ""
+msgstr "中介"
 
 msgctxt "InputVariables|"
 msgid "Moderator"
-msgstr ""
+msgstr "干擾"
 
 msgctxt "InputVariables|"
 msgid "Confounder"
-msgstr ""
+msgstr "混淆"
 
 msgctxt "InputVariables|"
 msgid "Direct"
-msgstr ""
+msgstr "直接"
 
 msgctxt "ModerationProbes|"
 msgid "Probe Conditional Continuous Effects"
-msgstr ""
+msgstr "條件式連續效果"
 
 msgctxt "ModerationProbes|"
 msgid "th percentile"
-msgstr ""
+msgstr "%"
 
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
@@ -628,22 +629,21 @@ msgctxt "ParameterEstimates|"
 msgid "Total"
 msgstr "總效果"
 
-#, fuzzy
 msgctxt "ParameterEstimates|"
 msgid "Residual covariances"
 msgstr "殘差共變數"
 
 msgctxt "PathPlotOptions|"
 msgid "Statistical Path Plots"
-msgstr ""
+msgstr "統計模型圖"
 
 msgctxt "PathPlotOptions|"
 msgid "Covariances"
-msgstr ""
+msgstr "共變數"
 
 msgctxt "PathPlotOptions|"
 msgid "Residual variances"
-msgstr ""
+msgstr "殘差變異數"
 
 msgctxt "PathPlotOptions|"
 msgid "Parameter estimates"
@@ -651,19 +651,19 @@ msgstr "參數估計值"
 
 msgctxt "PathPlotOptions|"
 msgid "Legend"
-msgstr ""
+msgstr "圖例"
 
 msgctxt "PathPlotOptions|"
 msgid "Labels"
-msgstr ""
+msgstr "標籤"
 
 msgctxt "PathPlotOptions|"
 msgid "Color"
-msgstr ""
+msgstr "顏色"
 
 msgctxt "PathPlotOptions|"
 msgid "Label length"
-msgstr ""
+msgstr "標籤長度"
 
 #, fuzzy
 msgctxt "PathPlots|"
@@ -680,7 +680,6 @@ msgctxt "PathPlots|"
 msgid "Statistical"
 msgstr "統計模型圖"
 
-#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
 msgstr "殘差共變數"
@@ -689,7 +688,6 @@ msgctxt "ResidualCovariances|"
 msgid "Independent variables"
 msgstr "自變項(IV)"
 
-#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
 msgstr "中介變數"
@@ -705,32 +703,32 @@ msgstr "標準化估計"
 
 msgctxt "StandardizedEstimates|"
 msgid "Unstandardized"
-msgstr ""
+msgstr "未標準化"
 
 msgctxt "StandardizedEstimates|"
 msgid "Mean-centered"
-msgstr ""
+msgstr "平減"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized"
-msgstr ""
+msgstr "標準化"
 
 msgctxt "VariablesForm|"
 msgid "Dependent Variable"
-msgstr ""
+msgstr "依變項"
 
 msgctxt "VariablesForm|"
 msgid "Continuous Predictors"
-msgstr ""
+msgstr "連續型預測變數"
 
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
-msgstr ""
+msgstr "類別型預測變數"
 
 msgctxt "Description|"
 msgid "Process"
-msgstr ""
+msgstr "Process 模組"
 
 msgctxt "InputVariables|"
 msgid "From "
-msgstr ""
+msgstr "從 "
