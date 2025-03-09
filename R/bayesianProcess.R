@@ -680,6 +680,6 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procBayesMaxTreedepthFootnote <- function(n) gettextf("The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth.", n)
 
-.procBayesLowEssFootnote <- function(minESS, essThreshold, type) gettextf("Low estimation accuracy for %s quantities -- the smallest Effective Sample Size (ESS) is %.2f < %1.0f.", type, minESS, essThreshold)
+.procBayesLowEssFootnote <- function(minESS, essThreshold, type) gettextf("Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f.", type, minESS, essThreshold)
 
-.procBayesRhatFootnote <- function(maxRhat, rhatTreshold) gettextf("Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %.3f > %.2f.", maxRhat, rhatTreshold)
+.procBayesRhatFootnote <- function(maxRhat, rhatTreshold) gettextf("Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f.", maxRhat, rhatTreshold)
