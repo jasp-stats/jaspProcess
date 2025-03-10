@@ -159,7 +159,7 @@ msgstr ""
 
 msgid ""
 "Inference possibly unreliable -- MCMC chains might not have converged; the "
-"largest R-hat is %.1$3f > %2$.2f."
+"largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
 "Inferenz möglicherweise unzuverlässig -- MCMC-Ketten könnten nicht "
 "konvergiert haben; das größte R-Dach ist %1$.3f > %2$.2f."
