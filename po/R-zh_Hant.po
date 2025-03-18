@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
 "POT-Creation-Date: 2024-12-14 03:49\n"
-"PO-Revision-Date: 2025-03-18 10:19+0000\n"
+"PO-Revision-Date: 2025-03-18 11:36+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspprocess-r/zh_Hant/>\n"
@@ -35,7 +35,7 @@ msgid "BIC weight"
 msgstr ""
 
 msgid "Estimate"
-msgstr ""
+msgstr "未標準化估計值"
 
 msgid "SE"
 msgstr ""
@@ -68,10 +68,10 @@ msgid "SD"
 msgstr ""
 
 msgid "Lower"
-msgstr ""
+msgstr "下界"
 
 msgid "Upper"
-msgstr ""
+msgstr "上界"
 
 msgid "R-hat"
 msgstr ""
@@ -89,19 +89,19 @@ msgid "Path coefficients"
 msgstr "路徑係數"
 
 msgid "Label"
-msgstr ""
+msgstr "標籤"
 
 msgid "Prior"
 msgstr ""
 
 msgid "Direct and indirect effects"
-msgstr ""
+msgstr "直接與間接效果"
 
 msgid "Total effects"
 msgstr "總效果"
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "殘差共變數"
 
 msgid "MCMC Plots"
 msgstr ""
@@ -131,13 +131,13 @@ msgid "Inference possibly unreliable -- MCMC chains might not have converged; th
 msgstr ""
 
 msgid "Hayes number"
-msgstr ""
+msgstr "Hayes樣版模型編號"
 
 msgid "Model configuration number defined by Hayes (2022)."
-msgstr ""
+msgstr "Hayes (2022)所定義的樣版模型編號。"
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
 msgstr ""
@@ -149,34 +149,34 @@ msgid "df"
 msgstr ""
 
 msgid "Std. Error"
-msgstr ""
+msgstr "標準誤"
 
 msgid "z-value"
-msgstr ""
+msgstr "z值"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% 信賴區間"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "標準化估計值"
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "偏差修正百分位"
 
 msgid "percentile"
-msgstr ""
+msgstr "百分位"
 
 msgid "normal theory"
 msgstr ""
 
 msgid "Total"
-msgstr ""
+msgstr "總效果"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "總間接效果"
 
 msgid "Local tests"
 msgstr ""
@@ -206,7 +206,7 @@ msgid "Statistical path plot"
 msgstr "統計模型圖"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "模型的Lavaan程式碼"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr ""
@@ -236,7 +236,8 @@ msgid "The AIC, BIC and additional information criteria are only available with 
 msgstr ""
 
 msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
-msgstr ""
+msgstr "<b>重要</b>：只有在考量所有混淆效應並正確指定因果效應方向的情況下，參數估計值"
+"才能被解釋為因果效應。"
 
 msgid "Please check the model specification and lavaan syntax."
 msgstr ""
