@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-03-19 23:04+0000\n"
+"PO-Revision-Date: 2025-03-20 18:49+0000\n"
 "Last-Translator: Uğur ÇELİK <prof_ugur@hotmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-qml/tr/>\n"
@@ -19,7 +19,7 @@ msgstr "Nedensel ve koşullu süreç modellerini test edin ve karşılaştırın
 
 msgctxt "Description|"
 msgid "Classical"
-msgstr ""
+msgstr "Klasik"
 
 msgctxt "Description|"
 msgid "Classical Process Model"
@@ -27,7 +27,7 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr ""
+msgstr "Bayes"
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
