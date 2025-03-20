@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
 "POT-Creation-Date: 2024-12-14 03:49\n"
-"PO-Revision-Date: 2025-01-25 20:47+0000\n"
+"PO-Revision-Date: 2025-03-20 18:49+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/de/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #, fuzzy
 msgid "Process Analysis"
@@ -143,7 +143,6 @@ msgstr ""
 "Bayesian Fraction of Missing Information (BFMI) war zu niedrig in %i Ketten "
 "-- die Posteriorverteilung wurde nicht effizient erkundet."
 
-#, fuzzy
 msgid ""
 "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition "
 "exceeded the maximum tree depth."
@@ -151,7 +150,6 @@ msgstr ""
 "Das Hamiltonsche Monte-Carlo-Verfahren könnte ineffizient sein -- %i "
 "Übergang überschritt die maximale Baumtiefe."
 
-#, fuzzy
 msgid ""
 "Low estimation accuracy for %s quantities -- the smallest Effective Sample "
 "Size (ESS) is %.2f < %1.0f."
