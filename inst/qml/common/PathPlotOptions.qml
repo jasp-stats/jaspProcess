@@ -58,6 +58,7 @@ Group
 			{
 				name: "pathPlotsLegendLabels"
 				label: qsTr("Labels")
+				checked: true
 			}
 			CheckBox
 			{
