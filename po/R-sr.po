@@ -1,0 +1,266 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jaspProcess 0.19.2\n"
+"POT-Creation-Date: 2024-12-14 03:49\n"
+"PO-Revision-Date: 2025-03-28 12:20+0000\n"
+"Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
+"Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/"
+"jaspprocess-r/sr/>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.11-dev\n"
+
+msgid "Process Analysis"
+msgstr "Анализа процеса"
+
+msgid "Model summary"
+msgstr "Резиме модела"
+
+msgid "WAIC"
+msgstr "WAIC"
+
+msgid "LOOIC"
+msgstr "LOOIC"
+
+msgid "PPP"
+msgstr "PPP"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "BIC weight"
+msgstr "BIC тежина"
+
+msgid "Estimate"
+msgstr "Проценити"
+
+msgid "SE"
+msgstr "SE"
+
+msgid "LOO Difference"
+msgstr "LOO разлика"
+
+msgid "ELPD"
+msgstr "ELPD"
+
+msgid "Ratio"
+msgstr "Однос"
+
+msgid "n"
+msgstr "n"
+
+msgid "Posterior"
+msgstr "Задњи"
+
+msgid "%s%% Credible Interval"
+msgstr "%s%% веродостојан интервал"
+
+msgid "Mean"
+msgstr "Аритметичка средина"
+
+msgid "Median"
+msgstr "Медијана"
+
+msgid "SD"
+msgstr "SD"
+
+msgid "Lower"
+msgstr "Ниже"
+
+msgid "Upper"
+msgstr "Горњи"
+
+msgid "R-hat"
+msgstr "R-кров"
+
+msgid "ESS (bulk)"
+msgstr "ESS (на велико)"
+
+msgid "ESS (tail)"
+msgstr "ESS (реп)"
+
+msgid "Warning:"
+msgstr "Упозорење:"
+
+msgid "Path coefficients"
+msgstr "Коефицијенти путање"
+
+msgid "Label"
+msgstr "Ознака"
+
+msgid "Prior"
+msgstr "Претходно"
+
+msgid "Direct and indirect effects"
+msgstr "Директни и индиректни ефекти"
+
+msgid "Total effects"
+msgstr "Тотални ефекти"
+
+msgid "Residual covariances"
+msgstr "Преостале коваријансе"
+
+msgid "MCMC Plots"
+msgstr "MCMC графикони"
+
+msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
+msgstr ""
+
+msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
+msgstr ""
+
+msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
+msgstr ""
+"WAIC и LOO се не могу израчунати ако нису процењене коваријансе за независне "
+"променљиве са недостајућим подацима."
+
+msgid "Estimates might be biased -- %i divergent transitions after warmup."
+msgstr ""
+
+msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
+msgstr ""
+
+msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
+msgstr ""
+
+msgid "Low estimation accuracy for %s quantities -- the smallest Effective Sample Size (ESS) is %.2f < %1.0f."
+msgstr ""
+
+msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %.3f > %.2f."
+msgstr ""
+
+msgid "Hayes number"
+msgstr ""
+
+msgid "Model configuration number defined by Hayes (2022)."
+msgstr ""
+
+msgid "AIC"
+msgstr ""
+
+msgid "AIC weight"
+msgstr ""
+
+msgid "Log-likelihood"
+msgstr ""
+
+msgid "df"
+msgstr ""
+
+msgid "Std. Error"
+msgstr ""
+
+msgid "z-value"
+msgstr ""
+
+msgid "p"
+msgstr ""
+
+msgid "%s%% Confidence Interval"
+msgstr ""
+
+msgid "Std. Estimate"
+msgstr ""
+
+msgid "bias-corrected percentile"
+msgstr ""
+
+msgid "percentile"
+msgstr ""
+
+msgid "normal theory"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Total indirect"
+msgstr ""
+
+msgid "Local tests"
+msgstr ""
+
+msgid "Conditional independence tests"
+msgstr ""
+
+msgid "Model did not converge."
+msgstr ""
+
+msgid "RMSEA"
+msgstr ""
+
+msgid "&#967;&sup2;"
+msgstr ""
+
+msgid "Std. error"
+msgstr ""
+
+msgid "R-squared"
+msgstr ""
+
+msgid "Conceptual path plot"
+msgstr ""
+
+msgid "Statistical path plot"
+msgstr ""
+
+msgid "Model syntax"
+msgstr ""
+
+msgid "Model must be a directed acyclic graph -- it must not contain loops."
+msgstr ""
+
+msgid "%1$s: Hayes configuration %2$s not implemented"
+msgstr ""
+
+msgid "Estimation failed: %s"
+msgstr ""
+
+msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
+msgstr ""
+
+msgid "<li>Some implied model variances are > 1,000,000</li>"
+msgstr ""
+
+msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
+msgstr ""
+
+msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
+msgstr ""
+
+msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
+msgstr ""
+
+msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
+msgstr ""
+
+msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
+msgstr ""
+
+msgid "Please check the model specification and lavaan syntax."
+msgstr ""
+
+msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
+msgstr ""
+
+msgid "The specified model does not imply any (conditional) independencies that can be tested."
+msgstr ""
+
+msgid "Partially standardized estimate because effect involves categorical predictor."
+msgstr ""
+
+msgid "Moderation effect estimates are based on mean-centered variables."
+msgstr ""
+
+msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
+msgstr ""
+
+msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
+msgstr ""
+
+msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
+msgstr ""
