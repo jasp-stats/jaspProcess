@@ -68,7 +68,7 @@
 <polyline points='397.62,446.03 417.03,466.11 424.72,439.25 ' style='stroke-width: 1.92; stroke-linecap: butt;' />
 <text x='356.46' y='363.16' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.15px' lengthAdjust='spacingAndGlyphs'>c1</text>
 <text transform='translate(467.07,228.86) rotate(-307)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.15px' lengthAdjust='spacingAndGlyphs'>c3</text>
-<text transform='translate(344.46,305.05) rotate(-441)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a5</text>
+<text transform='translate(315.07,311.48) rotate(-441)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a5</text>
 <text transform='translate(403.10,300.46) rotate(-279)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a6</text>
 <text transform='translate(228.62,430.42) rotate(-315)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a1</text>
 <text transform='translate(293.25,429.99) rotate(-333)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a2</text>
@@ -76,7 +76,7 @@
 <text x='355.10' y='498.35' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>d1</text>
 <text transform='translate(484.84,436.95) rotate(-45)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>b2</text>
 <text transform='translate(463.32,294.83) rotate(-326)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.15px' lengthAdjust='spacingAndGlyphs'>c2</text>
-<text transform='translate(344.60,373.46) rotate(-436)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a3</text>
+<text transform='translate(314.79,377.52) rotate(-436)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a3</text>
 <text transform='translate(402.50,366.68) rotate(-284)' text-anchor='middle' style='font-size: 11.50px; font-family: sans;' textLength='12.79px' lengthAdjust='spacingAndGlyphs'>a4</text>
 <text x='157.21' y='379.69' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='34.80px' lengthAdjust='spacingAndGlyphs'>cnG</text>
 <text x='562.79' y='379.69' text-anchor='middle' style='font-size: 18.97px; font-family: sans;' textLength='33.74px' lengthAdjust='spacingAndGlyphs'>cnN</text>
