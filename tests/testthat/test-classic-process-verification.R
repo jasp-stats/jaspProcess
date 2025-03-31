@@ -6,6 +6,7 @@ test_that("Test that single moderation effect matches validated results", {
   options$dependent <- "GovernmentAction"
   options$covariates <- list("NegativeEmotion", "Age")
   options$factors <- list()
+  options$meanCenteredModeration <- FALSE
 
   options$processModels <- list(getProcessModel(list(list(processDependent = "GovernmentAction",
           processIndependent = "NegativeEmotion", processType = "moderators",
@@ -46,6 +47,7 @@ test_that("Test that moderated mediation effect matches validated results", {
   options$dependent <- "DonationAttitude"
   options$covariates <- list("Justification", "Skepticism")
   options$factors <- list("Framing")
+  options$meanCenteredModeration <- FALSE
 
   options$processModels <- list(getProcessModel(list(list(processDependent = "DonationAttitude",
           processIndependent = "Framing", processType = "mediators",
