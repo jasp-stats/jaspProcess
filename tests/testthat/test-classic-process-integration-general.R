@@ -74,6 +74,7 @@ test_that("Factors with more than two levels work", {
   options$covariates <- list("contcor1")
   options$factors <- list("facThree")
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "facThree", processType = "moderators",
                                                                       processVariable = "contcor1"))))
@@ -195,6 +196,7 @@ test_that("Interactions between three-level and two-level factors work", {
   options$covariates <- list("contcor1")
   options$factors <- list("facTwo", "facThree")
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "facThree", processType = "moderators",
                                                                       processVariable = "facTwo"))))
@@ -306,6 +308,7 @@ test_that("Interactions between two-level and three-level factors work", {
   options$covariates <- list("contcor1")
   options$factors <- list("facTwo", "facThree")
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "facTwo", processType = "moderators",
                                                                       processVariable = "facThree"))))
@@ -410,6 +413,7 @@ test_that("Moderated moderation with three-level factor works", {
   options$covariates <- list("contcor1")
   options$factors <- list("facTwo", "facThree")
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "facTwo", processType = "moderators",
                                                                       processVariable = "facThree"), list(processDependent = "contNormal",
@@ -828,6 +832,7 @@ test_that("Bootstrapping works", {
   options$bootstrapSamples <- 50
   options$bootstrapCiType <- "bca.simple"
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
                                                                       processVariable = "debCollin1"), list(processDependent = "contNormal",
@@ -912,6 +917,7 @@ test_that("Bootstrapping works (percentile interval)", {
   options$bootstrapSamples <- 50
   options$bootstrapCiType <- "perc"
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
                                                                       processVariable = "debCollin1"), list(processDependent = "contNormal",
@@ -996,6 +1002,7 @@ test_that("Missing values work", {
   options$dependent <- "contNormal"
   options$covariates <- list("contGamma", "debMiss1", "debMiss30", "debMiss80", "contNormal")
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "debMiss80",
                                                                       processIndependent = "debMiss1", processType = "mediators",
                                                                       processVariable = "contGamma"), list(processDependent = "debMiss80",
@@ -1086,6 +1093,7 @@ test_that("Not implemented Hayes models error message work", {
   modelNumber <- 20
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(), name = "Model 1"),
                                 getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
@@ -1194,6 +1202,7 @@ test_that("Not implemented Hayes models error message work", {
 test_that("No implied conditional independencies error message works", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
                                                                       processVariable = "debCollin1"))))
@@ -1216,6 +1225,7 @@ test_that("No implied conditional independencies error message works", {
 test_that("Invalid test type error message works", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
                                                                       processVariable = "debCollin1"), list(processDependent = "contNormal",
@@ -1240,6 +1250,7 @@ test_that("Invalid test type error message works", {
 test_that("Local tests work for factors with loess test type", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
                                                                       processVariable = "debCollin1"), list(processDependent = "contNormal",
@@ -1259,6 +1270,7 @@ test_that("Local tests work for factors with loess test type", {
 test_that("Path plots for empty moderator model works", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list()))
   options$processModels[[1]]$inputType <- "inputModelNumber"
   options$processModels[[1]]$modelNumber <- 91
@@ -1279,6 +1291,7 @@ test_that("Path plots for empty moderator model works", {
 test_that("Path plot for multiple dependent variables work", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$covariates <- append(options$covariates, "debMiss1")
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
                                                                       processIndependent = "contGamma", processType = "mediators",
@@ -1303,6 +1316,7 @@ test_that("Path plot for multiple dependent variables work", {
 test_that("R-squared table matches", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$covariates <- append(options$covariates, "debMiss1")
   options$rSquared <- TRUE
 
@@ -1326,6 +1340,7 @@ test_that("R-squared table matches", {
 test_that("Path coefficients table with intercepts matches", {
   options <- getOptionsClassical()
   options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
   options$covariates <- append(options$covariates, "debMiss1")
   options$rSquared <- TRUE
 
