@@ -392,10 +392,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Get encoding
   encoding <- .procVarEncoding()
 
-  independent <- modelOptions[["modelNumberIndependent"]]
-  mediators   <- modelOptions[["modelNumberMediators"  ]]
-  modW        <- modelOptions[["modelNumberModeratorW" ]]
-  modZ        <- modelOptions[["modelNumberModeratorZ" ]]
+  independent <- unlist(modelOptions[["modelNumberIndependent"]])
+  mediators   <- unlist(modelOptions[["modelNumberMediators"  ]])
+  modW        <- unlist(modelOptions[["modelNumberModeratorW" ]])
+  modZ        <- unlist(modelOptions[["modelNumberModeratorZ" ]])
 
   # Apply the JASP coding to X, W, Z, and M if the user has specified the variables and 'vars' still contains the dummy version
   if (independent != "" && encoding$X %in% vars) {
@@ -618,28 +618,33 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procErrorHandling <- function(dataset, options) {
+  dependent <- unlist(options[["dependent"]])
+  covariates <- unlist(options[["covariates"]])
+  factors <- unlist(options[["factors"]])
+
   .hasErrors(dataset, "run",
     type = c('observations', 'variance', 'infinity'),
     observations.target = c(
-      options[["dependent"]],
-      options[["covariates"]],
-      options[["factors"]]
+      dependent,
+      covariates,
+      factors
     ),
     observations.amount = '< 2',
     variance.target = c(
-      options[["dependent"]],
-      options[["covariates"]]
+      dependent,
+      covariates
     ),
     infinity.target = c(
-      options[["dependent"]],
-      options[["covariates"]]
+      dependent,
+      covariates
     ),
     exitAnalysisIfErrors = TRUE
   )
-  if (length(options[["covariates"]]) > 1) {
+  contVariables <- c(dependent, covariates)
+  if (length(contVariables) > 1) {
     .hasErrors(dataset, "run",
       type = "varCovData",
-      varCovData.target = c(options[["dependent"]], options[["covariates"]]),
+      varCovData.target = contVariables,
       varCovData.corFun = stats::cov,
       varCovData.corArgs = list(use = "complete.obs"),
       exitAnalysisIfErrors = TRUE
@@ -710,7 +715,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     matchFac <- sapply(options[["factors"]], grepl, x = nms)
 
     if (length(matchFac) > 0 && any(matchFac)) { # If is factor
-      whichFac <- options[["factors"]][matchFac]
+      whichFac <- unlist(options[["factors"]])[matchFac]
       conMat <- contrasts[[whichFac]]
       colIdx <- which(paste0(whichFac, colnames(conMat)) == nms)
       row.names(conMat) <- as.character(conMat[, colIdx])
@@ -2422,9 +2427,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         # Delete edges from moderators to target variable
         modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]) &&
           # Don't delete if moderator is mediator
-          !igraph::V(graph)[name == v]$isMed && 
-          # Don't delete if moderator has edge to independent variable
-          !igraph::are_adjacent(graph, v, modIntVars[[1]])
+          !igraph::V(graph)[name == v]$isMed
         )
         
         if (any(modIntVarHasEdgeToTarget)) {

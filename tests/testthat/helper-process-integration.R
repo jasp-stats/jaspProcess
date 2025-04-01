@@ -27,6 +27,7 @@ getOptionsClassical <- function() {
   options[["estimator"]] <- "default"
   options[["naAction"]] <- "fiml"
   options[["standardizedModelEstimates"]] <- TRUE
+  options[["meanCenteredModeration"]] <- TRUE
 
   options[["statisticalPathPlotsParameterEstimates"]] <- FALSE
   options[["statisticalPathPlotsCovariances"]] <- TRUE
@@ -80,6 +81,8 @@ getOptionsBayesian <- function() {
   options[["psiPriorBeta"]] <-  0.5
   options[["rhoPriorAlpha"]] <- 1
   options[["rhoPriorBeta"]] <-  1
+
+  options[["meanCenteredModeration"]] <- TRUE
 
   options[["statisticalPathPlotsParameterEstimates"]] <- FALSE
   options[["statisticalPathPlotsCovariances"]] <- TRUE

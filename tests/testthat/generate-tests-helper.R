@@ -100,7 +100,7 @@ polishCapturedCode <- function(out) {
 }
 
 captureCodeContinuous <- function(k, opts, type = "ClassicProcess") {
-  out <- try(paste(capture.output(jaspTools::runAnalysis(type, "debug", opts, makeTests = TRUE)), collapse = "\n"))
+  out <- try(paste(capture.output(jaspTools::runAnalysis(type, "debug.csv", opts, makeTests = TRUE)), collapse = "\n"))
   if (!inherits(out, "try-error")) {
     out <- polishCapturedCode(out)
     out <- gsub("conceptual-path-plot", paste0("conceptual-path-plot-continuous-", k), out)
@@ -113,7 +113,7 @@ captureCodeContinuous <- function(k, opts, type = "ClassicProcess") {
 }
 
 captureCodeFactor <- function(k, opts, type = "ClassicProcess") {
-  out <- try(paste(capture.output(jaspTools::runAnalysis(type, "debug", opts, makeTests = TRUE)), collapse = "\n"))
+  out <- try(paste(capture.output(jaspTools::runAnalysis(type, "debug.csv", opts, makeTests = TRUE)), collapse = "\n"))
   if (!inherits(out, "try-error")) {
     out <- polishCapturedCode(out)
     out <- gsub("conceptual-path-plot", paste0("conceptual-path-plot-factor-", k), out)
