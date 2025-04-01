@@ -2427,9 +2427,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         # Delete edges from moderators to target variable
         modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]) &&
           # Don't delete if moderator is mediator
-          !igraph::V(graph)[name == v]$isMed && 
-          # Don't delete if moderator has edge to independent variable
-          !igraph::are_adjacent(graph, v, modIntVars[[1]])
+          !igraph::V(graph)[name == v]$isMed
         )
         
         if (any(modIntVarHasEdgeToTarget)) {
