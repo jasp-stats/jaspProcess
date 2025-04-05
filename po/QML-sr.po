@@ -3,29 +3,31 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Language: tr\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
+msgid "Process"
+msgstr ""
+
+msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
-msgstr "Nedensel ve koşullu süreç modellerini test edin ve karşılaştırın."
+msgstr ""
 
 msgctxt "Description|"
 msgid "Classical"
-msgstr "Klasik"
+msgstr ""
 
 msgctxt "Description|"
 msgid "Classical Process Model"
-msgstr "Klasik Süreç Modeli"
+msgstr ""
 
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr "Bayes"
+msgstr ""
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
-msgstr "Bayes Süreç Modeli"
+msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Models"
@@ -552,6 +554,10 @@ msgid "Hayes configuration"
 msgstr ""
 
 msgctxt "InputVariables|"
+msgid "From "
+msgstr ""
+
+msgctxt "InputVariables|"
 msgid "To"
 msgstr ""
 
@@ -697,12 +703,4 @@ msgstr ""
 
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
-msgstr ""
-
-msgctxt "Description|"
-msgid "Process"
-msgstr ""
-
-msgctxt "InputVariables|"
-msgid "From "
 msgstr ""
