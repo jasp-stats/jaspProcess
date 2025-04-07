@@ -1000,7 +1000,7 @@ test_that("Bootstrapping works (percentile interval)", {
 test_that("Missing values work", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"
-  options$covariates <- list("contGamma", "debMiss1", "debMiss30", "debMiss80", "contNormal")
+  options$covariates <- list("contGamma", "debMiss1", "debMiss30", "debMiss80")
   options$standardizedModelEstimates <- FALSE
   options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "debMiss80",
