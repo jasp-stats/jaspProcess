@@ -640,10 +640,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     ),
     exitAnalysisIfErrors = TRUE
   )
-  if (length(dependent) > 1) {
+  contVariables <- c(dependent, covariates)
+  if (length(covariates) > 1) {
     .hasErrors(dataset, "run",
       type = "varCovData",
-      varCovData.target = c(dependent, covariates),
+      varCovData.target = contVariables,
       varCovData.corFun = stats::cov,
       varCovData.corArgs = list(use = "complete.obs"),
       exitAnalysisIfErrors = TRUE
