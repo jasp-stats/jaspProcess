@@ -2411,7 +2411,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procGraphLayoutConceptual <- function(graph) {
   # Add mediator layout to graph
   graph <- .procMedGraphLayout(graph)
-
+  
   # Calc pos of moderator nodes
   if (any(igraph::E(graph)$isMod)) {
     # Calc pos based on higher order interactions
@@ -2425,17 +2425,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       
       for (l in 1:length(target)) {
         # Delete edges from moderators to target variable
-        modIntVarHasEdgeToTarget <- sapply(modIntVars[-1], function(v) igraph::are_adjacent(graph, v, target[l]) &&
-          # Don't delete if moderator is mediator
-          !igraph::V(graph)[name == v]$isMed && 
-          # Don't delete if moderator has edge to independent variable
-          !igraph::are_adjacent(graph, v, modIntVars[[1]])
-        )
-        
-        if (any(modIntVarHasEdgeToTarget)) {
-          graph <- igraph::delete_edges(graph,
-            paste(modIntVars[-1][modIntVarHasEdgeToTarget], target[l], sep = "|")
-          )
+        for (v in modIntVars[-1]) {
+          deleteEdgeToTarget <- igraph::are_adjacent(graph, v, target[l]) &&
+            # Don't delete if moderator is mediator
+            !igraph::V(graph)[name == v]$isMed &&
+            # Don't delete if moderator has edge to independent variable
+            (!igraph::are_adjacent(graph, v, modIntVars[[1]]) || 
+            # But do delete when moderator also moderates edge to independent variable
+            any(sapply(igraph::E(graph)[target == modIntVars[[1]]]$modVars, function(modV) v %in% modV[[1]])))
+
+          if (deleteEdgeToTarget) {
+            graph <- igraph::delete_edges(graph,
+              paste(v, target[l], sep = "|")
+            )
+          }
         }
 
         # Add helper nodes ("i"lj)
