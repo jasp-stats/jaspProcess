@@ -1437,3 +1437,159 @@ test_that("Incomplete Hayes configuration works", {
 	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
 	jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-incomplete")
 })
+
+test_that("Moderated mediation index works - no mediation", {
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$standardizedModelEstimates <- TRUE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "moderators",
+                                                                      processVariable = "contcor1"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+  testthat::expect_length(table, 0)
+})
+
+test_that("Moderated mediation index works - one mediator", {
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$standardizedModelEstimates <- TRUE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "contcor1"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor1", processType = "moderators",
+                                                                      processVariable = "contcor2"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-0.0372241295385459, 0.0138064641514258, "X", -0.0117088326935601,
+			 -0.0169524894422013, "contGamma", "contcor1", "contNormal",
+			 "<unicode>", "<unicode>", 0.368430615910006, 0.013018247807739,
+			 -0.899416946618538))
+})
+
+test_that("Moderated mediation index works - two mediators", {
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$standardizedModelEstimates <- TRUE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "contcor1"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor1", processType = "moderators",
+                                                                      processVariable = "contcor2"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "debMiss1"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-0.0401352078091745, 0.0126762599776686, "X", -0.013729473915753,
+			 -0.0198141121405139, "contGamma", "contcor1", "contNormal",
+			 "<unicode>", "<unicode>", 0.30817003807017, 0.0134725607723951,
+			 -1.01906936236534))
+})
+
+test_that("Moderated mediation index omitted - moderated moderation", {
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$standardizedModelEstimates <- TRUE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "contcor1"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor1", processType = "moderators",
+                                                                      processVariable = "contcor2"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor2", processType = "moderators",
+                                                                      processVariable = "debMiss1"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+  testthat::expect_length(table, 0)
+})
+
+test_that("Moderated mediation index omitted - double moderation", {
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$standardizedModelEstimates <- TRUE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "contcor1"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor1", processType = "moderators",
+                                                                      processVariable = "contcor2"), list(processDependent = "contcor1",
+                                                                      processIndependent = "contGamma", processType = "moderators",
+                                                                      processVariable = "contcor2"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+  testthat::expect_length(table, 0)
+})
+
+test_that("Moderated mediation index works - three-level factor moderator", {
+  set.seed(1)
+  df <- get_fac_df()
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1")
+  options$factors <- list("facTwo", "facThree")
+  options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "facTwo", processType = "mediators",
+                                                                      processVariable = "contcor1"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor1", processType = "moderators",
+                                                                      processVariable = "facThree"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", df, options)
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-0.0944533420329607, 0.157337958192132, 0.0314423080795857, "B",
+			 "E", "facTwo", "contcor1", "contNormal", "<unicode>", "<unicode>",
+			 0.624488481492414, 0.064233654855699, 0.489498972932816, -0.1366942908082,
+			 0.101326362911919, -0.0176839639481404, "C", "E", "facTwo",
+			 "contcor1", "contNormal", "<unicode>", "<unicode>", 0.770871853710656,
+			 0.060720670277004, -0.291234663047479))
+})
+
+test_that("Moderated mediation index works - three-level factor independent", {
+  set.seed(1)
+  df <- get_fac_df()
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contcor1")
+  options$factors <- list("facTwo", "facThree")
+  options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
+  options$moderatedMediationIndex <- TRUE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "facThree", processType = "mediators",
+                                                                      processVariable = "contcor1"), list(processDependent = "contNormal",
+                                                                      processIndependent = "contcor1", processType = "moderators",
+                                                                      processVariable = "facTwo"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", df, options)
+
+  table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_modMedIndTable"]][["data"]]
+	jaspTools::expect_equal_tables(table,
+		list(-0.0839681794968253, 0.141113234310038, 0.0285725274066065, "B",
+			 "E", "facThree", "contcor1", "contNormal", "<unicode>", "<unicode>",
+			 0.618760560766996, 0.0574197831139442, 0.497607720842606, -0.118634291170619,
+			 0.0994066560855568, -0.00961381754253112, "C", "E", "facThree",
+			 "contcor1", "contNormal", "<unicode>", "<unicode>", 0.862779808586041,
+			 0.0556237127253498, -0.172836674711031))
+})
