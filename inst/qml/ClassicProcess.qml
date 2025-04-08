@@ -158,6 +158,7 @@ Form
 			CheckBox { label: qsTr("AIC weights");     				name: "aicWeights" 		}
 			CheckBox { label: qsTr("BIC weights");     				name: "bicWeights" 		}
 			CheckBox { label: qsTr("Hayes configuration number"); 	name: "hayesNumber";  	}
+			CheckBox { label: qsTr("Moderated mediation index");    name: "moderatedMediationIndex"}
 		}
 		Group
 		{

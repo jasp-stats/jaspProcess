@@ -311,6 +311,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Is node name part of any interaction term
     any(sapply(igraph::V(graph)$intVars, function(vars) v %in% vars[-1]))
   })
+  # Is part of threeway interaction term
+  igraph::V(graph)$isPartOfThreewayInt <- sapply(igraph::V(graph)$name, function(v) {
+    any(sapply(igraph::V(graph)$intVars, function(vars) length(vars) > 2))
+  })
   # Is treatment variable (i.e., X): When exo, not int, and not part of int
   igraph::V(graph)$isTreat <- igraph::V(graph)$isExo & !igraph::V(graph)$isInt & !igraph::V(graph)$isPartOfInt
   # Is edge moderated
@@ -981,7 +985,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(lapply(names(contrasts), function(contr) paste0(contr, colnames(contrasts[[contr]]))))
 }
 
-.procMedEffectsSyntaxGetLhs <- function(path, graph, modProbes, contrasts) {
+.procMedEffectsReplaceFactorLevels <- function(path, contrasts) {
   # Get factor names with level names
   contrFacVars <- .procContrFacVars(contrasts)
   # Is source node a factor with contrast
@@ -997,11 +1001,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Just concatenate path vars to lhs
     lhs <- paste(names(path), collapse = "__")
   }
+
+  return(lhs)
+}
+
+.procGetModsOnPath <- function(path, graph) {
+  # Get unique moderators on path
+  return(unique(na.omit(unlist(sapply(2:length(path), function(i) {
+    return(igraph::E(graph)[names(path)[i-1] %--% names(path)[i]]$modVars)
+  })))))
+}
+
+.procMedEffectsSyntaxGetLhs <- function(path, graph, modProbes, contrasts) {
+  lhs <- .procMedEffectsReplaceFactorLevels(path, contrasts)
   
   # Get moderators on path
-  modsOnPath <- unique(na.omit(unlist(sapply(2:length(path), function(i) {
-    return(igraph::E(graph)[names(path)[i-1] %--% names(path)[i]]$modVars)
-  }))))
+  modsOnPath <- .procGetModsOnPath(path, graph)
 
   if (!is.null(modsOnPath) && length(modsOnPath) > 0) { # If path is moderated
     # Get combinations of moderators
@@ -1013,7 +1028,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     })
     
     # Concatenate dummy variables for factor moderators
-    modsOnPathWithProbes <- .procMedEffectsSyntaxMergeFacMods(modsOnPath, contrFacVars, modsOnPathWithProbes, sep = ".")
+    modsOnPathWithProbes <- .procMedEffectsSyntaxMergeFacMods(modsOnPath, .procContrFacVars(contrasts), modsOnPathWithProbes, sep = ".")
     
     # Add moderator combinations to left hand side
     lhs <- apply(expand.grid(lhs, apply(expand.grid(modsOnPathWithProbes), 1, paste, collapse = ".")), 1, paste, collapse = ".")
@@ -1079,6 +1094,93 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(list(lhs = lhs, rhs = rhs))
 }
 
+.procAppendFactorLevel <- function(source, contrasts) {
+  # Get factor names with level names
+  contrFacVars <- .procContrFacVars(contrasts)
+  # Is source node a factor with contrast
+  sourceInContrFacVars <- sapply(contrFacVars, function(v) source %in% v)
+  # Return source if not a factor
+  if (!any(sourceInContrFacVars)) return(source)
+  # Return factor__level
+  facContr <- names(contrasts)[sourceInContrFacVars]
+  facContrLevels <- colnames(contrasts[[facContr]])
+  facLevelIdx <- which(paste0(facContr, facContrLevels) == source)
+  facContrLevel <- paste(facContr, facContrLevels[facLevelIdx], sep = "__")
+  return(facContrLevel)
+}
+
+.procModMedIndEffectsSyntaxGetLhs <- function(path, graph, modProbes, contrasts) {
+  lhs <- .procMedEffectsReplaceFactorLevels(path, contrasts)
+  
+  # Get moderators on path
+  modsOnPath <- .procGetModsOnPath(path, graph)
+
+  if (!is.null(modsOnPath) && length(modsOnPath) > 0) { # If path is moderated
+    # Append levels of factors with __
+    modsOnPath <- sapply(modsOnPath, .procAppendFactorLevel, contrast = contrasts)
+    
+    # Add moderator combinations to left hand side
+    lhs <- apply(expand.grid(lhs, apply(expand.grid(modsOnPath), 1, paste, collapse = ".")), 1, paste, collapse = ".")
+  }
+
+  return(lhs)
+}
+
+.procModMedIndEffectsSyntaxGetRhs <- function(path, graph, modProbes, contrasts) {
+  # Get factor names with level names
+  contrFacVars <- .procContrFacVars(contrasts)
+  # Is source node a factor with contrast
+  sourceInContrFacVars <- sapply(contrFacVars, function(v) names(path)[1] %in% v)
+  
+  if (any(sourceInContrFacVars)) {
+    sourceFacVars <- contrFacVars[[which(sourceInContrFacVars)]]
+  } else {
+    sourceFacVars <- numeric(0)
+  }
+
+  # Right hand side of lavaan syntax
+  rhs <- lapply(2:length(path), function(i) {
+    # Get edge from path[-1] to path[i]
+    if (any(sourceInContrFacVars) && names(path)[i-1] %in% sourceFacVars) {
+      # Get all vars with factor levels as source nodes
+      sourceNode <- sourceFacVars
+    } else {
+      # Just get previous node as source node
+      sourceNode <- names(path)[i-1]
+    }
+
+    # Edge from previous node to current node
+    pathEdge <- igraph::E(graph)[sourceNode %--% names(path)[i]]
+
+    # If no moderators on edge, return only parName
+    if(any(is.na(unlist(pathEdge$modVars)))) return(pathEdge$parName)
+
+    # Get pars from moderators
+    modPars <- lapply(pathEdge$modVars[[1]], function(v) {
+      # Get edge for two way interaction between X and M
+      twoWayEdge <- igraph::E(graph)[paste(sourceNode, v, sep = "__") %--% pathEdge$target]$parName
+      return(twoWayEdge)
+    })
+
+    return(modPars)
+  })
+  # If indirect paths, multiply their steps
+  rhs <- .doCallPaste(rhs, sep = "*")
+
+  return(rhs)
+}
+
+.procModMedIndEffectsSyntaxSinglePath <- function(path, graph, modProbes, contrasts) {
+  # Right hand side of lavaan syntax
+  rhs <- .procModMedIndEffectsSyntaxGetRhs(path, graph, modProbes, contrasts)
+
+  # Left hand side of lavaan syntax
+  lhs <- .procModMedIndEffectsSyntaxGetLhs(path, graph, modProbes, contrasts)
+
+  # Encode column names because they will be split at '.'
+  return(list(lhs = lhs, rhs = rhs))
+}
+
 .procRemoveDuplicateLabels <- function(condEffects) {
   # Remove duplicate conditional effect labels
   # Get unique valid conditional effect labels
@@ -1098,10 +1200,32 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(filteredConditionialEffects[!isDuplicate])
 }
 
+.procModMedIndIsValid <- function(paths, graph) {
+  isValid <- sapply(paths, function(path) {
+    return(
+      # If any node on path is mediator
+      any(sapply(path, function(v) igraph::V(graph)[v]$isMed)) &&
+      # Nodes on path must not be part of threeway interactions (no moderated moderation)
+      !any(sapply(path, function(v) igraph::V(graph)[v]$isPartOfThreewayInt)) &&
+      # A mediator must only be on path once
+      !any(sapply(2:length(path), function(i) {
+        any(sapply(igraph::E(graph)[names(path)[i-1] %--% names(path)[i]]$modVars, function(v) {
+          sum(sapply(2:length(path), function(i) v %in% igraph::E(graph)[names(path)[i-1] %--% names(path)[i]]$modVars)) > 1
+        }))
+      })) &&
+      # If any edge on path is moderated
+      any(sapply(2:length(path), function(i) igraph::E(graph)[names(path)[i-1] %--% names(path)[i]]$isMod))
+    )
+  })
+
+  return(isValid)
+}
+
 .procMedEffectsSyntax <- function(graph, modProbes, contrasts, standardize = FALSE) {
   allMedEffects <- list()
   allTotEffects <- list()
   allTotIndEffects <- list()
+  allModMedIndEffects <- list()
 
   # Check if any treatment vars, otherwise take first exo
   if (sum(igraph::V(graph)$isTreat) > 0) {
@@ -1127,6 +1251,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         contrasts = contrasts
       )
       medPathLengthsSorted <- sort.int(sapply(medPaths, length), index.return = TRUE)
+      medPaths <- medPaths[medPathLengthsSorted$ix]
       # Sort effects according to path length to preserve order
       medEffects <- medEffects[medPathLengthsSorted$ix]
       # All rhs effects
@@ -1178,16 +1303,41 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         )
 
         allTotIndEffects <- c(allTotIndEffects, totIndEffectsLabeled)
+
+        # Which path is valid for moderated mediation index
+        # Excludes paths with multiple moderations from same moderator and moderated moderation
+        medPathIsValid <- .procModMedIndIsValid(medPaths, graph)
+
+        modMedIndEffects <- lapply(
+          medPaths[medPathIsValid],
+          .procModMedIndEffectsSyntaxSinglePath,
+          graph = graph,
+          modProbes = modProbes,
+          contrasts = contrasts
+        )
+
+        if (standardize) {
+          modMedIndEffects <- lapply(modMedIndEffects, function(path) list(lhs = paste0(path$lhs, "__std"), rhs = path$rhs))
+        }
+
+        modMedIndEffectsLabeled <- sapply(modMedIndEffects, function(path) paste(paste0("modMedIndex.", path$lhs), path$rhs, sep = " := "))
+
+        allModMedIndEffects <- c(allModMedIndEffects, modMedIndEffectsLabeled)
       }
     }
   }
-
+  
   allEffects <- c(allMedEffects, allTotEffects)
 
   # Only return total effects when no indirect path
   if (length(allTotIndEffects) > 0) {
     allEffects <- c(allEffects, allTotIndEffects)
   }
+
+  if (length(allModMedIndEffects) > 0) {
+    allEffects <- c(allEffects, allModMedIndEffects)
+  }
+
   # Remove duplicated effects (can occur for factors with more than two levels)
   return(paste(allEffects[!duplicated(allMedEffects)], collapse = "\n"))
 }
@@ -1257,7 +1407,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # If effect is defined by other estimates
     } else {
       # Get lhs and rhs labels for defined effects
-      if (lhsSplit[[i]][1] %in% c("tot", "totInd")) {
+      if (lhsSplit[[i]][1] %in% c("tot", "totInd", "modMedIndex")) {
         lhsSplit2 <- strsplit(lhsSplit[[i]][2], "__")[[1]]
       } else {
         lhsSplit2 <- strsplit(lhsSplit[[i]][1], "__")[[1]]
@@ -1686,6 +1836,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     if (options[["processModels"]][[i]][["mediationEffects"]])
       .procPathMediationEffectsTable(modelContainer, options, procResults[[i]], i)
 
+    if (options[["moderatedMediationIndex"]]) {
+      .procPathModeratedMediationIndexTable(modelContainer, options, procResults[[i]], i)
+    }
+
     if (options[["processModels"]][[i]][["totalEffects"]])
       .procPathTotalEffectsTable(modelContainer, options, procResults[[i]], i)
 
@@ -1838,38 +1992,45 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(modProbes)
 }
 
+.procPathIndirectHelper <- function(tbl, labelSplit, effects) {
+  # Get paths from label of mediation effect
+  paths <- lapply(labelSplit, function(path) path[[1]])
+
+  # Get path lengths
+  pathLengths <- sapply(paths, length)
+
+  # Sort paths to incresaing length
+  lengthSortIdx <- sort(pathLengths, index.return = TRUE)$ix
+  effects <- effects[lengthSortIdx, ]
+
+  # Add a column for each step of longest path
+  for (i in 1:max(pathLengths)) {
+    # If path has step add var name otherwise empty
+    effect <- sapply(paths[lengthSortIdx], function(path) ifelse(length(path) >= i, path[i], ""))
+
+    # Add operator columns
+    if (i > 1) {
+      # Add operator for non-empty path steps otherwise empty
+      op <- ifelse(effect == "", "", "\u2192")
+      tbl$addColumnInfo(name = paste0("op_", i), title = "", type = "string")
+      tbl[[paste0("op_", i)]] <- op
+    }
+
+    tbl$addColumnInfo(name = paste0("lhs_", i), title = "", type = "string")
+    tbl[[paste0("lhs_", i)]] <- effect
+  }
+
+  return(lengthSortIdx)
+}
+
 .procPathMediationEffectsTableHelper <- function(tbl, medEffects) {
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
   # Only use label splits of length > 1 to omit total effects
   labelSplit <- labelSplit[sapply(labelSplit, function(path) length(path[[1]])) > 1]
 
-  # Get paths from label of mediation effect
-  medPaths <- lapply(labelSplit, function(path) path[[1]])
-
-  # Get path lengths
-  medPathLengths <- sapply(medPaths, length)
-
-  # Sort paths to incresaing length
-  medLengthSortIdx <- sort(medPathLengths, index.return = TRUE)$ix
+  medLengthSortIdx <- .procPathIndirectHelper(tbl, labelSplit, medEffects)
   medEffects <- medEffects[medLengthSortIdx, ]
-
-  # Add a column for each step of longest path
-  for (i in 1:max(medPathLengths)) {
-    # If path has step add var name otherwise empty
-    medEffect <- sapply(medPaths[medLengthSortIdx], function(path) ifelse(length(path) >= i, path[i], ""))
-
-    # Add operator columns
-    if (i > 1) {
-      # Add operator for non-empty path steps otherwise empty
-      medOp <- ifelse(medEffect == "", "", "\u2192")
-      tbl$addColumnInfo(name = paste0("op_", i), title = "", type = "string")
-      tbl[[paste0("op_", i)]] <- medOp
-    }
-
-    tbl$addColumnInfo(name = paste0("lhs_", i), title = "", type = "string")
-    tbl[[paste0("lhs_", i)]] <- medEffect
-  }
 
   uniqueMods <- unique(unlist(lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))))
 
@@ -1924,11 +2085,86 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procCoefficientsTable(medEffectsTable, options, medEffects)
 }
 
+.procPathModMedIndEffectsTableHelper <- function(tbl, medEffects) {
+  labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
+  
+  isModMedIndEffect <- sapply(labelSplit, function(path) length(path[[1]]) == 1 && all(path[[1]] == "modMedIndex"))
+  
+  # Filter for moderated mediation index and omit 'modMedIndex' prefix
+  labelSplit <- lapply(labelSplit[isModMedIndEffect], function(path) path[-1])
+
+  modMedIndEffects <- medEffects[isModMedIndEffect, ]
+
+  if (nrow(modMedIndEffects) == 0) return(modMedIndEffects)
+
+  medLengthSortIdx <- .procPathIndirectHelper(tbl, labelSplit, modMedIndEffects)
+  modMedIndEffects <- modMedIndEffects[medLengthSortIdx, ]
+
+  mods <- lapply(labelSplit, function(path) lapply(path[-1], function(row) row[1]))
+
+  uniqueMods <- unique(unlist(mods))
+
+  modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medLengthSortIdx], uniqueMods)
+
+  for (mod in uniqueMods) {
+    tbl$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    isMod <- ifelse(sapply(mods, function(modVars) mod %in% modVars), "X", "")
+    probes <- modProbes[[mod]]
+    tbl[[mod]] <- ifelse(is.na(probes), isMod, probes)
+  }
+
+  return(modMedIndEffects)
+}
+
+.procPathModeratedMediationIndexTable <- function(container, options, procResults, modelIdx) {
+  if (!is.null(container[["modMedIndTable"]])) return()
+
+  modMedIndTable <- createJaspTable(title = gettext("Moderated mediation index"))
+  modMedIndTable$dependOn(
+    options = "moderatedMediationIndex"
+  )
+  modMedIndTable$position <- 2.5
+  container[["modMedIndTable"]] <- modMedIndTable
+
+  if (!.procIsValidModel(container, procResults)) return()
+
+  bootstrapCiType <- .procGetBootstrapCiType(options)
+
+  pathCoefs <- lavaan::parameterEstimates(procResults, boot.ci.type = bootstrapCiType,
+                                          level = options$ciLevel)
+
+  if (options$standardizedModelEstimates) {
+    pathCoefs["rowId"] <- pathCoefs$lhs
+    pathCoefs["est.std"] <- .procStandardizedEstimates(procResults, options)
+  }
+
+  if (!procResults@Fit@converged) {
+    modMedIndTable$addFootnote(.procConvergenceMsg())
+  }
+
+  .procBootstrapSamplesFootnote(modMedIndTable, procResults, options)
+  
+  medEffects <- pathCoefs[pathCoefs$op == ":=",]
+
+  modMedIndEffects <- .procPathModMedIndEffectsTableHelper(modMedIndTable, medEffects)
+
+  # Add column with parameter labels
+  if (options$parameterLabels) {
+    modMedIndTable <- .procEffectsTablesParameterLabels(modMedIndTable, modMedIndEffects)
+  }
+
+  if (nrow(modMedIndEffects) > 0) {
+    .procCoefficientsTable(modMedIndTable, options, modMedIndEffects)
+  } else {
+    modMedIndTable$addFootnote(procNoModMedIndexFootnote())
+  }
+}
+
 .procPathTotalEffectsTableHelper <- function(tbl, medEffects) {
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
   # Only use label splits of length == 1 to get total effects
-  isTotEffect <- sapply(labelSplit, function(path) length(path[[1]])) == 1
+  isTotEffect <- sapply(labelSplit, function(path) length(path[[1]]) == 1 && all(path[[1]] %in% c("tot", "totInd")))
   labelSplit <- labelSplit[isTotEffect]
 
   # Get paths from label of mediation effect
@@ -2824,6 +3060,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procBootstrappedCiFootnote <- function(txt) gettextf("Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method.", txt)
 
 .procBootstrapFailedSamplesFootnote <- function(n) gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", n)
+
+procNoModMedIndexFootnote <- function() gettext("Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated.")
 
 .procMultiComparisonFootnote <- function(txt) gettextf("<em>p</em>-values adjusted for multiple comparisons with the %s method.", txt)
 

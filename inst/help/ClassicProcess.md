@@ -87,6 +87,7 @@ This section allows users to specify multiple process models through one of two 
 - AIC weights: Show the Akaike weights in the summary table in the output.
 - BIC weigths: Show the Schwarz weights in the summary table in the output.
 - Hayes configuration number: Display the configuration number according to Hayes (2022).
+- Moderated mediation index: Display the index of moderated mediation (Hayes, 2015) for each moderated indirect path in a separate table for each model. For indirect paths that have dual moderation (i.e., the same moderator moderates multiple relationships) or moderated moderation, the index cannot be calculated and is therefore omitted.
 - Mean-centered moderation: Continuous variables involved in moderation effects are mean-centered before entering the analysis. When `Missing Value Handling` is `Exclude cases listwise`, centering is applied only based on complete cases.
 - Standardized estimates: Adds standardized parameter estimates to the output tables. The standardization is done by multiplying the estimate with (*SD*<sub>X</sub>/*SD*<sub>Y</sub>) where *SD*<sub>X</sub> and *SD*<sub>Y</sub> are the model-implied standard deviations for the independent and dependent variable, respectively. Note that the standardization of estimates of interaction effects is based on the product of the standard deviations of the individual terms and not on the standard deviation of the product term, i.e., (*SD*<sub>X</sub>*SD*<sub>W</sub>/*SD*<sub>Y</sub>) instead of (*SD*<sub>XW</sub>/*SD*<sub>Y</sub>), where *SD*<sub>W</sub> is the model-implied standard deviation of the moderator. The estimates of (conditional) indirect and total effects are also only standardized by (*SD*<sub>X</sub>/*SD*<sub>Y</sub>) but not by standard deviations of mediators or moderators. For effects involving categorical independent variables, estimates are partially standardized, i.e., only multiplied by *SD*<sub>Y</sub>. Conditional effects are probed on the unstandardized scale of moderators. See Cheung and Cheung (2023) for details.
 - Confidence intervals: The level of confidence intervals for parameter estimates in the output tables.
@@ -125,6 +126,8 @@ This section allows users to specify multiple process models through one of two 
 Ankan, A., Wortel, I. M. N., & Textor, J. (2021). Testing graphical causal models using the R package “dagitty.” *Current Protocols, 1*(2), e45. https://doi.org/10.1002/cpz1.45
 
 Cheung, S. F., Cheung, S. H. (2023). manymome: An R package for computing the indirect effects, conditional effects, and conditional indirect effects, standardized or unstandardized, and their bootstrap confidence intervals, in many (though not all) models. *Behavior Research Methods*. https://doi.org/10.3758/s13428-023-02224-z
+
+Hayes, A. F. (2015). An index and test of linear moderated mediation. *Multivariate Behavioral Research, 50*(1), 1–22. https://doi.org/10.1080/00273171.2014.962683
 
 Hayes, A. F. (2022). *Introduction to mediation, moderation, and conditional process analysis* (3rd Ed.). Guilford Press.
 
