@@ -2408,23 +2408,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     return(paste(row[["lhs"]], op, row[["rhs"]]))
   })
 
-  parNamesAbbr <- abbreviate(unique(unlist(parTable[c("lhs", "rhs")])))
-  
   graph <- dagitty::dagitty(paste("dag {", paste(arrows, collapse = "\n")," } "))
 
   localTestResult <- dagitty::localTests(
-    graph, dataset,
+    graph,
+    dataset,
     type = testType,
     conf.level = options$ciLevel,
-    R = nReps
+    R = nReps,
+    abbreviate.names = FALSE
   )
 
   if (nrow(localTestResult) > 0) {
     implicationSplit <- strsplit(row.names(localTestResult), "\\s+(\\|+|_+\\|+_+)\\s+")
-    localTestTable[["lhs"]]  <- sapply(implicationSplit, function(row) names(parNamesAbbr)[parNamesAbbr == row[1]])
+    localTestTable[["lhs"]]  <- sapply(implicationSplit, function(row) row[1])
     localTestTable[["op1"]]  <- rep("\u2AEB", length(implicationSplit))
-    localTestTable[["rhs"]]  <- sapply(implicationSplit, function(row) names(parNamesAbbr)[parNamesAbbr == row[2]])
-    localTestTable[["cond"]] <- sapply(implicationSplit, function(row) { if (length(row) == 3) names(parNamesAbbr)[parNamesAbbr == row[3]] else "" })
+    localTestTable[["rhs"]]  <- sapply(implicationSplit, function(row) row[2])
+    localTestTable[["cond"]] <- sapply(implicationSplit, function(row) { if (length(row) == 3) row[3] else "" })
     localTestTable[["op2"]]  <- sapply(implicationSplit, function(row) { if (length(row) == 3) "\u2223" else "" })
     localTestTable[[keyEst]] <- localTestResult[[keyEst]]
     localTestTable[[keyErr]] <- p.adjust(localTestResult[[keyErr]], method = adjustMethod)
