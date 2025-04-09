@@ -52,7 +52,7 @@ Group
 		{
 			name: 				"modelNumberMediators"
 			title: 				qsTr("Mediators M")
-			allowedColumns: 	["scale", "nominal"]
+			allowedColumns: 	["scale"]
 		}
 		// TODO
 		// AssignedVariablesList
