@@ -720,3 +720,7 @@ msgstr ""
 msgctxt "InputVariables|"
 msgid "From "
 msgstr ""
+
+msgctxt "ClassicProcess|"
+msgid "Moderated mediation index"
+msgstr ""

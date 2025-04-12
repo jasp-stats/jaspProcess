@@ -704,3 +704,7 @@ msgstr ""
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
 msgstr ""
+
+msgctxt "ClassicProcess|"
+msgid "Moderated mediation index"
+msgstr ""

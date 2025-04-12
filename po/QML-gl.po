@@ -706,3 +706,7 @@ msgstr "Proceso"
 msgctxt "InputVariables|"
 msgid "From "
 msgstr "De "
+
+msgctxt "ClassicProcess|"
+msgid "Moderated mediation index"
+msgstr ""

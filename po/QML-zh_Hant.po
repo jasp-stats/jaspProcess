@@ -729,3 +729,7 @@ msgstr "Process 模組"
 msgctxt "InputVariables|"
 msgid "From "
 msgstr "從 "
+
+msgctxt "ClassicProcess|"
+msgid "Moderated mediation index"
+msgstr ""

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
-"POT-Creation-Date: 2024-12-14 03:49\n"
+"POT-Creation-Date: 2025-04-12 03:54\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,6 +169,9 @@ msgstr ""
 msgid "normal theory"
 msgstr ""
 
+msgid "Moderated mediation index"
+msgstr ""
+
 msgid "Total"
 msgstr ""
 
@@ -254,6 +257,9 @@ msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-val
 msgstr ""
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
+msgstr ""
+
+msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
 msgstr ""
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
