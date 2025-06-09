@@ -123,7 +123,7 @@
     },
     "V8": {
       "Package": "V8",
-      "Version": "6.0.3",
+      "Version": "6.0.4",
       "Source": "Repository",
       "Requirements": [
         "curl",
@@ -304,7 +304,7 @@
     },
     "curl": {
       "Package": "curl",
-      "Version": "6.2.3",
+      "Version": "6.3.0",
       "Source": "Repository",
       "Requirements": [
         "R"
@@ -383,16 +383,6 @@
         "vctrs"
       ]
     },
-    "fansi": {
-      "Package": "fansi",
-      "Version": "1.0.6",
-      "Source": "Repository",
-      "Requirements": [
-        "grDevices",
-        "R",
-        "utils"
-      ]
-    },
     "farver": {
       "Package": "farver",
       "Version": "2.1.2",
@@ -433,7 +423,7 @@
     },
     "future": {
       "Package": "future",
-      "Version": "1.49.0",
+      "Version": "1.58.0",
       "Source": "Repository",
       "Requirements": [
         "digest",
@@ -447,7 +437,7 @@
     },
     "future.apply": {
       "Package": "future.apply",
-      "Version": "1.11.3",
+      "Version": "1.20.0",
       "Source": "Repository",
       "Requirements": [
         "future",
@@ -798,7 +788,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
-      "RemoteSha": "e9e962c1e3c95e09f984b52708d39e49599e394e"
+      "RemoteSha": "c884a4239590cdb08c1f18cbeaad9107395425aa"
     },
     "jaspJags": {
       "Package": "jaspJags",
@@ -822,7 +812,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "062362ed01a991e84f95d9b94db48fd9909467fa"
+      "RemoteSha": "f900a81efc573b1e771858aa7f5f175ff079ba32"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -1026,7 +1016,7 @@
     },
     "officer": {
       "Package": "officer",
-      "Version": "0.6.9",
+      "Version": "0.6.10",
       "Source": "Repository",
       "Requirements": [
         "cli",
@@ -1052,7 +1042,7 @@
     },
     "parallelly": {
       "Package": "parallelly",
-      "Version": "1.44.0",
+      "Version": "1.45.0",
       "Source": "Repository",
       "Requirements": [
         "parallel",
@@ -1400,10 +1390,10 @@
     },
     "tibble": {
       "Package": "tibble",
-      "Version": "3.2.1",
+      "Version": "3.3.0",
       "Source": "Repository",
       "Requirements": [
-        "fansi",
+        "cli",
         "lifecycle",
         "magrittr",
         "methods",
@@ -1492,7 +1482,7 @@
     },
     "utf8": {
       "Package": "utf8",
-      "Version": "1.2.5",
+      "Version": "1.2.6",
       "Source": "Repository",
       "Requirements": [
         "R"
