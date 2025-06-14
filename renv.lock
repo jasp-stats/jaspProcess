@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.5.0",
+    "Version": "4.5.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -51,7 +51,7 @@
     },
     "QuickJSR": {
       "Package": "QuickJSR",
-      "Version": "1.7.0",
+      "Version": "1.8.0",
       "Source": "Repository",
       "Requirements": []
     },
@@ -812,7 +812,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "f900a81efc573b1e771858aa7f5f175ff079ba32"
+      "RemoteSha": "3e63da5c7c6a4ca6b217e1e29ff8e0a02f49c212"
     },
     "jpeg": {
       "Package": "jpeg",
