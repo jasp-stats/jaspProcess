@@ -792,7 +792,7 @@
     },
     "jaspJags": {
       "Package": "jaspJags",
-      "Version": "0.20.0",
+      "Version": "0.95.0",
       "Source": "GitHub",
       "Requirements": [
         "R",
@@ -812,7 +812,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "3e63da5c7c6a4ca6b217e1e29ff8e0a02f49c212"
+      "RemoteSha": "1de80587ccb3a592cb03c74e78ebb79035288357"
     },
     "jpeg": {
       "Package": "jpeg",
