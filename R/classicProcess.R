@@ -708,7 +708,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (!.procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)) next
+    graph <- modelsContainer[[modelName]][["graph"]]$object
+
+    if (!.procCheckGraph(graph) || !.procCheckFitModel(graph)) next
 
     if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
       modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
