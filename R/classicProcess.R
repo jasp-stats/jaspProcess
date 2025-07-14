@@ -654,6 +654,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       exitAnalysisIfErrors = TRUE
     )
   }
+
+  # Check that dependent variabels are continuous
+  checkPath <- function(path, options) {
+    return(path[["processDependent"]] %in% options[["factors"]] || 
+      (path[["processIndependent"]] %in% options[["factors"]] && path[["processType"]] == "confounders"))
+  }
+
+  for (mod in options[["processModels"]]) {
+    if (mod[["inputType"]] == "inputVariables") {
+      for (path in mod[["processRelationships"]]) {
+        if (checkPath(path, options)) {
+          .quitAnalysis(gettext("Dependent variables must be continuous."))
+        }
+      }
+    }
+  }
 }
 
 .procMeanCenter <- function(graph, dataset, options) {
