@@ -1593,3 +1593,19 @@ test_that("Moderated mediation index works - three-level factor independent", {
 			 "contcor1", "contNormal", "<unicode>", "<unicode>", 0.862779808586041,
 			 0.0556237127253498, -0.172836674711031))
 })
+
+test_that("Estimation failed error message works", {
+  options <- getOptionsClassical()
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "moderators",
+                                                                      processVariable = "facGender"))))
+  options$naAction <- "listwise"
+  options$estimator <- "wls"
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  refMsg <- jaspProcess:::.procEstimationMsg()
+
+  msg <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["error"]][["errorMessage"]]
+  expect_equal(msg, refMsg)
+})

@@ -654,6 +654,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       exitAnalysisIfErrors = TRUE
     )
   }
+
+  # Check that dependent variabels are continuous
+  checkPath <- function(path, options) {
+    return(path[["processDependent"]] %in% options[["factors"]] || 
+      (path[["processIndependent"]] %in% options[["factors"]] && path[["processType"]] == "confounders"))
+  }
+
+  for (mod in options[["processModels"]]) {
+    if (mod[["inputType"]] == "inputVariables") {
+      for (path in mod[["processRelationships"]]) {
+        if (checkPath(path, options)) {
+          .quitAnalysis(gettext("Dependent variables must be continuous."))
+        }
+      }
+    }
+  }
 }
 
 .procMeanCenter <- function(graph, dataset, options) {
@@ -692,7 +708,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     modelOptions <- options[["processModels"]][[i]]
     modelName <- modelOptions[["name"]]
 
-    if (!.procCheckGraph(modelsContainer[[modelName]][["graph"]]$object)) next
+    graph <- modelsContainer[[modelName]][["graph"]]$object
+
+    if (!.procCheckGraph(graph) || !.procCheckFitModel(graph)) next
 
     if (is.null(modelsContainer[[modelName]][["modProbes"]])) {
       modProbes <- .procModProbesSingleModel(modelsContainer[[modelName]], dataset, options)
@@ -1472,7 +1490,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procResultsFitModel <- function(container, dataset, options, modelOptions) {
   # Check if graph has error message
   if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
-    return(.procEstimationMsg(container[["graph"]]$object))
+    return(.procEstimationMsg())
   }
 
   # Should model be fitted?
@@ -1498,7 +1516,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 
   if (jaspBase::isTryError(fittedModel)) {
-    return(.procLavaanMsg(fittedModel))
+    return(.procEstimationMsg())
   }
 
   if (doFit && is.null(lavaan::vcov(fittedModel))) {
@@ -1806,7 +1824,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   } else if (jaspBase:::isTryError(procResult)) {
     container$setError(jaspBase::.extractErrorMessage(procResult))
   } else if (!inherits(procResult, "lavaan")) {
-    container$setError(.procEstimationMsg(.procModelCheckMsg()))
+    container$setError(.procEstimationMsg())
   }
 }
 
@@ -3020,9 +3038,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procHayesModelMsg <- function(modelName, modelNumber) gettextf("%1$s: Hayes configuration %2$s not implemented", modelName, modelNumber)
 
-.procEstimationMsg <- function(graph) gettextf("Estimation failed: %s", jaspBase::.extractErrorMessage(graph))
-
-.procLavaanMsg <- function(fittedModel) gettextf("Estimation failed: %s", gsub("lavaan ERROR:", "", jaspBase::.extractErrorMessage(fittedModel)))
+.procEstimationMsg <- function() gettextf("Estimation failed because of an internal error.")
 
 .procFimlMsg <- function() gettext("Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling.")
 

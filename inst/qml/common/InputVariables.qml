@@ -47,7 +47,7 @@ Group
 			{
 				id: 				    procIndep
 				name: 				    'processIndependent'
-				source: 			    ['covariates', 'factors']
+				source: 			    procType.currentValue == 'confounders' ? ['covariates'] : ['covariates', 'factors']
 				fieldWidth:			    modelsGroup.colWidth
 				addEmptyValue: 		    true
 				onCurrentValueChanged:
@@ -66,7 +66,7 @@ Group
 			{
 				id: 				procDep
 				name: 				'processDependent'
-				source: 			["dependent", "processVariable"] //, {name: "processRelationships.processVariable", use: "discardIndex=" + (relations.count - 1)}]
+				source: 			["dependent", { name: "processVariable", discard: "factors" }] // Factors are not allowed as dependent variables
 				fieldWidth:			modelsGroup.colWidth
 				addEmptyValue: 		true
 				onCurrentValueChanged:
