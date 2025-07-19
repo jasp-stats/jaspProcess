@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.0\n"
-"POT-Creation-Date: 2025-06-21 03:54\n"
+"POT-Creation-Date: 2025-07-19 04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,6 +127,9 @@ msgstr ""
 msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
 
+msgid "Dependent variables must be continuous."
+msgstr ""
+
 msgid "Hayes number"
 msgstr ""
 
@@ -214,7 +217,7 @@ msgstr ""
 msgid "%1$s: Hayes configuration %2$s not implemented"
 msgstr ""
 
-msgid "Estimation failed: %s"
+msgid "Estimation failed because of an internal error."
 msgstr ""
 
 msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."

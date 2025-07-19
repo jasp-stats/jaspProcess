@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
-"POT-Creation-Date: 2025-04-12 03:54\n"
+"POT-Creation-Date: 2025-07-19 04:00\n"
 "PO-Revision-Date: 2025-07-10 17:03+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspprocess-r/"
@@ -159,6 +159,9 @@ msgstr ""
 "அனுமானம் நம்பமுடியாதது - எம்.சி.எம்.சி சங்கிலிகள் ஒன்றிணைந்திருக்காது; மிகப்பெரிய R-"
 "HAT %1$.3f> %2$.2f."
 
+msgid "Dependent variables must be continuous."
+msgstr ""
+
 msgid "Hayes number"
 msgstr "ஏய்ச் எண்"
 
@@ -247,8 +250,8 @@ msgstr ""
 msgid "%1$s: Hayes configuration %2$s not implemented"
 msgstr "%1$s: ஏய்ச் உள்ளமைவு %2$s செயல்படுத்தப்படவில்லை"
 
-msgid "Estimation failed: %s"
-msgstr "மதிப்பீடு தோல்வியுற்றது: %s"
+msgid "Estimation failed because of an internal error."
+msgstr ""
 
 msgid ""
 "Full Information Maximum Likelihood estimation only available with 'ML' or "
@@ -344,3 +347,6 @@ msgstr ""
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
 msgstr "<em> ப </em>- %s முறையுடன் பல ஒப்பீடுகளுக்கு சரிசெய்யப்பட்ட மதிப்புகள்."
+
+#~ msgid "Estimation failed: %s"
+#~ msgstr "மதிப்பீடு தோல்வியுற்றது: %s"
