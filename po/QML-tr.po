@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-24 09:08+0000\n"
-"Last-Translator: Ertuğrul Uyar <ertugruluyar.academic@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/jasp/"
-"jaspprocess-qml/tr/>\n"
-"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13-dev\n"
 "X-Language: tr\n"
 "X-Qt-Contexts: true\n"
 
@@ -249,9 +243,10 @@ msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr ""
+msgstr "Modeller"
 
 msgctxt "ClassicProcess|"
 msgid "Model 1"
