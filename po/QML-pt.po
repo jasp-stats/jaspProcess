@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-08-05 14:01+0000\n"
+"PO-Revision-Date: 2025-08-06 07:43+0000\n"
 "Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-qml/pt/>\n"
@@ -51,39 +51,39 @@ msgstr "Distribuições anteriores"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "Rótulos de parâmetro"
 
 msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Sintaxe Lavaan"
 
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "Pesos CIB"
 
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Número de configuração de Hayes"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
-msgstr ""
+msgstr "Burnin"
 
 msgctxt "BayesianProcess|"
 msgid "Samples"
-msgstr ""
+msgstr "Amostras"
 
 msgctxt "BayesianProcess|"
 msgid "Chains"
-msgstr ""
+msgstr "Cadeias"
 
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
-msgstr ""
+msgstr "Intervalos credíveis"
 
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "Moderação centrada na média"
 
 msgctxt "BayesianProcess|"
 msgid "Plots"
