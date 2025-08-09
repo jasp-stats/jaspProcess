@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-08-06 07:43+0000\n"
-"Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
-"jaspprocess-qml/pt/>\n"
-"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Language: pt\n"
 "X-Qt-Contexts: true\n"
 
@@ -249,13 +243,15 @@ msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr ""
+msgstr "Modelos"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "Modelo 1"
 
 msgctxt "ClassicProcess|"
 msgid "Tests"
@@ -305,17 +301,20 @@ msgctxt "ClassicProcess|"
 msgid "Replications"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Options"
-msgstr ""
+msgstr "Opções"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "Rótulos de parâmetro"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Sintaxe Lavaan"
 
 msgctxt "ClassicProcess|"
 msgid "R-squared"
@@ -325,17 +324,20 @@ msgctxt "ClassicProcess|"
 msgid "AIC weights"
 msgstr ""
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "Pesos CIB"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Número de configuração de Hayes"
 
+#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "Moderação centrada na média"
 
 msgctxt "ClassicProcess|"
 msgid "Standardized estimates"
@@ -525,9 +527,10 @@ msgctxt "ClassicProcess|"
 msgid "DWLS"
 msgstr ""
 
+#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Número de configuração de Hayes"
 
 msgctxt "InputModelNumber|"
 msgid "Independent X"
