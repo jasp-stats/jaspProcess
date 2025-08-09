@@ -1,0 +1,319 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jaspProcess 0.95.0\n"
+"POT-Creation-Date: 2025-07-19 04:00\n"
+"PO-Revision-Date: 2025-08-09 03:57+0000\n"
+"Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
+"jaspprocess-r/pt/>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13-dev\n"
+
+msgid "Process Analysis"
+msgstr "Análise de Processo"
+
+msgid "Model summary"
+msgstr "Resumo do modelo"
+
+msgid "WAIC"
+msgstr "WAIC"
+
+msgid "LOOIC"
+msgstr "LOOIC"
+
+msgid "PPP"
+msgstr "PPP"
+
+msgid "BIC"
+msgstr "CIB"
+
+msgid "BIC weight"
+msgstr "Ponderação CIB"
+
+msgid "Estimate"
+msgstr "Estimativa"
+
+msgid "SE"
+msgstr "EP"
+
+msgid "LOO Difference"
+msgstr "Diferença LOO"
+
+msgid "ELPD"
+msgstr "DPPLE"
+
+msgid "Ratio"
+msgstr "Razão"
+
+msgid "n"
+msgstr "n"
+
+msgid "Posterior"
+msgstr "Posterior"
+
+msgid "%s%% Credible Interval"
+msgstr "%s%% Intervalo Credível"
+
+msgid "Mean"
+msgstr "Média"
+
+msgid "Median"
+msgstr "Mediana"
+
+msgid "SD"
+msgstr "DP"
+
+msgid "Lower"
+msgstr "Inferior"
+
+msgid "Upper"
+msgstr "Superior"
+
+msgid "R-hat"
+msgstr "R-hat"
+
+msgid "ESS (bulk)"
+msgstr "SQE (bulk)"
+
+msgid "ESS (tail)"
+msgstr "SQE (cauda)"
+
+msgid "Warning:"
+msgstr "Aviso:"
+
+msgid "Path coefficients"
+msgstr "Coeficientes de caminho"
+
+msgid "Label"
+msgstr "Rótulo"
+
+msgid "Prior"
+msgstr "Anterior"
+
+msgid "Direct and indirect effects"
+msgstr "Efeitos diretos e indiretos"
+
+msgid "Total effects"
+msgstr "Efeitos totais"
+
+msgid "Residual covariances"
+msgstr "Covariâncias residuais"
+
+msgid "MCMC Plots"
+msgstr "Gráficos MCMC"
+
+msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
+msgstr ""
+"Aviso: A estimativa WAIC é não confiável -- pelo menos um parâmetro efetivo "
+"(p_waic) é maior do que 0,4. Recomenda-se utilizar LOO no lugar."
+
+msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
+msgstr ""
+"Aviso: A estimativa LOO é não confiável -- pelo menos uma observação com o "
+"parâmetro de forma (k) da distribuição de Pareto generalizada é maior que "
+"0,5."
+
+msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
+msgstr ""
+"WAIC e LOO não podem ser calculados se não forem estimadas as covariâncias "
+"para as variáveis independentes com dados ausentes."
+
+msgid "Estimates might be biased -- %i divergent transitions after warmup."
+msgstr ""
+"As estimativas podem estar enviesadas -- %i transições divergentes após o "
+"aquecimento."
+
+msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
+msgstr ""
+"A Fração Bayesiana de Informações Ausentes (BFMI) era muito baixa em cadeias "
+"%i — a distribuição posterior não foi explorada de forma eficiente."
+
+msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
+msgstr ""
+"O processo Monte Carlo Hamiltoniano pode ser ineficiente -- %i transições "
+"excederam a profundidade máxima da árvore."
+
+msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
+msgstr ""
+"Baixa precisão de estimativa para quantidades %1$s -- o menor tamanho de "
+"amostra efetivo (TAE) é %2$.2f < %3$1.0f."
+
+msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
+msgstr ""
+"A inferência é possivelmente não confiável -- as cadeias MCMC podem não ter "
+"convergido; o maior valor R-hat é %1$.3f > %2$.2f."
+
+msgid "Dependent variables must be continuous."
+msgstr "As variáveis dependentes devem ser contínuas."
+
+msgid "Hayes number"
+msgstr "Número de Hayes"
+
+msgid "Model configuration number defined by Hayes (2022)."
+msgstr "Número de configuração de modelo definido por Hayes (2022)."
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "AIC weight"
+msgstr "Ponderação AIC"
+
+msgid "Log-likelihood"
+msgstr "Log-verossimilhança"
+
+msgid "df"
+msgstr "gl"
+
+msgid "Std. Error"
+msgstr "Erro Pad."
+
+msgid "z-value"
+msgstr "Valor z"
+
+msgid "p"
+msgstr "p"
+
+msgid "%s%% Confidence Interval"
+msgstr "%s%% Intervalo de Confiança"
+
+msgid "Std. Estimate"
+msgstr "Estimativa Pad."
+
+msgid "bias-corrected percentile"
+msgstr "Percentil corrigido para viés"
+
+msgid "percentile"
+msgstr "percentil"
+
+msgid "normal theory"
+msgstr "teoria normal"
+
+msgid "Moderated mediation index"
+msgstr "Índice moderado de mediação"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Total indirect"
+msgstr "Total indireto"
+
+msgid "Local tests"
+msgstr "Testes locais"
+
+msgid "Conditional independence tests"
+msgstr "Testes condicionais de independência"
+
+msgid "Model did not converge."
+msgstr "O modelo não convergiu."
+
+msgid "RMSEA"
+msgstr "REQMA"
+
+msgid "&#967;&sup2;"
+msgstr "&#967;&sup2;"
+
+msgid "Std. error"
+msgstr "Erro pad."
+
+msgid "R-squared"
+msgstr "R-quadrado"
+
+msgid "Conceptual path plot"
+msgstr "Gráfico de caminho conceitual"
+
+msgid "Statistical path plot"
+msgstr "Gráfico de caminho estatístico"
+
+msgid "Model syntax"
+msgstr "Sintaxe do modelo"
+
+msgid "Model must be a directed acyclic graph -- it must not contain loops."
+msgstr ""
+"O modelo deve ser um grafo acíclico direcionado -- não deve conter loops."
+
+msgid "%1$s: Hayes configuration %2$s not implemented"
+msgstr "%1$s: Configuração %2$s de Hayes não implementada"
+
+msgid "Estimation failed because of an internal error."
+msgstr "A estimativa falhou devido a um erro interno."
+
+msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
+msgstr ""
+"Informações completas da Estimativa de Máxima Verossimilhança disponível "
+"apenas com estimadores 'ML' ou 'Auto'. Por favor, escolha um estimador ou "
+"opção diferente para o tratamento de valores ausentes."
+
+msgid "<li>Some implied model variances are > 1,000,000</li>"
+msgstr "<li>Algumas variâncias implícitas do modelo são > 1.000.000</li>"
+
+msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
+msgstr ""
+"<li>Algumas variâncias implícitas do modelo são pelo menos um fator 1000 "
+"vezes maior do que outras</li>"
+
+msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
+msgstr ""
+"A matriz de informação não pôde ser invertida. Isso pode ser um sintoma de "
+"que o modelo não foi identificado. Possíveis razões: <ul>%s</ul>"
+
+msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
+msgstr ""
+"Pelo menos um modelo está incompleto ou não há modelo especificado. Por "
+"favor, adicione pelo menos um modelo e complete os modelos especificados."
+
+msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
+msgstr ""
+"Os AIC, CIB e critérios de informação adicionais apenas estão disponíveis "
+"com estimadores do tipo ML."
+
+msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
+msgstr ""
+"<b>Importante</b>: As estimativas de parâmetros somente podem ser "
+"interpretadas como efeitos casuais se todos os efeitos de confusão forem "
+"considerados e as direções do efeito causal sejam corretamente especificadas."
+
+msgid "Please check the model specification and lavaan syntax."
+msgstr "Por favor, verifique a especificação do modelo e a sintaxe lavaan."
+
+msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
+msgstr ""
+"Testes do tipo linear não podem ser aplicados a variáveis fatoriais. Escolha "
+"um tipo de teste diferente ou remova todas as variáveis fatoriais do modelo."
+
+msgid "The specified model does not imply any (conditional) independencies that can be tested."
+msgstr ""
+"O modelo especificado não implica nenhuma independência (condicional) que "
+"possa ser testada."
+
+msgid "Partially standardized estimate because effect involves categorical predictor."
+msgstr ""
+"Estimativas parcialmente padronizadas porque o efeito envolve um preditor "
+"categórico."
+
+msgid "Moderation effect estimates are based on mean-centered variables."
+msgstr ""
+"As estimativas do efeito de moderação são baseadas em variáveis centradas na "
+"média."
+
+msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
+msgstr ""
+"Os intervalos de confiança foram bootstrapped em %s . Erros padrões, "
+"valores-<em>z</em> e valores-<em>p</em> são baseados no método delta."
+
+msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
+msgstr ""
+"Nem todas as amostras de bootstrap foram bem sucedidas: IC baseado em %.0f "
+"amostras."
+
+msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
+msgstr ""
+"O modelo não contém efeitos moderados indiretos para<br>qual o índice de "
+"mediação moderada não pôde ser calculado."
+
+msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
+msgstr ""
+"Valores-<em>p</em> ajustados para comparações múltiplas usando o método %s."
