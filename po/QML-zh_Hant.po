@@ -21,7 +21,7 @@ msgstr "經典Process模組"
 
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr ""
+msgstr "貝氏"
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
