@@ -1490,7 +1490,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procResultsFitModel <- function(container, dataset, options, modelOptions) {
   # Check if graph has error message
   if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
-    return(.procEstimationMsg())
+    return(jaspBase::.extractErrorMessage(container[["graph"]]$object))
   }
 
   # Should model be fitted?
