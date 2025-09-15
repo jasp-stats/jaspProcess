@@ -480,8 +480,8 @@ test_that("Test that .procMedEffectsSyntaxModPars works - no contrasts", {
   pathEdge <- igraph::E(graph)["contGamma" %--% "contNormal"]
   sourceNode <- "contGamma"
 
-  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, list(), graph, modProbes)
-  expect_equal(modPars, c("c3*0.1", "c3*0.5", "c3*0.9"))
+  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, list(), graph)
+  expect_equal(modPars, list("c3*contcor2"))
 })
 
 test_that("Test that .procMedEffectsSyntaxModPars works - with contrasts", {
@@ -502,8 +502,8 @@ test_that("Test that .procMedEffectsSyntaxModPars works - with contrasts", {
   pathEdge <- igraph::E(graph)["contGammaA" %--% "contNormal"]
   sourceNode <- "contGammaA"
 
-  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, contrFacVars, graph, modProbes)
-  expect_equal(modPars, c("c4*0.1", "c4*0.5", "c4*0.9"))
+  modPars <- jaspProcess:::.procMedEffectsSyntaxModPars(pathEdge, sourceNode, contrFacVars, graph)
+  expect_equal(modPars, list("c4*contcor2"))
 })
 
 test_that("Test that .procMedEffectsSyntaxGetLhs works - no contrasts", {

@@ -958,24 +958,18 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(modOut)
 }
 
-.procMedEffectsSyntaxModPars <- function(pathEdge, sourceNode, contrFacVars, graph, modProbes) {
+.procMedEffectsSyntaxModPars <- function(pathEdge, sourceNode, contrFacVars, graph) {
   # Get moderator parameters for two-way interactions
   modPars <- lapply(pathEdge$modVars[[1]], function(v) {
     # Get edge for two way interaction between X and M
     twoWayEdge <- igraph::E(graph)[paste(sourceNode, v, sep = "__") %--% pathEdge$target]$parName
 
-    # Concatenate two way edge parName with moderator probes
-    return(apply(expand.grid(
-      twoWayEdge,
-      format(modProbes[[v]], digits = 3)
-    ), 1, paste, collapse = "*"))
+    # Concatenate two way edge parName with moderator
+    return(paste(twoWayEdge, v, sep = "*"))
   })
   
   # Concatenate dummy variables for factor moderators
   modPars <- .procMedEffectsSyntaxMergeFacMods(pathEdge$modVars[[1]], contrFacVars, modPars, sep = " + ")
-  
-  # Get all possible combinations of probes from different moderators
-  modPars <- apply(expand.grid(modPars), 1, paste, collapse = " + ")
   
   # Get name of potential three-way interaction
   threeWayInt <- paste(c(pathEdge$source, pathEdge$modVars[[1]]), collapse = "__")
@@ -983,17 +977,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (length(pathEdge$modVars[[1]]) > 1 && threeWayInt %in% igraph::E(graph)$source) { # If three-way int
     # Get edge of three way interaction X x M1 x M2
     threeWayEdge <- igraph::E(graph)[threeWayInt %--% pathEdge$target]
-    # Combine three way int parName with moderator probes
+    # Combine three way int parName with moderator
     threeWayModPars <- paste(
       threeWayEdge$parName,
-      apply(
-        expand.grid(lapply(pathEdge$modVars[[1]], function(v) format(modProbes[[v]], digits = 3))),
-        1, paste, collapse = "*"
-      ),
+      paste(pathEdge$modVars[[1]], collapse = "*"),
       sep = "*"
     )
-    # Add to previous moderator probes
-    modPars <- paste(modPars, threeWayModPars, sep = "+")
+    # Add to previous moderator terms
+    modPars <- append(modPars, threeWayModPars)
   }
   return(modPars)
 }
@@ -1067,8 +1058,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     sourceFacVars <- numeric(0)
   }
 
+  rhs <- c()
+  uniqueMods <- c()
+
   # Right hand side of lavaan syntax
-  rhs <- lapply(2:length(path), function(i) {
+  for (i in 2:length(path)) {
     # Get edge from path[-1] to path[i]
     if (any(sourceInContrFacVars) && names(path)[i-1] %in% sourceFacVars) {
       # Get all vars with factor levels as source nodes
@@ -1081,24 +1075,141 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Edge from previous node to current node
     pathEdge <- igraph::E(graph)[sourceNode %--% names(path)[i]]
 
+    modVars <- unlist(pathEdge$modVars)
+
     # If no moderators on edge, return only parName
-    if(any(is.na(unlist(pathEdge$modVars)))) return(pathEdge$parName)
+    if(any(is.na(modVars))) {
+      pathEdgeRhs <- pathEdge$parName
 
-    # Get pars from moderators
-    modPars <- .procMedEffectsSyntaxModPars(pathEdge, sourceNode, contrFacVars, graph, modProbes)
-    
-    # If indirect path add parentheses
-    if (i > 1) {
-      return(paste0("(", pathEdge$parName, " + ", modPars, ")"))
+      if (length(rhs) > 0) {
+        # Multiply effects on indirect paths
+        rhs <- paste(rhs, pathEdgeRhs, sep = "*")
+      } else {
+        rhs <- pathEdgeRhs
+      }
+    } else {
+      # Get pars from moderators
+      modPars <- .procMedEffectsSyntaxModPars(pathEdge, sourceNode, contrFacVars, graph)
+
+      # Get sum of moderator terms
+      modPars <- .doCallPaste(modPars, sep = " + ")
+
+      # If indirect path add parentheses
+      if (i > 1) {
+        pathEdgeRhs <- paste0("(", pathEdge$parName, " + ", unlist(modPars), ")")
+      } else {
+        pathEdgeRhs <- paste(pathEdge$parName, unlist(modPars), sep = " + ")
+      }
+
+      if (length(rhs) > 0) {
+        # Get all possible combinations with new moderators
+        if (all(!modVars %in% uniqueMods)) {
+          rhs <- apply(expand.grid(rhs, pathEdgeRhs), 1, paste, collapse = "*")
+        } else {
+          rhs <- paste(rhs, pathEdgeRhs, sep = "*")
+        }
+      } else {
+        rhs <- pathEdgeRhs
+      }
+      uniqueMods <- unique(c(uniqueMods, modVars))
     }
-    # Concanenate path edge parName with moderator probes
-    return(paste(pathEdge$parName, modPars, sep = " + "))
-  })
-  
-  # If indirect paths, multiply their steps
-  rhs <- .doCallPaste(rhs, sep = "*")
+  }
 
-  return(rhs)
+  modProbes <- modProbes[uniqueMods]
+
+  # Substitute moderator variables with probe values
+  rhsProbes <- c()
+
+  if (any(sourceInContrFacVars) && length(modProbes) > 0) {
+    # Identify which modProbes are factor dummies
+    modIdx <- sapply(names(modProbes), function(nm) {
+      idx <- which(sapply(contrFacVars, function(fac) nm %in% fac))
+
+      if (length(idx) == 0) return(FALSE)
+
+      return(idx)
+    })
+    # Remove non-factor moderators that have index zero
+    facModIdx <- modIdx[modIdx > 0]
+
+    facProbeList <- list()
+    facGroups <- list()
+    if (any(facModIdx)) {
+      # Group factor dummies by factor (with >2 levels)
+      facGroups <- contrFacVars[unique(facModIdx)]
+      names(facGroups) <- as.character(unique(facModIdx))
+      # Concatenate levels of the same factor
+      facProbeList <- lapply(facGroups, function(grp) {
+        probes <- Reduce(cbind, modProbes[grp])
+
+        if (is.null(dim(probes))) return(probes)
+
+        return(apply(probes, 1, paste, collapse = "_"))
+      })
+    }
+    # Now, collect all non-factor moderators
+    nonFacMods <- names(modProbes)[modIdx == 0]
+    nonFacProbeList <- modProbes[nonFacMods]
+    # Combine all for expansion
+    expandList <- c(facProbeList, nonFacProbeList)
+    modGrid <- expand.grid(expandList, stringsAsFactors = FALSE)
+    # Assign column names for substitution
+    colNames <- c(names(facProbeList), nonFacMods)
+    colnames(modGrid) <- colNames
+
+    # Split concatenated factor columns back into original dummy columns
+    if (length(facProbeList) > 0) {
+      for (k in 1:length(facProbeList)) {
+        facCol <- names(facProbeList)[k]
+        # Get the original dummy variable names for this factor
+        origDummies <- facGroups[[facCol]]
+        if (length(origDummies) == 1) {
+          splitVals <- matrix(modGrid[[facCol]], ncol = 1)
+        } else {
+          # Split the concatenated string into separate columns
+          splitVals <- do.call(rbind, strsplit(modGrid[[facCol]], "_", fixed = TRUE))
+          # If only one dummy, keep as vector
+        }
+        
+        # Assign columns with original dummy names
+        for (d in 1:length(origDummies)) {
+          modGrid[[origDummies[d]]] <- splitVals[, d]
+        }
+        # Remove the concatenated column
+        modGrid[[facCol]] <- NULL
+      }
+    }
+
+    for (j in 1:nrow(modGrid)) { # Probe combinations
+      for (i in 1:length(rhs)) { # Path edges
+        rowRhs <- rhs[i]
+        # Replace factor dummies as a group
+        for (p in 1:ncol(modGrid)) {
+          rowRhs <- gsub(colnames(modGrid)[p], format(modGrid[j, p], digits = 3), rowRhs)
+        }
+        rhsProbes <- c(rhsProbes, rowRhs)
+      }
+    }
+  } else {
+    # Default: iterate over rhs first, then probes
+    for (i in 1:length(rhs)) { # Path edges
+      modInPath <- sapply(names(modProbes), function(v) grepl(v, rhs[i]))
+      if (any(modInPath)) {
+        modGrid <- expand.grid(modProbes[modInPath])
+        for (j in 1:nrow(modGrid)) { # Probe combinations
+          rowRhs <- rhs[i]
+          for (p in 1:ncol(modGrid)) { # Moderator vars
+            rowRhs <- gsub(colnames(modGrid)[p], format(modGrid[j, p], digits = 3), rowRhs)
+          }
+          rhsProbes <- c(rhsProbes, rowRhs)
+        }
+      } else {
+        rhsProbes <- c(rhsProbes, rhs[i])
+      }
+    }
+  }
+
+  return(rhsProbes)
 }
 
 .procMedEffectsSyntaxSinglePath <- function(path, graph, modProbes, contrasts) {
