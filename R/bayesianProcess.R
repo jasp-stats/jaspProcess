@@ -103,7 +103,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   nuPrior   <- sprintf("normal(%s,%s)", options$nuPriorMu, options$nuPriorSigma)
   betaPrior <- sprintf("normal(%s,%s)", options$betaPriorMu, options$betaPriorSigma)
   psiPrior  <- sprintf("gamma(%s,%s)[sd]", options$psiPriorAlpha, options$psiPriorBeta)
-  rhoPrior  <- sprintf("beta(%s,%s)[sd]", options$rhoPriorAlpha, options$rhoPriorBeta)
+  rhoPrior  <- sprintf("beta(%s,%s)", options$rhoPriorAlpha, options$rhoPriorBeta)
   return(blavaan::dpriors(nu = nuPrior, beta = betaPrior, psi = psiPrior, rho = rhoPrior))
 }
 
@@ -152,7 +152,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   }
   
   if (jaspBase::isTryError(fittedModel)) {
-    return(.procLavaanMsg(fittedModel))
+    return(.procEstimationMsg())
   }
 
   return(fittedModel)
