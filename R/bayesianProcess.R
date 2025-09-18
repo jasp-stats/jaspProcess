@@ -108,6 +108,10 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procBayesResultsFitModel <- function(container, dataset, options, modelOptions) {
+  # Somehow the future.apply dependency of blavaan changes this option globally to NULL
+  # which throws an error; thus we change it locally
+  rlang::local_options(future.globals.method.default = "ordered")
+
   # Check if graph has error message
   if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
     return(.procEstimationMsg(container[["graph"]]$object))
