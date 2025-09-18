@@ -103,11 +103,15 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   nuPrior   <- sprintf("normal(%s,%s)", options$nuPriorMu, options$nuPriorSigma)
   betaPrior <- sprintf("normal(%s,%s)", options$betaPriorMu, options$betaPriorSigma)
   psiPrior  <- sprintf("gamma(%s,%s)[sd]", options$psiPriorAlpha, options$psiPriorBeta)
-  rhoPrior  <- sprintf("beta(%s,%s)[sd]", options$rhoPriorAlpha, options$rhoPriorBeta)
+  rhoPrior  <- sprintf("beta(%s,%s)", options$rhoPriorAlpha, options$rhoPriorBeta)
   return(blavaan::dpriors(nu = nuPrior, beta = betaPrior, psi = psiPrior, rho = rhoPrior))
 }
 
 .procBayesResultsFitModel <- function(container, dataset, options, modelOptions) {
+  # Somehow the future.apply dependency of blavaan changes this option globally to NULL
+  # which throws an error; thus we change it locally
+  rlang::local_options(future.globals.method.default = "ordered")
+
   # Check if graph has error message
   if (!.procCheckGraph(container[["graph"]]$object) && jaspBase::isTryError(container[["graph"]]$object)) {
     return(.procEstimationMsg(container[["graph"]]$object))
@@ -152,7 +156,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   }
   
   if (jaspBase::isTryError(fittedModel)) {
-    return(.procLavaanMsg(fittedModel))
+    return(.procEstimationMsg())
   }
 
   return(fittedModel)
