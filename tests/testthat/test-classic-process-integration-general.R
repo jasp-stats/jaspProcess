@@ -1405,7 +1405,7 @@ test_that("Directed acyclic graph error message works", {
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
-  refMsg <- jaspProcess:::.procEstimationMsg(jaspProcess:::.procDagMsg())
+  refMsg <- jaspProcess:::.procDagMsg()
 
   msg <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["error"]][["errorMessage"]]
   expect_equal(msg, refMsg)
