@@ -1,13 +1,18 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-11-03 08:51+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/"
+"jaspprocess-qml/de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 "X-Language: de\n"
 "X-Qt-Contexts: true\n"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
 msgstr "Testen und Vergleichen von kausalen und bedingten Prozessmodellen."
@@ -16,7 +21,6 @@ msgctxt "Description|"
 msgid "Classical"
 msgstr "Klassisch"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Classical Process Model"
 msgstr "Klassisches Prozessmodell"
@@ -25,7 +29,6 @@ msgctxt "Description|"
 msgid "Bayesian"
 msgstr "Bayesianisch"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Bayesian Process Model"
 msgstr "Bayessches Prozessmodell"
@@ -78,7 +81,6 @@ msgctxt "BayesianProcess|"
 msgid "Credible intervals"
 msgstr "Glaubwürdigkeitsintervalle"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
 msgstr "Mittel-zentrierte Moderation"
@@ -111,7 +113,6 @@ msgctxt "BayesianProcess|"
 msgid "Histogram"
 msgstr "Histogramm"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Trace"
 msgstr "Verlauf"
@@ -282,7 +283,7 @@ msgstr "Chi-Quadrat"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad"
-msgstr ""
+msgstr "Tetrade"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad within"
@@ -480,7 +481,6 @@ msgctxt "ClassicProcess|"
 msgid "Exclude cases listwise"
 msgstr "Fälle listenweise ausschließen"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Volle-Information-Maximum-Likelihood"
@@ -561,12 +561,10 @@ msgctxt "InputVariables|"
 msgid "To"
 msgstr "Bis"
 
-#, fuzzy
 msgctxt "InputVariables|"
 msgid "Process Type"
 msgstr "Prozess-Typ"
 
-#, fuzzy
 msgctxt "InputVariables|"
 msgid "Process Variable"
 msgstr "Prozess-Variable"
@@ -707,7 +705,6 @@ msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
 msgstr "Kategoriale Prädiktoren"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Process"
 msgstr "Prozess"
