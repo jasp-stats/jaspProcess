@@ -26,10 +26,10 @@
       "Version": "7.3-65",
       "Source": "Repository",
       "Requirements": [
-        "graphics",
-        "grDevices",
         "methods",
         "R",
+        "grDevices",
+        "graphics",
         "stats",
         "utils"
       ]
@@ -39,14 +39,14 @@
       "Version": "1.7-4",
       "Source": "Repository",
       "Requirements": [
-        "graphics",
         "grDevices",
+        "graphics",
         "grid",
         "lattice",
-        "methods",
-        "R",
         "stats",
-        "utils"
+        "utils",
+        "R",
+        "methods"
       ]
     },
     "QuickJSR": {
@@ -73,11 +73,10 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.1.0.8.1",
+      "Version": "1.1.0",
       "Source": "Repository",
       "Requirements": [
         "methods",
-        "R",
         "utils"
       ]
     },
@@ -237,8 +236,8 @@
       "Version": "1.3-32",
       "Source": "Repository",
       "Requirements": [
-        "graphics",
         "R",
+        "graphics",
         "stats"
       ]
     },
@@ -820,7 +819,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "0f985bbcbc93abde865b284d8195d8ca6ca50485"
+      "RemoteSha": "f32032ca2078b1bdde877c96129264cc1aebbaea"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -852,12 +851,12 @@
       "Version": "0.22-7",
       "Source": "Repository",
       "Requirements": [
-        "graphics",
-        "grDevices",
         "grid",
-        "R",
+        "grDevices",
+        "graphics",
         "stats",
-        "utils"
+        "utils",
+        "R"
       ]
     },
     "lavaan": {
