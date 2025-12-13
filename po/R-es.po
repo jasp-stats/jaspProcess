@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
 "POT-Creation-Date: 2025-11-15 03:50\n"
-"PO-Revision-Date: 2025-12-13 03:55+0000\n"
+"PO-Revision-Date: 2025-12-14 07:00+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspprocess-"
 "r/es/>\n"
@@ -77,91 +77,110 @@ msgid "R-hat"
 msgstr "R-circunflejo"
 
 msgid "ESS (bulk)"
-msgstr "SCR (grueso)"
+msgstr "TEM (ESS, grueso)"
 
 msgid "ESS (tail)"
-msgstr "SCR (cola)"
+msgstr "TEM (ESS, cola)"
 
 msgid "Warning:"
-msgstr ""
+msgstr "Advertencia:"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "Coeficientes de ruta"
 
 msgid "Label"
-msgstr ""
+msgstr "Etiqueta"
 
 msgid "Prior"
-msgstr ""
+msgstr "Previo"
 
 msgid "Direct and indirect effects"
-msgstr ""
+msgstr "Efectos directos e indirectos"
 
 msgid "Total effects"
-msgstr ""
+msgstr "Efectos totales"
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "Covarianzas de los errores"
 
 msgid "MCMC Plots"
-msgstr ""
+msgstr "Gráficos de MCMC"
 
 msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
 msgstr ""
+"Advertencia: Estimación WAIC poco creíble -- al menos una estimación "
+"efectiva de parámetros (p_waic) mayor que 0.4. Se recomienda utilizar LOO en "
+"su lugar."
 
 msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
 msgstr ""
+"Advertencia: Estimación LOO poco creíble -- al menos una observación con "
+"parámetro de forma (k) de la distribución de Pareto generalizada mayor que "
+"0.5."
 
 msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
 msgstr ""
+"No se pueden calcular WAIC ni LOO si no se estiman covarianzas de las "
+"variables independientes con datos ausentes."
 
 msgid "Estimates might be biased -- %i divergent transitions after warmup."
 msgstr ""
+"Las estimaciones podrían ser sesgadas -- %i transiciones divergentes después "
+"del calentamiento."
 
 msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
 msgstr ""
+"La Fracción Bayesiana de Información Ausente (FBIA, BFMI) es demasiado "
+"pequeña en %i cadenas -- la distribución posterior no se exploró de forma "
+"eficiente."
 
 msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
 msgstr ""
+"El procedimiento de Monte Carlo hamiltoniano podría ser ineficiente -- "
+"transición %i excedió la profundidad máxima del árbol."
 
 msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
 msgstr ""
+"Baja precisión de la estimación para %1$s cantidades -- el menor Tamaño "
+"Efectivo de la Muestra (TEM, ESS) es %2$.2f < %3$1.0f."
 
 msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
+"Inferencia posiblemente poco creíble -- cadenas MCMC podrían no haber "
+"convergido; el R-circunflejo mayor es %1$.3f > %2$.2f."
 
 msgid "Dependent variables must be continuous."
-msgstr ""
+msgstr "Las variables dependientes deben ser continuas."
 
 msgid "Hayes number"
-msgstr ""
+msgstr "Número de Hayes"
 
 msgid "Model configuration number defined by Hayes (2022)."
-msgstr ""
+msgstr "Número de configuración de modelos definido por Hayes (2022)."
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
-msgstr ""
+msgstr "Ponderación del AIC"
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "Log-verosimilitud"
 
 msgid "df"
-msgstr ""
+msgstr "gl"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Error típico"
 
 msgid "z-value"
-msgstr ""
+msgstr "Valor Z"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "Intervalo con %s%% de confianza"
 
 msgid "Std. Estimate"
 msgstr ""
@@ -200,19 +219,19 @@ msgid "&#967;&sup2;"
 msgstr ""
 
 msgid "Std. error"
-msgstr ""
+msgstr "Error típico"
 
 msgid "R-squared"
-msgstr ""
+msgstr "R-cuadrado"
 
 msgid "Conceptual path plot"
-msgstr ""
+msgstr "Gráfico de ruta conceptual"
 
 msgid "Statistical path plot"
-msgstr ""
+msgstr "Gráfico de ruta estadística"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Sintaxis del modelo"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr ""
