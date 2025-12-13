@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
 "POT-Creation-Date: 2025-11-15 03:50\n"
-"PO-Revision-Date: 2025-11-26 10:52+0000\n"
+"PO-Revision-Date: 2025-12-13 03:55+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/"
-"jaspprocess-r/es/>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspprocess-"
+"r/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,67 +20,67 @@ msgid "Model summary"
 msgstr "Resumen del modelo"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
-msgstr ""
+msgstr "Ponderación del BIC"
 
 msgid "Estimate"
-msgstr ""
+msgstr "Estimar"
 
 msgid "SE"
-msgstr ""
+msgstr "ET"
 
 msgid "LOO Difference"
-msgstr ""
+msgstr "Diferencia de LOO"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
-msgstr ""
+msgstr "Proporción"
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Posterior"
-msgstr ""
+msgstr "Posterior"
 
 msgid "%s%% Credible Interval"
-msgstr ""
+msgstr "Intervalo con el %s%% de Credibilidad"
 
 msgid "Mean"
 msgstr "Media"
 
 msgid "Median"
-msgstr ""
+msgstr "Mediana"
 
 msgid "SD"
 msgstr "DT"
 
 msgid "Lower"
-msgstr ""
+msgstr "Inferior"
 
 msgid "Upper"
-msgstr ""
+msgstr "Superior"
 
 msgid "R-hat"
 msgstr "R-circunflejo"
 
 msgid "ESS (bulk)"
-msgstr ""
+msgstr "SCR (grueso)"
 
 msgid "ESS (tail)"
-msgstr ""
+msgstr "SCR (cola)"
 
 msgid "Warning:"
 msgstr ""
