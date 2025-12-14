@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
 "POT-Creation-Date: 2025-11-15 03:50\n"
-"PO-Revision-Date: 2025-12-14 07:00+0000\n"
+"PO-Revision-Date: 2025-12-14 11:30+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspprocess-"
 "r/es/>\n"
@@ -183,40 +183,40 @@ msgid "%s%% Confidence Interval"
 msgstr "Intervalo con %s%% de confianza"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "Estimación tipificada"
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "Percentil con sesgo corregido"
 
 msgid "percentile"
-msgstr ""
+msgstr "Percentil"
 
 msgid "normal theory"
-msgstr ""
+msgstr "Teoría Normal"
 
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "Índice de mediación moderado"
 
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "Indirecto total"
 
 msgid "Local tests"
-msgstr ""
+msgstr "Contrastes locales"
 
 msgid "Conditional independence tests"
-msgstr ""
+msgstr "Contrastes condicionados de independencia"
 
 msgid "Model did not converge."
-msgstr ""
+msgstr "El modelo no converge."
 
 msgid "RMSEA"
-msgstr ""
+msgstr "REACM (RMSEA)"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
 msgstr "Error típico"
@@ -235,57 +235,89 @@ msgstr "Sintaxis del modelo"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr ""
+"El modelo debe consistir en un grafo acíclico directo -- no debe contener "
+"bucles."
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr ""
+msgstr "%1$s: Configuración %2$s de Hayes no aplicadas"
 
 msgid "Estimation failed because of an internal error."
-msgstr ""
+msgstr "La estimación se suspendió debido a un fallo interno."
 
 msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
 msgstr ""
+"Estimación de Máxima Verosimiltud con Información Completa solo disponible "
+"con estimadores 'MV' o 'Auto'. Por favor, elija un estimador o una opción "
+"distintos, o la gestión de valores ausentes."
 
 msgid "<li>Some implied model variances are > 1,000,000</li>"
-msgstr ""
+msgstr "<li>Algunas varianzas de modelos implicados son > 1,000,000</li>"
 
 msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
 msgstr ""
+"<li>Algunas varianzas de modelos implicados son al menos de un factor 1000 "
+"veces mayor que otras</li>"
 
 msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
 msgstr ""
+"La matriz de información no se puede invertir. Esto podría ser un síntoma de "
+"que el modelo no está identificado. Posibles razones: <ul>%s</ul>"
 
 msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
 msgstr ""
+"Al menos un modelo está incompleto, o no se especificó ninguno. Por favor, "
+"añada un modelo al menos y complete los modelos especificados."
 
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
 msgstr ""
+"Los criterios de información AIC, BIC y adicionales solo están disponibles "
+"con estimadores de tipo MV."
 
 msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
 msgstr ""
+"<b>Importante</b>: Las estimaciones de parámetros solo se pueden interpretar "
+"como efectos causales si todos los efectos de confusión se tienen en cuenta, "
+"y si las direcciones de los efectos causales se especifican correctamente."
 
 msgid "Please check the model specification and lavaan syntax."
-msgstr ""
+msgstr "Por favor, compruebe la especificación del modelo y la sintaxis lavaan."
 
 msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
 msgstr ""
+"El tipo de contraste lineal no se puede aplicar a variables de factor. Elija "
+"un tipo de contraste distinto o elimine todas las variables de factor del "
+"modelo."
 
 msgid "The specified model does not imply any (conditional) independencies that can be tested."
 msgstr ""
+"El modelo especificado no implica ninguna independencia (condicionada) que "
+"se pueda comprobar."
 
 msgid "Partially standardized estimate because effect involves categorical predictor."
 msgstr ""
+"La estimación tipificada parcialmente a causa del efecto implica al "
+"predictor con categorías."
 
 msgid "Moderation effect estimates are based on mean-centered variables."
 msgstr ""
+"Las estimaciones de los efectos de moderación se basan en variables "
+"centradas en la media."
 
 msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
 msgstr ""
+"Los intervalos de confianza se hicieron %s con bootstrap. Los errores "
+"típicos, valores <em>Z</em> y valores <em>P</em> se basan en el método delta."
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
 msgstr ""
+"No fueron satisfactorias todas las muestras con bootstrap: IC basados en "
+"%.0f muestras."
 
 msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
 msgstr ""
+"El modelo no contiene efectos indirectos moderados para<br>los que se pueda "
+"calcular el índice de mediación moderado."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
 msgstr ""
+"Valores <em>P</em> ajustados para comparaciones múltiples con el método %s."
