@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
 "POT-Creation-Date: 2025-07-19 04:00\n"
-"PO-Revision-Date: 2025-09-15 08:01+0000\n"
+"PO-Revision-Date: 2026-01-01 18:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspprocess-r/"
 "ta/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgid "Process Analysis"
 msgstr "செயல்முறை பகுப்பாய்வு"
@@ -86,7 +86,7 @@ msgid "Warning:"
 msgstr "எச்சரிக்கை:"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "பாதை குணகங்கள்"
 
 msgid "Label"
 msgstr "சிட்டை"
@@ -101,7 +101,7 @@ msgid "Total effects"
 msgstr "மொத்த விளைவுகள்"
 
 msgid "Residual covariances"
-msgstr "மீதமுள்ள கோவாரியன்ச்"
+msgstr "மீதமுள்ள இணை வேறுபாடுகள்"
 
 msgid "MCMC Plots"
 msgstr "MCMC அடுக்கு"
@@ -160,7 +160,7 @@ msgstr ""
 "HAT %1$.3f> %2$.2f."
 
 msgid "Dependent variables must be continuous."
-msgstr ""
+msgstr "சார்பு மாறிகள் தொடர்ச்சியாக இருக்க வேண்டும்."
 
 msgid "Hayes number"
 msgstr "ஏய்ச் எண்"
@@ -178,19 +178,19 @@ msgid "Log-likelihood"
 msgstr "பதிவு-சாத்தியக்கூறு"
 
 msgid "df"
-msgstr "டி.எஃப்"
+msgstr "டிஎஃப்"
 
 msgid "Std. Error"
-msgstr "Std. பிழை"
+msgstr "நிலை. பிழை"
 
 msgid "z-value"
-msgstr "z- மதிப்பு"
+msgstr "ஔ-மதிப்பு"
 
 msgid "p"
 msgstr "ப"
 
 msgid "%s%% Confidence Interval"
-msgstr "%s %% நம்பிக்கை இடைவெளி"
+msgstr "%s%% நம்பிக்கை இடைவெளி"
 
 msgid "Std. Estimate"
 msgstr "நிலை. மதிப்பீடு"
@@ -205,7 +205,7 @@ msgid "normal theory"
 msgstr "சாதாரண கோட்பாடு"
 
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "நடுநிலைப்படுத்தப்பட்ட மத்தியஸ்த குறியீடு"
 
 msgid "Total"
 msgstr "மொத்தம்"
@@ -229,7 +229,7 @@ msgid "&#967;&sup2;"
 msgstr "&#967;&sup2;"
 
 msgid "Std. error"
-msgstr "நிலை. பிழை"
+msgstr "படிப்பு பிழை"
 
 msgid "R-squared"
 msgstr "ஆர்-சதுரமானது"
@@ -251,7 +251,7 @@ msgid "%1$s: Hayes configuration %2$s not implemented"
 msgstr "%1$s: ஏய்ச் உள்ளமைவு %2$s செயல்படுத்தப்படவில்லை"
 
 msgid "Estimation failed because of an internal error."
-msgstr ""
+msgstr "உள் பிழை காரணமாக மதிப்பீடு தோல்வியடைந்தது."
 
 msgid ""
 "Full Information Maximum Likelihood estimation only available with 'ML' or "
@@ -338,12 +338,13 @@ msgstr ""
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
 msgstr ""
-"எல்லா தொடக்கவார் மாதிரிகளும் வெற்றிகரமாக இல்லை: %.0f மாதிரிகளின் அடிப்படையில் தொஒ."
+"அனைத்து துவக்க மாதிரிகளும் வெற்றிபெறவில்லை: சிஐ %.0f மாதிரிகள் அடிப்படையில்."
 
 msgid ""
 "Model does not contain moderated indirect effects for<br>which the moderated "
 "medation index can be calculated."
 msgstr ""
+"மாதிரியில் மிதமான மறைமுக விளைவுகள் இல்லை,<br>அதற்காக மிதமான தியான குறியீட்டைக் கணக்கிடலாம்."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
 msgstr "<em> ப </em>- %s முறையுடன் பல ஒப்பீடுகளுக்கு சரிசெய்யப்பட்ட மதிப்புகள்."
