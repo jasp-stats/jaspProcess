@@ -167,6 +167,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 .procBayesCalcModelCaseLogLik <- function(fittedModel) {
   # Adapted from blavaan::blavCompare function
   # See https://github.com/ecmerkle/blavaan/blob/master/R/blav_compare.R
+  rlang::local_options(future.globals.method.default = "ordered")
 
   lavopt <- blavaan::blavInspect(fittedModel, "Options")
 
