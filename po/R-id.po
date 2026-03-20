@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
 "POT-Creation-Date: 2025-11-15 03:50\n"
-"PO-Revision-Date: 2026-03-20 12:46+0000\n"
+"PO-Revision-Date: 2026-03-21 04:16+0000\n"
 "Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/id/>\n"
@@ -29,13 +29,13 @@ msgid "PPP"
 msgstr ""
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
 msgstr ""
 
 msgid "Estimate"
-msgstr ""
+msgstr "Estimasi"
 
 msgid "SE"
 msgstr ""
@@ -68,10 +68,10 @@ msgid "SD"
 msgstr "SD"
 
 msgid "Lower"
-msgstr ""
+msgstr "Bawah"
 
 msgid "Upper"
-msgstr ""
+msgstr "Atas"
 
 msgid "R-hat"
 msgstr ""
@@ -140,7 +140,7 @@ msgid "Model configuration number defined by Hayes (2022)."
 msgstr ""
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
 msgstr ""
@@ -158,7 +158,7 @@ msgid "z-value"
 msgstr ""
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "%s%% Confidence Interval"
 msgstr ""
