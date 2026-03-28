@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
 "POT-Creation-Date: 2025-11-15 03:50\n"
-"PO-Revision-Date: 2026-03-21 04:16+0000\n"
+"PO-Revision-Date: 2026-03-28 02:09+0000\n"
 "Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/id/>\n"
@@ -38,7 +38,7 @@ msgid "Estimate"
 msgstr "Estimasi"
 
 msgid "SE"
-msgstr ""
+msgstr "SE"
 
 msgid "LOO Difference"
 msgstr ""
@@ -56,13 +56,13 @@ msgid "Posterior"
 msgstr "Posterior"
 
 msgid "%s%% Credible Interval"
-msgstr ""
+msgstr "%s%% Interval Kredibel"
 
 msgid "Mean"
 msgstr "Rerata"
 
 msgid "Median"
-msgstr ""
+msgstr "Median"
 
 msgid "SD"
 msgstr "SD"
@@ -74,16 +74,16 @@ msgid "Upper"
 msgstr "Atas"
 
 msgid "R-hat"
-msgstr ""
+msgstr "R-hat"
 
 msgid "ESS (bulk)"
-msgstr ""
+msgstr "ESS (massal)"
 
 msgid "ESS (tail)"
-msgstr ""
+msgstr "ESS (ekor)"
 
 msgid "Warning:"
-msgstr ""
+msgstr "Peringatan:"
 
 msgid "Path coefficients"
 msgstr ""
@@ -146,10 +146,10 @@ msgid "AIC weight"
 msgstr ""
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "Log-kemungkinan"
 
 msgid "df"
-msgstr ""
+msgstr "df"
 
 msgid "Std. Error"
 msgstr ""
