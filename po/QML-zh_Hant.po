@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-04-02 08:09+0000\n"
+"PO-Revision-Date: 2026-04-04 04:25+0000\n"
 "Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspprocess-qml/zh_Hant/>\n"
@@ -31,7 +31,7 @@ msgstr "貝氏"
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
-msgstr ""
+msgstr "貝氏 Process 模型"
 
 msgctxt "BayesianProcess|"
 msgid "Models"
@@ -47,7 +47,7 @@ msgstr "選項設定"
 
 msgctxt "BayesianProcess|"
 msgid "Prior distributions"
-msgstr ""
+msgstr "先驗分配"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
@@ -57,10 +57,9 @@ msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
 msgstr "Lavaan 語法"
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr "貝氏資訊量準則權重(BIC權重)"
+msgstr "貝氏資訊量準則權重 (BIC權重)"
 
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
@@ -72,15 +71,15 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Samples"
-msgstr ""
+msgstr "樣本"
 
 msgctxt "BayesianProcess|"
 msgid "Chains"
-msgstr ""
+msgstr "鏈數"
 
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
-msgstr ""
+msgstr "可信區間"
 
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
@@ -98,35 +97,35 @@ msgstr "調色盤"
 
 msgctxt "BayesianProcess|"
 msgid "MCMC Plots"
-msgstr ""
+msgstr "MCMC 圖"
 
 msgctxt "BayesianProcess|"
 msgid "Aggregate chains for densities and histograms"
-msgstr ""
+msgstr "合併鏈以進行密度圖與直方圖"
 
 msgctxt "BayesianProcess|"
 msgid "Show legends"
-msgstr ""
+msgstr "顯示圖例"
 
 msgctxt "BayesianProcess|"
 msgid "Density"
-msgstr ""
+msgstr "密度"
 
 msgctxt "BayesianProcess|"
 msgid "Histogram"
-msgstr ""
+msgstr "直方圖"
 
 msgctxt "BayesianProcess|"
 msgid "Trace"
-msgstr ""
+msgstr "軌跡圖"
 
 msgctxt "BayesianProcess|"
 msgid "Autocorrelation"
-msgstr ""
+msgstr "自我相關"
 
 msgctxt "BayesianProcess|"
 msgid "No. lags"
-msgstr ""
+msgstr "落後期數"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
@@ -135,31 +134,31 @@ msgstr "型態"
 
 msgctxt "BayesianProcess|"
 msgid "line"
-msgstr ""
+msgstr "線"
 
 msgctxt "BayesianProcess|"
 msgid "bar"
-msgstr ""
+msgstr "條"
 
 msgctxt "BayesianProcess|"
 msgid "Bivariate scatter"
-msgstr ""
+msgstr "雙變項散佈圖"
 
 msgctxt "BayesianProcess|"
 msgid "Diagonal plot type"
-msgstr ""
+msgstr "對角線繪圖類型"
 
 msgctxt "BayesianProcess|"
 msgid "Off-diagonal plot type"
-msgstr ""
+msgstr "非對角線繪圖類型"
 
 msgctxt "BayesianProcess|"
 msgid "Hexagonal"
-msgstr ""
+msgstr "六邊形分箱圖"
 
 msgctxt "BayesianProcess|"
 msgid "Contour"
-msgstr ""
+msgstr "等高線圖"
 
 #, fuzzy
 msgctxt "BayesianProcess|"
@@ -282,19 +281,19 @@ msgstr "檢定型態"
 
 msgctxt "ClassicProcess|"
 msgid "Linear"
-msgstr ""
+msgstr "線性"
 
 msgctxt "ClassicProcess|"
 msgid "Loess"
-msgstr ""
+msgstr "局部加權迴歸平滑線"
 
 msgctxt "ClassicProcess|"
 msgid "Chi-square"
-msgstr ""
+msgstr "卡方"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad"
-msgstr ""
+msgstr "四分"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad within"
@@ -377,11 +376,11 @@ msgstr "型態"
 
 msgctxt "ClassicProcess|"
 msgid "Percentile"
-msgstr "百分比"
+msgstr "百分位數"
 
 msgctxt "ClassicProcess|"
 msgid "Bias-corrected percentile"
-msgstr "誤差修正百分比"
+msgstr "偏誤校正百分位數"
 
 msgctxt "ClassicProcess|"
 msgid "Normal theory"
@@ -606,7 +605,7 @@ msgstr "條件式連續效果"
 
 msgctxt "ModerationProbes|"
 msgid "th percentile"
-msgstr "%"
+msgstr "百分位數"
 
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
