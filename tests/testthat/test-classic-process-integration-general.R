@@ -869,14 +869,14 @@ test_that("Bootstrapping works", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.190960213727908, 0.179711376963541, 16, 0.0174307109997205,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.85375196216475,
-			 0.0945608168352223, 0.184333337878146, -0.176163416672431, 0.0978973670864186,
+		list(-0.190960213727908, 0.179774646022258, 16, 0.0174546665474726,
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
+			 0.0945608168352223, 0.18454078827693, -0.176163416672431, 0.0978973670864186,
 			 50, -0.0292532667968165, "contGamma", "contNormal", "", "<unicode>",
 			 "", 0.675644906019766, 0.0699147499445414, -0.418413379437401,
-			 -0.281099928388441, 0.129693108675617, 84, -0.0802028951812256,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.444078923517959,
-			 0.104796067760515, -0.76532351733377, -0.0178702076419795, 0.0288189436928199,
+			 -0.281537600140329, 0.129909937705515, 84, -0.0803567297775005,
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
+			 0.104963035313733, -0.765571703765193, -0.0178702076419795, 0.0288189436928199,
 			 "", 0.00298069970215039, "contGamma", "debCollin1", "contNormal",
 			 "<unicode>", "<unicode>", 0.802391237986497, 0.0119107166517032,
 			 0.250253598445243))
@@ -899,13 +899,13 @@ test_that("Bootstrapping works", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.185251190133823, 0.184951089420295, 16, 0.0204114107018709,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.828887592628212,
-			 0.0944410924063469, 0.216128490064979, -0.168692405991869, 0.101375092456697,
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.828732489775101,
+			 0.0944649565676752, 0.216327480566065, -0.168692405991869, 0.101375092456697,
 			 50, -0.0262725670946661, "Total", "contGamma", "contNormal",
 			 "<unicode>", 0.702953639077543, 0.0688960359932182, -0.381336410954793,
-			 -0.27307512302247, 0.132617039360486, 84, -0.0772221954790752,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.455579433110907,
-			 0.103494800308323, -0.746145654168338, -0.0178702076419795,
+			 -0.273513202825121, 0.132834276042512, 84, -0.0773760302689051,
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.455409907113631,
+			 0.103661975952836, -0.746426349273038, -0.0178702076419795,
 			 0.0288189436928199, "", 0.00298069970215039, "Total indirect",
 			 "contGamma", "contNormal", "<unicode>", 0.802391237986497, 0.0119107166517032,
 			 0.250253598445243))
@@ -955,14 +955,14 @@ test_that("Bootstrapping works (percentile interval)", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.190960213727908, 0.179711376963541, 16, 0.0174307109997205,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.85375196216475,
-			 0.0945608168352223, 0.184333337878146, -0.176163416672431, 0.0978973670864186,
+		list(-0.190960213727908, 0.179774646022258, 16, 0.0174546665474726,
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
+			 0.0945608168352223, 0.18454078827693, -0.176163416672431, 0.0978973670864186,
 			 50, -0.0292532667968165, "contGamma", "contNormal", "", "<unicode>",
 			 "", 0.675644906019766, 0.0699147499445414, -0.418413379437401,
-			 -0.281099928388441, 0.129693108675617, 84, -0.0802028951812256,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.444078923517959,
-			 0.104796067760515, -0.76532351733377, -0.0178702076419795, 0.0288189436928199,
+			 -0.281537600140329, 0.129909937705515, 84, -0.0803567297775005,
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
+			 0.104963035313733, -0.765571703765193, -0.0178702076419795, 0.0288189436928199,
 			 "", 0.00298069970215039, "contGamma", "debCollin1", "contNormal",
 			 "<unicode>", "<unicode>", 0.802391237986497, 0.0119107166517032,
 			 0.250253598445243))
@@ -985,13 +985,13 @@ test_that("Bootstrapping works (percentile interval)", {
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.185251190133823, 0.184951089420295, 16, 0.0204114107018709,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.828887592628212,
-			 0.0944410924063469, 0.216128490064979, -0.168692405991869, 0.101375092456697,
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.828732489775101,
+			 0.0944649565676752, 0.216327480566065, -0.168692405991869, 0.101375092456697,
 			 50, -0.0262725670946661, "Total", "contGamma", "contNormal",
 			 "<unicode>", 0.702953639077543, 0.0688960359932182, -0.381336410954793,
-			 -0.27307512302247, 0.132617039360486, 84, -0.0772221954790752,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.455579433110907,
-			 0.103494800308323, -0.746145654168338, -0.0178702076419795,
+			 -0.273513202825121, 0.132834276042512, 84, -0.0773760302689051,
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.455409907113631,
+			 0.103661975952836, -0.746426349273038, -0.0178702076419795,
 			 0.0288189436928199, "", 0.00298069970215039, "Total indirect",
 			 "contGamma", "contNormal", "<unicode>", 0.802391237986497, 0.0119107166517032,
 			 0.250253598445243))
@@ -1039,14 +1039,14 @@ test_that("Missing values work", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-1.59033995974272, 1.57290172449842, 16, -0.00871911762215183,
-			 "debMiss1", "debMiss80", "", "<unicode>", "", 0.991379154549691,
-			 0.80696423740242, -0.0108048377090641, -0.620542180517313, 0.256321193183489,
+		list(-1.59127472935359, 1.57411992899186, 16, -0.00857740018086568,
+			 "debMiss1", "debMiss80", "", "<unicode>", "", 0.991525037424321,
+			 0.807513475582634, -0.0106219901465755, -0.620542180517313, 0.256321193183489,
 			 50, -0.182110493666912, "debMiss1", "debMiss80", "", "<unicode>",
 			 "", 0.415584043485196, 0.223693746573251, -0.814106323742395,
-			 -1.51126288571914, 0.825343145936107, 84, -0.342959869891516,
+			 -1.51185589823074, 0.825794440916556, 84, -0.342959869891516,
 			 "debMiss1", "debMiss80", "", "<unicode>", "", 0.565051224850131,
-			 0.59608392044091, -0.575355009807739, -0.0290879766795729, 0.0321442168780467,
+			 0.596350330308715, -0.575216799963055, -0.0290879766795729, 0.0321442168780467,
 			 "", 0.00152812009923691, "debMiss1", "contGamma", "debMiss80",
 			 "<unicode>", "<unicode>", 0.922070200074344, 0.0156207445750563,
 			 0.0978263290776201))
@@ -1068,14 +1068,14 @@ test_that("Missing values work", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-1.59022876873148, 1.57584677368565, 16, -0.00719099752291492,
-			 "Total", "debMiss1", "debMiss80", "<unicode>", 0.992896370911926,
-			 0.807687173690623, -0.00890319638240209, -0.620715015178984,
+		list(-1.59116336000762, 1.57706479984614, 16, -0.00704928008074222,
+			 "Total", "debMiss1", "debMiss80", "<unicode>", 0.993041094185749,
+			 0.80823632088251, -0.0087218056137902, -0.620715015178984,
 			 0.259550268043634, 50, -0.180582373567675, "Total", "debMiss1",
 			 "debMiss80", "<unicode>", 0.421307353602045, 0.224561596581886,
-			 -0.80415519089804, -1.50918724285623, 0.826323743271677, 84,
-			 -0.341431749792279, "Total", "debMiss1", "debMiss80", "<unicode>",
-			 0.566604086913181, 0.595804566958915, -0.573059974237866, -0.0290879766795729,
+			 -0.80415519089804, -1.50977997020166, 0.826774753087728, 84,
+			 -0.341502608556967, "Total", "debMiss1", "debMiss80", "<unicode>",
+			 0.56669692207503, 0.596070831331554, -0.572922865214003, -0.0290879766795729,
 			 0.0321442168780467, "", 0.00152812009923691, "Total indirect",
 			 "debMiss1", "debMiss80", "<unicode>", 0.922070200074344, 0.0156207445750563,
 			 0.0978263290776201))
@@ -1149,14 +1149,14 @@ test_that("Not implemented Hayes models error message work", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 2"]][["collection"]][["parEstContainer_Model 2_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.167905084346004, 0.202766506345445, 16, 0.0174307109997205,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.85375196216475,
-			 0.0945608168352223, 0.184333337878146, -0.166283658676241, 0.107777125082608,
+		list(-0.167905084346004, 0.202766506345445, 16, 0.0174546665474726,
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
+			 0.0945608168352223, 0.18454078827693, -0.166283658676241, 0.107777125082608,
 			 50, -0.0292532667968165, "contGamma", "contNormal", "", "<unicode>",
 			 "", 0.675644906019766, 0.0699147499445414, -0.418413379437401,
-			 -0.285599413713254, 0.125193623350803, 84, -0.0802028951812256,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.444078923517959,
-			 0.104796067760515, -0.76532351733377, -0.0203638759652493, 0.0263252753695501,
+			 -0.286080498700422, 0.125367039145422, 84, -0.0803567297775005,
+			 "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
+			 0.104963035313733, -0.765571703765193, -0.0203638759652493, 0.0263252753695501,
 			 "", 0.00298069970215039, "contGamma", "debCollin1", "contNormal",
 			 "<unicode>", "<unicode>", 0.802391237986497, 0.0119107166517032,
 			 0.250253598445243))
@@ -1178,14 +1178,14 @@ test_that("Not implemented Hayes models error message work", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 2"]][["collection"]][["parEstContainer_Model 2_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.164689729075188, 0.20551255047893, 16, 0.0204114107018709,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.828887592628212,
-			 0.0944410924063469, 0.216128490064979, -0.161306316318949, 0.108761182129617,
+		list(-0.164689729075188, 0.205583278729852, 16, 0.0204114107018709,
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.828732489775101,
+			 0.0944649565676752, 0.216327480566065, -0.161306316318949, 0.108761182129617,
 			 50, -0.0262725670946661, "Total", "contGamma", "contNormal",
 			 "<unicode>", 0.702953639077543, 0.0688960359932182, -0.381336410954793,
-			 -0.280068276670553, 0.125623885712403, 84, -0.0772221954790752,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.455579433110907,
-			 0.103494800308323, -0.746145654168338, -0.0203638759652493,
+			 -0.280549769702722, 0.125797709164911, 84, -0.0773760302689051,
+			 "Total", "contGamma", "contNormal", "<unicode>", 0.455409907113631,
+			 0.103661975952836, -0.746426349273038, -0.0203638759652493,
 			 0.0263252753695501, "", 0.00298069970215039, "Total indirect",
 			 "contGamma", "contNormal", "<unicode>", 0.802391237986497, 0.0119107166517032,
 			 0.250253598445243))
@@ -1604,8 +1604,6 @@ test_that("Estimation failed error message works", {
   set.seed(1)
   results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
-  refMsg <- jaspProcess:::.procEstimationMsg()
-
-  msg <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["error"]][["errorMessage"]]
-  expect_equal(msg, refMsg)
+  msg <- results[["results"]]$errorMessage
+  expect_equal(msg, jaspProcess:::.procConvergenceMsg())
 })
