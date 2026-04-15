@@ -198,8 +198,8 @@
     },
     "blavaan": {
       "Package": "blavaan",
-      "Version": "0.5-2",
-      "Source": "GitHub",
+      "Version": "0.5-10",
+      "Source": "Repository",
       "Requirements": [
         "R",
         "Rcpp",
@@ -225,12 +225,7 @@
         "semTools",
         "tinytest",
         "brms"
-      ],
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "nlesc-jasp-projects",
-      "RemoteRepo": "blavaan",
-      "RemoteSha": "520443b37e75473985c48b1160df80cc911ff4db"
+      ]
     },
     "boot": {
       "Package": "boot",
@@ -906,7 +901,7 @@
     },
     "jaspJags": {
       "Package": "jaspJags",
-      "Version": "0.95.5",
+      "Version": "0.96.1",
       "Source": "GitHub",
       "Requirements": [
         "R",
