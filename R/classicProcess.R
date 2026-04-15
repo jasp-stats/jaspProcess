@@ -81,7 +81,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     "meanCenteredModeration", "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType",
     "mcmcBurnin", "mcmcSamples", "mcmcChains", "seed", "setSeed", "nuPriorMu",
     "nuPriorSigma", "betaPriorMu", "betaPriorSigma", "psiPriorAlpha",
-    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta", "moderationProbes"
+    "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta", "moderationProbes",
+    "moderationProbeType", "moderationProbesMeanSD"
   ))
 }
 
@@ -701,6 +702,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(dataset)
 }
 
+# Create lavaan-safe labels for SD-based probes
+.procSDProbeLabels <- function(sdVals) {
+  vapply(sdVals, function(v) {
+    if (v == 0) return("Mean")
+    label <- as.character(abs(v))
+    label <- gsub("\\.", "p", label) # decimal point -> p
+    if (v < 0) paste0("Mean_minus_", label, "SD")
+    else paste0("Mean_plus_", label, "SD")
+  }, character(1))
+}
+
 .procModProbes <- function(jaspResults, dataset, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
 
@@ -721,7 +733,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procModProbesSingleModel <- function(container, dataset, options) {
-  probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
+  probeType <- options[["moderationProbeType"]]
 
   graph <- container[["graph"]]$object
   # Get list of moderators
@@ -753,6 +765,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     vComplete <- dataset[[nms]][isComplete]
 
+    if (probeType == "meanSD") {
+      sdVals <- sapply(options[["moderationProbesMeanSD"]], function(row) row[["probeSD"]])
+      m  <- mean(vComplete, na.rm = TRUE)
+      s  <- sd(vComplete, na.rm = TRUE)
+      probes <- m + sdVals * s
+      names(probes) <- .procSDProbeLabels(sdVals)
+      return(probes)
+    }
+
+    # Default: percentile-based probing
+    probeVals <- sapply(options[["moderationProbes"]], function(row) row[["probePercentile"]])/100
     # If not factor return quantiles of continuous moderator
     return(quantile(vComplete, probs = probeVals, na.rm = TRUE))
   })
@@ -2118,6 +2141,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
   }
 
+  # Convert lavaan-safe SD probe labels to display labels
+  modProbes <- lapply(modProbes, function(labels) {
+    labels <- gsub("_minus_", "-", labels, fixed = TRUE)
+    labels <- gsub("_plus_", "+", labels, fixed = TRUE)
+    # Convert e.g. "1p5SD" back to "1.5SD" (only p between digits)
+    labels <- gsub("(\\d)p(\\d)", "\\1.\\2", labels)
+    return(labels)
+  })
+
   return(modProbes)
 }
 
@@ -2178,7 +2210,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffectsTable <- createJaspTable(title = gettext("Direct and indirect effects"))
   medEffectsTable$dependOn(
-    options = "moderationProbes",
+    options = c("moderationProbes", "moderationProbeType", "moderationProbesMeanSD"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
   )
   medEffectsTable$position <- 2
@@ -2327,7 +2359,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
   totEffectsTable$dependOn(
-    options = "moderationProbes",
+    options = c("moderationProbes", "moderationProbeType", "moderationProbesMeanSD"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "totalEffects"))
   )
   totEffectsTable$position <- 3
@@ -2934,35 +2966,31 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   endCaps <- rep(ggraph::square(nodeSize, unit = "native"), length(igraph::E(graph)))
   endCaps[grepl("i[[:digit:]]", igraph::E(graph)$target)] <- ggraph::square(0, unit = "native")
 
-  # Create visibility variable to make helper nodes transparent
-  nodeVis <- rep(0, length(nodeLabels))
-  nodeVis[nodeLabels == ""] = 1
+  # Create border color vector: helper nodes get transparent borders
+  igraph::V(graph)$nodeBorderColor <- ifelse(nodeLabels == "", "transparent", "black")
 
   # Create dummy alpha variable for nodes (nessecary for creating the legend)
   nodeAlpha <- if (options[["pathPlotsLegendLabels"]]) nodeLabels else NULL
 
   # Create node type variable for coloring
-  nodeType <- as.factor(ifelse(igraph::V(graph)$isMed, "Mediator",
+  nodeType <- ifelse(igraph::V(graph)$isMed, "Mediator",
     ifelse(igraph::V(graph)$isInt | igraph::V(graph)$isPartOfInt, "Moderator",
       ifelse(igraph::V(graph)$isExo, "Independent",
         ifelse(igraph::V(graph)$isDep, "Dependent", NA)
       )
     )
-  ))
+  )
 
   # Create function from color palette
   colorFun <- jaspGraphs::JASPcolors(options[["colorPalette"]], asFunction = TRUE)
 
+  nodeTypeLevels <- unique(na.omit(nodeType))
   if (options[["useColorPalette"]]) {
-    if (type == "conceptual" && any(igraph::V(graph)$isInt)) {
-      # Make helper nodes transparent
-      colorPalette <- c(colorFun(length(unique(nodeType))-1), "transparent")
-    } else {
-      colorPalette <- colorFun(length(unique(nodeType)))
-    }
+    typeCols <- colorFun(length(nodeTypeLevels))
+    names(typeCols) <- nodeTypeLevels
+    igraph::V(graph)$nodeFill <- ifelse(is.na(nodeType), "transparent", typeCols[nodeType])
   } else {
-    nodeType <- NULL
-    colorPalette <- rep("transparent", length(unique(nodeType)))
+    igraph::V(graph)$nodeFill <- "transparent"
   }
 
   # Scale layout so that there is always one full step between each pos
@@ -2994,7 +3022,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     ) +
     # Add square nodes
     ggraph::geom_node_tile(
-      ggplot2::aes(color = as.factor(nodeVis), fill = nodeType),
+      ggplot2::aes(fill = nodeFill, color = nodeBorderColor),
       height = nodeSize,
       width = nodeSize,
       size = 0.9 # Width of border
@@ -3020,16 +3048,20 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       ggplot2::aes(label = nodeLabelsAbbr, alpha = nodeAlpha),
       size = 20/(labelScale + options[["pathPlotsLabelLength"]] - 3)
     ) +
-    # Make helper nodes transparent and hide color from legend
-    ggplot2::scale_color_manual(values = c("black", "transparent"), guide = NULL) +
-    ggplot2::scale_fill_manual(
-      values = colorPalette,
-      # Remove helper node fill color (transparent) from legend
-      na.translate = FALSE,
-      guide = if (options[["pathPlotsLegendColor"]]) ggplot2::guide_legend(
-        title = NULL
-      ) else NULL
+    # Use identity scales: colors are pre-computed, no automatic legend
+    ggplot2::scale_color_identity()
+
+  # Add color legend when option is enabled and colors are used
+  if (options[["pathPlotsLegendColor"]] && options[["useColorPalette"]]) {
+    p <- p + ggplot2::scale_fill_identity(
+      guide  = "legend",
+      name   = NULL,
+      labels = nodeTypeLevels,
+      breaks = typeCols
     )
+  } else {
+    p <- p + ggplot2::scale_fill_identity()
+  }
   
   if (type == "statistical" && length(igraph::V(resCovGraph)) > 0) {
     if (estimates && !is.null(igraph::E(resCovGraph)$parEst)) {
