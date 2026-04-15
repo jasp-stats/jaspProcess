@@ -49,6 +49,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     .procModelSyntax(jaspResults, options)
     # Fit lavaan models based on syntax and dataset and update models container
     modelsContainer <- .procComputeResults(jaspResults, dataset, options)
+    # Check if all models failed; if so, set error on main results
+    .procCheckAllModelsFailed(jaspResults, options, modelsContainer)
+    if (jaspResults$getError()) return()
     # Add parameter estimates from fitted models to graphs
     .procGraphAddEstimates(modelsContainer, options)
     # Create container for path plots for each model
@@ -1653,7 +1656,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     return(.procEstimationMsg())
   }
 
-  if (doFit && is.null(lavaan::vcov(fittedModel))) {
+  if (doFit && !lavaan::lavInspect(fittedModel, "converged")) {
+    return(.procConvergenceMsg())
+  }
+
+  if (doFit && is.null(tryCatch(lavaan::vcov(fittedModel), error = function(e) NULL))) {
     checkImpliedVarianceRatios <- .procCheckImpliedVarianceRatios(fittedModel)
     checkImpliedVarianceMagnitudes <- .procCheckImpliedVarianceMagnitudes(fittedModel)
     return(.procNotIdentifiedMsg(
@@ -3176,6 +3183,21 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 
 # Error messages ----
+
+.procCheckAllModelsFailed <- function(jaspResults, options, modelsContainer) {
+  procResults <- lapply(options[["processModels"]], function(mod) modelsContainer[[mod[["name"]]]][["fittedModel"]]$object)
+  allFailed <- all(vapply(procResults, function(r) !inherits(r, "lavaan"), logical(1)))
+  if (allFailed) {
+    # Use the first error message
+    for (r in procResults) {
+      if (is.character(r)) {
+        jaspResults$setError(r)
+        return()
+      }
+    }
+    jaspResults$setError(.procEstimationMsg())
+  }
+}
 
 .procDagMsg <- function() gettext("Model must be a directed acyclic graph -- it must not contain loops.")
 
