@@ -41,7 +41,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -171,7 +171,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -299,7 +299,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -486,7 +486,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -661,7 +661,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -877,7 +877,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1088,7 +1088,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1219,7 +1219,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1357,7 +1357,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1620,7 +1620,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1856,7 +1856,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2134,7 +2134,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2387,7 +2387,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2564,7 +2564,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2747,7 +2747,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2986,7 +2986,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "tests/testthat/data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
