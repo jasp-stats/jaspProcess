@@ -20,6 +20,12 @@ getOptionsClassical <- function() {
       "value" = "84"
     )
   )
+  options[["moderationProbeType"]] <- "percentile"
+  options[["moderationProbesMeanSD"]] <- list(
+    list("probeSD" = -1, "value" = "-1"),
+    list("probeSD" = 0,  "value" = "0"),
+    list("probeSD" = 1,  "value" = "1")
+  )
 
   options[["hayesNumber"]] <- TRUE
   options[["emulation"]] <- "lavaan"
@@ -62,6 +68,12 @@ getOptionsBayesian <- function() {
       "probePercentile" = 84.0,
       "value" = "84"
     )
+  )
+  options[["moderationProbeType"]] <- "percentile"
+  options[["moderationProbesMeanSD"]] <- list(
+    list("probeSD" = -1, "value" = "-1"),
+    list("probeSD" = 0,  "value" = "0"),
+    list("probeSD" = 1,  "value" = "1")
   )
 
   options[["mcmcBurnin"]] <- 50

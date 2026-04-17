@@ -3,7 +3,7 @@
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 1 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -14,8 +14,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -26,19 +29,19 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Y")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -51,60 +54,60 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.675381722998741, 0.224488197110962, -0.22544676294389, "W:Y",
-			 "<unicode>", 0.326065462792994, "W", 0.229562871360842, -0.982069799037832,
-			 -0.544848205701879, 0.0642086466981471, -0.240319779501866,
-			 "Y", "<unicode>", 0.121932437679512, "W", 0.155374501063333,
-			 -1.54671312124702, 1.68041092063189, 2.96919123220434, 2.32480107641811,
-			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776528991905,
-			 7.071067644477, 0.776405337505128, 1.37186438136359, 1.07413485943436,
+		list(-0.675381669663569, 0.224488212795565, -0.225446728434002, "W:Y",
+			 "<unicode>", 0.326065516606005, "W", 0.229562861755928, -0.982069689798942,
+			 -0.544848226766824, 0.0642086461795166, -0.240319790293654,
+			 "Y", "<unicode>", 0.121932433511127, "W", 0.155374506304836,
+			 -1.54671313852583, 1.68041090948102, 2.96919119331072, 2.32480105139587,
+			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776521914545,
+			 7.07106772058416, 0.776405337505128, 1.37186438136359, 1.07413485943436,
 			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.151905608612038,
-			 7.07106781144377, -0.253361698606692, 0.338176443789414, 0.0424073725913608,
-			 "W:Y", "<unicode>", 0.778695322956574, "Y", 0.150905360267353,
-			 0.281019657063403, 0.732634565500116, 1.29452385651376, 1.01357921100694,
-			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341738788506,
-			 7.07106820088477, 1.62270000963932, 2.86721932104458, 2.24495966534195,
-			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485250040783,
-			 7.07106760094703))
+			 7.07106781144378, -0.25336171388213, 0.338176436911704, 0.042407361514787,
+			 "W:Y", "<unicode>", 0.778695382314384, "Y", 0.15090536240967,
+			 0.281019579673132, 0.732634584978516, 1.2945239244533, 1.01357925471591,
+			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.14334175115127,
+			 7.07106789595635, 1.62269998112389, 2.86721922158439, 2.24495960135414,
+			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485231942298,
+			 7.0710678024928))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, -0.165696130355591, 0.204092403438177, 0.0191981365412929,
-			 0.0277957862185037, "W", "M", "<unicode>", 0.83873717456654,
-			 0.0943355430790087, 0.20350904775323, 50, -0.161248077722542,
-			 0.108819822183453, -0.0262141277695441, -0.037953802954759,
-			 "W", "M", "<unicode>", 0.70358348416319, 0.0688961384077096,
-			 -0.380487620574838, 84, -0.278337539417184, 0.126796620792793,
-			 -0.0757704593121953, -0.109703328976208, "W", "M", "<unicode>",
-			 0.463481047245213, 0.103352450199499, -0.733126879584731))
+		list(16, -0.165552017297987, 0.203659277784157, 0.0190536302430848,
+			 0.027586564383791, "W", "M", "<unicode>", 0.839687677154447,
+			 0.0941882855997446, 0.202292993462623, 50, -0.161248077731736,
+			 0.108819822174246, -0.026214127778745, -0.0379538027403325,
+			 "W", "M", "<unicode>", 0.703583484064061, 0.0688961384077062,
+			 -0.380487620708404, 84, -0.277715192290397, 0.126565839071872,
+			 -0.0755746766092626, -0.109419866737588, "W", "M", "<unicode>",
+			 0.463695285529652, 0.103134811290204, -0.732775632823026))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.16400084337535, 0.107013647731971, -0.0284935978216894, -0.0412541056755274,
-			 "W", "<unicode>", 0.680245090621713, "M", 0.0691376201922709,
-			 -0.412128704205453, -0.0406635365555035, 0.367940993270762,
-			 0.163638728357629, 0.156437883189401, "Y", "<unicode>", 0.116447616301428,
-			 "M", 0.104237764838866, 1.56986029593581, -0.182864249528364,
-			 0.0896343905449168, -0.0466149294917235, -0.0679475443051858,
-			 "W:Y", "<unicode>", 0.502499754238166, "M", 0.0695162365795278,
-			 -0.670561753417062))
+		list(-0.164000843384163, 0.107013647723146, -0.0284935978305084, -0.0412541054407441,
+			 "W", "<unicode>", 0.680245090528211, "M", 0.0691376201922682,
+			 -0.412128704333027, -0.0406635365529525, 0.367940993271365,
+			 0.163638728359206, 0.156437886467127, "Y", "<unicode>", 0.116447616296166,
+			 "M", 0.104237764838369, 1.56986029595842, -0.182864249520655,
+			 0.089634390552825, -0.046614929483915, -0.0679475453511379,
+			 "W:Y", "<unicode>", 0.502499754310057, "M", 0.0695162365795786,
+			 -0.670561753304245))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, -0.165696130355591, 0.204092403438177, 0.0191981365412929,
-			 0.0277957862185037, "Total", "W", "M", "<unicode>", 0.83873717456654,
-			 0.0943355430790087, 0.20350904775323, 50, -0.161248077722542,
-			 0.108819822183453, -0.0262141277695441, -0.037953802954759,
-			 "Total", "W", "M", "<unicode>", 0.70358348416319, 0.0688961384077096,
-			 -0.380487620574838, 84, -0.278337539417184, 0.126796620792793,
-			 -0.0757704593121953, -0.109703328976208, "Total", "W", "M",
-			 "<unicode>", 0.463481047245213, 0.103352450199499, -0.733126879584731
+		list(16, -0.165552017297987, 0.203659277784157, 0.0190536302430848,
+			 0.027586564383791, "Total", "W", "M", "<unicode>", 0.839687677154447,
+			 0.0941882855997446, 0.202292993462623, 50, -0.161248077731736,
+			 0.108819822174246, -0.026214127778745, -0.0379538027403325,
+			 "Total", "W", "M", "<unicode>", 0.703583484064061, 0.0688961384077062,
+			 -0.380487620708404, 84, -0.277715192290397, 0.126565839071872,
+			 -0.0755746766092626, -0.109419866737588, "Total", "W", "M",
+			 "<unicode>", 0.463695285529652, 0.103134811290204, -0.732775632823026
 			))
 
 
@@ -123,14 +126,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0314706489341492))
+		list("M", 0.0314706501333301))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 1 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -141,8 +144,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -153,81 +159,81 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "med")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "med")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(608.281967358097, 644.75434996193, 0, "Model 1", 100, -290.140983679048,
+		list(608.281967358096, 644.754349961929, 0, "Model 1", 100, -290.140983679048,
 			 1))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.0922263538721806, 0.197773641622861, 0.144999997747521, "sm:medexperimental",
-			 "<unicode>", 7.23782711542498e-08, "sm", 0.0269258232761479,
-			 5.38516487538445, -0.00962232589632599, 0.0896223214078034,
-			 0.0399999977557387, "medexperimental", "<unicode>", 0.114128634482363,
-			 "sm", 0.025317977291154, 1.57990495432329, 0.180704807176402,
-			 0.319295185614934, 0.249999996395668, "sm", "<unicode>", 1.53743684450092e-12,
-			 "sm", 0.0353553380398097, 7.07106791382311, 0.758630464113866,
+		list(0.0922263543047233, 0.197773644298568, 0.144999999301646, "sm:medexperimental",
+			 "<unicode>", 7.23782940248441e-08, "sm", 0.0269258238483943,
+			 5.38516481865392, -0.00962232346357093, 0.0896223247572324,
+			 0.0400000006468307, "medexperimental", "<unicode>", 0.114128611669934,
+			 "sm", 0.0253179775250037, 1.57990505392176, 0.180704808271948,
+			 0.319295189439374, 0.249999998855661, "sm", "<unicode>", 1.53743684450092e-12,
+			 "sm", 0.0353553387359689, 7.07106784417038, 0.758630464113866,
 			 1.34045718397482, 1.04954382404434, "M", "<unicode>", 1.53743684450092e-12,
-			 "M", 0.148427911035695, 7.07106781144378, 0.0922263529382155,
-			 0.197773641233986, 0.144999997086101, "sm:medexperimental",
-			 "<unicode>", 7.23782922484872e-08, "medexperimental", 0.0269258234152041,
-			 5.38516482300868, 0.180704808401201, 0.319295189890202, 0.249999999145701,
+			 "M", 0.148427911035695, 7.07106781144378, 0.0922263543419002,
+			 0.197773644079461, 0.144999999210681, "sm:medexperimental",
+			 "<unicode>", 7.23782902500858e-08, "medexperimental", 0.0269258237830145,
+			 5.38516482835153, 0.180704807948752, 0.319295188308847, 0.249999998128799,
 			 "medexperimental", "<unicode>", 1.53743684450092e-12, "medexperimental",
-			 0.0353553388180047, 7.07106783596679, 0.148828479355192, 0.262971515447246,
-			 0.205899997401219, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "sm:medexperimental", 0.0291186565142012, 7.07106790111698
+			 0.0353553385300134, 7.07106786480273, 0.148828480395511, 0.26297151907582,
+			 0.205899999735665, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
+			 "sm:medexperimental", 0.0291186571744824, 7.07106782094684
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0389573762346829, 1.18963781753543, 0.614297596885057, 0.583318571861019,
-			 "s", "M", 0, "<unicode>", 0.0363780103764788, "m", 0.293546322885821,
-			 2.0926768587866, 1, -0.258993824576918, 0.891686616757542, 0.316346396090312,
-			 0.300393048770642, "s", "M", 1, "<unicode>", 0.281180548783797,
-			 "m", 0.293546322894421, 1.07767112519441))
+		list(1, 0.0389573762606175, 1.1896378175095, 0.614297596885058, 0.583318571629005,
+			 "s", "M", 0, "<unicode>", 0.0363780103680522, "m", 0.293546322872589,
+			 2.09267685888093, 1, -0.25899382458023, 0.891686616760853, 0.316346396090312,
+			 0.30039304865116, "s", "M", 1, "<unicode>", 0.281180548786566,
+			 "m", 0.29354632289611, 1.07767112518821))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0389573762346829, 1.18963781753543, 0.614297596885057, 0.583318571861019,
-			 "sm", "<unicode>", 0.0363780103764788, "M", 0.293546322885821,
-			 2.0926768587866, 1, -0.42756656705304, 0.723113874251726, 0.147773653599343,
-			 0.140321428918731, "medexperimental", "<unicode>", 0.614677241563612,
-			 "M", 0.293546322886846, 0.50340829394857, 1, -1.1116051438429,
-			 0.515702742253405, -0.297951200794745, -0.282925523090377, "sm:medexperimental",
-			 "<unicode>", 0.472931529520476, "M", 0.415137191022972, -0.717717437121305
-			))
+		list(1, 0.0389573762606175, 1.1896378175095, 0.614297596885058, 0.583318571629005,
+			 "sm", "<unicode>", 0.0363780103680522, "M", 0.293546322872589,
+			 2.09267685888093, 1, -0.427566567054434, 0.723113874253121,
+			 0.147773653599343, 0.140321428862918, "medexperimental", "<unicode>",
+			 0.614677241564469, "M", 0.293546322887557, 0.503408293947351,
+			 1, -1.1116051438321, 0.515702742242607, -0.297951200794746,
+			 -0.282925522977845, "sm:medexperimental", "<unicode>", 0.472931529514601,
+			 "M", 0.415137191017463, -0.717717437130831))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0389573762346829, 1.18963781753543, 0.614297596885057, 0.583318571861019,
-			 "Total", "s", "M", 0, "<unicode>", 0.0363780103764788, "m",
-			 0.293546322885821, 2.0926768587866, 1, -0.258993824576918, 0.891686616757542,
-			 0.316346396090312, 0.300393048770642, "Total", "s", "M", 1,
-			 "<unicode>", 0.281180548783797, "m", 0.293546322894421, 1.07767112519441
+		list(1, 0.0389573762606175, 1.1896378175095, 0.614297596885058, 0.583318571629005,
+			 "Total", "s", "M", 0, "<unicode>", 0.0363780103680522, "m",
+			 0.293546322872589, 2.09267685888093, 1, -0.25899382458023, 0.891686616760853,
+			 0.316346396090312, 0.30039304865116, "Total", "s", "M", 1, "<unicode>",
+			 0.281180548786566, "m", 0.29354632289611, 1.07767112518821
 			))
 
 
@@ -246,14 +252,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0536439730009107))
+		list("M", 0.0536439737537356))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 2 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -264,8 +270,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -276,21 +285,21 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -303,115 +312,115 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.775624689733015, 0.164689400409525, -0.305467644661745, "W:Z",
-			 "<unicode>", 0.202870403667573, "W", 0.239880451263293, -1.27341616648229,
-			 -0.403934247331162, 0.194627962768759, -0.104653142281202, "Z",
-			 "<unicode>", 0.493114477622437, "W", 0.152697247199771, -0.685363647350407,
-			 -0.675381680947338, 0.224488185135068, -0.225446747906135, "W:Y",
-			 "<unicode>", 0.326065466016459, "W", 0.229562857578115, -0.982069792494287,
-			 -0.544848197898397, 0.0642086879685395, -0.240319754964929,
-			 "Y", "<unicode>", 0.121932496280058, "W", 0.155374509600967,
-			 -1.54671287833582, 1.68041090560237, 2.96919117978223, 2.3248010426923,
-			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776519452804,
-			 7.07106774705676, 0.770361875844511, 1.36118592585801, 1.06577390085126,
-			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.150723190495805,
-			 7.0710678120957, -0.0338674905423157, 0.591585868307589, 0.278859188882637,
-			 "W:Z", "<unicode>", 0.0805151305015546, "Y", 0.159557360181973,
-			 1.74770495428479, 0.424979192222742, 0.89676313844437, 0.660871165333556,
-			 "Z", "<unicode>", 3.99656121530256e-08, "Y", 0.120355259061646,
-			 5.49100363778086, -0.253361685174955, 0.338176476041579, 0.0424073954333115,
-			 "W:Y", "<unicode>", 0.778695213717484, "Y", 0.150905365068571,
-			 0.281019799488519, 0.73263459974155, 1.29452397594592, 1.01357928784373,
-			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341760521234,
-			 7.07106766484555, 1.30470736512547, 2.48432038123702, 1.89451387318124,
-			 "W:Z", "<unicode>", 3.06236147551431e-10, "W:Y", 0.300927217391796,
-			 6.29558831401633, -0.0195935056357645, 0.577311867854198, 0.278859181109217,
-			 "Z", "<unicode>", 0.0670570040141643, "W:Y", 0.152274577032608,
-			 1.83129177925415, 1.62269996480201, 2.86721916465461, 2.24495956472831,
-			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485221582948,
-			 7.07106791785514, 0.00878386518034341, 0.632731109564669, 0.320757487372506,
-			 "W:Z", "<unicode>", 0.043889109808332, "Z", 0.159173140247969,
-			 2.01514832761866, 0.721541834256799, 1.27492369186369, 0.998232763060245,
-			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171435284499,
-			 7.07106760690312, 1.76008415582767, 3.10996926585283, 2.43502671084025,
-			 "W:Z", "<unicode>", 1.53743684450092e-12, "W:Z", 0.344364774218529,
-			 7.07106792896017))
+		list(-0.7756247024917, 0.164689365956105, -0.305467668267798, "W:Z",
+			 "<unicode>", 0.202870358345984, "W", 0.23988044572882, -1.27341629426986,
+			 -0.403934273729581, 0.194627939288785, -0.104653167220398, "Z",
+			 "<unicode>", 0.493114376693848, "W", 0.152697247944286, -0.685363807333204,
+			 -0.675381696635558, 0.224488144659242, -0.225446775988158, "W:Y",
+			 "<unicode>", 0.326065392429175, "W", 0.22956285125463, -0.982069941874408,
+			 -0.54484820072587, 0.0642086762006898, -0.24031976226259, "Y",
+			 "<unicode>", 0.12193247947208, "W", 0.155374507320217, -1.5467129480083,
+			 1.68041088834493, 2.96919111958924, 2.32480100396708, "W", "<unicode>",
+			 1.53743684450092e-12, "W", 0.328776508499659, 7.07106786484259,
+			 0.770361875904321, 1.36118592606663, 1.06577390098547, "M",
+			 "<unicode>", 1.53743684450092e-12, "M", 0.150723190533767, 7.07106781120523,
+			 -0.0338674680081915, 0.59158588815975, 0.278859210075779, "W:Z",
+			 "<unicode>", 0.0805151061915179, "Y", 0.159557359497786, 1.7477050946036,
+			 0.424979199384395, 0.896763157696622, 0.660871178540508, "Z",
+			 "<unicode>", 3.99656190364084e-08, "Y", 0.120355262146039, 5.49100360679376,
+			 -0.253361657489298, 0.338176496303967, 0.0424074194073344, "W:Y",
+			 "<unicode>", 0.778695089162037, "Y", 0.150905363174845, 0.281019961882995,
+			 0.732634599800299, 1.29452397615084, 1.01357928797557, "Y",
+			 "<unicode>", 1.53743684450092e-12, "Y", 0.143341760558523, 7.07106766392582,
+			 1.30470735181372, 2.48432033752955, 1.89451384467163, "W:Z",
+			 "<unicode>", 3.06235925506826e-10, "W:Y", 0.300927209637641,
+			 6.29558838149897, -0.0195934813278259, 0.577311899479554, 0.278859209075864,
+			 "Z", "<unicode>", 0.067056979965018, "W:Y", 0.15227457889933,
+			 1.83129194046381, 1.62269995121334, 2.8672191172581, 2.24495953423572,
+			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485212958343,
+			 7.07106801389922, 0.00878389104457994, 0.632731146342059, 0.320757518693319,
+			 "W:Z", "<unicode>", 0.0438890928888922, "Z", 0.159173143031988,
+			 2.01514848914467, 0.721541842845492, 1.27492372182057, 0.998232782333029,
+			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171440735667,
+			 7.07106747038268, 1.76008414569, 3.10996923049325, 2.43502668809162,
+			 "W:Z", "<unicode>", 1.53743684450092e-12, "W:Z", 0.344364767784248,
+			 7.07106799501981))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.175160351579504, 0.198984796441373, 0.0119122224309348,
-			 0.0172469648213625, "W", "M", "<unicode>", 0.900678206787937,
-			 0.095446944681659, 0.124804649019046, 50, 16, -0.250371111510101,
-			 0.256910072711928, 0.00326948060091355, 0.00473367729951449,
-			 "W", "M", "<unicode>", 0.97984411089723, 0.129410843317377,
-			 0.0252643481574047, 84, 16, -0.47765350739004, 0.465329609138992,
-			 -0.0061619491255241, -0.00892150229859335, "W", "M", "<unicode>",
-			 0.979564519682945, 0.240561337852931, -0.025614877188999, 16,
-			 50, -0.285608440931021, 0.255942799081704, -0.014832820924658,
-			 -0.0214755174504471, "W", "M", "<unicode>", 0.914499506761818,
-			 0.138153365134363, -0.107364890534749, 50, 50, -0.158318499408918,
-			 0.111367373899559, -0.0234755627546792, -0.0339888049722951,
-			 "W", "M", "<unicode>", 0.732937126882906, 0.0687986808522311,
-			 -0.341221117380159, 84, 50, -0.322683622136872, 0.256869637174638,
-			 -0.0329069924811169, -0.047643984570403, "W", "M", "<unicode>",
-			 0.823867674104949, 0.147847935952638, -0.222573228831943, 16,
-			 84, -0.537949356676081, 0.445585122938418, -0.0461821168688316,
-			 -0.0668642102370723, "W", "M", "<unicode>", 0.853965416366082,
-			 0.250906263424352, -0.184061235612619, 50, 84, -0.350935389475088,
-			 0.241285672077382, -0.0548248586988528, -0.0793774977589204,
-			 "W", "M", "<unicode>", 0.716689080475998, 0.151079577539137,
-			 -0.362887291531183, 84, 84, -0.277368607196611, 0.148856030346031,
-			 -0.0642562884252905, -0.0930326773570282, "W", "M", "<unicode>",
-			 0.554549878660378, 0.108732772873545, -0.590956035858849))
+		list(16, 16, -0.174969894213867, 0.198761762565295, 0.0118959341757138,
+			 0.0172233819344405, "W", "M", "<unicode>", 0.900704142142239,
+			 0.0953414602837372, 0.124771889798114, 50, 16, -0.250438185884759,
+			 0.256999576707398, 0.00328069541131936, 0.0047499144871764,
+			 "W", "M", "<unicode>", 0.979781227377262, 0.129450787513128,
+			 0.0253431861971998, 84, 16, -0.476751104527485, 0.464524159797416,
+			 -0.0061134723650345, -0.00885131574648433, "W", "M", "<unicode>",
+			 0.979688474594752, 0.240125653264438, -0.0254594720802365, 16,
+			 50, -0.284987912551016, 0.255267263865164, -0.0148603243429258,
+			 -0.0215153377656041, "W", "M", "<unicode>", 0.914136880298027,
+			 0.137822730590369, -0.107822013678521, 50, 50, -0.158318499770107,
+			 0.111367373555467, -0.0234755631073202, -0.0339888052128682,
+			 "W", "M", "<unicode>", 0.732937123040766, 0.0687986808565926,
+			 -0.341221122484221, 84, 50, -0.321750237189884, 0.256010775422536,
+			 -0.0328697308836741, -0.0475900354465289, "W", "M", "<unicode>",
+			 0.823527058148543, 0.147390721760636, -0.223010855032346, 16,
+			 84, -0.537735191799058, 0.445215007818357, -0.0462600919903505,
+			 -0.0669771050262516, "W", "M", "<unicode>", 0.853635658184258,
+			 0.25075720966579, -0.184481602949746, 50, 84, -0.351356180150416,
+			 0.241605518640926, -0.0548753307547449, -0.0794505724735157,
+			 "W", "M", "<unicode>", 0.716778432068147, 0.151268519082123,
+			 -0.362767686810983, 84, 84, -0.277275049419353, 0.148736052357156,
+			 -0.0642694985310987, -0.0930518027071764, "W", "M", "<unicode>",
+			 0.554269989995217, 0.108678298462837, -0.591373801762972))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.160420800120978, 0.110370004202862, -0.0250253979590581, -0.0362327148223511,
-			 "W", "<unicode>", 0.717154764569864, "M", 0.069080556188737,
-			 -0.362263990618221, -0.0307793197461954, 0.533528787603149,
-			 0.251374733928477, 0.240313116185541, "Y", "<unicode>", 0.0807835825430443,
-			 "M", 0.143958795110659, 1.74615752886268, -0.250026021008778,
-			 0.232282761246879, -0.00887162988094972, -0.0129315970063515,
-			 "W:Y", "<unicode>", 0.942519542827187, "M", 0.123040215549889,
-			 -0.0721034975540376, -0.401740418227149, 0.153960925114664,
-			 -0.123889746556243, -0.11753799060502, "Z", "<unicode>", 0.38216146476789,
-			 "M", 0.14176315170205, -0.87392065617042, -0.259036958393976,
-			 0.202955928082395, -0.0280405151557903, -0.0405622260861832,
-			 "W:Z", "<unicode>", 0.811944062987794, "M", 0.117857493841854,
-			 -0.237918813999355))
+		list(-0.160420800387674, 0.110370003953304, -0.0250253982171849, -0.0362327149082581,
+			 "W", "<unicode>", 0.717154761794967, "M", 0.069080556193109,
+			 -0.362263994331899, -0.0307793196015939, 0.533528787771037,
+			 0.251374734084722, 0.240313116443084, "Y", "<unicode>", 0.0807835823670187,
+			 "M", 0.143958795116599, 1.74615752987597, -0.250026019979163,
+			 0.232282762303549, -0.00887162883780702, -0.0129315953839478,
+			 "W:Y", "<unicode>", 0.94251954957736, "M", 0.123040215556791,
+			 -0.07210348907193, -0.401740418021794, 0.153960925348629, -0.123889746336582,
+			 -0.117537991576533, "Z", "<unicode>", 0.382161465636282, "M",
+			 0.141763151709349, -0.873920654575939, -0.259036957313412, 0.202955929187989,
+			 -0.0280405140627118, -0.0405622245743369, "W:Z", "<unicode>",
+			 0.811944070191329, "M", 0.11785749384824, -0.237918804711887
+			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.175160351579504, 0.198984796441373, 0.0119122224309348,
-			 0.0172469648213625, "Total", "W", "M", "<unicode>", 0.900678206787937,
-			 0.095446944681659, 0.124804649019046, 50, 16, -0.250371111510101,
-			 0.256910072711928, 0.00326948060091355, 0.00473367729951449,
-			 "Total", "W", "M", "<unicode>", 0.97984411089723, 0.129410843317377,
-			 0.0252643481574047, 84, 16, -0.47765350739004, 0.465329609138992,
-			 -0.0061619491255241, -0.00892150229859335, "Total", "W", "M",
-			 "<unicode>", 0.979564519682945, 0.240561337852931, -0.025614877188999,
-			 16, 50, -0.285608440931021, 0.255942799081704, -0.014832820924658,
-			 -0.0214755174504471, "Total", "W", "M", "<unicode>", 0.914499506761818,
-			 0.138153365134363, -0.107364890534749, 50, 50, -0.158318499408918,
-			 0.111367373899559, -0.0234755627546792, -0.0339888049722951,
-			 "Total", "W", "M", "<unicode>", 0.732937126882906, 0.0687986808522311,
-			 -0.341221117380159, 84, 50, -0.322683622136872, 0.256869637174638,
-			 -0.0329069924811169, -0.047643984570403, "Total", "W", "M",
-			 "<unicode>", 0.823867674104949, 0.147847935952638, -0.222573228831943,
-			 16, 84, -0.537949356676081, 0.445585122938418, -0.0461821168688316,
-			 -0.0668642102370723, "Total", "W", "M", "<unicode>", 0.853965416366082,
-			 0.250906263424352, -0.184061235612619, 50, 84, -0.350935389475088,
-			 0.241285672077382, -0.0548248586988528, -0.0793774977589204,
-			 "Total", "W", "M", "<unicode>", 0.716689080475998, 0.151079577539137,
-			 -0.362887291531183, 84, 84, -0.277368607196611, 0.148856030346031,
-			 -0.0642562884252905, -0.0930326773570282, "Total", "W", "M",
-			 "<unicode>", 0.554549878660378, 0.108732772873545, -0.590956035858849
+		list(16, 16, -0.174969894213867, 0.198761762565295, 0.0118959341757138,
+			 0.0172233819344405, "Total", "W", "M", "<unicode>", 0.900704142142239,
+			 0.0953414602837372, 0.124771889798114, 50, 16, -0.250438185884759,
+			 0.256999576707398, 0.00328069541131936, 0.0047499144871764,
+			 "Total", "W", "M", "<unicode>", 0.979781227377262, 0.129450787513128,
+			 0.0253431861971998, 84, 16, -0.476751104527485, 0.464524159797416,
+			 -0.0061134723650345, -0.00885131574648433, "Total", "W", "M",
+			 "<unicode>", 0.979688474594752, 0.240125653264438, -0.0254594720802365,
+			 16, 50, -0.284987912551016, 0.255267263865164, -0.0148603243429258,
+			 -0.0215153377656041, "Total", "W", "M", "<unicode>", 0.914136880298027,
+			 0.137822730590369, -0.107822013678521, 50, 50, -0.158318499770107,
+			 0.111367373555467, -0.0234755631073202, -0.0339888052128682,
+			 "Total", "W", "M", "<unicode>", 0.732937123040766, 0.0687986808565926,
+			 -0.341221122484221, 84, 50, -0.321750237189884, 0.256010775422536,
+			 -0.0328697308836741, -0.0475900354465289, "Total", "W", "M",
+			 "<unicode>", 0.823527058148543, 0.147390721760636, -0.223010855032346,
+			 16, 84, -0.537735191799058, 0.445215007818357, -0.0462600919903505,
+			 -0.0669771050262516, "Total", "W", "M", "<unicode>", 0.853635658184258,
+			 0.25075720966579, -0.184481602949746, 50, 84, -0.351356180150416,
+			 0.241605518640926, -0.0548753307547449, -0.0794505724735157,
+			 "Total", "W", "M", "<unicode>", 0.716778432068147, 0.151268519082123,
+			 -0.362767686810983, 84, 84, -0.277275049419353, 0.148736052357156,
+			 -0.0642694985310987, -0.0930518027071764, "Total", "W", "M",
+			 "<unicode>", 0.554269989995217, 0.108678298462837, -0.591373801762972
 			))
 
 
@@ -430,14 +439,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0390095854286633))
+		list("M", 0.0390095845674817))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 2 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -448,8 +457,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -460,21 +472,21 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -487,104 +499,103 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.0981744991413525, 0.0336487149153186, -0.0322628921130169,
-			 "sm:Z", "<unicode>", 0.337368653068427, "sm", 0.0336289888733864,
-			 -0.959377406037605, -0.163250739174581, 0.0341991730101249,
+		list(-0.0981744991413526, 0.0336487149153187, -0.0322628921130169,
+			 "sm:Z", "<unicode>", 0.337368653068428, "sm", 0.0336289888733865,
+			 -0.959377406037603, -0.163250739174581, 0.0341991730101251,
 			 -0.0645257830822279, "Z", "<unicode>", 0.200188179431626, "sm",
-			 0.050370801132614, -1.28101562078291, 0.0922263543227194, 0.197773644838652,
+			 0.0503708011326141, -1.28101562078291, 0.0922263543227193, 0.197773644838652,
 			 0.144999999580685, "sm:medexperimental", "<unicode>", 7.23783006861822e-08,
-			 "sm", 0.0269258239815822, 5.38516480237961, -0.00962232422271023,
+			 "sm", 0.0269258239815823, 5.38516480237959, -0.00962232422271028,
 			 0.0896223247520133, 0.0400000002646515, "medexperimental", "<unicode>",
-			 0.11412861787635, "sm", 0.0253179777173337, 1.57990502682471,
-			 0.180704808647907, 0.319295190750696, 0.249999999699302, "sm",
-			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553389745864,
-			 7.07106782030863, 0.756348936486646, 1.33642585351419, 1.04638739500042,
+			 0.114128617876351, "sm", 0.0253179777173338, 1.57990502682471,
+			 0.180704808648628, 0.319295190749975, 0.249999999699302, "sm",
+			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553389742185,
+			 7.07106782038222, 0.756348936486646, 1.33642585351419, 1.04638739500042,
 			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.14798152455941,
-			 7.07106781144378, -0.136062947076753, -0.00208333370350043,
-			 -0.0690731403901267, "sm:Z", "<unicode>", 0.0432883140450078,
+			 7.07106781144378, -0.136062947076753, -0.00208333370350038,
+			 -0.0690731403901267, "sm:Z", "<unicode>", 0.043288314045008,
 			 "medexperimental", 0.0341791008482979, -2.0209174225122, -0.170527221528211,
-			 0.0272978559062019, -0.0716146828110045, "Z", "<unicode>", 0.155883375510316,
-			 "medexperimental", 0.0504665083120996, -1.41905364976151, 0.0922263550607143,
+			 0.0272978559062021, -0.0716146828110045, "Z", "<unicode>", 0.155883375510317,
+			 "medexperimental", 0.0504665083120996, -1.41905364976151, 0.0922263550607142,
 			 0.197773645840852, 0.145000000450783, "sm:medexperimental",
-			 "<unicode>", 7.23782931366657e-08, "medexperimental", 0.0269258240489829,
+			 "<unicode>", 7.23782931366657e-08, "medexperimental", 0.026925824048983,
 			 5.38516482121409, 0.180704808494571, 0.319295190215869, 0.24999999935522,
 			 "medexperimental", "<unicode>", 1.53743684450092e-12, "medexperimental",
-			 0.0353553388772654, 7.07106783004073, -0.144326952733985, -0.02092015663679,
-			 -0.0826235546853873, "sm:Z", "<unicode>", 0.00867819782481938,
-			 "sm:medexperimental", 0.0314819040223728, -2.62447768809251,
-			 -0.192385822151482, -0.0102862393485235, -0.101336030750003,
-			 "Z", "<unicode>", 0.0291546912933842, "sm:medexperimental",
-			 0.0464548288232173, -2.18138852982613, 0.148828480580883, 0.262971519722387,
+			 0.0353553388772655, 7.07106783004072, -0.144326952733984, -0.0209201566367897,
+			 -0.0826235546853871, "sm:Z", "<unicode>", 0.00867819782481982,
+			 "sm:medexperimental", 0.0314819040223728, -2.6244776880925,
+			 -0.192385822151482, -0.0102862393485233, -0.101336030750003,
+			 "Z", "<unicode>", 0.0291546912933847, "sm:medexperimental",
+			 0.0464548288232174, -2.18138852982613, 0.148828480580883, 0.262971519722387,
 			 0.205900000151635, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "sm:medexperimental", 0.0291186572921363, 7.07106780666153,
-			 0.29409835469706, 0.610628759725269, 0.452363557211165, "sm:Z",
-			 "<unicode>", 2.11779667136369e-08, "Z", 0.0807490360856017,
-			 5.60209234858997, 0.721541822269099, 1.27492365005128, 0.998232736160188,
-			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171427676014,
-			 7.071067797452, 0.323967566964574, 0.572432394133148, 0.448199980548861,
-			 "sm:Z", "<unicode>", 1.53743684450092e-12, "sm:Z", 0.0633850491969325,
-			 7.07106780269805))
+			 "sm:medexperimental", 0.0291186572921364, 7.0710678066615, 0.294098354697061,
+			 0.61062875972527, 0.452363557211165, "sm:Z", "<unicode>", 2.11779667136369e-08,
+			 "Z", 0.0807490360856016, 5.60209234858998, 0.721541822269099,
+			 1.27492365005128, 0.998232736160188, "Z", "<unicode>", 1.53743684450092e-12,
+			 "Z", 0.141171427676014, 7.071067797452, 0.323967566964574, 0.572432394133148,
+			 0.448199980548861, "sm:Z", "<unicode>", 1.53743684450092e-12,
+			 "sm:Z", 0.0633850491969325, 7.07106780269804))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.16106889717011, 1.33098332537789, 0.584957214103892,
-			 0.555457824221092, "s", "M", 0, "<unicode>", 0.124341589353832,
-			 "m", 0.380632561189165, 1.53680287434259, 1, 16, -0.358877900054352,
-			 1.00789437238385, 0.324508236164751, 0.308143287159944, "s",
-			 "M", 1, "<unicode>", 0.352011057357969, "m", 0.348672802974731,
-			 0.930695578766631, 1, 50, 0.0267415332094524, 1.18684672878008,
+		list(1, 16, -0.161184089888861, 1.33108020237688, 0.584948056244009,
+			 0.555449128192045, "s", "M", 0, "<unicode>", 0.124400991543797,
+			 "m", 0.380686661601063, 1.53656041896472, 1, 16, -0.358973682121172,
+			 1.00797183873091, 0.324499078304867, 0.308134591130897, "s",
+			 "M", 1, "<unicode>", 0.352085685110474, "m", 0.348716999810805,
+			 0.930551359643844, 1, 50, 0.0267415331716658, 1.18684672881786,
 			 0.606794130994764, 0.576193505483665, "s", "M", 0, "<unicode>",
-			 0.0403330123311754, "m", 0.29595064111417, 2.05032206962065,
-			 1, 50, -0.238349546614714, 0.931039852725959, 0.346345153055623,
-			 0.328878968422517, "s", "M", 1, "<unicode>", 0.245646434381766,
-			 "m", 0.298319103964325, 1.1609888486962, 1, 84, -0.0593563775318314,
-			 1.324137076267, 0.632390349367584, 0.600498906670031, "s", "M",
-			 0, "<unicode>", 0.0731672040468849, "m", 0.352938488847665,
-			 1.79178630087164, 1, 84, -0.399557678862569, 1.14344042171945,
-			 0.371941371428442, 0.353184369608883, "s", "M", 1, "<unicode>",
-			 0.344708449279814, "m", 0.393629197463064, 0.944902903101702
+			 0.0403330123442005, "m", 0.295950641133449, 2.05032206948709,
+			 1, 50, -0.238349546615941, 0.931039852727186, 0.346345153055622,
+			 0.328878968422517, "s", "M", 1, "<unicode>", 0.245646434382757,
+			 "m", 0.298319103964951, 1.16098884869376, 1, 84, -0.0597319732395573,
+			 1.32459509271367, 0.632431559737057, 0.600538038800743, "s",
+			 "M", 0, "<unicode>", 0.0733215396230265, "m", 0.35315114891718,
+			 1.79082401876986, 1, 84, -0.400006269336274, 1.1439714329321,
+			 0.371982581797915, 0.353223501739594, "s", "M", 1, "<unicode>",
+			 0.344961184165626, "m", 0.393879100444467, 0.944408021086057
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0296856841708171, 1.18572499193542, 0.607705338053117, 0.577058760373841,
-			 "sm", "<unicode>", 0.0393390236354538, "M", 0.29491340577768,
-			 2.06062296981926, 1, -0.427734844432079, 0.721274257579114,
-			 0.146769706573517, 0.139368110879328, "medexperimental", "<unicode>",
-			 0.616571355507981, "M", 0.293119952987512, 0.500715509393421,
-			 1, -1.08932599513214, 0.568428039253857, -0.260448977939141,
-			 -0.247314537061147, "sm:medexperimental", "<unicode>", 0.537988184187588,
-			 "M", 0.422904208307436, -0.615858089900596, -0.226807989820654,
-			 0.320133541183857, 0.0466627756816015, 0.0442704014312395, "Z",
-			 "<unicode>", 0.738053637803381, "M", 0.139528464634737, 0.334431944075046,
-			 1, -0.392685638202431, 0.438474937617135, 0.022894649707352,
-			 0.0217208539005045, "sm:Z", "<unicode>", 0.914014745958543,
-			 "M", 0.212034655324193, 0.107975980022449))
+		list(1, 0.029685684133617, 1.18572499197262, 0.607705338053117, 0.577058760373841,
+			 "sm", "<unicode>", 0.0393390236481157, "M", 0.29491340579666,
+			 2.06062296968665, 1, -0.427734844448149, 0.721274257595184,
+			 0.146769706573518, 0.139368110879328, "medexperimental", "<unicode>",
+			 0.616571355517839, "M", 0.293119952995711, 0.500715509379416,
+			 1, -1.08932599516211, 0.568428039283827, -0.260448977939142,
+			 -0.247314537061148, "sm:medexperimental", "<unicode>", 0.537988184202285,
+			 "M", 0.422904208322727, -0.615858089878329, -0.226807989822147,
+			 0.32013354118535, 0.0466627756816014, 0.0442704014312394, "Z",
+			 "<unicode>", 0.738053637804759, "M", 0.139528464635499, 0.33443194407322,
+			 1, -0.392685638204959, 0.438474937619663, 0.0228946497073521,
+			 0.0217208539005046, "sm:Z", "<unicode>", 0.914014745959064,
+			 "M", 0.212034655325483, 0.107975980021793))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.16106889717011, 1.33098332537789, 0.584957214103892,
-			 0.555457824221092, "Total", "s", "M", 0, "<unicode>", 0.124341589353832,
-			 "m", 0.380632561189165, 1.53680287434259, 1, 16, -0.358877900054352,
-			 1.00789437238385, 0.324508236164751, 0.308143287159944, "Total",
-			 "s", "M", 1, "<unicode>", 0.352011057357969, "m", 0.348672802974731,
-			 0.930695578766631, 1, 50, 0.0267415332094524, 1.18684672878008,
+		list(1, 16, -0.161184089888861, 1.33108020237688, 0.584948056244009,
+			 0.555449128192045, "Total", "s", "M", 0, "<unicode>", 0.124400991543797,
+			 "m", 0.380686661601063, 1.53656041896472, 1, 16, -0.358973682121172,
+			 1.00797183873091, 0.324499078304867, 0.308134591130897, "Total",
+			 "s", "M", 1, "<unicode>", 0.352085685110474, "m", 0.348716999810805,
+			 0.930551359643844, 1, 50, 0.0267415331716658, 1.18684672881786,
 			 0.606794130994764, 0.576193505483665, "Total", "s", "M", 0,
-			 "<unicode>", 0.0403330123311754, "m", 0.29595064111417, 2.05032206962065,
-			 1, 50, -0.238349546614714, 0.931039852725959, 0.346345153055623,
-			 0.328878968422517, "Total", "s", "M", 1, "<unicode>", 0.245646434381766,
-			 "m", 0.298319103964325, 1.1609888486962, 1, 84, -0.0593563775318314,
-			 1.324137076267, 0.632390349367584, 0.600498906670031, "Total",
-			 "s", "M", 0, "<unicode>", 0.0731672040468849, "m", 0.352938488847665,
-			 1.79178630087164, 1, 84, -0.399557678862569, 1.14344042171945,
-			 0.371941371428442, 0.353184369608883, "Total", "s", "M", 1,
-			 "<unicode>", 0.344708449279814, "m", 0.393629197463064, 0.944902903101702
+			 "<unicode>", 0.0403330123442005, "m", 0.295950641133449, 2.05032206948709,
+			 1, 50, -0.238349546615941, 0.931039852727186, 0.346345153055622,
+			 0.328878968422517, "Total", "s", "M", 1, "<unicode>", 0.245646434382757,
+			 "m", 0.298319103964951, 1.16098884869376, 1, 84, -0.0597319732395573,
+			 1.32459509271367, 0.632431559737057, 0.600538038800743, "Total",
+			 "s", "M", 0, "<unicode>", 0.0733215396230265, "m", 0.35315114891718,
+			 1.79082401876986, 1, 84, -0.400006269336274, 1.1439714329321,
+			 0.371982581797915, 0.353223501739594, "Total", "s", "M", 1,
+			 "<unicode>", 0.344961184165626, "m", 0.393879100444467, 0.944408021086057
 			))
 
 
@@ -610,7 +621,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 3 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -621,8 +632,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -633,21 +647,21 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "Y",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "Y", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -660,147 +674,145 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.0310541992647796, 0.588772501561123, 0.278859151148172, "Y:Z",
-			 "<unicode>", 0.0778043992224959, "W", 0.158121961861294, 1.76357001814074,
-			 1.22954160081509, 2.60978668580103, 1.91966414330806, "W:Y:Z",
-			 "<unicode>", 4.98371213186743e-08, "W", 0.35210980810697, 5.45189057251388,
-			 -0.775624663938189, 0.164689438162457, -0.305467612887866, "W:Z",
-			 "<unicode>", 0.202870456388791, "W", 0.239880454313886, -1.27341601783094,
-			 -0.403934275954708, 0.194627924115918, -0.104653175919395, "Z",
-			 "<unicode>", 0.493114331400875, "W", 0.15269724464123, -0.685363879127501,
-			 -0.675381611815105, 0.224488242814218, -0.225446684500444, "W:Y",
-			 "<unicode>", 0.326065595921039, "W", 0.229562854656357, -0.982069528791691,
-			 -0.544848252372841, 0.0642086385304569, -0.240319806921192,
-			 "Y", "<unicode>", 0.121932418695504, "W", 0.155374510885777,
-			 -1.54671319993961, 1.68041090541622, 2.96919117913294, 2.32480104227458,
-			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776519334655,
-			 7.07106774832729, 0.760953920006849, 1.3445625993131, 1.05275825965997,
-			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.148882500880037,
-			 7.07106781144308, -0.0802370640463923, 0.325472001899913, 0.12261746892676,
-			 "Y:Z", "<unicode>", 0.236128170825779, "Y", 0.103499112521068,
-			 1.18472000329278, -0.62568429882036, 0.144132376334061, -0.240775961243149,
-			 "W:Y:Z", "<unicode>", 0.220184410604674, "Y", 0.19638541351439,
-			 -1.2260379064533, -0.0338675234686014, 0.591585840034788, 0.278859158283093,
-			 "W:Z", "<unicode>", 0.0805151659795733, "Y", 0.159557361369108,
-			 1.74770474950385, 0.424979185421517, 0.896763118827185, 0.660871152124351,
-			 "Z", "<unicode>", 3.99656032712414e-08, "Y", 0.120355255792208,
-			 5.49100367719159, -0.253361719195485, 0.33817643580048, 0.0424073583024978,
-			 "W:Y", "<unicode>", 0.778695400172339, "Y", 0.150905363481662,
-			 0.281019556390063, 0.732634598862432, 1.29452397287961, 1.01357928587102,
-			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341759963266,
-			 7.07106767860787, -0.382157333089835, 0.218246291168601, -0.0819555209606172,
-			 "Y:Z", "<unicode>", 0.592599413461752, "W:Y", 0.153167004341494,
-			 -0.535072950685208, -0.112986616650646, 1.03842478121499, 0.462719082282173,
-			 "W:Y:Z", "<unicode>", 0.115185791857752, "W:Y", 0.293732794823738,
-			 1.57530616409325, 1.30470737054231, 2.48432039903475, 1.89451388478853,
-			 "W:Z", "<unicode>", 3.06236147551431e-10, "W:Y", 0.300927220550245,
-			 6.29558828651132, -0.0195935361702901, 0.577311815889032, 0.278859139859371,
-			 "Z", "<unicode>", 0.0670570346171937, "W:Y", 0.152274571565507,
-			 1.83129157411162, 1.62269995760492, 2.86721913955153, 2.24495954857822,
-			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485217015011,
-			 7.07106796872396, -0.0710699446862795, 0.331977642448249, 0.130453848880985,
-			 "Y:Z", "<unicode>", 0.204527530394373, "Z", 0.102820151368524,
-			 1.26875760388075, -0.431825817642772, 0.326657293693125, -0.0525842619748237,
-			 "W:Y:Z", "<unicode>", 0.785805398617907, "Z", 0.193494145126828,
-			 -0.271761514749486, 0.00878383523275877, 0.632731072430478,
-			 0.320757453831618, "W:Z", "<unicode>", 0.0438891294494426, "Z",
-			 0.159173138414618, 2.01514814010956, 0.721541825498169, 1.27492366131409,
-			 0.998232743406129, "Z", "<unicode>", 1.53743684450092e-12, "Z",
-			 0.141171429725476, 7.07106774612475, -0.29564279620027, 0.328798830591744,
-			 0.0165780171957369, "Y:Z", "<unicode>", 0.917115077613209, "W:Z",
-			 0.159299260526604, 0.104068387643069, 0.096157831233314, 1.312088975663,
-			 0.704123403448158, "W:Y:Z", "<unicode>", 0.0232101118020964,
-			 "W:Z", 0.310192216290911, 2.26995832412443, 1.76008417377103,
-			 3.10996932843826, 2.43502675110465, "W:Z", "<unicode>", 1.53743684450092e-12,
-			 "W:Z", 0.344364785607018, 7.07106781203652, -0.0762745224375123,
-			 0.708219160819034, 0.315972319190761, "Y:Z", "<unicode>", 0.114373134148656,
-			 "W:Y:Z", 0.200129617034939, 1.57883837421024, 2.70902294589772,
-			 4.78669052145376, 3.74785673367574, "W:Y:Z", "<unicode>", 1.53743684450092e-12,
-			 "W:Y:Z", 0.530026978032356, 7.07106786826038, 0.753193285443269,
-			 1.33085000510198, 1.04202164527262, "Y:Z", "<unicode>", 1.53743684450092e-12,
-			 "Y:Z", 0.147364115926413, 7.07106773397239))
+		list(-0.0310541969157009, 0.588772518368473, 0.278859160726386, "Y:Z",
+			 "<unicode>", 0.0778043959475179, "W", 0.158121965549696, 1.76357003757801,
+			 1.22954160577724, 2.60978670604476, 1.919664155911, "W:Y:Z",
+			 "<unicode>", 4.98371282020571e-08, "W", 0.352109812005402, 5.45189054794517,
+			 -0.775624687919475, 0.164689433680356, -0.305467627119559, "W:Z",
+			 "<unicode>", 0.202870444712702, "W", 0.23988045928826, -1.27341605075253,
+			 -0.403934279816372, 0.194627923816977, -0.104653177999698, "Z",
+			 "<unicode>", 0.493114325379628, "W", 0.152697245550105, -0.685363888671835,
+			 -0.675381622138651, 0.22448824802077, -0.225446687058941, "W:Y",
+			 "<unicode>", 0.32606559878001, "W", 0.229562858618189, -0.982069522988061,
+			 -0.544848259613168, 0.0642086372880384, -0.240319811162565,
+			 "Y", "<unicode>", 0.12193241578469, "W", 0.155374512415884,
+			 -1.54671321200553, 1.68041091894616, 2.96919122632459, 2.32480107263537,
+			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776527921984,
+			 7.07106765598251, 0.760953920006059, 1.34456259931034, 1.0527582596582,
+			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.148882500879535,
+			 7.07106781145501, -0.0802370608303138, 0.325472007516241, 0.122617473342964,
+			 "Y:Z", "<unicode>", 0.236128156721802, "Y", 0.103499113133388,
+			 1.18472003895276, -0.625684298275037, 0.144132371986403, -0.240775963144317,
+			 "W:Y:Z", "<unicode>", 0.220184404029429, "Y", 0.196385412266158,
+			 -1.22603792392684, -0.033867524119034, 0.59158584101228, 0.278859158446623,
+			 "W:Z", "<unicode>", 0.0805151665901043, "Y", 0.159557361784403,
+			 1.74770474597984, 0.424979182102677, 0.896763109025649, 0.660871145564163,
+			 "Z", "<unicode>", 3.99655983862601e-08, "Y", 0.120355254138429,
+			 5.4910036981356, -0.253361720125749, 0.33817643503491, 0.0424073574545803,
+			 "W:Y", "<unicode>", 0.778695404541984, "Y", 0.150905363523676,
+			 0.281019550692954, 0.732634597130008, 1.29452396683701, 1.01357928198351,
+			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341758863712,
+			 7.07106770572844, -0.382157324569607, 0.218246306936021, -0.081955508816793,
+			 "Y:Z", "<unicode>", 0.592599472750356, "W:Y", 0.153167006190301,
+			 -0.535072864941735, -0.11298661085345, 1.03842478931555, 0.462719089231048,
+			 "W:Y:Z", "<unicode>", 0.115185787126826, "W:Y", 0.29373279541134,
+			 1.57530618459904, 1.30470737458427, 2.48432041577377, 1.89451389517902,
+			 "W:Z", "<unicode>", 3.06236369596036e-10, "W:Y", 0.300927223789348,
+			 6.29558825327548, -0.0195935377253455, 0.57731181215358, 0.278859137214118,
+			 "Z", "<unicode>", 0.0670570362107576, "W:Y", 0.152274571009274,
+			 1.83129156342943, 1.6226999617524, 2.86721915401774, 2.24495955788507,
+			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485219647389,
+			 7.07106793940961, -0.0710699394131756, 0.331977648917438, 0.130453854752131,
+			 "Y:Z", "<unicode>", 0.204527511365711, "Z", 0.102820151673654,
+			 1.26875765721671, -0.431825811091107, 0.326657292513191, -0.0525842592889578,
+			 "W:Y:Z", "<unicode>", 0.785805407161543, "Z", 0.193494143154445,
+			 -0.271761503638824, 0.00878383357175999, 0.632731069975222,
+			 0.320757451773491, "W:Z", "<unicode>", 0.0438891305351425, "Z",
+			 0.159173138211997, 2.01514812974464, 0.721541822265471, 1.27492365003862,
+			 0.998232736152047, "Z", "<unicode>", 1.53743684450092e-12, "Z",
+			 0.141171427673712, 7.07106779750966, -0.295642787646179, 0.328798848804013,
+			 0.0165780305789171, "Y:Z", "<unicode>", 0.917115012220037, "W:Z",
+			 0.15929926299047, 0.104068470046273, 0.0961578252610454, 1.31208897311263,
+			 0.704123399186837, "W:Y:Z", "<unicode>", 0.0232101130233253,
+			 "W:Z", 0.310192217163859, 2.26995830399859, 1.7600841808063,
+			 3.10996935297688, 2.43502676689159, "W:Z", "<unicode>", 1.53743684450092e-12,
+			 "W:Z", 0.344364790072242, 7.07106776619282, -0.0762745106759337,
+			 0.708219178985617, 0.315972334154842, "Y:Z", "<unicode>", 0.114373119951173,
+			 "W:Y:Z", 0.200129618668898, 1.57883843609175, 2.7090229411233,
+			 4.78669050480086, 3.74785672296208, "W:Y:Z", "<unicode>", 1.53743684450092e-12,
+			 "W:Y:Z", 0.530026975002076, 7.0710678884738, 0.75319328953452,
+			 1.33085001937203, 1.04202165445327, "Y:Z", "<unicode>", 1.53743684450092e-12,
+			 "Y:Z", 0.147364118523093, 7.07106767167328))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.220191172868881, 0.191156353976921, -0.0145174094459799,
-			 -0.0210188528071593, "W", "M", "<unicode>", 0.889969057978933,
-			 0.104937521834702, -0.138343360812807, 50, 16, -0.253454408160212,
-			 0.257892300706847, 0.0022189462733173, 0.00321267408482208,
-			 "W", "M", "<unicode>", 0.98642847888311, 0.130447986009053,
-			 0.0170101995531253, 84, 16, -0.4803972609044, 0.521362395834909,
-			 0.0204825674652541, 0.0296554335170386, "W", "M", "<unicode>",
-			 0.936118629153536, 0.255555628736309, 0.0801491540864817, 16,
-			 50, -0.338196894672578, 0.282584917477004, -0.027805988597787,
-			 -0.040258558778631, "W", "M", "<unicode>", 0.860623154226683,
-			 0.158365617186395, -0.175580969479377, 50, 50, -0.212792238478888,
-			 0.161539853207125, -0.0256261926358811, -0.0371025679909199,
-			 "W", "M", "<unicode>", 0.788428252122745, 0.0954946352684786,
-			 -0.268352170400298, 84, 50, -0.330678632811506, 0.284183671245559,
-			 -0.0232474807829738, -0.0336585792756504, "W", "M", "<unicode>",
-			 0.882177414837424, 0.156855510842806, -0.148209525174231, 16,
-			 84, -0.687606944831184, 0.60084245874125, -0.0433822430449671,
-			 -0.0628104473046378, "W", "M", "<unicode>", 0.894996602301238,
-			 0.3286921121346, -0.131984436022006, 50, 84, -0.434120869583829,
-			 0.317590930735879, -0.0582649694239747, -0.0843582197425236,
-			 "W", "M", "<unicode>", 0.761255497280398, 0.191766738126087,
-			 -0.303832510232642, 84, 84, -0.289299418680433, 0.140287799656908,
-			 -0.0745058095117627, -0.107872320418685, "W", "M", "<unicode>",
-			 0.49659570507576, 0.10959058985927, -0.679855903754497))
+		list(16, 16, -0.219815937024451, 0.190898828372216, -0.0144585543261175,
+			 -0.0209336402793407, "W", "M", "<unicode>", 0.890244547265863,
+			 0.104776100131516, -0.137994774647739, 50, 16, -0.253513292752167,
+			 0.257974547393674, 0.00223062732075351, 0.00322958636643049,
+			 "W", "M", "<unicode>", 0.986360806235199, 0.130483989547867,
+			 0.0170950269721422, 84, 16, -0.47947725473707, 0.520334708422695,
+			 0.0204287268428127, 0.0295774812229923, "W", "M", "<unicode>",
+			 0.93616233694411, 0.255058758999184, 0.0800941983838245, 16,
+			 50, -0.337592112424688, 0.281994014793272, -0.027799048815708,
+			 -0.0402485113580598, "W", "M", "<unicode>", 0.860391437677477,
+			 0.158060589915217, -0.17587590196025, 50, 50, -0.212792237140746,
+			 0.161539854541924, -0.0256261912994108, -0.0371025662933957,
+			 "W", "M", "<unicode>", 0.788428262892569, 0.0954946352676259,
+			 -0.268352156407455, 84, 50, -0.329882686606689, 0.283368927885958,
+			 -0.0232568793603653, -0.0336721871059043, "W", "M", "<unicode>",
+			 0.881822817711099, 0.156444613097459, -0.148658869742463, 16,
+			 84, -0.687352976544243, 0.60044344372221, -0.0434547664110166,
+			 -0.0629154497713375, "W", "M", "<unicode>", 0.89476906376169,
+			 0.328525531699671, -0.132272113482924, 50, 84, -0.434564902827767,
+			 0.317929863572353, -0.0583175196277068, -0.0844343044494146,
+			 "W", "M", "<unicode>", 0.761287793429494, 0.191966478041358,
+			 -0.303790121185339, 84, 84, -0.289312541973945, 0.140264426040222,
+			 -0.0745240579668615, -0.10789874191066, "W", "M", "<unicode>",
+			 0.496479991848181, 0.10958797493286, -0.680038644865182))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.215831969264593, 0.162413601362538, -0.0267091839510272, -0.0386705636535891,
-			 "W", "<unicode>", 0.781934283615141, "M", 0.0964929900780536,
-			 -0.276799215460336, -0.0417390627570132, 0.523442465305811,
-			 0.240851701274399, 0.230253143926117, "Y", "<unicode>", 0.094825524117641,
-			 "M", 0.144181610611446, 1.67047448182188, -0.240509127697856,
-			 0.243737176098364, 0.00161402420025431, 0.00235265794054865,
-			 "W:Y", "<unicode>", 0.989575637146163, "M", 0.123534490331428,
-			 0.0130653730462164, -0.412302842510108, 0.141791394623524, -0.135255723943292,
-			 -0.12832123955927, "Z", "<unicode>", 0.338636024876215, "M",
-			 0.14135316809499, -0.956863760226439, -0.274754106234058, 0.214834194534698,
-			 -0.0299599558496798, -0.0433388075561313, "W:Z", "<unicode>",
-			 0.810425776280012, "M", 0.124897269702547, -0.239876787707465,
-			 -0.168390699420641, 0.137059047008601, -0.0156658262060202,
-			 -0.0228148677790248, "W:Y:Z", "<unicode>", 0.840663986372918,
-			 "M", 0.0779222855212113, -0.201044234024113, -0.0892862785423073,
-			 0.319128826401945, 0.114921273929819, 0.109767099307061, "Y:Z",
-			 "<unicode>", 0.27002583053899, "M", 0.104189441276926, 1.10300307326122
-			))
+		list(-0.215831968121992, 0.162413602501666, -0.0267091828101629, -0.0386705622493061,
+			 "W", "<unicode>", 0.78193429269225, "M", 0.0964929900771674,
+			 -0.276799203639591, -0.0417390631667264, 0.52344246489922, 0.240851700866247,
+			 0.230253143064558, "Y", "<unicode>", 0.0948255246791019, "M",
+			 0.144181610612243, 1.67047447898183, -0.240509129862208, 0.243737173933983,
+			 0.00161402203588764, 0.00235265479623833, "W:Y", "<unicode>",
+			 0.989575651124181, "M", 0.123534490331421, 0.0130653555258739,
+			 -0.412302843001728, 0.141791394132661, -0.135255724434534, -0.128321239542463,
+			 "Z", "<unicode>", 0.338636023122542, "M", 0.141353168095183,
+			 -0.956863763700409, -0.274754108465567, 0.214834192303648, -0.0299599580809592,
+			 -0.0433388109037175, "W:Z", "<unicode>", 0.8104257624303, "M",
+			 0.124897269702664, -0.239876805572156, -0.16839069892354, 0.13705904750163,
+			 -0.0156658257109546, -0.0228148670774107, "W:Y:Z", "<unicode>",
+			 0.840663991338624, "M", 0.0779222855201725, -0.201044227673468,
+			 -0.0892862781126114, 0.319128826830259, 0.114921274358824, 0.109767099093279,
+			 "Y:Z", "<unicode>", 0.27002582874926, "M", 0.104189441276574,
+			 1.1030030773825))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.220191172868881, 0.191156353976921, -0.0145174094459799,
-			 -0.0210188528071593, "Total", "W", "M", "<unicode>", 0.889969057978933,
-			 0.104937521834702, -0.138343360812807, 50, 16, -0.253454408160212,
-			 0.257892300706847, 0.0022189462733173, 0.00321267408482208,
-			 "Total", "W", "M", "<unicode>", 0.98642847888311, 0.130447986009053,
-			 0.0170101995531253, 84, 16, -0.4803972609044, 0.521362395834909,
-			 0.0204825674652541, 0.0296554335170386, "Total", "W", "M", "<unicode>",
-			 0.936118629153536, 0.255555628736309, 0.0801491540864817, 16,
-			 50, -0.338196894672578, 0.282584917477004, -0.027805988597787,
-			 -0.040258558778631, "Total", "W", "M", "<unicode>", 0.860623154226683,
-			 0.158365617186395, -0.175580969479377, 50, 50, -0.212792238478888,
-			 0.161539853207125, -0.0256261926358811, -0.0371025679909199,
-			 "Total", "W", "M", "<unicode>", 0.788428252122745, 0.0954946352684786,
-			 -0.268352170400298, 84, 50, -0.330678632811506, 0.284183671245559,
-			 -0.0232474807829738, -0.0336585792756504, "Total", "W", "M",
-			 "<unicode>", 0.882177414837424, 0.156855510842806, -0.148209525174231,
-			 16, 84, -0.687606944831184, 0.60084245874125, -0.0433822430449671,
-			 -0.0628104473046378, "Total", "W", "M", "<unicode>", 0.894996602301238,
-			 0.3286921121346, -0.131984436022006, 50, 84, -0.434120869583829,
-			 0.317590930735879, -0.0582649694239747, -0.0843582197425236,
-			 "Total", "W", "M", "<unicode>", 0.761255497280398, 0.191766738126087,
-			 -0.303832510232642, 84, 84, -0.289299418680433, 0.140287799656908,
-			 -0.0745058095117627, -0.107872320418685, "Total", "W", "M",
-			 "<unicode>", 0.49659570507576, 0.10959058985927, -0.679855903754497
-			))
+		list(16, 16, -0.219815937024451, 0.190898828372216, -0.0144585543261175,
+			 -0.0209336402793407, "Total", "W", "M", "<unicode>", 0.890244547265863,
+			 0.104776100131516, -0.137994774647739, 50, 16, -0.253513292752167,
+			 0.257974547393674, 0.00223062732075351, 0.00322958636643049,
+			 "Total", "W", "M", "<unicode>", 0.986360806235199, 0.130483989547867,
+			 0.0170950269721422, 84, 16, -0.47947725473707, 0.520334708422695,
+			 0.0204287268428127, 0.0295774812229923, "Total", "W", "M", "<unicode>",
+			 0.93616233694411, 0.255058758999184, 0.0800941983838245, 16,
+			 50, -0.337592112424688, 0.281994014793272, -0.027799048815708,
+			 -0.0402485113580598, "Total", "W", "M", "<unicode>", 0.860391437677477,
+			 0.158060589915217, -0.17587590196025, 50, 50, -0.212792237140746,
+			 0.161539854541924, -0.0256261912994108, -0.0371025662933957,
+			 "Total", "W", "M", "<unicode>", 0.788428262892569, 0.0954946352676259,
+			 -0.268352156407455, 84, 50, -0.329882686606689, 0.283368927885958,
+			 -0.0232568793603653, -0.0336721871059043, "Total", "W", "M",
+			 "<unicode>", 0.881822817711099, 0.156444613097459, -0.148658869742463,
+			 16, 84, -0.687352976544243, 0.60044344372221, -0.0434547664110166,
+			 -0.0629154497713375, "Total", "W", "M", "<unicode>", 0.89476906376169,
+			 0.328525531699671, -0.132272113482924, 50, 84, -0.434564902827767,
+			 0.317929863572353, -0.0583175196277068, -0.0844343044494146,
+			 "Total", "W", "M", "<unicode>", 0.761287793429494, 0.191966478041358,
+			 -0.303790121185339, 84, 84, -0.289312541973945, 0.140264426040222,
+			 -0.0745240579668615, -0.10789874191066, "Total", "W", "M", "<unicode>",
+			 0.496479991848181, 0.10958797493286, -0.680038644865182))
 
 
 
@@ -818,14 +830,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0507455711611948))
+		list("M", 0.0507455714085702))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 3 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -836,8 +848,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -848,21 +863,21 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "med",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "med", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -875,140 +890,139 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.132162252060028, 0.00110487515035852, -0.0655286884548349,
-			 "medexperimental:Z", "<unicode>", 0.0539216915386194, "sm",
-			 0.0339973408342146, -1.92746511482709, -0.104014145059652, 0.00267811654514293,
-			 -0.0506680142572543, "sm:medexperimental:Z", "<unicode>", 0.0626639198679657,
-			 "sm", 0.0272179138102459, -1.86156862022911, -0.0981744996535289,
-			 0.0336487178150854, -0.0322628909192218, "sm:Z", "<unicode>",
-			 0.337368683450125, "sm", 0.0336289897437961, -0.95937734570732,
-			 -0.163250740113542, 0.0341991740110838, -0.0645257830512291,
-			 "Z", "<unicode>", 0.200188184068395, "sm", 0.0503708016275007,
-			 -1.28101560758168, 0.0922263558810982, 0.197773649663572, 0.145000002772335,
-			 "sm:medexperimental", "<unicode>", 7.23783200040629e-08, "sm",
-			 0.0269258248148989, 5.38516475425116, -0.00962232468024297,
-			 0.0896223275209326, 0.0400000014203448, "medexperimental", "<unicode>",
-			 0.114128619185499, "sm", 0.0253179785404234, 1.579905021109,
-			 0.18070480979392, 0.319295194747925, 0.250000002270922, "sm",
-			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553397019507,
-			 7.0710677475722, 0.719380656934463, 1.27110499138534, 0.995242824159901,
-			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.140748589974817,
-			 7.07106781203256, -0.10156700017097, 0.0299523239475738, -0.0358073381116981,
-			 "medexperimental:Z", "<unicode>", 0.285865181261787, "medexperimental",
-			 0.0335514645054581, -1.06723621873117, -0.104014144746496, 0.00267811776732907,
-			 -0.0506680134895834, "sm:medexperimental:Z", "<unicode>", 0.0626639260842026,
-			 "medexperimental", 0.0272179140421456, -1.86156857616371, -0.136062947794497,
-			 -0.00208332977903879, -0.0690731387867679, "sm:Z", "<unicode>",
-			 0.0432883261516179, "medexperimental", 0.0341791020325558, -2.02091730557975,
-			 -0.170527220694186, 0.0272978605626507, -0.0716146800657675,
-			 "Z", "<unicode>", 0.155883399361431, "medexperimental", 0.0504665092872255,
-			 -1.41905356794501, 0.0922263562767667, 0.197773651212699, 0.145000003744733,
-			 "sm:medexperimental", "<unicode>", 7.23783291078917e-08, "medexperimental",
-			 0.026925825109154, 5.3851647315141, 0.180704810898409, 0.319295198600317,
-			 0.250000004749363, "medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "medexperimental", 0.0353553404029595, 7.07106767747133, -0.141970627135782,
-			 -0.0191649149301865, -0.0805677710329844, "medexperimental:Z",
-			 "<unicode>", 0.0101199569922681, "sm:medexperimental", 0.0313285634772556,
-			 -2.57170333045996, -0.12156150798086, -0.0223356538872879, -0.0719485809340739,
-			 "sm:medexperimental:Z", "<unicode>", 0.00447842124214159, "sm:medexperimental",
-			 0.0253131830166913, -2.84233637810905, -0.144326953854846, -0.0209201542305557,
-			 -0.0826235540427008, "sm:Z", "<unicode>", 0.00867820025655619,
-			 "sm:medexperimental", 0.0314819049221586, -2.62447759266772,
-			 -0.192385821315982, -0.010286236241625, -0.101336028778803,
-			 "Z", "<unicode>", 0.0291546964400404, "sm:medexperimental",
-			 0.0464548294026663, -2.18138846018423, 0.148828481986781, 0.262971524626078,
-			 0.205900003306429, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "sm:medexperimental", 0.0291186581844469, 7.07106769831882,
-			 0.292613742412889, 0.607946859933847, 0.450280301173368, "medexperimental:Z",
-			 "<unicode>", 2.17507720723376e-08, "Z", 0.0804435999865982,
-			 5.59746581764596, 0.176565802697346, 0.416086057991282, 0.296325930344314,
-			 "sm:medexperimental:Z", "<unicode>", 1.23713626498656e-06, "Z",
-			 0.0611032287284973, 4.84959529161695, 0.29409835516531, 0.610628764977457,
-			 0.452363560071384, "sm:Z", "<unicode>", 2.11779727088413e-08,
-			 "Z", 0.0807490373060165, 5.60209229934285, 0.721541822143798,
-			 1.27492364961424, 0.998232735879018, "Z", "<unicode>", 1.53743684450092e-12,
-			 "Z", 0.141171427596488, 7.07106779944365, 0.18714334269484,
-			 0.39626653250126, 0.29170493759805, "medexperimental:Z", "<unicode>",
-			 4.55427482393134e-08, "sm:Z", 0.053348732797122, 5.46788878205158,
-			 0.199503770483297, 0.380070524412694, 0.289787147447996, "sm:medexperimental:Z",
-			 "<unicode>", 3.1543523348887e-10, "sm:Z", 0.0460637938639905,
-			 6.29099609779496, 0.323967570265025, 0.572432405644934, 0.448199987954979,
-			 "sm:Z", "<unicode>", 1.53743684450092e-12, "sm:Z", 0.0633850512916993,
-			 7.07106768585473, 0.199059801728057, 0.379077759733557, 0.289068780730807,
-			 "medexperimental:Z", "<unicode>", 3.08328695908244e-10, "sm:medexperimental:Z",
-			 0.0459237923312515, 6.29453200741206, 0.206767458281118, 0.365346419796074,
-			 0.286056939038596, "sm:medexperimental:Z", "<unicode>", 1.53743684450092e-12,
-			 "sm:medexperimental:Z", 0.0404545600750337, 7.07106784767965,
-			 0.321764166308092, 0.568539105054067, 0.445151635681079, "medexperimental:Z",
-			 "<unicode>", 1.53743684450092e-12, "medexperimental:Z", 0.0629539472899768,
-			 7.07106789715081))
+		list(-0.132162254953493, 0.00110487215382099, -0.0655286913998359,
+			 "medexperimental:Z", "<unicode>", 0.0539216805672085, "sm",
+			 0.0339973408079199, -1.9274652029423, -0.104014147145496, 0.00267811451786115,
+			 -0.0506680163138175, "sm:medexperimental:Z", "<unicode>", 0.0626639093530967,
+			 "sm", 0.0272179138251857, -1.86156869476649, -0.0981744947608563,
+			 0.0336487203632795, -0.0322628871987884, "sm:Z", "<unicode>",
+			 0.337368730570589, "sm", 0.0336289891457038, -0.959377252138133,
+			 -0.163250738590775, 0.0341991716028526, -0.0645257834939614,
+			 "Z", "<unicode>", 0.200188172023401, "sm", 0.0503708006246768,
+			 -1.28101564187467, 0.092226353086491, 0.197773642584127, 0.144999997835309,
+			 "sm:medexperimental", "<unicode>", 7.23783057932081e-08, "sm",
+			 0.026925823721808, 5.3851647895128, -0.00962232653937236, 0.0896223211945109,
+			 0.0399999973275693, "medexperimental", "<unicode>", 0.114128639922858,
+			 "sm", 0.0253179774007871, 1.57990493057024, 0.180704807986706,
+			 0.319295188444467, 0.249999998215586, "sm", "<unicode>", 1.53743684450092e-12,
+			 "sm", 0.0353553385549285, 7.07106786227441, 0.719380656934463,
+			 1.27110499138534, 0.995242824159901, "M", "<unicode>", 1.53743684450092e-12,
+			 "M", 0.140748589974818, 7.07106781203256, -0.101567002396761,
+			 0.0299523203086753, -0.035807341044043, "medexperimental:Z",
+			 "<unicode>", 0.285865136628919, "medexperimental", 0.033551464144965,
+			 -1.06723631759649, -0.104014147642291, 0.0026781142259004, -0.0506680167081952,
+			 "sm:medexperimental:Z", "<unicode>", 0.0626639078132374, "medexperimental",
+			 0.0272179138774401, -1.86156870568218, -0.136062949257204, -0.00208333391952664,
+			 -0.0690731415883654, "sm:Z", "<unicode>", 0.043288313483153,
+			 "medexperimental", 0.0341791013494359, -2.02091742793891, -0.170527220659473,
+			 0.0272978552770117, -0.0716146826912308, "Z", "<unicode>", 0.155883373069796,
+			 "medexperimental", 0.0504665079299681, -1.41905365813323, 0.0922263550512961,
+			 0.197773645736244, 0.14500000039377, "sm:medexperimental", "<unicode>",
+			 7.23782920264426e-08, "medexperimental", 0.0269258240246994,
+			 5.38516482395339, 0.180704808146016, 0.319295189000128, 0.249999998573072,
+			 "medexperimental", "<unicode>", 1.53743684450092e-12, "medexperimental",
+			 0.0353553386560405, 7.07106785216322, -0.141970629380789, -0.019164916888249,
+			 -0.0805677731345191, "medexperimental:Z", "<unicode>", 0.0101199552072568,
+			 "sm:medexperimental", 0.0313285635504571, -2.57170339153145,
+			 -0.121561510545294, -0.0223356558773795, -0.0719485832113368,
+			 "sm:medexperimental:Z", "<unicode>", 0.00447842020940636, "sm:medexperimental",
+			 0.0253131831632101, -2.84233645162044, -0.144326954827473, -0.0209201563479214,
+			 -0.0826235555876972, "sm:Z", "<unicode>", 0.0086781983855555,
+			 "sm:medexperimental", 0.0314819046301281, -2.62447766608843,
+			 -0.192385826007435, -0.0102862429725646, -0.10133603449, "Z",
+			 "<unicode>", 0.0291546855489933, "sm:medexperimental", 0.0464548288823798,
+			 -2.18138860755629, 0.148828480780872, 0.262971520419937, 0.205900000600405,
+			 "sm:medexperimental", "<unicode>", 1.53743684450092e-12, "sm:medexperimental",
+			 0.0291186574190677, 7.07106779124974, 0.292613741995883, 0.607946861418746,
+			 0.450280301707314, "medexperimental:Z", "<unicode>", 2.17507754030066e-08,
+			 "Z", 0.080443600471787, 5.59746579052284, 0.176565803793655,
+			 0.416086061779778, 0.296325932786717, "sm:medexperimental:Z",
+			 "<unicode>", 1.23713635558076e-06, "Z", 0.0611032294152926,
+			 4.84959527707964, 0.294098355544883, 0.61062876450332, 0.452363560024101,
+			 "sm:Z", "<unicode>", 2.11779709324844e-08, "Z", 0.0807490370882292,
+			 5.60209231386664, 0.721541820253813, 1.27492364302206, 0.998232731637936,
+			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171426396927,
+			 7.07106782948584, 0.187143341822296, 0.396266533459582, 0.291704937640939,
+			 "medexperimental:Z", "<unicode>", 4.5542760229722e-08, "sm:Z",
+			 0.0533487332641882, 5.46788873498434, 0.19950376946672, 0.380070524799955,
+			 0.289787147133337, "sm:medexperimental:Z", "<unicode>", 3.15435455533475e-10,
+			 "sm:Z", 0.0460637942221191, 6.29099604205391, 0.323967570347634,
+			 0.572432405933058, 0.448199988140346, "sm:Z", "<unicode>", 1.53743684450092e-12,
+			 "sm:Z", 0.0633850513441274, 7.07106768293044, 0.199059802790248,
+			 0.379077765218177, 0.289068784004212, "medexperimental:Z", "<unicode>",
+			 3.08328917952849e-10, "sm:medexperimental:Z", 0.0459237934594431,
+			 6.29453192405586, 0.206767460049976, 0.365346425965744, 0.28605694300786,
+			 "sm:medexperimental:Z", "<unicode>", 1.53743684450092e-12, "sm:medexperimental:Z",
+			 0.0404545611977102, 7.07106774956321, 0.321764168678678, 0.568539113322525,
+			 0.445151641000601, "medexperimental:Z", "<unicode>", 1.53743684450092e-12,
+			 "medexperimental:Z", 0.0629539487945636, 7.07106781265233))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.879107828676405, 0.893321781716457, 0.00710697652002601,
-			 0.00674857172663489, "s", "M", 0, "<unicode>", 0.987459462531521,
-			 "m", 0.45215871933708, 0.015717880063102, 1, 16, -0.226237462684157,
-			 1.45145417887676, 0.612608358096304, 0.581714521400136, "s",
-			 "M", 1, "<unicode>", 0.15232707826413, "m", 0.427990426047198,
-			 1.43135995763781, 1, 50, -0.070612527010772, 1.07521945149629,
-			 0.502303462242757, 0.476972300939849, "s", "M", 0, "<unicode>",
-			 0.0857243614003134, "m", 0.292309447404451, 1.71839626362726,
-			 1, 50, -0.295305856059667, 0.864579215324608, 0.28463667963247,
-			 0.270282453180792, "s", "M", 1, "<unicode>", 0.336073058808233,
-			 "m", 0.295894485953135, 0.961953308171995, 1, 84, 0.299943515011945,
-			 1.86555598871033, 1.08274975186114, 1.02814668682827, "s", "M",
-			 0, "<unicode>", 0.0067090238253269, "m", 0.399398276205007,
-			 2.71095249120548, 1, 84, -1.01441807738657, 0.814825140735038,
-			 -0.0997964683257667, -0.0947637328846583, "s", "M", 1, "<unicode>",
-			 0.830659212724649, "m", 0.466652252936903, -0.213856180266337
+		list(1, 16, -0.879499919323798, 0.893298526181662, 0.00689930342893175,
+			 0.00655137157268046, "s", "M", 0, "<unicode>", 0.98782841359936,
+			 "m", 0.452252811655997, 0.0152554130148331, 1, 16, -0.226283140548378,
+			 1.45177494307225, 0.612745901261938, 0.58184512685297, "s",
+			 "M", 1, "<unicode>", 0.1523245776692, "m", 0.428083907882221,
+			 1.43136868725867, 1, 50, -0.0706125269885225, 1.07521945147404,
+			 0.502303462242758, 0.476972299782691, "s", "M", 0, "<unicode>",
+			 0.0857243613881491, "m", 0.2923094473931, 1.71839626369399,
+			 1, 50, -0.295305856051609, 0.864579215316547, 0.284636679632469,
+			 0.270282452525072, "s", "M", 1, "<unicode>", 0.33607305880152,
+			 "m", 0.295894485949023, 0.96195330818536, 1, 84, 0.300129780508315,
+			 1.86723878103384, 1.08368428077108, 1.02903408495306, "s", "M",
+			 0, "<unicode>", 0.00671410906957792, "m", 0.399780050267934,
+			 2.71070124696014, 1, 84, -1.01591963295738, 0.815088807815111,
+			 -0.100415412571135, -0.0953514635432364, "s", "M", 1, "<unicode>",
+			 0.82978674836684, "m", 0.467102573112377, -0.214975079032537
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, -0.0455078394976838, 1.09144170911166, 0.522966934806989, 0.4965937146772,
-			 "sm", "<unicode>", 0.0713781760192134, "M", 0.29004347977245,
-			 1.80306392413054, 1, -0.439133034050774, 0.692988161102001,
-			 0.126927563525614, 0.120526607077699, "medexperimental", "<unicode>",
-			 0.660312309499699, "M", 0.288811734318284, 0.439482016979731,
-			 1, -1.0644564773762, 0.560424877065194, -0.252015800155501,
-			 -0.239306644506609, "sm:medexperimental", "<unicode>", 0.543205466344686,
-			 "M", 0.414518166470978, -0.607972871975795, -0.308134865875632,
-			 0.319885281068596, 0.00587520759648194, 0.00557398901094286,
-			 "Z", "<unicode>", 0.970746996839607, "M", 0.160212165095372,
-			 0.0366714200072417, 1, -0.0759541812851811, 1.11431963677424,
-			 0.519182727744528, 0.492564521609791, "sm:Z", "<unicode>", 0.0872983994949517,
-			 "M", 0.303646859699501, 1.70982413010406, 1, -1.73253791660811,
-			 0.00645663292900467, -0.863040641839552, -0.818793034052329,
-			 "sm:medexperimental:Z", "<unicode>", 0.0517256684844991, "M",
-			 0.443629210346231, -1.9454098641656, 1, -0.448506068293687,
-			 0.74130125160207, 0.146397591654192, 0.138891869556676, "medexperimental:Z",
-			 "<unicode>", 0.629578553663409, "M", 0.303527852879136, 0.482320124052954
+		list(1, -0.0455078394747761, 1.09144170908876, 0.52296693480699, 0.496593713472439,
+			 "sm", "<unicode>", 0.071378176007804, "M", 0.290043479760763,
+			 1.80306392420319, 1, -0.439133034012467, 0.692988161063697,
+			 0.126927563525615, 0.120526606785297, "medexperimental", "<unicode>",
+			 0.660312309478151, "M", 0.28881173429874, 0.439482017009475,
+			 1, -1.06445647733317, 0.560424877022163, -0.252015800155503,
+			 -0.239306643926041, "sm:medexperimental", "<unicode>", 0.543205466323327,
+			 "M", 0.414518166449024, -0.607972872007999, -0.308134865837216,
+			 0.319885281030181, 0.00587520759648237, 0.00557398898557968,
+			 "Z", "<unicode>", 0.970746996836028, "M", 0.160212165075772,
+			 0.0366714200117307, 1, -0.0759541811987579, 1.11431963668781,
+			 0.519182727744526, 0.49256451936845, "sm:Z", "<unicode>", 0.087298399449024,
+			 "M", 0.303646859655406, 1.70982413035235, 1, -1.73253791647849,
+			 0.00645663279940256, -0.863040641839546, -0.81879303032653,
+			 "sm:medexperimental:Z", "<unicode>", 0.0517256684496272, "M",
+			 0.443629210280103, -1.94540986445557, 1, -0.448506068227004,
+			 0.741301251535381, 0.146397591654189, 0.138891868924667, "medexperimental:Z",
+			 "<unicode>", 0.629578553625015, "M", 0.303527852845112, 0.48232012410701
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.879107828676405, 0.893321781716457, 0.00710697652002601,
-			 0.00674857172663489, "Total", "s", "M", 0, "<unicode>", 0.987459462531521,
-			 "m", 0.45215871933708, 0.015717880063102, 1, 16, -0.226237462684157,
-			 1.45145417887676, 0.612608358096304, 0.581714521400136, "Total",
-			 "s", "M", 1, "<unicode>", 0.15232707826413, "m", 0.427990426047198,
-			 1.43135995763781, 1, 50, -0.070612527010772, 1.07521945149629,
-			 0.502303462242757, 0.476972300939849, "Total", "s", "M", 0,
-			 "<unicode>", 0.0857243614003134, "m", 0.292309447404451, 1.71839626362726,
-			 1, 50, -0.295305856059667, 0.864579215324608, 0.28463667963247,
-			 0.270282453180792, "Total", "s", "M", 1, "<unicode>", 0.336073058808233,
-			 "m", 0.295894485953135, 0.961953308171995, 1, 84, 0.299943515011945,
-			 1.86555598871033, 1.08274975186114, 1.02814668682827, "Total",
-			 "s", "M", 0, "<unicode>", 0.0067090238253269, "m", 0.399398276205007,
-			 2.71095249120548, 1, 84, -1.01441807738657, 0.814825140735038,
-			 -0.0997964683257667, -0.0947637328846583, "Total", "s", "M",
-			 1, "<unicode>", 0.830659212724649, "m", 0.466652252936903, -0.213856180266337
+		list(1, 16, -0.879499919323798, 0.893298526181662, 0.00689930342893175,
+			 0.00655137157268046, "Total", "s", "M", 0, "<unicode>", 0.98782841359936,
+			 "m", 0.452252811655997, 0.0152554130148331, 1, 16, -0.226283140548378,
+			 1.45177494307225, 0.612745901261938, 0.58184512685297, "Total",
+			 "s", "M", 1, "<unicode>", 0.1523245776692, "m", 0.428083907882221,
+			 1.43136868725867, 1, 50, -0.0706125269885225, 1.07521945147404,
+			 0.502303462242758, 0.476972299782691, "Total", "s", "M", 0,
+			 "<unicode>", 0.0857243613881491, "m", 0.2923094473931, 1.71839626369399,
+			 1, 50, -0.295305856051609, 0.864579215316547, 0.284636679632469,
+			 0.270282452525072, "Total", "s", "M", 1, "<unicode>", 0.33607305880152,
+			 "m", 0.295894485949023, 0.96195330818536, 1, 84, 0.300129780508315,
+			 1.86723878103384, 1.08368428077108, 1.02903408495306, "Total",
+			 "s", "M", 0, "<unicode>", 0.00671410906957792, "m", 0.399780050267934,
+			 2.71070124696014, 1, 84, -1.01591963295738, 0.815088807815111,
+			 -0.100415412571135, -0.0953514635432364, "Total", "s", "M",
+			 1, "<unicode>", 0.82978674836684, "m", 0.467102573112377, -0.214975079032537
 			))
 
 
@@ -1027,14 +1041,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.102606271915565))
+		list("M", 0.102606276269811))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 4 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1045,8 +1059,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -1057,21 +1074,21 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1084,60 +1101,59 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1.68041090948925, 2.96919119333942, 2.32480105141434, "W", "<unicode>",
-			 1.53743684450092e-12, "W", 0.328776521919768, 7.07106772052799,
+		list(1.68041089638044, 2.96919114761667, 2.32480102199856, "W", "<unicode>",
+			 1.53743684450092e-12, "W", 0.328776513599729, 7.07106780999843,
 			 0.797840916249275, 1.40973983836071, 1.10379037730499, "M",
 			 "<unicode>", 1.53743684450092e-12, "M", 0.156099532169473, 7.07106781144378,
-			 -0.0121424137968223, 0.0193301860785469, 0.00359388614086233,
-			 "Z", "<unicode>", 0.65442724539073, "jasp", 0.00802887199040927,
-			 0.447620306458408, 0.00468047960561288, 0.00827014311820436,
-			 0.00647531136190862, "jasp", "<unicode>", 1.53743684450092e-12,
-			 "jasp", 0.000915747314977797, 7.07106781095571, 0.71813658599885,
-			 1.26890681004607, 0.993521698022461, "Z", "<unicode>", 1.53743684450092e-12,
-			 "Z", 0.14050518999115, 7.07106761027861))
+			 -0.0121424136522566, 0.0193301853316798, 0.00359388583971162,
+			 "Z", "<unicode>", 0.654427263313656, "jasp", 0.00802887176299879,
+			 0.447620281628373, 0.00468047960684663, 0.00827014312250761,
+			 0.00647531136467712, "jasp", "<unicode>", 1.53743684450092e-12,
+			 "jasp", 0.000915747315760847, 7.0710678079325, 0.71813657339283,
+			 1.26890676607699, 0.993521669734912, "Z", "<unicode>", 1.53743684450092e-12,
+			 "Z", 0.140505181990223, 7.07106781160605))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.179344122985565, 0.0952661457406548, -0.0420389886224553, -0.0608656330165494,
-			 "W", "M", "", "<unicode>", "", 0.548448850577653, 0.0700549272569065,
-			 -0.600086107695027, 1, -0.0210322557904551, 0.0260802310731064,
-			 0.00252398764132562, 0.00365432448660699, "W", "jasp", "M",
-			 "<unicode>", "<unicode>", 0.833663904059473, 0.0120187123934875,
-			 0.210004829027547, -0.0114708037832485, 0.0087231507089643,
-			 -0.00137382653714208, -0.00198907786743046, "W", "Z", "M", "<unicode>",
-			 "<unicode>", 0.789716420289311, 0.00515161366522551, -0.266678875090285
-			))
+		list(-0.179344122982528, 0.0952661457424963, -0.0420389886200159, -0.0608656326301109,
+			 "W", "M", "", "<unicode>", "", 0.548448850599117, 0.0700549272566015,
+			 -0.600086107662819, 1, -0.0210322557379918, 0.0260802310078551,
+			 0.00252398763493169, 0.00365432445436021, "W", "jasp", "M",
+			 "<unicode>", "<unicode>", 0.833663904065157, 0.0120187123634577,
+			 0.210004829020265, -0.011470803408624, 0.0087231504317725, -0.00137382648842574,
+			 -0.00198907778438379, "W", "Z", "M", "<unicode>", "<unicode>",
+			 0.78971642094283, 0.00515161349894279, -0.26667887424157))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.179344122985565, 0.0952661457406548, -0.0420389886224553, -0.0608656330165494,
-			 "W", "<unicode>", 0.548448850577653, "M", 0.0700549272569065,
-			 -0.600086107695027, 1, -2.83802376964247, 2.28501281088312,
-			 -0.27650547937968, -0.262561309188748, "jasp", "<unicode>",
-			 0.832442407450932, "M", 1.30692110185071, -0.211570139152336,
-			 -0.176275917663366, 0.237313209387021, 0.0305186458618272, 0.0289539724475132,
-			 "Z", "<unicode>", 0.772389630562844, "M", 0.105509369129414,
-			 0.2892505766421, -0.0194720938716615, 0.00121576385615511, -0.00912816500775321,
-			 -0.170429713580783, "W", "<unicode>", 0.0837015016554032, "jasp",
-			 0.00527761170383737, -1.72960147885, -0.173143922282752, 0.0831119763463519,
-			 -0.0450159729681999, -0.0686979263738746, "W", "<unicode>",
-			 0.491071189820954, "Z", 0.0653726039484443, -0.688606086483896
-			))
+		list(-0.179344122982528, 0.0952661457424963, -0.0420389886200159, -0.0608656326301109,
+			 "W", "<unicode>", 0.548448850599117, "M", 0.0700549272566015,
+			 -0.600086107662819, 1, -2.83802376962187, 2.28501281086359,
+			 -0.27650547937914, -0.262561309197556, "jasp", "<unicode>",
+			 0.832442407449962, "M", 1.30692110184047, -0.211570139153581,
+			 -0.176275917663307, 0.237313209387015, 0.0305186458618544, 0.0289539720326133,
+			 "Z", "<unicode>", 0.772389630562611, "M", 0.105509369129397,
+			 0.289250576642403, -0.0194720938507664, 0.00121576388147244,
+			 -0.00912816498464696, -0.17042971207962, "W", "<unicode>", 0.0837015025042691,
+			 "jasp", 0.0052776117049655, -1.72960147410213, -0.173143918862319,
+			 0.0831119761185618, -0.0450159713718787, -0.0686979244900604,
+			 "W", "<unicode>", 0.491071199020862, "Z", 0.0653726030177582,
+			 -0.688606071868522))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.176023203447552, 0.0942455484110081, -0.0408888275182718, -0.0592003863973729,
-			 "Total", "W", "M", "<unicode>", 0.55315171376746, 0.0689473770922336,
-			 -0.593043988657802, -0.0240755715946421, 0.0263758938030092,
-			 0.00115016110418354, 0.00166524661917653, "Total indirect",
-			 "W", "M", "<unicode>", 0.928792570941724, 0.0128705082837251,
-			 0.0893640778459331))
+		list(-0.176023203401415, 0.0942455484543949, -0.04088882747351, -0.0592003859601345,
+			 "Total", "W", "M", "<unicode>", 0.553151714197891, 0.0689473770915321,
+			 -0.593043988014619, -0.0240755713830474, 0.0263758936760593,
+			 0.00115016114650594, 0.00166524666997642, "Total indirect",
+			 "W", "M", "<unicode>", 0.928792567851924, 0.0128705081973601,
+			 0.0893640817339175))
 
 
 
@@ -1155,7 +1171,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.00473076853113719, "jasp", 0.0290462872712278, "Z", 0.00471940508807034
+		list("M", 0.00473076846047205, "jasp", 0.0290462867595422, "Z", 0.00471940482924205
 			))
 
 })
@@ -1163,7 +1179,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 4 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1174,8 +1190,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -1186,21 +1205,21 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1213,60 +1232,60 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.180704808980374, 0.319295191910322, 0.250000000445348, "sm",
-			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553391856002,
-			 7.07106779920725, 0.759557816133643, 1.34209576261855, 1.0508267893761,
+		list(0.180704808792601, 0.319295191255381, 0.250000000023991, "sm",
+			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553390664225,
+			 7.07106781112503, 0.759557816133643, 1.34209576261855, 1.0508267893761,
 			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.148609349732928,
-			 7.07106781144378, -0.0118702795224498, 0.0198380492378122, 0.00398388485768119,
-			 "Z", "<unicode>", 0.62236169221471, "jasp", 0.00808900801503835,
-			 0.492505984698583, 0.00480662801252419, 0.00849304022686789,
-			 0.00664983411969604, "jasp", "<unicode>", 1.53743684450092e-12,
-			 "jasp", 0.000940428559764784, 7.07106781333743, 0.709503768593746,
-			 1.25365308817975, 0.98157842838675, "Z", "<unicode>", 1.53743684450092e-12,
-			 "Z", 0.138816152714588, 7.0710678058116))
+			 7.07106781144378, -0.0118702791480636, 0.0198380496375273, 0.00398388524473186,
+			 "Z", "<unicode>", 0.622361658675306, "jasp", 0.00808900802149993,
+			 0.49250603215413, 0.00480662801652399, 0.00849304024081898,
+			 0.00664983412867149, "jasp", "<unicode>", 1.53743684450092e-12,
+			 "jasp", 0.000940428562303423, 7.07106780379343, 0.70950376814694,
+			 1.25365308662132, 0.98157842738413, "Z", "<unicode>", 1.53743684450092e-12,
+			 "Z", 0.138816152431004, 7.07106781303425))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.076124833544918, 0.887469273763213, 0.481797053654066, 0.457500030210376,
-			 "s", "M", "", "<unicode>", "", 0.019925203998572, "m", 0.206979425800187,
-			 2.3277533590183, 1, -0.021543163660255, 0.0216819906786552,
-			 6.94135092001066e-05, 6.59129862152676e-05, "s", "jasp", "M",
-			 "<unicode>", "<unicode>", 0.994977467819003, "m", 0.0110270277106785,
-			 0.00629485215974263, 1, -0.0748789044359928, 0.0414053401103893,
-			 -0.0167367821628017, -0.0158927463068384, "s", "Z", "M", "<unicode>",
-			 "<unicode>", 0.572621481976697, "m", 0.0296648931979407, -0.564194923983868
+		list(1, 0.0761248335407898, 0.887469273767342, 0.481797053654066, 0.457500030230142,
+			 "s", "M", "", "<unicode>", "", 0.0199252039998306, "m", 0.206979425802294,
+			 2.32775335899461, 1, -0.0215431635928343, 0.021681990610801,
+			 6.94135089833376e-05, 6.5912986012278e-05, "s", "jasp", "M",
+			 "<unicode>", "<unicode>", 0.99497746781897, "m", 0.011027027676169,
+			 0.00629485215978466, 1, -0.0748789044303343, 0.0414053401046659,
+			 -0.0167367821628342, -0.0158927463075559, "s", "Z", "M", "<unicode>",
+			 "<unicode>", 0.572621481938373, "m", 0.0296648931950371, -0.564194924040187
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.076124833544918, 0.887469273763213, 0.481797053654066, 0.457500030210376,
-			 "sm", "<unicode>", 0.019925203998572, "M", 0.206979425800187,
-			 2.3277533590183, 1, -2.47474004315946, 2.45889351393993, -0.00792326460976673,
-			 -0.00752369440792758, "jasp", "<unicode>", 0.994977122918426,
-			 "M", 1.25860311618358, -0.00629528443707671, -0.138193827042656,
-			 0.267884482770844, 0.0648453278640943, 0.0615207443560763, "Z",
-			 "<unicode>", 0.531340797643182, "M", 0.103593309116033, 0.625960580055051,
-			 1, -0.0407263673358594, 0.0232049257031912, -0.0087607208163341,
-			 -0.107277532590422, "sm", "<unicode>", 0.591156437582189, "jasp",
-			 0.0163093030135585, -0.537160957096143, 1, -0.646468583386574,
-			 0.130262321067123, -0.258103131159725, -0.258331502214158, "sm",
-			 "<unicode>", 0.192721909470704, "Z", 0.198149279930767, -1.30256910976364
+		list(1, 0.0761248335407898, 0.887469273767342, 0.481797053654066, 0.457500030230142,
+			 "sm", "<unicode>", 0.0199252039998306, "M", 0.206979425802294,
+			 2.32775335899461, 1, -2.47474004314175, 2.45889351392222, -0.00792326460976686,
+			 -0.00752369440825277, "jasp", "<unicode>", 0.99497712291839,
+			 "M", 1.25860311617454, -0.00629528443712201, -0.138193827042478,
+			 0.267884482770667, 0.0648453278640943, 0.0615207443269757, "Z",
+			 "<unicode>", 0.531340797642823, "M", 0.103593309115943, 0.625960580055598,
+			 1, -0.0407263673300892, 0.0232049257521384, -0.0087607207889754,
+			 -0.107277532184441, "sm", "<unicode>", 0.591156438991387, "jasp",
+			 0.0163093030245733, -0.537160955055871, 1, -0.64646858318393,
+			 0.130262320863476, -0.258103131160227, -0.258331502348017, "sm",
+			 "<unicode>", 0.192721909237096, "Z", 0.19814927982712, -1.30256911044752
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.062510799857417, 0.867748570143511, 0.465129685000464, 0.441673196889753,
-			 "Total", "s", "M", "<unicode>", 0.0235575795468941, "m", 0.205421573211984,
-			 2.26426892622653, 1, -0.0777843851887314, 0.0444496478815282,
-			 -0.0166673686536016, -0.0158268333206231, "Total indirect",
-			 "s", "M", "<unicode>", 0.59299115720012, "m", 0.0311827242833098,
-			 -0.534506494755579))
+		list(1, 0.0625107998555045, 0.867748570144925, 0.465129685000215, 0.441673196908598,
+			 "Total", "s", "M", "<unicode>", 0.0235575795475436, "m", 0.205421573212833,
+			 2.26426892621596, 1, -0.0777843851627293, 0.0444496478550274,
+			 -0.0166673686538509, -0.0158268333215436, "Total indirect",
+			 "s", "M", "<unicode>", 0.592991157035792, "m", 0.031182724269916,
+			 -0.534506494993159))
 
 
 
@@ -1284,7 +1303,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0524871456084818, "jasp", 0.00287711725479745, "Z", 0.0166837912887763
+		list("M", 0.0524871455266089, "jasp", 0.00287711722817208, "Z", 0.0166837912779469
 			))
 
 })
@@ -1292,7 +1311,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 10 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1303,8 +1322,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -1315,27 +1337,27 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "jasp", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "jasp", processIndependent = "W",
-            processType = "moderators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "jasp", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "jasp", processIndependent = "W", 
+            processType = "moderators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1348,186 +1370,186 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.775624681639219, 0.164689418589435, -0.305467631524892, "W:Z",
-			 "<unicode>", 0.202870427934802, "W", 0.239880453836329, -1.27341609805905,
-			 -0.403934266935277, 0.194627919522508, -0.104653173706385, "Z",
-			 "<unicode>", 0.493114330710614, "W", 0.152697241168503, -0.68536388022164,
-			 -0.675381645469622, 0.224488211854611, -0.225446716807506, "W:Y",
-			 "<unicode>", 0.326065528042304, "W", 0.229562855343846, -0.982069666583581,
-			 -0.544848227873033, 0.064208646255054, -0.24031979080899, "Y",
-			 "<unicode>", 0.121932433434975, "W", 0.155374506606308, -1.54671313884149,
-			 1.68041089306774, 2.96919113606215, 2.32480101456494, "W", "<unicode>",
-			 1.53743684450092e-12, "W", 0.328776511497186, 7.07106783260836,
-			 0.770087765807561, 1.36070158897981, 1.06539467739368, "M",
-			 "<unicode>", 1.53743684450092e-12, "M", 0.150669560214099, 7.07106781143966,
-			 0.00462621247917334, 0.00817425616842431, 0.00640023432379883,
-			 "jasp", "<unicode>", 1.53743684450092e-12, "jasp", 0.00090512981800622,
-			 7.07106781422468, -0.0338675172826539, 0.591585843792492, 0.278859163254919,
-			 "W:Z", "<unicode>", 0.0805151594055906, "Y", 0.159557360749647,
-			 1.74770478744921, 0.42497917937352, 0.896763099491084, 0.660871139432302,
-			 "Z", "<unicode>", 3.99655921690112e-08, "Y", 0.120355252402324,
-			 5.49100372639444, -0.253361712053665, 0.338176442587176, 0.0424073652667557,
-			 "W:Y", "<unicode>", 0.778695364646331, "Y", 0.150905363391067,
-			 0.281019602708607, 0.732634592984875, 1.29452395237902, 1.01357927268195,
-			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341756232833,
-			 7.07106777061925, 1.3047073801261, 2.48432043384046, 1.89451390698328,
-			 "W:Z", "<unicode>", 3.06236369596036e-10, "W:Y", 0.300927226984525,
-			 6.29558822565665, -0.0195935309092111, 0.5773118228469, 0.278859145968844,
-			 "Z", "<unicode>", 0.067057029408488, "W:Y", 0.152274571998369,
-			 1.83129160902735, 1.62269996976224, 2.86721918195558, 2.24495957585891,
-			 "W:Y", "<unicode>", 1.53743684450092e-12, "W:Y", 0.317485224731157,
-			 7.07106788279649, 0.00878383976521929, 0.632731075890016, 0.320757457827618,
-			 "W:Z", "<unicode>", 0.0438891264568135, "Z", 0.159173138140908,
-			 2.01514816867949, 0.721541820724402, 1.27492364466346, 0.998232732693931,
-			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171426695609,
-			 7.07106782200553, 1.76008418232649, 3.10996935827922, 2.43502677030285,
-			 "W:Z", "<unicode>", 1.53743684450092e-12, "W:Z", 0.344364791037094,
-			 7.07106775628686))
+		list(-0.775624647636772, 0.164689430232677, -0.305467608702048, "W:Z",
+			 "<unicode>", 0.202870450939249, "W", 0.239880448132345, -1.27341603319633,
+			 -0.403934268966653, 0.194627913220301, -0.104653177873176, "Z",
+			 "<unicode>", 0.493114310410369, "W", 0.152697240078985, -0.685363912399741,
+			 -0.675381632732128, 0.224488222714744, -0.225446705008692, "W:Y",
+			 "<unicode>", 0.326065552352018, "W", 0.229562854864919, -0.982069617235555,
+			 -0.544848222193963, 0.0642086428787285, -0.240319789657617,
+			 "Y", "<unicode>", 0.121932429674951, "W", 0.155374504296215,
+			 -1.54671315442756, 1.68041088949124, 2.96919112358751, 2.32480100653937,
+			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776509227212,
+			 7.07106785701878, 0.770087765805581, 1.3607015889729, 1.06539467738924,
+			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.150669560212842,
+			 7.07106781146915, 0.00462621247915403, 0.00817425616835696,
+			 0.0064002343237555, "jasp", "<unicode>", 1.53743684450092e-12,
+			 "jasp", 0.000905129817993964, 7.07106781427255, -0.0338675307343898,
+			 0.591585808963625, 0.278859139114618, "W:Z", "<unicode>", 0.0805151752684667,
+			 "Y", 0.159557355296197, 1.7477046958879, 0.424979177939771,
+			 0.896763090704205, 0.660871134321988, "Z", "<unicode>", 3.99655823990486e-08,
+			 "Y", 0.120355250526491, 5.49100376951588, -0.253361723555906,
+			 0.338176425342004, 0.0424073508930492, "W:Y", "<unicode>", 0.77869543560972,
+			 "Y", 0.150905361926007, 0.281019510187072, 0.73263458776998,
+			 1.29452393418976, 1.01357926097987, "Y", "<unicode>", 1.53743684450092e-12,
+			 "Y", 0.143341752922986, 7.07106785225685, 1.30470737488936,
+			 2.4843204101498, 1.89451389251958, "W:Z", "<unicode>", 3.06236147551431e-10,
+			 "W:Y", 0.300927222276806, 6.29558827608131, -0.019593539300475,
+			 0.577311812084042, 0.278859136391783, "Z", "<unicode>", 0.0670570377054538,
+			 "W:Y", 0.15227457139336, 1.83129155340997, 1.6226999721282,
+			 2.86721919020791, 2.24495958116805, "W:Y", "<unicode>", 1.53743684450092e-12,
+			 "W:Y", 0.317485226232808, 7.07106786607402, 0.00878383229420765,
+			 0.632731052612589, 0.320757442453398, "W:Z", "<unicode>", 0.043889131226849,
+			 "Z", 0.159173134108585, 2.01514812314108, 0.721541818903859,
+			 1.27492363831351, 0.998232728608685, "Z", "<unicode>", 1.53743684450092e-12,
+			 "Z", 0.141171425540127, 7.07106785094372, 1.76008416251705,
+			 3.109969289185, 2.43502672585102, "W:Z", "<unicode>", 1.53743684450092e-12,
+			 "W:Z", 0.344364778464216, 7.07106788537044))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.17662897078333, 0.198188722082243, 0.0107798756494563,
-			 0.0156075103503007, "W", "M", "", "<unicode>", "", 0.91023797961525,
-			 0.0956185153967336, 0.112738370855573, 50, 16, -0.253646429563072,
-			 0.255689997310831, 0.00102178387387933, 0.00147937721231009,
-			 "W", "M", "", "<unicode>", "", 0.993725661010209, 0.129935149546493,
-			 0.00786379880614001, 84, 16, -0.482406641060446, 0.463153088367605,
-			 -0.00962677634642022, -0.0139380097092644, "W", "M", "", "<unicode>",
-			 "", 0.968165737736816, 0.241218649140113, -0.0399089223853022,
-			 16, 50, -0.287063811396422, 0.254975631108205, -0.0160440901441088,
-			 -0.0232292385485882, "W", "M", "", "<unicode>", "", 0.907630460149085,
-			 0.138277908874899, -0.116027862112263, 50, 50, -0.162770604482548,
-			 0.111166240643177, -0.0258021819196858, -0.0373573716865789,
-			 "W", "M", "", "<unicode>", "", 0.711964477081129, 0.0698831323653148,
-			 -0.36921902390987, 84, 50, -0.328505398120975, 0.255603913841005,
-			 -0.0364507421399853, -0.0527747586081534, "W", "M", "", "<unicode>",
-			 "", 0.8067513876668, 0.149010215639001, -0.24461908187753, 16,
-			 84, -0.539352156680732, 0.444380366081745, -0.0474858952994934,
-			 -0.0687518693610834, "W", "M", "", "<unicode>", "", 0.849920854228458,
-			 0.250956785563927, -0.189219411592268, 50, 84, -0.354366568046264,
-			 0.239878593896124, -0.0572439870750703, -0.082880002499074,
-			 "W", "M", "", "<unicode>", "", 0.705721097057776, 0.151595939167688,
-			 -0.377608974154312, 84, 84, -0.28428960751754, 0.1485045129268,
-			 -0.0678925472953698, -0.0982973894206485, "W", "M", "", "<unicode>",
-			 "", 0.538607348795464, 0.110408692164286, -0.614920310751866,
-			 1, 16, 16, -0.0111490340445131, 0.0134137362877749, 0.00113235112163089,
-			 0.00163946064182291, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.856595317626352, 0.0062661279814415, 0.180709861813322, 1,
-			 50, 16, -0.0215878052216607, 0.0260832037353987, 0.00224769925686899,
-			 0.00325430371895946, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.85336588793946, 0.0121611951375337, 0.184825523433285, 1,
-			 84, 16, -0.0336122745291698, 0.0405419300795976, 0.00346482777521391,
-			 0.00501650827172467, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.854674688161386, 0.0189172365394687, 0.183157184083677, 1,
-			 16, 50, -0.0123692268004226, 0.0147917702348094, 0.00121127171719339,
-			 0.00175372485526547, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.861226500563284, 0.00692895309543301, 0.174813092325846, 1,
-			 50, 50, -0.0219770976570848, 0.0266303373619478, 0.00232661985243149,
-			 0.00336856793240202, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.85116720404789, 0.0124000837266506, 0.187629366359121, 1,
-			 84, 50, -0.0336743079787598, 0.0407618047203127, 0.00354374837077642,
-			 0.00513077248516723, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.851958889964636, 0.0189891531901135, 0.186619610432204, 1,
-			 16, 84, -0.0151126867571638, 0.0177202442947984, 0.00130377876881729,
-			 0.00188766005198257, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.876302353081024, 0.00837590162649523, 0.15565831918239, 1,
-			 50, 84, -0.0233253732080462, 0.028163627016157, 0.00241912690405539,
-			 0.00350250312911912, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.853878965372579, 0.0131351903989925, 0.184171437990038, 1,
-			 84, 84, -0.0343525284462597, 0.0416250392910604, 0.00363625542240032,
-			 0.00526470768188434, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.851185401098879, 0.0193823887419926, 0.187606154783298))
+		list(16, 16, -0.176444770852939, 0.197964918108211, 0.0107600736276356,
+			 0.0155788402113343, "W", "M", "", "<unicode>", "", 0.910304946941534,
+			 0.0955144308554765, 0.112653905082853, 50, 16, -0.253713094439822,
+			 0.255779160654582, 0.00103303310738025, 0.00149566427422591,
+			 "W", "M", "", "<unicode>", "", 0.99365852580501, 0.129974902374027,
+			 0.00794794293753348, 84, 16, -0.481498197098939, 0.462351281732197,
+			 -0.00957345768337086, -0.0138608129163868, "W", "M", "", "<unicode>",
+			 "", 0.968284627491674, 0.240782352705483, -0.0397597979079504,
+			 16, 50, -0.286449365067631, 0.254299082229862, -0.0160751414188848,
+			 -0.0232741957170452, "W", "M", "", "<unicode>", "", 0.907232540959648,
+			 0.137948567311147, -0.116529962813074, 50, 50, -0.162770604502558,
+			 0.111166240624278, -0.0258021819391402, -0.0373573716541535,
+			 "W", "M", "", "<unicode>", "", 0.711964476874762, 0.0698831323655984,
+			 -0.369219024186756, 84, 50, -0.327568221561612, 0.254750876101829,
+			 -0.0364086727298913, -0.0527138488447663, "W", "M", "", "<unicode>",
+			 "", 0.806388358667322, 0.148553519926055, -0.245087916785912,
+			 16, 84, -0.53914291257157, 0.444007775805707, -0.0475675683829317,
+			 -0.0688701186185326, "W", "M", "", "<unicode>", "", 0.849577892975773,
+			 0.250808355697412, -0.189657032161718, 50, 84, -0.354786248143845,
+			 0.24019703033747, -0.0572946089031871, -0.082953294555641, "W",
+			 "M", "", "<unicode>", "", 0.705821355470089, 0.151784237663158,
+			 -0.377474036733223, 84, 84, -0.284184601940924, 0.148382402553047,
+			 -0.0679010996939382, -0.0983097717462537, "W", "M", "", "<unicode>",
+			 "", 0.538342968416112, 0.110350753357206, -0.615320671841198,
+			 1, 16, 16, -0.0111793920727019, 0.013451126399371, 0.00113586716333452,
+			 0.0016445512968835, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.856546242903825, 0.00628341098774142, 0.180772380726096, 1,
+			 50, 16, -0.0215877976960596, 0.0260831299569311, 0.00224766613043573,
+			 0.0032542557519823, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.853367777277042, 0.0121611743963187, 0.184823114708076, 1,
+			 84, 16, -0.0335644230028843, 0.0404843952107508, 0.00345998610393328,
+			 0.00500949830939567, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.854671262801171, 0.018890351760982, 0.183161549753661, 1,
+			 16, 50, -0.0123952664046456, 0.014824908018758, 0.00121482080705622,
+			 0.00175886335851139, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.861123524799391, 0.00694404964532839, 0.174944141978232, 1,
+			 50, 50, -0.0219770969254837, 0.0266303364737986, 0.00232661977415743,
+			 0.00336856781361019, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.85116720409492, 0.0124000833134414, 0.187629366299131, 1,
+			 84, 50, -0.0336272221674576, 0.0407051016627675, 0.00353893974765497,
+			 0.00512381037102356, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.851953409042798, 0.018962675951331, 0.186626600419577, 1,
+			 16, 84, -0.015137591473509, 0.0177525449514646, 0.00130747673897778,
+			 0.00189301410951842, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.876168348744235, 0.00839049510205464, 0.155828318004453, 1,
+			 50, 84, -0.0233282498061843, 0.0281668012183422, 0.00241927570607899,
+			 0.00350271856461722, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.853887055936485, 0.0131367339988676, 0.184161124544924, 1,
+			 84, 84, -0.0343088389363229, 0.0415720302954759, 0.00363159567957653,
+			 0.00525796112203059, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.851186688630283, 0.0193577203026019, 0.187604512453277))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.165033027124615, 0.110210436301023, -0.0274112954117962, -0.0396871068616029,
-			 "W", "<unicode>", 0.696253532431748, "M", 0.0702164594851546,
-			 -0.39038276228655, 1, -2.7721635341209, 2.28533086772921, -0.243416333195845,
-			 -0.231140848510276, "jasp", "<unicode>", 0.850355026643209,
-			 "M", 1.29020085107252, -0.188665457005007, -0.0323661796343282,
-			 0.532496986397262, 0.250065403381467, 0.239061400156364, "Y",
-			 "<unicode>", 0.0826778673327568, "M", 0.144100394315191, 1.73535544139108,
-			 -0.251421174646128, 0.231388138769353, -0.0100165179383873,
-			 -0.0146004255482116, "W:Y", "<unicode>", 0.935184215133268,
-			 "M", 0.123167904416566, -0.0813240915791706, -0.400451576328441,
-			 0.156816914157345, -0.121817331085548, -0.115571824865467, "Z",
-			 "<unicode>", 0.391508291905907, "M", 0.142162941482968, -0.856885274142574,
-			 -0.259080203075392, 0.202833682224973, -0.0281232604252098,
-			 -0.0406819210160877, "W:Z", "<unicode>", 0.811367914199089,
-			 "M", 0.117837340110299, -0.238661704336551, -0.0202939833513926,
-			 0.000690549669768906, -0.00980171684081183, -0.183005432088637,
-			 "W", "<unicode>", 0.0671052090209414, "jasp", 0.00535329556733818,
-			 -1.83096874019335, -0.0272440856524356, 0.0164861368043032,
-			 -0.00537897442406621, -0.066312786144825, "Y", "<unicode>",
-			 0.629688582414847, "jasp", 0.0111558739858684, -0.482165219047828,
-			 -0.0233913104645038, 0.0139844955302264, -0.00470340746713872,
-			 -0.088410387387297, "W:Y", "<unicode>", 0.621809448402553, "jasp",
-			 0.00953481959095825, -0.493287515539245, -0.0130177535260292,
-			 0.0300455004801481, 0.00851387347705946, 0.104162652523365,
-			 "Z", "<unicode>", 0.438343104942814, "jasp", 0.0109857258464581,
-			 0.774994169347893, -0.018240653011238, 0.0175608026767843, -0.000339925167226897,
-			 -0.00634104816442643, "W:Z", "<unicode>", 0.970310661200632,
-			 "jasp", 0.00913319223476034, -0.0372186589846608))
+		list(-0.165033027140121, 0.110210436286898, -0.0274112954266112, -0.0396871068186816,
+			 "W", "<unicode>", 0.696253532277203, "M", 0.070216459485507,
+			 -0.39038276249558, 1, -2.7721635340408, 2.28533086764121, -0.243416333199793,
+			 -0.23114084853809, "jasp", "<unicode>", 0.850355026635895, "M",
+			 1.29020085102963, -0.188665457014338, -0.0323661796263408, 0.532496986405532,
+			 0.250065403389596, 0.239061398809007, "Y", "<unicode>", 0.0826778673229251,
+			 "M", 0.144100394315263, 1.73535544144662, -0.251421174599156,
+			 0.231388138824765, -0.0100165178871953, -0.0146004253656279,
+			 "W:Y", "<unicode>", 0.935184215464927, "M", 0.123167904418719,
+			 -0.0813240911621211, -0.400451576319203, 0.156816914170204,
+			 -0.121817331074499, -0.11557182463053, "Z", "<unicode>", 0.39150829195194,
+			 "M", 0.142162941483892, -0.856885274059288, -0.259080203021117,
+			 0.202833682278043, -0.0281232603715368, -0.0406819207892173,
+			 "W:Z", "<unicode>", 0.811367914551826, "M", 0.117837340109991,
+			 -0.238661703881691, -0.0202939830168777, 0.000690550004209228,
+			 -0.00980171650633422, -0.183005425771481, "W", "<unicode>",
+			 0.0671052183463137, "jasp", 0.00535329556731915, -1.83096867771917,
+			 -0.0272440858154831, 0.0164861366410571, -0.00537897458721299,
+			 -0.0663127878616184, "Y", "<unicode>", 0.629688572025293, "jasp",
+			 0.0111558739858177, -0.482165233674312, -0.023391310375865,
+			 0.0139844956187374, -0.0047034073785638, -0.0884103851771005,
+			 "W:Y", "<unicode>", 0.621809454964315, "jasp", 0.00953481959092566,
+			 -0.493287506251304, -0.0130177535774709, 0.0300455004285068,
+			 0.00851387342551794, 0.104162651818335, "Z", "<unicode>", 0.438343107713032,
+			 "jasp", 0.0109857258464072, 0.774994164659803, -0.0182406527994527,
+			 0.0175608028884514, -0.000339924955500676, -0.00634104419935592,
+			 "W:Z", "<unicode>", 0.970310679684336, "jasp", 0.00913319223473019,
+			 -0.0372186358027225))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.175160347247986, 0.19898480079016, 0.0119122267710871,
-			 0.0172469709921237, "Total", "W", "M", "<unicode>", 0.900678170792649,
-			 0.0954469446860645, 0.124804694485169, 50, 16, -0.250371108990955,
-			 0.256910075252451, 0.00326948313074832, 0.00473368093126956,
-			 "Total", "W", "M", "<unicode>", 0.979844095305321, 0.12941084332283,
-			 0.0252643677052024, 84, 16, -0.477653506855015, 0.465329609712603,
-			 -0.00616194857120631, -0.00892150143753972, "Total", "W", "M",
-			 "<unicode>", 0.979564521521718, 0.240561337862774, -0.0256148748836828,
-			 16, 50, -0.285608438444605, 0.255942801590774, -0.0148328184269154,
-			 -0.0214755136933228, "Total", "W", "M", "<unicode>", 0.914499521107825,
-			 0.138153365140142, -0.107364872450766, 50, 50, -0.158318498727413,
-			 0.111367374592904, -0.0234755620672543, -0.0339888037541769,
-			 "Total", "W", "M", "<unicode>", 0.732937134415648, 0.0687986808552518,
-			 -0.341221107373344, 84, 50, -0.322683623437084, 0.256869635898667,
-			 -0.0329069937692089, -0.0476439861229861, "Total", "W", "M",
-			 "<unicode>", 0.823867667330872, 0.147847935958822, -0.222573237534909,
-			 16, 84, -0.537949356357774, 0.445585123296421, -0.0461821165306761,
-			 -0.0668642093091008, "Total", "W", "M", "<unicode>", 0.853965417429186,
-			 0.250906263434479, -0.184061234257454, 50, 84, -0.350935390959233,
-			 0.241285670617203, -0.0548248601710149, -0.0793774993699549,
-			 "Total", "W", "M", "<unicode>", 0.716689073207589, 0.151079577545251,
-			 -0.36288730126078, 84, 84, -0.277368610653482, 0.148856026907543,
-			 -0.0642562918729695, -0.0930326817387642, "Total", "W", "M",
-			 "<unicode>", 0.554549857431694, 0.108732772878234, -0.59095606754118,
-			 16, 16, -0.0111490340445131, 0.0134137362877749, 0.00113235112163089,
-			 0.00163946064182291, "Total indirect", "W", "M", "<unicode>",
-			 0.856595317626352, 0.0062661279814415, 0.180709861813322, 50,
-			 16, -0.0215878052216607, 0.0260832037353987, 0.00224769925686899,
-			 0.00325430371895946, "Total indirect", "W", "M", "<unicode>",
-			 0.85336588793946, 0.0121611951375337, 0.184825523433285, 84,
-			 16, -0.0336122745291698, 0.0405419300795976, 0.00346482777521391,
-			 0.00501650827172467, "Total indirect", "W", "M", "<unicode>",
-			 0.854674688161386, 0.0189172365394687, 0.183157184083677, 16,
-			 50, -0.0123692268004226, 0.0147917702348094, 0.00121127171719339,
-			 0.00175372485526547, "Total indirect", "W", "M", "<unicode>",
-			 0.861226500563284, 0.00692895309543301, 0.174813092325846, 50,
-			 50, -0.0219770976570848, 0.0266303373619478, 0.00232661985243149,
-			 0.00336856793240202, "Total indirect", "W", "M", "<unicode>",
-			 0.85116720404789, 0.0124000837266506, 0.187629366359121, 84,
-			 50, -0.0336743079787598, 0.0407618047203127, 0.00354374837077642,
-			 0.00513077248516723, "Total indirect", "W", "M", "<unicode>",
-			 0.851958889964636, 0.0189891531901135, 0.186619610432204, 16,
-			 84, -0.0151126867571638, 0.0177202442947984, 0.00130377876881729,
-			 0.00188766005198257, "Total indirect", "W", "M", "<unicode>",
-			 0.876302353081024, 0.00837590162649523, 0.15565831918239, 50,
-			 84, -0.0233253732080462, 0.028163627016157, 0.00241912690405539,
-			 0.00350250312911912, "Total indirect", "W", "M", "<unicode>",
-			 0.853878965372579, 0.0131351903989925, 0.184171437990038, 84,
-			 84, -0.0343525284462597, 0.0416250392910604, 0.00363625542240032,
-			 0.00526470768188434, "Total indirect", "W", "M", "<unicode>",
-			 0.851185401098879, 0.0193823887419926, 0.187606154783298))
+		list(16, 16, -0.174969887594895, 0.198761769176835, 0.0118959407909701,
+			 0.0172233915082178, "Total", "W", "M", "<unicode>", 0.900704087208404,
+			 0.0953414602818413, 0.124771959185482, 50, 16, -0.250438182054786,
+			 0.256999580530418, 0.00328069923781598, 0.00474992002620822,
+			 "Total", "W", "M", "<unicode>", 0.979781203799514, 0.129450787511354,
+			 0.0253432157570167, 84, 16, -0.476751103736588, 0.464524160577713,
+			 -0.00611347157943758, -0.00885131460699116, "Total", "W", "M",
+			 "<unicode>", 0.979688477204042, 0.240125653261734, -0.0254594688089156,
+			 16, 50, -0.284987908815621, 0.255267267591964, -0.0148603206118286,
+			 -0.0215153323585338, "Total", "W", "M", "<unicode>", 0.914136901771574,
+			 0.137822730588176, -0.107821986608524, 50, 50, -0.158318498825105,
+			 0.111367374495139, -0.0234755621649827, -0.0339888038405434,
+			 "Total", "W", "M", "<unicode>", 0.732937133346281, 0.0687986808552331,
+			 -0.341221108793936, 84, 50, -0.321750239285356, 0.256010773320884,
+			 -0.0328697329822363, -0.0475900384737427, "Total", "W", "M",
+			 "<unicode>", 0.823527047065348, 0.147390721759059, -0.223010869272821,
+			 16, 84, -0.537735191445333, 0.445215008157425, -0.0462600916439539,
+			 -0.0669771045090142, "Total", "W", "M", "<unicode>", 0.853635659265702,
+			 0.250757209662051, -0.184481601571095, 50, 84, -0.35135618258725,
+			 0.241605516193034, -0.0548753331971081, -0.0794505759910238,
+			 "Total", "W", "M", "<unicode>", 0.716778420000932, 0.151268519079302,
+			 -0.362767702963628, 84, 84, -0.27727505489836, 0.148736046869637,
+			 -0.0642695040143617, -0.0930518106242231, "Total", "W", "M",
+			 "<unicode>", 0.554269956188997, 0.108678298460665, -0.591373852228863,
+			 16, 16, -0.0111793920727019, 0.013451126399371, 0.00113586716333452,
+			 0.0016445512968835, "Total indirect", "W", "M", "<unicode>",
+			 0.856546242903825, 0.00628341098774142, 0.180772380726096, 50,
+			 16, -0.0215877976960596, 0.0260831299569311, 0.00224766613043573,
+			 0.0032542557519823, "Total indirect", "W", "M", "<unicode>",
+			 0.853367777277042, 0.0121611743963187, 0.184823114708076, 84,
+			 16, -0.0335644230028843, 0.0404843952107508, 0.00345998610393328,
+			 0.00500949830939567, "Total indirect", "W", "M", "<unicode>",
+			 0.854671262801171, 0.018890351760982, 0.183161549753661, 16,
+			 50, -0.0123952664046456, 0.014824908018758, 0.00121482080705622,
+			 0.00175886335851139, "Total indirect", "W", "M", "<unicode>",
+			 0.861123524799391, 0.00694404964532839, 0.174944141978232, 50,
+			 50, -0.0219770969254837, 0.0266303364737986, 0.00232661977415743,
+			 0.00336856781361019, "Total indirect", "W", "M", "<unicode>",
+			 0.85116720409492, 0.0124000833134414, 0.187629366299131, 84,
+			 50, -0.0336272221674576, 0.0407051016627675, 0.00353893974765497,
+			 0.00512381037102356, "Total indirect", "W", "M", "<unicode>",
+			 0.851953409042798, 0.018962675951331, 0.186626600419577, 16,
+			 84, -0.015137591473509, 0.0177525449514646, 0.00130747673897778,
+			 0.00189301410951842, "Total indirect", "W", "M", "<unicode>",
+			 0.876168348744235, 0.00839049510205464, 0.155828318004453, 50,
+			 84, -0.0233282498061843, 0.0281668012183422, 0.00241927570607899,
+			 0.00350271856461722, "Total indirect", "W", "M", "<unicode>",
+			 0.853887055936485, 0.0131367339988676, 0.184161124544924, 84,
+			 84, -0.0343088389363229, 0.0415720302954759, 0.00363159567957653,
+			 0.00525796112203059, "Total indirect", "W", "M", "<unicode>",
+			 0.851186688630283, 0.0193577203026019, 0.187604512453277))
 
 
 
@@ -1545,14 +1567,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0393515258207284, "jasp", 0.0403038652118407))
+		list("M", 0.0393515256246956, "jasp", 0.0403038626626356))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 10 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1563,8 +1585,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -1575,191 +1600,191 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "jasp", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "jasp", processIndependent = "s",
-            processType = "moderators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "jasp", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "jasp", processIndependent = "s", 
+            processType = "moderators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(847.472979995417, 938.653936505, 0, "Model 1", 100, -388.736489997708,
+		list(847.472979995417, 938.653936505, 0, "Model 1", 100, -388.736489997709,
 			 10))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.0981744973512576, 0.0336487163693821, -0.0322628904909378,
-			 "sm:Z", "<unicode>", 0.337368676127284, "sm", 0.0336289887876625,
-			 -0.959377360248609, -0.163250738021748, 0.034199173449093, -0.0645257822863276,
-			 "Z", "<unicode>", 0.200188183354747, "sm", 0.0503708009505024,
-			 -1.28101560961349, 0.0922263539786436, 0.197773643560362, 0.144999998769503,
-			 "sm:medexperimental", "<unicode>", 7.23782935807549e-08, "sm",
-			 0.0269258237432579, 5.38516481991789, -0.00962232532592927,
-			 0.0896223236031617, 0.0399999991386162, "medexperimental", "<unicode>",
-			 0.11412862789686, "sm", 0.0253179777056926, 1.57990498307542,
-			 0.180704808433171, 0.319295190001709, 0.24999999921744, "sm",
-			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553388382953,
-			 7.07106783393774, 0.75633749987223, 1.33640564566244, 1.04637157276733,
+		list(-0.0981744917278724, 0.0336487199732665, -0.0322628858773029,
+			 "sm:Z", "<unicode>", 0.337368737814365, "sm", 0.0336289882724743,
+			 -0.959377237753847, -0.163250721980516, 0.0341991850211078,
+			 -0.064525768479704, "Z", "<unicode>", 0.200188269444671, "sm",
+			 0.0503707998103749, -1.28101536450913, 0.0922263507083144, 0.197773635318798,
+			 0.144999993013556, "sm:medexperimental", "<unicode>", 7.23782775935433e-08,
+			 "sm", 0.0269258224750626, 5.38516485978649, -0.00962233087571786,
+			 0.0896223081307017, 0.0399999886274919, "medexperimental", "<unicode>",
+			 0.114128686807563, "sm", 0.0253179751743524, 1.5799047258729,
+			 0.180704805378233, 0.319295179346262, 0.249999992362248, "sm",
+			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553368993543,
+			 7.07106802783184, 0.75633749987223, 1.33640564566244, 1.04637157276733,
 			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.147979286957748,
-			 7.07106781144377, 0.00473838137954982, 0.00837245228815008,
-			 0.00655541683384995, "jasp", "<unicode>", 1.53743684450092e-12,
-			 "jasp", 0.00092707594049313, 7.07106780310036, -0.136062946971184,
-			 -0.00208333323406144, -0.0690731401026226, "sm:Z", "<unicode>",
-			 0.0432883154841679, "medexperimental", 0.0341791009411235, -2.02091740861198,
-			 -0.170527220567738, 0.0272978570519994, -0.0716146817578691,
-			 "Z", "<unicode>", 0.15588338198129, "medexperimental", 0.050466508359377,
-			 -1.41905362756412, 0.0922263544458194, 0.197773644605109, 0.144999999525464,
-			 "sm:medexperimental", "<unicode>", 7.23782940248441e-08, "medexperimental",
-			 0.0269258238906003, 5.38516481852513, 0.180704808817347, 0.319295191341695,
-			 0.250000000079521, "medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "medexperimental", 0.0353553390821287, 7.0710678095544, -0.14432695140717,
-			 -0.0209201561493119, -0.0826235537782411, "sm:Z", "<unicode>",
-			 0.00867819810423809, "sm:medexperimental", 0.0314819038082524,
-			 -2.62447767712773, -0.192385821563388, -0.0102862400203185,
-			 -0.101336030791853, "Z", "<unicode>", 0.0291546901114581, "sm:medexperimental",
-			 0.0464548285018113, -2.18138854581935, 0.148828480033195, 0.262971517812081,
-			 0.205899998922638, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "sm:medexperimental", 0.0291186569445234, 7.07106784886807,
-			 0.294098354644827, 0.610628759351986, 0.452363556998407, "sm:Z",
-			 "<unicode>", 2.11779662695477e-08, "Z", 0.0807490360036995,
-			 5.60209235163726, 0.721541821674459, 1.27492364797721, 0.998232734825833,
-			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171427298602,
-			 7.07106780690401, 0.323967567022249, 0.572432394334317, 0.448199980678283,
-			 "sm:Z", "<unicode>", 1.53743684450092e-12, "sm:Z", 0.0633850492335386,
-			 7.0710678006562))
+			 7.07106781144378, 0.0047383813963256, 0.00837245234666303, 0.00655541687149431,
+			 "jasp", "<unicode>", 1.53743684450092e-12, "jasp", 0.000927075951140562,
+			 7.07106776249489, -0.136062937774257, -0.00208333098989223,
+			 -0.0690731343820746, "sm:Z", "<unicode>", 0.043288321954694,
+			 "medexperimental", 0.0341790991674283, -2.020917346116, -0.170527207100196,
+			 0.027297859897122, -0.071614673601537, "Z", "<unicode>", 0.155883406883244,
+			 "medexperimental", 0.0504665056495265, -1.41905354214294, 0.0922263515318825,
+			 0.197773633657645, 0.144999992594764, "sm:medexperimental",
+			 "<unicode>", 7.23782327405331e-08, "medexperimental", 0.0269258218411935,
+			 5.38516497100675, 0.18070480194783, 0.319295167377977, 0.249999984662903,
+			 "medexperimental", "<unicode>", 1.53743684450092e-12, "medexperimental",
+			 0.0353553347212831, 7.07106824567578, -0.14432694596724, -0.020920150877563,
+			 -0.0826235484224017, "sm:Z", "<unicode>", 0.00867820234841998,
+			 "sm:medexperimental", 0.0314819037653484, -2.62447751058003,
+			 -0.19238581414852, -0.0102862329652973, -0.101336023556908,
+			 "Z", "<unicode>", 0.0291547013024589, "sm:medexperimental",
+			 0.0464548284100118, -2.18138839438849, 0.148828479437799, 0.262971515735376,
+			 0.205899997586587, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
+			 "sm:medexperimental", 0.0291186565666314, 7.07106789475098,
+			 0.294098359661778, 0.610628774473943, 0.452363567067861, "sm:Z",
+			 "<unicode>", 2.11779729308859e-08, "Z", 0.0807490385815547,
+			 5.60209229749508, 0.721541826811652, 1.27492366589545, 0.99823274635355,
+			 "Z", "<unicode>", 1.53743684450092e-12, "Z", 0.141171430559133,
+			 7.07106772524642, 0.323967569941483, 0.572432404516437, 0.44819998722896,
+			 "sm:Z", "<unicode>", 1.53743684450092e-12, "sm:Z", 0.0633850510863499,
+			 7.07106769730885))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.160970371830601, 1.33182840723561, 0.585429017702503,
-			 0.55590583477186, "s", "M", "", 0, "<unicode>", "", 0.124226417463594,
-			 "m", 0.380823012780137, 1.53727321631294, 1, 16, -0.360281080650791,
-			 1.00801315965808, 0.323866039503647, 0.30753347647694, "s",
-			 "M", "", 1, "<unicode>", "", 0.353500650301442, "m", 0.349061067219042,
-			 0.927820573299327, 1, 50, 0.0268546266577371, 1.18729031426532,
-			 0.607072470461528, 0.576457808298163, "s", "M", "", 0, "<unicode>",
-			 "", 0.0402982794242386, "m", 0.296034951856501, 2.05067836299208,
-			 1, 50, -0.240695938761411, 0.931714923286754, 0.345509492262672,
-			 0.328085450003242, "s", "M", "", 1, "<unicode>", "", 0.248007384296122,
-			 "m", 0.299089899430804, 1.15520280999194, 1, 84, -0.059304461321264,
-			 1.32418829967479, 0.632441919176762, 0.600547875820081, "s",
-			 "M", "", 0, "<unicode>", "", 0.07314364880816, "m", 0.352938312109015,
-			 1.79193331377812, 1, 84, -0.402470503517213, 1.14422838547302,
-			 0.370878940977905, 0.352175517525161, "s", "M", "", 1, "<unicode>",
-			 "", 0.347243502527046, "m", 0.394573293486615, 0.939949426634184,
-			 1, 16, -0.0244284537044584, 0.0234848464939296, -0.000471803605264419,
-			 -0.000448010551410986, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
-			 0.969209589163599, "m", 0.0122230052634441, -0.0385996401944997,
-			 1, 16, -0.0318353987467585, 0.0331197920769247, 0.000642196665083111,
-			 0.000609810689930898, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
-			 0.969085400468992, "m", 0.016570506227676, 0.0387554041053083,
-			 1, 50, -0.0144876725439467, 0.0139309936286017, -0.000278339457672477,
-			 -0.000264302799978382, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
-			 0.969374544769296, "m", 0.00724979295454182, -0.0383927457539466,
-			 1, 50, -0.0413455466910257, 0.0430168683163758, 0.000835660812675053,
-			 0.000793518441363502, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
-			 0.969026515881269, "m", 0.0215214196977193, 0.038829260541934,
-			 1, 84, -0.00379212504206655, 0.00368898547880336, -5.15697816315973e-05,
-			 -4.89691177581562e-05, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
-			 0.978442692232085, "m", 0.00190848163024422, -0.0270213665221384,
-			 1, 84, -0.0525713186328948, 0.0546961796103267, 0.00106243048871593,
-			 0.00100885212358373, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
-			 0.969029984327239, "m", 0.0273646605471666, 0.0388249102116466
+		list(1, 16, -0.161085559019858, 1.33192544097319, 0.585419940976666,
+			 0.555897216186753, "s", "M", "", 0, "<unicode>", "", 0.124285749357073,
+			 "m", 0.380877151766494, 1.5370308727145, 1, 16, -0.360376490476767,
+			 1.00809041603238, 0.323856962777809, 0.307524857712451, "s",
+			 "M", "", 1, "<unicode>", "", 0.353574880214104, "m", 0.349105115528511,
+			 0.927677505634718, 1, 50, 0.0268546266707944, 1.18729031425226,
+			 0.607072470461529, 0.576457808714496, "s", "M", "", 0, "<unicode>",
+			 "", 0.0402982794197413, "m", 0.296034951849839, 2.05067836303823,
+			 1, 50, -0.240695938745551, 0.931714923270894, 0.345509492262671,
+			 0.328085450240194, "s", "M", "", 1, "<unicode>", "", 0.248007384283326,
+			 "m", 0.299089899422712, 1.15520281002319, 1, 84, -0.0596803471506256,
+			 1.32464587603669, 0.63248276444303, 0.600586661693501, "s",
+			 "M", "", 0, "<unicode>", "", 0.0732980928056881, "m", 0.353150933921924,
+			 1.79097010283671, 1, 84, -0.402919554149085, 1.14475912663743,
+			 0.370919786244173, 0.352214303219199, "s", "M", "", 1, "<unicode>",
+			 "", 0.347495737141648, "m", 0.394823244966338, 0.939457823147664,
+			 1, 16, -0.0244326430693981, 0.0234888736304965, -0.000471884719450804,
+			 -0.000448087575332908, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
+			 0.969209575724456, "m", 0.0122251013482629, -0.0385996570505206,
+			 1, 16, -0.0318314326482572, 0.0331156637466043, 0.000642115549173544,
+			 0.000609733665136679, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
+			 0.96908545283394, "m", 0.0165684412844205, 0.0387553384262726,
+			 1, 50, -0.0144876723899645, 0.013930993480737, -0.000278339454613771,
+			 -0.000264302797264813, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
+			 0.969374544780551, "m", 0.00724979287753866, -0.0383927457398298,
+			 1, 50, -0.0413455467580486, 0.0430168683860697, 0.000835660814010577,
+			 0.000793518443204775, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
+			 0.969026515881963, "m", 0.0215214197325967, 0.0388292605410632,
+			 1, 84, -0.00378016610700144, 0.00367775671687788, -5.12046950617806e-05,
+			 -4.86224425376552e-05, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
+			 0.978528735557626, "m", 0.00190256629272437, -0.0269134879859867,
+			 1, 84, -0.0525894326870332, 0.0547150238341584, 0.00106279557356257,
+			 0.00100919879793193, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
+			 0.96903001252837, "m", 0.0273740888525492, 0.0388248748401207
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0297998228625788, 1.1861513865021, 0.607975604682339, 0.57731539746397,
-			 "sm", "<unicode>", 0.039304689788292, "M", 0.294993064352374,
-			 2.06098270824463, 1, -2.52535807349122, 2.42710102170522, -0.0491285258930036,
-			 -0.0466509745363179, "jasp", "<unicode>", 0.968981446200706,
-			 "M", 1.26340563761906, -0.0388857896705197, 1, -0.427962420422615,
-			 0.721164092521438, 0.146600836049411, 0.139207756496475, "medexperimental",
-			 "<unicode>", 0.61701290826816, "M", 0.293149905306479, 0.500088294062878,
-			 1, -1.0923333662571, 0.569207409859389, -0.261562978198857,
-			 -0.24837235829492, "sm:medexperimental", "<unicode>", 0.537180192608784,
-			 "M", 0.423870231601834, -0.617082679315301, -0.22679887497289,
-			 0.320540575339942, 0.0468708501835258, 0.044467808041275, "Z",
-			 "<unicode>", 0.73711294725054, "M", 0.139629976527675, 0.335678994934414,
-			 1, -0.39301106550489, 0.438394694691354, 0.0226918145932323,
-			 0.0215284180143744, "sm:Z", "<unicode>", 0.91479865313902, "M",
-			 0.212097203508398, 0.10698780661827, 1, -0.040249354551929,
-			 0.0512517860135257, 0.00550121573079837, 0.067363960297201,
-			 "sm", "<unicode>", 0.813686243668003, "jasp", 0.0233425566202247,
-			 0.235673230670541, 1, -0.0489096691730714, 0.0420350267752373,
-			 -0.00343732119891705, -0.0420909813582191, "medexperimental",
-			 "<unicode>", 0.882219229073211, "jasp", 0.0232006038543741,
-			 -0.148156540256128, 1, -0.0882812899509356, 0.0429308443554908,
-			 -0.0226752227977224, -0.277664589615045, "sm:medexperimental",
-			 "<unicode>", 0.498141851928166, "jasp", 0.0334730983174719,
-			 -0.677416311530584, -0.0174100503144989, 0.025880669620468,
-			 0.00423530965298456, 0.0518167305208206, "Z", "<unicode>", 0.701347055229883,
-			 "jasp", 0.0110437539353882, 0.383502718166607, 1, -0.037022069102573,
-			 0.028764742958953, -0.00412866307181, -0.0505119670889911, "sm:Z",
-			 "<unicode>", 0.805676277503339, "jasp", 0.0167826584009819,
-			 -0.246007692772228))
+		list(1, 0.0297998228757093, 1.18615138648897, 0.607975604682339, 0.577315397880922,
+			 "sm", "<unicode>", 0.0393046897838265, "M", 0.294993064345675,
+			 2.06098270829143, 1, -2.5253580735377, 2.42710102175169, -0.0491285258930039,
+			 -0.0466509745700108, "jasp", "<unicode>", 0.968981446201288,
+			 "M", 1.26340563764277, -0.0388857896697901, 1, -0.427962420426529,
+			 0.721164092525352, 0.146600836049412, 0.139207756597015, "medexperimental",
+			 "<unicode>", 0.617012908270558, "M", 0.293149905308476, 0.500088294059472,
+			 1, -1.09233336620348, 0.569207409805768, -0.261562978198857,
+			 -0.248372358474302, "sm:medexperimental", "<unicode>", 0.537180192582514,
+			 "M", 0.423870231574476, -0.61708267935513, -0.226798874972865,
+			 0.320540575339917, 0.0468708501835256, 0.0444678083301506, "Z",
+			 "<unicode>", 0.737112947250517, "M", 0.139629976527662, 0.335678994934444,
+			 1, -0.393011065505116, 0.438394694691581, 0.0226918145932324,
+			 0.0215284181542293, "sm:Z", "<unicode>", 0.914798653139066,
+			 "M", 0.212097203508514, 0.106987806618212, 1, -0.0402493547314355,
+			 0.0512517860970523, 0.00550121568280842, 0.0673639595644876,
+			 "sm", "<unicode>", 0.813686245789188, "jasp", 0.0233425566873262,
+			 0.235673227937165, 1, -0.0489096693902837, 0.0420350268190587,
+			 -0.0034373212856125, -0.0420909823291901, "medexperimental",
+			 "<unicode>", 0.882219226459833, "jasp", 0.0232006039209655,
+			 -0.148156543567658, 1, -0.0882812901043865, 0.0429308445790919,
+			 -0.0226752227626473, -0.277664588587612, "sm:medexperimental",
+			 "<unicode>", 0.498141853827561, "jasp", 0.0334730984136604,
+			 -0.677416308536096, -0.0174100515363971, 0.0258806685229152,
+			 0.00423530849325909, 0.0518167165198146, "Z", "<unicode>", 0.701347133893456,
+			 "jasp", 0.0110437539671096, 0.38350261205317, 1, -0.0370220688385053,
+			 0.0287647434119382, -0.00412866271328353, -0.0505119628854988,
+			 "sm:Z", "<unicode>", 0.805676294587284, "jasp", 0.016782658449176,
+			 -0.246007670702864))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.161068897204221, 1.3309833253987, 0.584957214097239,
-			 0.555457824220449, "Total", "s", "M", 0, "<unicode>", 0.124341589371968,
-			 "m", 0.380632561203175, 1.53680287426855, 1, 16, -0.358877900043338,
-			 1.0078943723808, 0.32450823616873, 0.308143287166871, "Total",
-			 "s", "M", 1, "<unicode>", 0.352011057347107, "m", 0.348672802971142,
-			 0.930695578787623, 1, 50, 0.0267415331895947, 1.18684672881812,
-			 0.606794131003856, 0.576193505498184, "Total", "s", "M", 0,
-			 "<unicode>", 0.0403330123381584, "m", 0.29595064112894, 2.05032206954905,
-			 1, 50, -0.238349546590267, 0.93103985274096, 0.346345153075347,
-			 0.328878968444606, "Total", "s", "M", 1, "<unicode>", 0.245646434351064,
-			 "m", 0.298319103961915, 1.16098884877169, 1, 84, -0.0593563775227115,
-			 1.32413707631297, 0.632390349395131, 0.600498906702323, "Total",
-			 "s", "M", 0, "<unicode>", 0.0731672040420261, "m", 0.352938488857067,
-			 1.79178630090196, 1, 84, -0.399557678824285, 1.14344042175753,
-			 0.371941371466621, 0.353184369648745, "Total", "s", "M", 1,
-			 "<unicode>", 0.344708449230226, "m", 0.393629197463011, 0.944902903198822,
-			 1, 16, -0.0244284537044584, 0.0234848464939296, -0.000471803605264419,
-			 -0.000448010551410986, "Total indirect", "s", "M", 0, "<unicode>",
-			 0.969209589163599, "m", 0.0122230052634441, -0.0385996401944997,
-			 1, 16, -0.0318353987467585, 0.0331197920769247, 0.000642196665083111,
-			 0.000609810689930898, "Total indirect", "s", "M", 1, "<unicode>",
-			 0.969085400468992, "m", 0.016570506227676, 0.0387554041053083,
-			 1, 50, -0.0144876725439467, 0.0139309936286017, -0.000278339457672477,
-			 -0.000264302799978382, "Total indirect", "s", "M", 0, "<unicode>",
-			 0.969374544769296, "m", 0.00724979295454182, -0.0383927457539466,
-			 1, 50, -0.0413455466910257, 0.0430168683163758, 0.000835660812675053,
-			 0.000793518441363502, "Total indirect", "s", "M", 1, "<unicode>",
-			 0.969026515881269, "m", 0.0215214196977193, 0.038829260541934,
-			 1, 84, -0.00379212504206655, 0.00368898547880336, -5.15697816315973e-05,
-			 -4.89691177581562e-05, "Total indirect", "s", "M", 0, "<unicode>",
-			 0.978442692232085, "m", 0.00190848163024422, -0.0270213665221384,
-			 1, 84, -0.0525713186328948, 0.0546961796103267, 0.00106243048871593,
-			 0.00100885212358373, "Total indirect", "s", "M", 1, "<unicode>",
-			 0.969029984327239, "m", 0.0273646605471666, 0.0388249102116466
+		list(1, 16, -0.161184089859918, 1.33108020237435, 0.584948056257215,
+			 0.55544912861142, "Total", "s", "M", 0, "<unicode>", 0.124400991527354,
+			 "m", 0.380686661593034, 1.53656041903182, 1, 16, -0.358973682081893,
+			 1.00797183873586, 0.324499078326982, 0.308134591377588, "Total",
+			 "s", "M", 1, "<unicode>", 0.352085685065562, "m", 0.348716999802048,
+			 0.930551359730632, 1, 50, 0.026741533198573, 1.18684672881526,
+			 0.606794131006915, 0.576193505917231, "Total", "s", "M", 0,
+			 "<unicode>", 0.0403330123351102, "m", 0.29595064112592, 2.05032206958031,
+			 1, 50, -0.238349546581756, 0.93103985273512, 0.346345153076682,
+			 0.328878968683399, "Total", "s", "M", 1, "<unicode>", 0.245646434343449,
+			 "m", 0.298319103958254, 1.16098884879042, 1, 84, -0.0597319732200196,
+			 1.32459509271596, 0.632431559747968, 0.600538039250963, "Total",
+			 "s", "M", 0, "<unicode>", 0.073321539614484, "m", 0.353151148912779,
+			 1.79082401882307, 1, 84, -0.400006269311197, 1.14397143294667,
+			 0.371982581817735, 0.353223502017131, "Total", "s", "M", 1,
+			 "<unicode>", 0.344961184136636, "m", 0.393879100441785, 0.944408021142809,
+			 1, 16, -0.0244326430693981, 0.0234888736304965, -0.000471884719450804,
+			 -0.000448087575332908, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.969209575724456, "m", 0.0122251013482629, -0.0385996570505206,
+			 1, 16, -0.0318314326482572, 0.0331156637466043, 0.000642115549173544,
+			 0.000609733665136679, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.96908545283394, "m", 0.0165684412844205, 0.0387553384262726,
+			 1, 50, -0.0144876723899645, 0.013930993480737, -0.000278339454613771,
+			 -0.000264302797264813, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.969374544780551, "m", 0.00724979287753866, -0.0383927457398298,
+			 1, 50, -0.0413455467580486, 0.0430168683860697, 0.000835660814010577,
+			 0.000793518443204775, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.969026515881963, "m", 0.0215214197325967, 0.0388292605410632,
+			 1, 84, -0.00378016610700144, 0.00367775671687788, -5.12046950617806e-05,
+			 -4.86224425376552e-05, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.978528735557626, "m", 0.00190256629272437, -0.0269134879859867,
+			 1, 84, -0.0525894326870332, 0.0547150238341584, 0.00106279557356257,
+			 0.00100919879793193, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.96903001252837, "m", 0.0273740888525492, 0.0388248748401207
 			))
 
 
@@ -1778,14 +1803,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0565043394227213, "jasp", 0.0170347109433766))
+		list("M", 0.0565043380598863, "jasp", 0.0170347095321872))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 29 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -1796,8 +1821,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -1808,27 +1836,27 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "jasp", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "moderators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "jasp", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "moderators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -1841,201 +1869,201 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.775624662302785, 0.164689432187431, -0.305467615057677, "W:Z",
-			 "<unicode>", 0.202870449525422, "W", 0.239880452372414, -1.27341603718271,
-			 -0.0310152148109387, 0.0199884584568428, -0.00551337817704793,
-			 "jasp:Z", "<unicode>", 0.671759032113327, "W", 0.0130113802269052,
-			 -0.423735075057391, -0.403918217537883, 0.194611853044901, -0.104653182246491,
-			 "Z", "<unicode>", 0.493091095297465, "W", 0.1526890481927, -0.685400711349084,
-			 -0.675381636035011, 0.224488235462375, -0.225446700286318, "W:Y",
-			 "<unicode>", 0.326065571114758, "W", 0.229562858959513, -0.982069579147729,
-			 -0.544848238940661, 0.0642086341166157, -0.240319802412022,
-			 "Y", "<unicode>", 0.121932414763476, "W", 0.155374506333137,
-			 -1.54671321623868, 1.68041089966793, 2.96919115908335, 2.32480102937564,
-			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776515686297,
-			 7.07106778756016, 0.769964630560616, 1.36048401595245, 1.06522432325653,
-			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.150645468500894,
-			 7.07106781144372, -0.00112714878440715, 0.00148526163791923,
-			 0.000179056426756036, "jasp:Z", "<unicode>", 0.788180108385991,
-			 "jasp", 0.000666443476240569, 0.268674588527896, -0.00697298823873467,
-			 0.0160044842162359, 0.00451574798875061, "Z", "<unicode>", 0.441073955862203,
-			 "jasp", 0.00586170782632077, 0.770380940597822, 0.0046546857461111,
-			 0.00822456683566075, 0.00643962629088593, "jasp", "<unicode>",
-			 1.53743684450092e-12, "jasp", 0.000910700685754538, 7.07106779605699,
-			 -0.0338675236060852, 0.591585822650797, 0.278859149522356, "W:Z",
-			 "<unicode>", 0.0805151671428657, "Y", 0.159557356969408, 1.74770474278927,
-			 -0.0163184015247272, 0.0173292458464965, 0.000505422160884631,
-			 "jasp:Z", "<unicode>", 0.953046623161175, "Y", 0.00858374124132689,
-			 0.0588813370155251, 0.424988056049049, 0.896754201195297, 0.660871128622173,
-			 "Z", "<unicode>", 3.99188180288945e-08, "Y", 0.120350717887543,
-			 5.49121052389317, -0.253361722346767, 0.338176432316814, 0.0424073549850233,
-			 "W:Y", "<unicode>", 0.778695416912659, "Y", 0.150905363396868,
-			 0.281019534564159, 0.732634588224665, 1.29452393577574, 1.0135792620002,
-			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341753211587,
-			 7.07106784513829, 1.3047073782396, 2.48432043086843, 1.89451390455401,
-			 "W:Z", "<unicode>", 3.06236369596036e-10, "W:Y", 0.300927226707599,
-			 6.2955882233775, -0.0534891326080097, -0.00223666243929077,
-			 -0.0278628975236502, "jasp:Z", "<unicode>", 0.0330866710846101,
-			 "W:Y", 0.0130748499903549, -2.13102999607676, -0.0195779778820605,
-			 0.577296279820176, 0.278859150969058, "Z", "<unicode>", 0.0670427930070323,
-			 "W:Y", 0.152266639185797, 1.83138704879925, 1.62269998072817,
-			 2.86721922019938, 2.24495960046378, "W:Y", "<unicode>", 1.53743684450092e-12,
-			 "W:Y", 0.317485231689926, 7.07106780530924, 0.00952642640517942,
-			 0.633193678840973, 0.321360052623076, "W:Z", "<unicode>", 0.0433999540758709,
-			 "Z", 0.159101712417984, 2.01984031308737, -0.0200843707899066,
-			 0.0133295121645536, -0.00337742931267651, "jasp:Z", "<unicode>",
-			 0.691942055618862, "Z", 0.00852410636573547, -0.396220925427776,
-			 0.721485025425994, 1.2747651781714, 0.998125101798695, "Z",
-			 "<unicode>", 1.53144164016794e-12, "Z", 0.141145489690017, 7.07160465411099,
-			 -0.0508532962918328, 0.0021601962146246, -0.0243465500386041,
-			 "W:Z", "<unicode>", 0.0718236056988122, "jasp:Z", 0.0135240986376844,
-			 -1.80023458057037, 0.00525426402273594, 0.00928392974281942,
-			 0.00726909688277768, "jasp:Z", "<unicode>", 1.53654866608122e-12,
-			 "jasp:Z", 0.00102799483864728, 7.07114141968158, 1.76008417061176,
-			 3.10996931741179, 2.43502674401177, "W:Z", "<unicode>", 1.53743684450092e-12,
-			 "W:Z", 0.344364783600045, 7.07106783265004))
+		list(-0.775624657414648, 0.164689429564474, -0.305467613925087, "W:Z",
+			 "<unicode>", 0.202870447592368, "W", 0.239880450456284, -1.2734160426331,
+			 -0.0310152146442108, 0.0199884583881044, -0.00551337812805316,
+			 "jasp:Z", "<unicode>", 0.671759033432981, "W", 0.0130113801668361,
+			 -0.423735073248098, -0.403918218255305, 0.194611853316602, -0.104653182469352,
+			 "Z", "<unicode>", 0.493091095091246, "W", 0.152689048445032,
+			 -0.685400711675971, -0.675381640158841, 0.224488234309415, -0.225446702924713,
+			 "W:Y", "<unicode>", 0.326065567050229, "W", 0.229562859717402,
+			 -0.982069587398606, -0.544848236837321, 0.064208635742079, -0.240319800547621,
+			 "Y", "<unicode>", 0.121932417365477, "W", 0.155374506211227,
+			 -1.54671320545285, 1.68041089789992, 2.96919115291578, 2.32480102540785,
+			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776514563941,
+			 7.07106779963057, 0.769964630560608, 1.36048401595242, 1.06522432325651,
+			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.150645468500889,
+			 7.07106781144384, -0.00112714878332184, 0.00148526163186499,
+			 0.000179056424271573, "jasp:Z", "<unicode>", 0.78818011068992,
+			 "jasp", 0.000666443474419223, 0.268674585534225, -0.00697298824513925,
+			 0.0160044842032238, 0.00451574797904229, "Z", "<unicode>", 0.441073956712999,
+			 "jasp", 0.00586170782463517, 0.770380939163128, 0.00465468574424754,
+			 0.00822456682916077, 0.00643962628670415, "jasp", "<unicode>",
+			 1.53743684450092e-12, "jasp", 0.000910700684571756, 7.07106780064879,
+			 -0.0338675218442465, 0.591585821412683, 0.278859149784218, "W:Z",
+			 "<unicode>", 0.0805151654062295, "Y", 0.1595573562041, 1.74770475281322,
+			 -0.0163184014903206, 0.0173292458270057, 0.000505422168342545,
+			 "jasp:Z", "<unicode>", 0.953046622394017, "Y", 0.00858374122757732,
+			 0.0588813379786841, 0.4249880570995, 0.896754204748711, 0.660871130924105,
+			 "Z", "<unicode>", 3.99188202493406e-08, "Y", 0.120350718526066,
+			 5.49121051388633, -0.253361722541842, 0.338176435761269, 0.0424073566097135,
+			 "W:Y", "<unicode>", 0.778695409981135, "Y", 0.150905364325337,
+			 0.281019543601429, 0.732634588804277, 1.2945239377974, 1.01357926330084,
+			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341753579463,
+			 7.0710678360646, 1.30470737772587, 2.4843204286259, 1.89451390317588,
+			 "W:Z", "<unicode>", 3.06236369596036e-10, "W:Y", 0.300927226266571,
+			 6.29558822802448, -0.0534891324541101, -0.00223666222202286,
+			 -0.0278628973380665, "jasp:Z", "<unicode>", 0.03308667247093,
+			 "W:Y", 0.0130748500065206, -2.13102997924802, -0.01957797523024,
+			 0.57729628795303, 0.278859156361395, "Z", "<unicode>", 0.0670427902333262,
+			 "W:Y", 0.152266640584046, 1.83138706739559, 1.62269998554185,
+			 2.86721923699518, 2.24495961126851, "W:Y", "<unicode>", 1.53743684450092e-12,
+			 "W:Y", 0.317485234746642, 7.07106777126194, 0.00952643058052,
+			 0.633193681832393, 0.321360056206456, "W:Z", "<unicode>", 0.043399951341065,
+			 "Z", 0.159101712115957, 2.01984033944425, -0.0200843707835207,
+			 0.0133295121869286, -0.00337742929829602, "jasp:Z", "<unicode>",
+			 0.69194205700316, "Z", 0.00852410636981438, -0.396220923551141,
+			 0.721485026942715, 1.2747651834144, 0.998125105178555, "Z",
+			 "<unicode>", 1.53144164016794e-12, "Z", 0.141145490640615, 7.07160463043049,
+			 -0.0508532956603665, 0.00216019632368678, -0.0243465496683399,
+			 "W:Z", "<unicode>", 0.0718236072200582, "jasp:Z", 0.0135240985044156,
+			 -1.80023457093208, 0.00525426401334892, 0.00928392971010545,
+			 0.00726909686172719, "jasp:Z", "<unicode>", 1.53654866608122e-12,
+			 "jasp:Z", 0.00102799483269642, 7.07114144013779, 1.7600841637836,
+			 3.10996929360496, 2.43502672869428, "W:Z", "<unicode>", 1.53743684450092e-12,
+			 "W:Z", 0.344364779268672, 7.07106787710854))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.179644683294671, 0.198140127866731, 0.00924772228602994,
-			 0.0133891421613472, "W", "M", "", "<unicode>", "", 0.923556178493397,
-			 0.0963754472381434, 0.0959551685729545, 50, 16, -0.253474544563311,
-			 0.255846606943633, 0.00118603119016092, 0.00171717312887362,
-			 "W", "M", "", "<unicode>", "", 0.992716895942065, 0.129931252697602,
-			 0.00912814404184384, 84, 16, -0.4813842551792, 0.466161606403664,
-			 -0.007611324387768, -0.0110199139974071, "W", "M", "", "<unicode>",
-			 "", 0.974880766622116, 0.241725324816421, -0.0314874926470714,
-			 16, 50, -0.289023152973276, 0.254397674163894, -0.0173127394046907,
-			 -0.0250659267138606, "W", "M", "", "<unicode>", "", 0.900615203478054,
-			 0.138630309389255, -0.124884229725542, 50, 50, -0.16249226304473,
-			 0.11174340204361, -0.0253744305005597, -0.0367378957463342,
-			 "W", "M", "", "<unicode>", "", 0.716827190557042, 0.0699593633483768,
-			 -0.362702421607278, 84, 50, -0.328331314805474, 0.259987742648497,
-			 -0.0341717860784887, -0.0494749828726149, "W", "M", "", "<unicode>",
-			 "", 0.819891774847674, 0.150084150039122, -0.227684176307632,
-			 16, 84, -0.540497512228109, 0.443606157616199, -0.0484456773059548,
-			 -0.0701411699540392, "W", "M", "", "<unicode>", "", 0.846981603306297,
-			 0.251051467681751, -0.192971097732707, 50, 84, -0.353825463091837,
-			 0.24081072628819, -0.0565073684018239, -0.0818131389865128,
-			 "W", "M", "", "<unicode>", "", 0.709517065065266, 0.151695692898043,
-			 -0.372504764784608, 84, 84, -0.285370211291189, 0.154760763331683,
-			 -0.0653047239797528, -0.0945502261127935, "W", "M", "", "<unicode>",
-			 "", 0.560821387748359, 0.112280373030976, -0.581621900754964,
-			 1, 16, 16, -0.0178567033072268, 0.0222260283644548, 0.00218466252861397,
-			 0.00316302287908973, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.830819146587293, 0.010225374544596, 0.213651100904518, 1,
-			 50, 16, -0.0213710320114569, 0.0261027688486811, 0.0023658684186121,
-			 0.00342537844585709, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.845118514949274, 0.0121108860251018, 0.195350564253387, 1,
-			 84, 16, -0.0477623059048368, 0.0498873900946382, 0.00106254209490074,
-			 0.00153838174644723, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.96597785218691, 0.0249110944817669, 0.0426533685895835, 1,
-			 16, 50, -0.0178567033072268, 0.0222260283644548, 0.00218466252861397,
-			 0.00316302287908973, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.830819146587293, 0.010225374544596, 0.213651100904518, 1,
-			 50, 50, -0.0213710320114569, 0.0261027688486811, 0.0023658684186121,
-			 0.00342537844585709, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.845118514949274, 0.0121108860251018, 0.195350564253387, 1,
-			 84, 50, -0.0477623059048368, 0.0498873900946382, 0.00106254209490074,
-			 0.00153838174644723, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.96597785218691, 0.0249110944817669, 0.0426533685895835, 1,
-			 16, 84, -0.0178567033072268, 0.0222260283644548, 0.00218466252861397,
-			 0.00316302287908973, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.830819146587293, 0.010225374544596, 0.213651100904518, 1,
-			 50, 84, -0.0213710320114569, 0.0261027688486811, 0.0023658684186121,
-			 0.00342537844585709, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.845118514949274, 0.0121108860251018, 0.195350564253387, 1,
-			 84, 84, -0.0477623059048368, 0.0498873900946382, 0.00106254209490074,
-			 0.00153838174644723, "W", "jasp", "M", "<unicode>", "<unicode>",
-			 0.96597785218691, 0.0249110944817669, 0.0426533685895835))
+		list(16, 16, -0.179446533555853, 0.197912954884107, 0.00923321066412705,
+			 0.0133681317680472, "W", "M", "", "<unicode>", "", 0.923590006190042,
+			 0.0962669445501353, 0.0959125762978635, 50, 16, -0.253541291073568,
+			 0.255935634181587, 0.0011971715540091, 0.00173330249521221,
+			 "W", "M", "", "<unicode>", "", 0.992650735517335, 0.129970991628888,
+			 0.00921106732360274, 84, 16, -0.480477581094733, 0.465346722238578,
+			 -0.00756542942807709, -0.010953465826284, "W", "M", "", "<unicode>",
+			 "", 0.97498675089964, 0.241286143723521, -0.0313545954663107,
+			 16, 50, -0.288398998982603, 0.253722217051574, -0.0173383909655144,
+			 -0.0251030658244847, "W", "M", "", "<unicode>", "", 0.900231357388433,
+			 0.138298769852497, -0.125369090296368, 50, 50, -0.162492262619963,
+			 0.111743402468698, -0.0253744300756324, -0.0367378950973197,
+			 "W", "M", "", "<unicode>", "", 0.71682719509513, 0.0699593633484588,
+			 -0.362702415532936, 84, 50, -0.327394389483917, 0.25912032736848,
+			 -0.0341370310577185, -0.0494246634188159, "W", "M", "", "<unicode>",
+			 "", 0.819527814469198, 0.149623850611223, -0.228152336130013,
+			 16, 84, -0.540279773452114, 0.443236863864676, -0.0485214547937187,
+			 -0.0702508829111723, "W", "M", "", "<unicode>", "", 0.846654879933174,
+			 0.250901711734155, -0.193388297187585, 50, 84, -0.354244641222753,
+			 0.24112965341508, -0.0565574939038366, -0.0818857121840073,
+			 "W", "M", "", "<unicode>", "", 0.709615166224307, 0.151883988515623,
+			 -0.372372983199733, 84, 84, -0.285254697057259, 0.154614507285414,
+			 -0.0653200948859228, -0.0945724805055035, "W", "M", "", "<unicode>",
+			 "", 0.560495951825181, 0.112213593671186, -0.582105008394322,
+			 1, 16, 16, -0.0178947720205799, 0.022274819583576, 0.00219002378149807,
+			 0.00317078506612749, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.830771425483452, 0.010247533097804, 0.213712291592147, 1,
+			 50, 16, -0.0295573301227811, 0.0370832229925757, 0.00376294643489731,
+			 0.00544811177906408, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.82482468138441, 0.0170004534881786, 0.221343885768336, 1,
+			 84, 16, -0.043051814739029, 0.054007978019048, 0.00547808164000951,
+			 0.00793133828130747, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.824904146382949, 0.0247606061957445, 0.221241822461964, 1,
+			 16, 50, -0.012823613294747, 0.0155774702495815, 0.00137692847741724,
+			 0.00199356020249869, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.849274515755901, 0.00724530750777888, 0.190044173548039, 1,
+			 50, 50, -0.0213710320301804, 0.0261027688715599, 0.00236586842068972,
+			 0.00342537844571449, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.845118514948992, 0.0121108860357148, 0.195350564253748, 1,
+			 84, 50, -0.0311242765711124, 0.0380127192222566, 0.00344422132557206,
+			 0.00498665157694835, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.845173448004587, 0.01763731281256, 0.195280390055753, 1, 16,
+			 84, -0.0191148414375952, 0.0199602848072071, 0.000422721684805924,
+			 0.000612029703345969, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.966174662790362, 0.00996832762056393, 0.0424064798927636,
+			 1, 50, 84, -0.0327987190126796, 0.0342513781757743, 0.000726329581547351,
+			 0.00105160273130989, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.966129471739488, 0.0171049309368275, 0.0424631694936305, 1,
+			 84, 84, -0.0477490664139899, 0.0498638415318977, 0.0010573875589539,
+			 0.0015309188463454, "W", "jasp", "M", "<unicode>", "<unicode>",
+			 0.966130046573151, 0.0249017096017697, 0.0424624483966655))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.164737467934188, 0.11096267262751, -0.0268873976533386, -0.038928417008484,
-			 "W", "<unicode>", 0.70224827447829, "M", 0.0703329608952985,
-			 -0.382287299028469, 1, -2.77740732400137, 2.28159666774801,
-			 -0.247905328126682, -0.235402429081986, "jasp", "<unicode>",
-			 0.847673728054132, "M", 1.29058595761304, -0.192087420961241,
-			 -0.0325611890806855, 0.532291005200199, 0.249864908059757, 0.23886867667858,
-			 "Y", "<unicode>", 0.0829184799938958, "M", 0.144097595347763,
-			 1.73399776350699, -0.251164564214897, 0.234614182166305, -0.00827519102429585,
-			 -0.0120621537394377, "W:Y", "<unicode>", 0.94676037220365, "M",
-			 0.123925426745839, -0.0667755701278931, -0.400276384175706,
-			 0.156970907384131, -0.121652738395788, -0.115408941331383, "Z",
-			 "<unicode>", 0.392130515346892, "M", 0.142157533494323, -0.855760052988302,
-			 1, -2.28051657788666, 2.59510110422671, 0.157292263170024, 0.149219276207417,
-			 "jasp:Z", "<unicode>", 0.899367204682226, "M", 1.24380287611702,
-			 0.126460764957442, -0.258825159584321, 0.20313117407222, -0.0278469927560502,
-			 -0.0402799353032617, "W:Z", "<unicode>", 0.813203373660263,
-			 "M", 0.117848168971571, -0.236295506320236, -0.0199964287313284,
-			 0.00098782070335013, -0.00950430401398912, -0.177452511118554,
-			 "W", "<unicode>", 0.0758259615681696, "jasp", 0.00535322322251827,
-			 -1.77543577372402, -0.0156987571455337, 0.0159388845871341,
-			 0.000120063720800222, 0.00148016316197046, "Y", "<unicode>",
-			 0.988131117651024, "jasp", 0.00807097527868407, 0.0148759866874227,
-			 -0.0145563049372739, 0.00654285994706036, -0.00400672249510675,
-			 -0.0753147349760878, "W:Y", "<unicode>", 0.456638955343025,
-			 "jasp", 0.00538253892692972, -0.744392664781386))
+		list(-0.164737467612805, 0.110962672949303, -0.0268873973317511, -0.0389284165070734,
+			 "W", "<unicode>", 0.70224827786985, "M", 0.0703329608954029,
+			 -0.382287294455544, 1, -2.7774073240243, 2.28159666777364, -0.247905328125327,
+			 -0.235402429065062, "jasp", "<unicode>", 0.847673728056398,
+			 "M", 1.29058595762543, -0.192087420958348, -0.0325611892671254,
+			 0.532291005027344, 0.24986490788011, 0.23886867664423, "Y",
+			 "<unicode>", 0.0829184802225016, "M", 0.144097595351229, 1.73399776221858,
+			 -0.251164565357469, 0.234614181030175, -0.00827519216364736,
+			 -0.0120621553968333, "W:Y", "<unicode>", 0.946760364885062,
+			 "M", 0.123925426747482, -0.0667755793208554, -0.400276384426273,
+			 0.156970907143308, -0.121652738641483, -0.1154089417522, "Z",
+			 "<unicode>", 0.392130514398982, "M", 0.142157533496808, -0.855760054701667,
+			 1, -2.28051657796097, 2.59510110432887, 0.157292263183952, 0.149219276463361,
+			 "jasp:Z", "<unicode>", 0.899367204676986, "M", 1.24380287616204,
+			 0.126460764964062, -0.258825160782551, 0.203131172877203, -0.0278469939526739,
+			 -0.040279937065295, "W:Z", "<unicode>", 0.813203365782916, "M",
+			 0.117848168972391, -0.236295516472537, -0.0199964287349198,
+			 0.000987820692987343, -0.00950430402096621, -0.177452511152953,
+			 "W", "<unicode>", 0.0758259612586079, "jasp", 0.00535322322079084,
+			 -1.77543577560028, -0.015698757041012, 0.0159388846814368, 0.000120063820212408,
+			 0.0014801643889516, "Y", "<unicode>", 0.988131107820538, "jasp",
+			 0.00807097527607715, 0.0148759990094734, -0.0145563049087834,
+			 0.00654285996873355, -0.00400672247002495, -0.0753147345122562,
+			 "W:Y", "<unicode>", 0.456638958015851, "jasp", 0.00538253892519059,
+			 -0.744392660362056))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, 16, -0.175973189078316, 0.198837958707604, 0.0114323848146439,
-			 0.0165521650404369, "Total", "W", "M", "<unicode>", 0.90482810582048,
-			 0.0956168457028757, 0.119564546713551, 50, 16, -0.250070365434687,
-			 0.257174164652233, 0.00355189960877302, 0.00514255157473071,
-			 "Total", "W", "M", "<unicode>", 0.978101875242101, 0.129401492600885,
-			 0.0274486757253119, 84, 16, -0.477936230435458, 0.464838665849724,
-			 -0.00654878229286726, -0.00948153225095986, "Total", "W", "M",
-			 "<unicode>", 0.978277138731985, 0.240508219467722, -0.0272289334117587,
-			 16, 50, -0.285968720912943, 0.255712567160789, -0.0151280768760768,
-			 -0.0219029038347709, "Total", "W", "M", "<unicode>", 0.912825145485946,
-			 0.138186541269749, -0.109475761800462, 50, 50, -0.1580923132945,
-			 0.112075189130605, -0.0230085620819476, -0.0333125173004771,
-			 "Total", "W", "M", "<unicode>", 0.738502568494398, 0.0689215476805063,
-			 -0.333836990843654, 84, 50, -0.322825205073562, 0.256606717106386,
-			 -0.0331092439835879, -0.0479366011261677, "Total", "W", "M",
-			 "<unicode>", 0.822766567935362, 0.147816982033964, -0.223988093438279,
-			 16, 84, -0.537937525754283, 0.445415496199601, -0.0462610147773409,
-			 -0.0669781470749494, "Total", "W", "M", "<unicode>", 0.853692052894846,
-			 0.250859972354198, -0.184409710099239, 50, 84, -0.350475739668336,
-			 0.242192739701912, -0.0541414999832118, -0.0783877605406557,
-			 "Total", "W", "M", "<unicode>", 0.720273280139421, 0.151193716834886,
-			 -0.358093584287884, 84, 84, -0.277399399924427, 0.148915036154723,
-			 -0.064242181884852, -0.0930118443663463, "Total", "W", "M",
-			 "<unicode>", 0.554720208986372, 0.108755681084414, -0.590701848807224,
-			 16, 16, -0.0178567033072268, 0.0222260283644548, 0.00218466252861397,
-			 0.00316302287908973, "Total indirect", "W", "M", "<unicode>",
-			 0.830819146587293, 0.010225374544596, 0.213651100904518, 50,
-			 16, -0.0213710320114569, 0.0261027688486811, 0.0023658684186121,
-			 0.00342537844585709, "Total indirect", "W", "M", "<unicode>",
-			 0.845118514949274, 0.0121108860251018, 0.195350564253387, 84,
-			 16, -0.0477623059048368, 0.0498873900946382, 0.00106254209490074,
-			 0.00153838174644723, "Total indirect", "W", "M", "<unicode>",
-			 0.96597785218691, 0.0249110944817669, 0.0426533685895835, 16,
-			 50, -0.0178567033072268, 0.0222260283644548, 0.00218466252861397,
-			 0.00316302287908973, "Total indirect", "W", "M", "<unicode>",
-			 0.830819146587293, 0.010225374544596, 0.213651100904518, 50,
-			 50, -0.0213710320114569, 0.0261027688486811, 0.0023658684186121,
-			 0.00342537844585709, "Total indirect", "W", "M", "<unicode>",
-			 0.845118514949274, 0.0121108860251018, 0.195350564253387, 84,
-			 50, -0.0477623059048368, 0.0498873900946382, 0.00106254209490074,
-			 0.00153838174644723, "Total indirect", "W", "M", "<unicode>",
-			 0.96597785218691, 0.0249110944817669, 0.0426533685895835, 16,
-			 84, -0.0178567033072268, 0.0222260283644548, 0.00218466252861397,
-			 0.00316302287908973, "Total indirect", "W", "M", "<unicode>",
-			 0.830819146587293, 0.010225374544596, 0.213651100904518, 50,
-			 84, -0.0213710320114569, 0.0261027688486811, 0.0023658684186121,
-			 0.00342537844585709, "Total indirect", "W", "M", "<unicode>",
-			 0.845118514949274, 0.0121108860251018, 0.195350564253387, 84,
-			 84, -0.0477623059048368, 0.0498873900946382, 0.00106254209490074,
-			 0.00153838174644723, "Total indirect", "W", "M", "<unicode>",
-			 0.96597785218691, 0.0249110944817669, 0.0426533685895835))
+		list(16, 16, -0.17576931327456, 0.19861578216581, 0.0114232344456251,
+			 0.0165389168341747, "Total", "W", "M", "<unicode>", 0.904796213496684,
+			 0.0955081568828488, 0.119604804641314, 50, 16, -0.250031853484935,
+			 0.259952089462747, 0.0049601179889064, 0.00718141427427629,
+			 "Total", "W", "M", "<unicode>", 0.969587756952349, 0.130100335253701,
+			 0.0381253282647886, 84, 16, -0.477103735824941, 0.472929040248805,
+			 -0.00208734778806758, -0.00302212754497652, "Total", "W", "M",
+			 "<unicode>", 0.993128223808055, 0.242359753436156, -0.00861260072463906,
+			 16, 50, -0.286690930069898, 0.254768005093703, -0.0159614624880972,
+			 -0.023109505621986, "Total", "W", "M", "<unicode>", 0.908005966470979,
+			 0.138129817546281, -0.115554069147664, 50, 50, -0.158092312867508,
+			 0.112075189557622, -0.0230085616549426, -0.0333125166516052,
+			 "Total", "W", "M", "<unicode>", 0.738502573169808, 0.0689215476805127,
+			 -0.3338369846481, 84, 50, -0.321956587070321, 0.260570967606028,
+			 -0.0306928097321465, -0.0444380118418676, "Total", "W", "M",
+			 "<unicode>", 0.836371318733423, 0.148606698712643, -0.206537188417707,
+			 16, 84, -0.540284121387466, 0.444086655169641, -0.0480987331089127,
+			 -0.0696388532078263, "Total", "W", "M", "<unicode>", 0.848104780885802,
+			 0.251119608401404, -0.191537146044083, 50, 84, -0.352501716783982,
+			 0.240839388139403, -0.0558311643222893, -0.0808341094526974,
+			 "Total", "W", "M", "<unicode>", 0.712239186901359, 0.151365308139227,
+			 -0.368850465199961, 84, 84, -0.277310047464525, 0.148784632810587,
+			 -0.0642627073269689, -0.0930415616591581, "Total", "W", "M",
+			 "<unicode>", 0.554389553467345, 0.108699619900185, -0.591195326956792,
+			 16, 16, -0.0178947720205799, 0.022274819583576, 0.00219002378149807,
+			 0.00317078506612749, "Total indirect", "W", "M", "<unicode>",
+			 0.830771425483452, 0.010247533097804, 0.213712291592147, 50,
+			 16, -0.0295573301227811, 0.0370832229925757, 0.00376294643489731,
+			 0.00544811177906408, "Total indirect", "W", "M", "<unicode>",
+			 0.82482468138441, 0.0170004534881786, 0.221343885768336, 84,
+			 16, -0.043051814739029, 0.054007978019048, 0.00547808164000951,
+			 0.00793133828130747, "Total indirect", "W", "M", "<unicode>",
+			 0.824904146382949, 0.0247606061957445, 0.221241822461964, 16,
+			 50, -0.012823613294747, 0.0155774702495815, 0.00137692847741724,
+			 0.00199356020249869, "Total indirect", "W", "M", "<unicode>",
+			 0.849274515755901, 0.00724530750777888, 0.190044173548039, 50,
+			 50, -0.0213710320301804, 0.0261027688715599, 0.00236586842068972,
+			 0.00342537844571449, "Total indirect", "W", "M", "<unicode>",
+			 0.845118514948992, 0.0121108860357148, 0.195350564253748, 84,
+			 50, -0.0311242765711124, 0.0380127192222566, 0.00344422132557206,
+			 0.00498665157694835, "Total indirect", "W", "M", "<unicode>",
+			 0.845173448004587, 0.01763731281256, 0.195280390055753, 16,
+			 84, -0.0191148414375952, 0.0199602848072071, 0.000422721684805924,
+			 0.000612029703345969, "Total indirect", "W", "M", "<unicode>",
+			 0.966174662790362, 0.00996832762056393, 0.0424064798927636,
+			 50, 84, -0.0327987190126796, 0.0342513781757743, 0.000726329581547351,
+			 0.00105160273130989, "Total indirect", "W", "M", "<unicode>",
+			 0.966129471739488, 0.0171049309368275, 0.0424631694936305, 84,
+			 84, -0.0477490664139899, 0.0498638415318977, 0.0010573875589539,
+			 0.0015309188463454, "Total indirect", "W", "M", "<unicode>",
+			 0.966130046573151, 0.0249017096017697, 0.0424624483966655))
 
 
 
@@ -2053,14 +2081,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0395135720961438, "jasp", 0.0343971585293659))
+		list("M", 0.0395135722237753, "jasp", 0.0343971585517283))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 29 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2071,8 +2099,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -2083,206 +2114,206 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "jasp", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "moderators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "Z")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "jasp", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "moderators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "Z")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(652.227166421852, 764.24948441934, 1, "Model 1", 100, -283.113583210926,
+		list(652.227166421851, 764.249484419339, 1, "Model 1", 100, -283.113583210926,
 			 29))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.0981744972451254, 0.0336487171499382, -0.0322628900475936,
-			 "sm:Z", "<unicode>", 0.337368685238068, "sm", 0.0336289889597126,
-			 -0.959377342156922, -0.00863119912244669, 0.00807978537227618,
-			 -0.000275706875085252, "jasp:Z", "<unicode>", 0.948434284892585,
-			 "sm", 0.00426308458383342, -0.0646730951881168, -0.163249262730069,
-			 0.0341976970053754, -0.0645257828623468, "Z", "<unicode>", 0.200181453021802,
-			 "sm", 0.050370047942942, -1.28103477160554, 0.0922263543710785,
-			 0.197773645445189, 0.144999999908134, "sm:medexperimental",
-			 "<unicode>", 7.23783071254758e-08, "sm", 0.0269258241239774,
-			 5.38516478606171, -0.0096223243808644, 0.0896223254292634, 0.0400000005241995,
-			 "medexperimental", "<unicode>", 0.114128618574366, "sm", 0.025317977930451,
-			 1.57990502377719, 0.180704809188958, 0.319295192637852, 0.250000000913405,
-			 "sm", "<unicode>", 1.53743684450092e-12, "sm", 0.0353553393179868,
-			 7.07106778596858, 0.755519568410766, 1.33496040696536, 1.04523998768806,
-			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.14781925666113,
-			 7.07106781144378, -0.000982477442488116, 0.00170236375719605,
-			 0.000359943157353966, "jasp:Z", "<unicode>", 0.599218258543412,
-			 "jasp", 0.000684921054892296, 0.525525029173715, -0.0093747570297292,
-			 0.0139275961756185, 0.00227641957294467, "Z", "<unicode>", 0.701764327938634,
-			 "jasp", 0.00594458709168988, 0.382939897730987, 0.00474535364586215,
-			 0.00838477180272506, 0.0065650627242936, "jasp", "<unicode>",
-			 1.53743684450092e-12, "jasp", 0.000928440059503688, 7.07106792419432,
-			 -0.136062949897531, -0.00208333582815964, -0.0690731428628452,
-			 "sm:Z", "<unicode>", 0.0432883076417965, "medexperimental",
-			 0.0341791010258824, -2.02091748435803, -0.00585181161124396,
-			 0.0108879499889184, 0.0025180691888372, "jasp:Z", "<unicode>",
-			 0.555423343541886, "medexperimental", 0.0042704258170567, 0.589652951885892,
-			 -0.170525749368396, 0.0272963811136476, -0.0716146841273744,
-			 "Z", "<unicode>", 0.155877205386656, "medexperimental", 0.0504657565247218,
-			 -1.41907481546011, 0.0922263550729107, 0.197773646257753, 0.145000000665332,
-			 "sm:medexperimental", "<unicode>", 7.23782982436916e-08, "medexperimental",
-			 0.0269258241522258, 5.38516480853365, 0.180704808878319, 0.319295191554361,
-			 0.25000000021634, "medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "medexperimental", 0.035355339120827, 7.07106780568458, -0.144326952294414,
-			 -0.0209201563134906, -0.0826235543039524, "sm:Z", "<unicode>",
-			 0.00867819807056192, "sm:medexperimental", 0.0314819039927113,
-			 -2.62447767844923, -0.00736991900069918, 0.00779561455465568,
-			 0.00021284777697825, "jasp:Z", "<unicode>", 0.956125666507604,
-			 "sm:medexperimental", 0.00386882965069222, 0.0550160633048723,
-			 -0.192384504477295, -0.0102875588310778, -0.101336031654186,
-			 "Z", "<unicode>", 0.0291523552908117, "sm:medexperimental",
-			 0.0464541560667885, -2.18142014050352, 0.148828480649452, 0.26297151996155,
-			 0.205900000305501, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "sm:medexperimental", 0.0291186573356562, 7.07106780137743,
-			 0.294125801988827, 0.610570947445308, 0.452348374717068, "sm:Z",
-			 "<unicode>", 2.10170849612723e-08, "Z", 0.0807272857951882,
-			 5.60341364460974, -0.0200774137418104, 0.0133245058366829, -0.00337645395256378,
-			 "jasp:Z", "<unicode>", 0.691921809116618, "Z", 0.00852105442803117,
-			 -0.396248372907522, 0.721614343764619, 1.2747904094733, 0.99820237661896,
-			 "Z", "<unicode>", 1.51101353651484e-12, "Z", 0.141118936386603,
-			 7.07348285197054, -0.0178968969693071, 0.0046014803702768, -0.00664770829951517,
-			 "sm:Z", "<unicode>", 0.246765798479574, "jasp:Z", 0.00573948743881221,
-			 -1.1582407611107, 0.005254411799105, 0.00928409228685175, 0.00726925204297837,
-			 "jasp:Z", "<unicode>", 1.53521639845167e-12, "jasp:Z", 0.00102799860597755,
-			 7.07126644015812, 0.323967566749629, 0.572432393383429, 0.448199980066529,
-			 "sm:Z", "<unicode>", 1.53743684450092e-12, "sm:Z", 0.063385049060508,
-			 7.07106781030765))
+		list(-0.0981744985384094, 0.033648715463613, -0.0322628915373982, "sm:Z",
+			 "<unicode>", 0.337368661487951, "sm", 0.0336289888594452, -0.959377389318582,
+			 -0.00863119901289312, 0.00807978561667476, -0.000275706698109183,
+			 "jasp:Z", "<unicode>", 0.948434318361978, "sm", 0.00426308461823329,
+			 -0.0646730531526352, -0.163249262207792, 0.0341976967049322,
+			 -0.0645257827514299, "Z", "<unicode>", 0.200181451920431, "sm",
+			 0.0503700477330606, -1.2810347747413, 0.0922263546938024, 0.197773645499529,
+			 0.145000000096665, "sm:medexperimental", "<unicode>", 7.23782989098254e-08,
+			 "sm", 0.0269258240555107, 5.38516480675694, -0.00962232460538765,
+			 0.0896223246480376, 0.040000000021325, "medexperimental", "<unicode>",
+			 0.114128621093859, "sm", 0.0253179777884324, 1.57990501277715,
+			 0.180704808811141, 0.319295191320051, 0.250000000065596, "sm",
+			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553390781904,
+			 7.0710678099482, 0.755519567299729, 1.33496040309013, 1.04523998519493,
+			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.147819255955965,
+			 7.07106782830988, -0.000982477535819484, 0.00170236373734526,
+			 0.000359943100762887, "jasp:Z", "<unicode>", 0.599218325960952,
+			 "jasp", 0.000684921073637686, 0.525524932166552, -0.00937475713961497,
+			 0.0139275962513421, 0.00227641955586354, "Z", "<unicode>", 0.701764332330845,
+			 "jasp", 0.00594458713904006, 0.38293989180738, 0.00474535369058726,
+			 0.0083847719587237, 0.00656506282465548, "jasp", "<unicode>",
+			 1.53743684450092e-12, "jasp", 0.000928440087890314, 7.07106781609701,
+			 -0.136062946466744, -0.00208333316228969, -0.0690731398145167,
+			 "sm:Z", "<unicode>", 0.0432883156811985, "medexperimental",
+			 0.0341791008307469, -2.02091740670895, -0.00585181189069716,
+			 0.0108879498631079, 0.00251806898620537, "jasp:Z", "<unicode>",
+			 0.555423378989255, "medexperimental", 0.004270425856252, 0.589652899023843,
+			 -0.170525746982907, 0.0272963827853126, -0.071614682098797,
+			 "Z", "<unicode>", 0.155877215611834, "medexperimental", 0.0504657563426203,
+			 -1.41907478038362, 0.0922263546203537, 0.197773645280849, 0.144999999950601,
+			 "sm:medexperimental", "<unicode>", 7.2378298021647e-08, "medexperimental",
+			 0.0269258240184613, 5.38516480874213, 0.180704808687629, 0.31929519088601,
+			 0.24999999978682, "medexperimental", "<unicode>", 1.53743684450092e-12,
+			 "medexperimental", 0.0353553389989724, 7.07106781790682, -0.144326952259152,
+			 -0.0209201564648714, -0.0826235543620118, "sm:Z", "<unicode>",
+			 0.0086781979224142, "sm:medexperimental", 0.0314819039450974,
+			 -2.62447768426276, -0.00736991916999897, 0.00779561454049087,
+			 0.000212847685245949, "jasp:Z", "<unicode>", 0.95612568584568,
+			 "sm:medexperimental", 0.0038688296902682, 0.0550160390314814,
+			 -0.192384503932256, -0.0102875586948232, -0.101336031313539,
+			 "Z", "<unicode>", 0.0291523554708206, "sm:medexperimental",
+			 0.0464541559625049, -2.18142013806756, 0.148828480534544, 0.262971519560757,
+			 0.20590000004765, "sm:medexperimental", "<unicode>", 1.53743684450092e-12,
+			 "sm:medexperimental", 0.0291186572627249, 7.07106781023262,
+			 0.294125803391239, 0.610570949285403, 0.452348376338321, "sm:Z",
+			 "<unicode>", 2.10170834069601e-08, "Z", 0.0807272859068442,
+			 5.6034136569426, -0.0200774132973014, 0.0133245066113055, -0.00337645334299791,
+			 "jasp:Z", "<unicode>", 0.691921864773557, "Z", 0.00852105451224538,
+			 -0.396248297454934, 0.721614343345701, 1.27479040809476, 0.998202375720233,
+			 "Z", "<unicode>", 1.51101353651484e-12, "Z", 0.141118936141798,
+			 7.07348285787264, -0.0178968966451993, 0.0046014809088451, -0.00664770786817712,
+			 "sm:Z", "<unicode>", 0.246765833644217, "jasp:Z", 0.00573948749352253,
+			 -1.15824067491733, 0.00525441183477592, 0.00928409241160408,
+			 0.00726925212319, "jasp:Z", "<unicode>", 1.53521639845167e-12,
+			 "jasp:Z", 0.00102799862870281, 7.07126636186543, 0.323967566654563,
+			 0.572432393051849, 0.448199979853206, "sm:Z", "<unicode>", 1.53743684450092e-12,
+			 "sm:Z", 0.0633850490001718, 7.07106781367309))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.175486159982751, 1.32298156881281, 0.573747704415027,
-			 0.544813560789924, "s", "M", "", 0, "<unicode>", "", 0.133381521484162,
-			 "m", 0.382269199999408, 1.50089963935341, 1, 16, -0.363075019999762,
-			 1.00492755851492, 0.320926269257579, 0.304741931270145, "s",
-			 "M", "", 1, "<unicode>", "", 0.357784621050398, "m", 0.348986662332908,
-			 0.919594654741958, 1, 50, 0.0233139305392338, 1.183864206821,
-			 0.603589068680117, 0.57315002261624, "s", "M", "", 0, "<unicode>",
-			 "", 0.0414789603386496, "m", 0.296064184198291, 2.03871018817953,
-			 1, 50, -0.235957371915921, 0.937492638961258, 0.350767633522668,
-			 0.333078393096461, "s", "M", "", 1, "<unicode>", "", 0.241299561774771,
-			 "m", 0.299354993288959, 1.1717447224409, 1, 84, -0.053766805264153,
-			 1.33090226124123, 0.638567727988536, 0.606364705276988, "s",
-			 "M", "", 0, "<unicode>", "", 0.0706449699226708, "m", 0.353238395559172,
-			 1.80775288308535, 1, 84, -0.392241990909193, 1.16373457657137,
-			 0.385746292831088, 0.366293075757208, "s", "M", "", 1, "<unicode>",
-			 "", 0.331150166538973, "m", 0.396940091694007, 0.971799777605865,
-			 1, 16, -0.0299392245689676, 0.0252561148682627, -0.00234155485035244,
-			 -0.00222347004787776, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
-			 0.86792455293434, "m", 0.0140807024701995, -0.166295314833058,
-			 1, 16, -0.04289309088209, 0.0459616975126865, 0.00153430331529828,
-			 0.00145692827371171, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
-			 0.946034400141168, "m", 0.0226674543756038, 0.0676874998786629,
-			 1, 50, -0.022121351438444, 0.0257351289152253, 0.00180688873839065,
-			 0.00171576719163958, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
-			 0.88234087822202, "m", 0.0122085101387462, 0.148002394875041,
-			 1, 50, -0.0299392245689676, 0.0252561148682627, -0.00234155485035244,
-			 -0.00222347004787776, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
-			 0.86792455293434, "m", 0.0140807024701995, -0.166295314833058,
-			 1, 84, -0.04289309088209, 0.0459616975126865, 0.00153430331529828,
-			 0.00145692827371171, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
-			 0.946034400141168, "m", 0.0226674543756038, 0.0676874998786629,
-			 1, 84, -0.022121351438444, 0.0257351289152253, 0.00180688873839065,
-			 0.00171576719163958, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
-			 0.88234087822202, "m", 0.0122085101387462, 0.148002394875041
+		list(1, 16, -0.175606169110313, 1.32307655149661, 0.57373519119315,
+			 0.544801679264091, "s", "M", "", 0, "<unicode>", "", 0.133445697638349,
+			 "m", 0.382324045857052, 1.50065160015508, 1, 16, -0.363174317188531,
+			 1.00500182506967, 0.320913753940571, 0.304730047466983, "s",
+			 "M", "", 1, "<unicode>", "", 0.357864356540752, "m", 0.349030939611698,
+			 0.919442139707135, 1, 50, 0.0233139321770276, 1.18386420714602,
+			 0.603589069661522, 0.573150024235387, "s", "M", "", 0, "<unicode>",
+			 "", 0.0414789597773262, "m", 0.296064183863393, 2.03871019380049,
+			 1, 50, -0.23595737233661, 0.937492637154498, 0.350767632408944,
+			 0.333078392438278, "s", "M", "", 1, "<unicode>", "", 0.241299562713065,
+			 "m", 0.299354992935363, 1.17174472010454, 1, 84, -0.0541312754310024,
+			 1.33137936467835, 0.638624044623672, 0.606418182586735, "s",
+			 "M", "", 0, "<unicode>", "", 0.0707912589108362, "m", 0.353453086648041,
+			 1.80681416784343, 1, 84, -0.392682615184301, 1.16428782992649,
+			 0.385802607371094, 0.366346550789626, "s", "M", "", 1, "<unicode>",
+			 "", 0.33138834536828, "m", 0.397193636564747, 0.971321219312143,
+			 1, 16, -0.0299477929886746, 0.0252630791694902, -0.00234235690959219,
+			 -0.00222423166187144, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
+			 0.867916556992563, "m", 0.0140846649718212, -0.166305475797861,
+			 1, 16, -0.0577395049765057, 0.0743884568190932, 0.00832447592129372,
+			 0.00790467192971527, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
+			 0.804933179615291, "m", 0.0337067320720706, 0.246967754200989,
+			 1, 50, -0.0134864404913422, 0.0126229897939495, -0.000431725348696387,
+			 -0.000409953404568982, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
+			 0.948319787398304, "m", 0.00666069134209597, -0.0648168976045861,
+			 1, 50, -0.0428930866127521, 0.0459616943514941, 0.00153430386937101,
+			 0.00145692880158943, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
+			 0.946034376176657, "m", 0.0226674524800255, 0.0676875299826055,
+			 1, 84, -0.0221511695849734, 0.0257721565775641, 0.00181049349629535,
+			 0.00171919016336992, "s", "jasp", "M", 0, "<unicode>", "<unicode>",
+			 0.882271103604356, "m", 0.012225562954358, 0.148090808010601,
+			 1, 84, -0.0705354934705573, 0.0576669084536023, -0.0064342925084775,
+			 -0.00610981061873682, "s", "jasp", "M", 1, "<unicode>", "<unicode>",
+			 0.844034530901603, "m", 0.0327052953358847, -0.196735496267411
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0266683299225176, 1.18300023792157, 0.604834283922045, 0.574332441551748,
-			 "sm", "<unicode>", 0.0403284588273707, "M", 0.294988050066239,
-			 2.05036876506092, 1, -2.54832757074419, 2.40784089137807, -0.0702433396830621,
-			 -0.0667009623219731, "jasp", "<unicode>", 0.95569488444959,
-			 "M", 1.26435192208017, -0.0555567943199662, 1, -0.436456167523949,
-			 0.715250741187537, 0.139397286831794, 0.132367470264157, "medexperimental",
-			 "<unicode>", 0.635179057081293, "M", 0.293808181628847, 0.47444998317946,
-			 1, -1.08477365694781, 0.57913078663291, -0.252821435157448,
-			 -0.24007162951978, "sm:medexperimental", "<unicode>", 0.551434313109728,
-			 "M", 0.424473219075805, -0.595612217203974, -0.229268637759232,
-			 0.318449102891052, 0.0445902325659096, 0.0423034693005768, "Z",
-			 "<unicode>", 0.749631621824297, "M", 0.139726480938071, 0.319125138388568,
-			 1, -1.98043775630241, 2.77951806559338, 0.399540154645486, 0.379050157260562,
-			 "jasp:Z", "<unicode>", 0.742132955011132, "M", 1.21429675734904,
-			 0.329030076237485, 1, -0.387333899870584, 0.449907530118204,
-			 0.0312868151238099, 0.0296823036557741, "sm:Z", "<unicode>",
-			 0.883539708231725, "M", 0.21358592213756, 0.146483507951707,
-			 1, -0.0404917979670217, 0.050515010110963, 0.00501160607197068,
-			 0.0613685504418115, "sm", "<unicode>", 0.829093406513692, "jasp",
-			 0.0232164490765736, 0.215864452631889, 1, -0.0488496035059556,
-			 0.0421572045721462, -0.00334619946690469, -0.0409751700002139,
-			 "medexperimental", "<unicode>", 0.885397384825755, "jasp", 0.0232164490766034,
-			 -0.144130545367373, 1, -0.0871738359198841, 0.0415292263326109,
-			 -0.0228223047936366, -0.279465652889183, "sm:medexperimental",
-			 "<unicode>", 0.486991211548942, "jasp", 0.0328330171543172,
-			 -0.695102271179353))
+		list(1, 0.0266683315358365, 1.18300023822745, 0.604834284881645, 0.574332443151607,
+			 "sm", "<unicode>", 0.0403284582841099, "M", 0.294988049732703,
+			 2.05036877063224, 1, -2.54832760588117, 2.40784085034763, -0.0702433777667706,
+			 -0.0667009985650946, "jasp", "<unicode>", 0.955694860400837,
+			 "M", 1.26435192057671, -0.0555568245071596, 1, -0.436456166576654,
+			 0.715250740780347, 0.139397287101846, 0.132367470679305, "medexperimental",
+			 "<unicode>", 0.635179056028172, "M", 0.293808181283309, 0.474449984656589,
+			 1, -1.08477365809407, 0.579130783588914, -0.252821437252578,
+			 -0.240071631797109, "sm:medexperimental", "<unicode>", 0.551434309357688,
+			 "M", 0.424473218591681, -0.595612222819122, -0.229268636932585,
+			 0.31844910306397, 0.0445902330656922, 0.0423034698064085, "Z",
+			 "<unicode>", 0.749631618823237, "M", 0.139726480771301, 0.319125142346324,
+			 1, -1.98043774110999, 2.77951807508286, 0.399540166986438, 0.379050169252481,
+			 "jasp:Z", "<unicode>", 0.742132947031504, "M", 1.21429675589418,
+			 0.329030086794742, 1, -0.38733389991844, 0.449907529070343,
+			 0.0312868145759512, 0.02968230315824, "sm:Z", "<unicode>", 0.883539710118391,
+			 "M", 0.213585921882452, 0.146483505561617, 1, -0.0404917964506663,
+			 0.0505150123249536, 0.00501160793714363, 0.0613685728792904,
+			 "sm", "<unicode>", 0.829093345179011, "jasp", 0.023216449254545,
+			 0.215864531315551, 1, -0.0488496029207232, 0.0421572058548779,
+			 -0.00334619853292269, -0.0409751582948607, "medexperimental",
+			 "<unicode>", 0.885397417464715, "jasp", 0.0232164492545402,
+			 -0.144130504033398, 1, -0.0871738367346604, 0.0415292265042244,
+			 -0.022822305115218, -0.279465654995933, "sm:medexperimental",
+			 "<unicode>", 0.486991208749631, "jasp", 0.0328330174059519,
+			 -0.695102275646491))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 16, -0.179100637290868, 1.32191293642022, 0.571406149564675,
-			 0.542590090742047, "Total", "s", "M", 0, "<unicode>", 0.135636509891486,
-			 "m", 0.382918662166981, 1.49223896879567, 1, 16, -0.360797769461749,
-			 1.0057189146075, 0.322460572572877, 0.306198859543856, "Total",
-			 "s", "M", 1, "<unicode>", 0.354968083034939, "m", 0.348607600662094,
-			 0.924995817533647, 1, 50, 0.0253645497509777, 1.18542736508604,
-			 0.605395957418507, 0.57486578980788, "Total", "s", "M", 0, "<unicode>",
-			 0.0407886076868782, "m", 0.295939829630924, 2.04567245366572,
-			 1, 50, -0.23917093903629, 0.936023096380922, 0.348426078672316,
-			 0.330854923048583, "Total", "s", "M", 1, "<unicode>", 0.245156092780479,
-			 "m", 0.299799905683725, 1.16219542457058, 1, 84, -0.0540280267647112,
-			 1.33423208937238, 0.640102031303835, 0.6078216335507, "Total",
-			 "s", "M", 0, "<unicode>", 0.0706985286469397, "m", 0.354154496482464,
-			 1.80740901968339, 1, 84, -0.393044146627292, 1.16815050976625,
-			 0.387553181569479, 0.368008842948848, "Total", "s", "M", 1,
-			 "<unicode>", 0.330509322408042, "m", 0.398271261285423, 0.973088493301394,
-			 1, 16, -0.0299392245689676, 0.0252561148682627, -0.00234155485035244,
-			 -0.00222347004787776, "Total indirect", "s", "M", 0, "<unicode>",
-			 0.86792455293434, "m", 0.0140807024701995, -0.166295314833058,
-			 1, 16, -0.04289309088209, 0.0459616975126865, 0.00153430331529828,
-			 0.00145692827371171, "Total indirect", "s", "M", 1, "<unicode>",
-			 0.946034400141168, "m", 0.0226674543756038, 0.0676874998786629,
-			 1, 50, -0.022121351438444, 0.0257351289152253, 0.00180688873839065,
-			 0.00171576719163958, "Total indirect", "s", "M", 0, "<unicode>",
-			 0.88234087822202, "m", 0.0122085101387462, 0.148002394875041,
-			 1, 50, -0.0299392245689676, 0.0252561148682627, -0.00234155485035244,
-			 -0.00222347004787776, "Total indirect", "s", "M", 1, "<unicode>",
-			 0.86792455293434, "m", 0.0140807024701995, -0.166295314833058,
-			 1, 84, -0.04289309088209, 0.0459616975126865, 0.00153430331529828,
-			 0.00145692827371171, "Total indirect", "s", "M", 0, "<unicode>",
-			 0.946034400141168, "m", 0.0226674543756038, 0.0676874998786629,
-			 1, 84, -0.022121351438444, 0.0257351289152253, 0.00180688873839065,
-			 0.00171576719163958, "Total indirect", "s", "M", 1, "<unicode>",
-			 0.88234087822202, "m", 0.0122085101387462, 0.148002394875041
+		list(1, 16, -0.179222267460592, 1.32200793602771, 0.571392834283557,
+			 0.54257744760222, "Total", "s", "M", 0, "<unicode>", 0.135702063567281,
+			 "m", 0.382973925880734, 1.49198886835315, 1, 16, -0.354818259309233,
+			 1.01329471903296, 0.329238229861865, 0.312634719396698, "Total",
+			 "s", "M", 1, "<unicode>", 0.345509097008716, "m", 0.349014826071728,
+			 0.943335942394038, 1, 50, 0.0229955599106577, 1.18331912871499,
+			 0.603157344312826, 0.572740070830818, "Total", "s", "M", 0,
+			 "<unicode>", 0.0415849458199409, "m", 0.296006349595406, 2.03765002047168,
+			 1, 50, -0.233150709046936, 0.937754581603567, 0.352301936278315,
+			 0.334535321239867, "Total", "s", "M", 1, "<unicode>", 0.238227883405515,
+			 "m", 0.29870581803708, 1.17942776807441, 1, 84, -0.053335218325961,
+			 1.3342042945659, 0.640434538119968, 0.608137372750105, "Total",
+			 "s", "M", 0, "<unicode>", 0.0704064213387243, "m", 0.353970665746053,
+			 1.80928704012844, 1, 84, -0.393747624433564, 1.1524842541588,
+			 0.379368314862617, 0.360236740170889, "Total", "s", "M", 1,
+			 "<unicode>", 0.336172613436492, "m", 0.394454155991855, 0.961755147207652,
+			 1, 16, -0.0299477929886746, 0.0252630791694902, -0.00234235690959219,
+			 -0.00222423166187144, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.867916556992563, "m", 0.0140846649718212, -0.166305475797861,
+			 1, 16, -0.0577395049765057, 0.0743884568190932, 0.00832447592129372,
+			 0.00790467192971527, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.804933179615291, "m", 0.0337067320720706, 0.246967754200989,
+			 1, 50, -0.0134864404913422, 0.0126229897939495, -0.000431725348696387,
+			 -0.000409953404568982, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.948319787398304, "m", 0.00666069134209597, -0.0648168976045861,
+			 1, 50, -0.0428930866127521, 0.0459616943514941, 0.00153430386937101,
+			 0.00145692880158943, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.946034376176657, "m", 0.0226674524800255, 0.0676875299826055,
+			 1, 84, -0.0221511695849734, 0.0257721565775641, 0.00181049349629535,
+			 0.00171919016336992, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.882271103604356, "m", 0.012225562954358, 0.148090808010601,
+			 1, 84, -0.0705354934705573, 0.0576669084536023, -0.0064342925084775,
+			 -0.00610981061873682, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.844034530901603, "m", 0.0327052953358847, -0.196735496267411
 			))
 
 
@@ -2301,14 +2332,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0575248411520211, "jasp", 0.0155883230960112))
+		list("M", 0.0575248411398956, "jasp", 0.0155883209471189))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 82 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2319,8 +2350,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -2331,29 +2365,29 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "mod"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "mod",
-            processType = "mediators", processVariable = "Y")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "mod"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "mod", 
+            processType = "mediators", processVariable = "Y")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2366,97 +2400,97 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1.68041089480192, 2.96919114210622, 2.32480101845407, "W", "<unicode>",
-			 1.53743684450092e-12, "W", 0.328776512596666, 7.07106782079068,
-			 0.719243095446917, 1.27101851286767, 0.995130804157296, "M",
-			 "<unicode>", 1.55364610066044e-12, "M", 0.140761621584144, 7.06961736415084,
-			 -0.017063829424213, 0.0136234316300662, -0.00172019889707342,
-			 "Y", "<unicode>", 0.826077786806031, "jasp", 0.00782852677302654,
-			 -0.219734689162772, -0.762343306344135, 0.0887543315059579,
-			 -0.336794487419088, "mod", "<unicode>", 0.120857287748549, "jasp",
-			 0.217120733993952, -1.55118528398338, 0.00468047960484189, 0.00827014311556882,
-			 0.00647531136020536, "jasp", "<unicode>", 1.53743684450092e-12,
-			 "jasp", 0.000915747314502139, 7.07106781276859, 0.413197536866249,
-			 0.872209472692487, 0.642703504779368, "Y", "<unicode>", 4.05039308759569e-08,
-			 "Z", 0.117097033273791, 5.4886403763674, -6.53655165917213,
-			 3.73651368195567, -1.40001898860823, "mod", "<unicode>", 0.593196294728594,
-			 "Z", 2.62072809045483, -0.534209937195452, 0.71669479817852,
-			 1.2663592308511, 0.991527014514812, "Z", "<unicode>", 1.53743684450092e-12,
-			 "Z", 0.140223095171204, 7.07106781022211, 507.563085651454,
-			 899.790692619836, 703.676889135645, "mod", "<unicode>", 2.02793337678031e-12,
-			 "mod", 100.059901626312, 7.03255627577598, 0.700714207950775,
-			 1.23822336162219, 0.969468784786483, "Y", "<unicode>", 1.54809498553732e-12,
-			 "Y", 0.137122201711669, 7.0701080691879))
+		list(1.68041087884987, 2.9691910864759, 2.32480098266288, "W", "<unicode>",
+			 1.53743684450092e-12, "W", 0.328776502474476, 7.07106792962909,
+			 0.719243092834467, 1.27101850366788, 0.995130798251176, "M",
+			 "<unicode>", 1.55364610066044e-12, "M", 0.14076161990367, 7.06961740659275,
+			 -0.0170638299887141, 0.0136234311120336, -0.00172019943834025,
+			 "Y", "<unicode>", 0.826077733215044, "jasp", 0.00782852678488097,
+			 -0.219734757970353, -0.762343297240913, 0.0887543418865426,
+			 -0.336794477677185, "mod", "<unicode>", 0.120857299055803, "jasp",
+			 0.217120734319815, -1.5511852367867, 0.00468047959932893, 0.00827014309638149,
+			 0.00647531134785521, "jasp", "<unicode>", 1.53743684450092e-12,
+			 "jasp", 0.000915747311013714, 7.07106782621854, 0.413197538278287,
+			 0.87220947746148, 0.642703507869883, "Y", "<unicode>", 4.0503934206626e-08,
+			 "Z", 0.117097034130173, 5.48864036261934, -6.53655195168483,
+			 3.73651351338714, -1.40001921914884, "mod", "<unicode>", 0.593196238332335,
+			 "Z", 2.62072812207382, -0.53421001871838, 0.716694800200793,
+			 1.2663592379711, 0.991527019085947, "Z", "<unicode>", 1.53743684450092e-12,
+			 "Z", 0.140223096471668, 7.07106777724228, 507.563087277788,
+			 899.790698476131, 703.67689287696, "mod", "<unicode>", 2.02793337678031e-12,
+			 "mod", 100.059902705403, 7.03255623732446, 0.700714209203478,
+			 1.23822336594454, 0.96946878757401, "Y", "<unicode>", 1.54809498553732e-12,
+			 "Y", 0.137122202494757, 7.07010804914017))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.147948996708588, 0.116135688465705, -0.0159066541214415, -0.0230302535341328,
-			 "W", "M", "", "", "<unicode>", "", "", 0.813347598335086, 0.0673697800718175,
-			 -0.236109634089419, 1, -0.0261961165104945, 0.0194967930965771,
-			 -0.00334966170695873, -0.00484976650500305, "W", "jasp", "M",
-			 "", "<unicode>", "<unicode>", "", 0.773834706557657, 0.0116565686837849,
-			 -0.287362584807512, -0.0163077605876651, 0.0285137534820108,
-			 0.00610299644717284, 0.00883614834541743, "W", "Z", "M", "",
-			 "<unicode>", "<unicode>", "", 0.593517238385026, 0.0114342698190432,
-			 0.533746058450414, -0.0332675922356836, 0.038704162906655, 0.0027182853354857,
-			 0.00393563599085021, "W", "mod", "M", "", "<unicode>", "<unicode>",
-			 "", 0.882302602912406, 0.0183604789960537, 0.148050894318713,
-			 -0.0775466819567461, 0.0159133084692364, -0.0308166867437548,
-			 -0.0446175608881794, "W", "Y", "M", "", "<unicode>", "<unicode>",
-			 "", 0.196176067287806, 0.0238422723996928, -1.29252305431054,
-			 1, -0.00296122904246256, 0.00450914197709736, 0.000773956467317395,
-			 0.00112056335233158, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
-			 "<unicode>", 0.684655756514328, 0.00190574191119971, 0.406118196157092,
-			 -0.00589119861695775, 0.00506907909285442, -0.000411059762051665,
-			 -0.00059514782087135, "W", "mod", "Y", "M", "<unicode>", "<unicode>",
-			 "<unicode>", 0.883120221676967, 0.00279604058958875, -0.147014948059866
+		list(-0.147948995755632, 0.116135688639212, -0.01590665355821, -0.0230302526393509,
+			 "W", "M", "", "", "<unicode>", "", "", 0.813347604281526, 0.0673697798729746,
+			 -0.236109626426002, 1, -0.0261961177785171, 0.0194967920760682,
+			 -0.00334966285122444, -0.00484976814501191, "W", "jasp", "M",
+			 "", "<unicode>", "<unicode>", "", 0.773834632593222, 0.0116565687469273,
+			 -0.287362681415783, -0.0163077599388162, 0.0285137513486698,
+			 0.00610299570492677, 0.00883614724033467, "W", "Z", "M", "",
+			 "<unicode>", "<unicode>", "", 0.593517260377538, 0.0114342691092878,
+			 0.533746026667279, -0.0332675926716369, 0.038704161895021, 0.00271828461169206,
+			 0.00393563492936051, "W", "mod", "M", "", "<unicode>", "<unicode>",
+			 "", 0.882302633088636, 0.0183604788491936, 0.148050856081645,
+			 -0.077546678432645, 0.015913308996664, -0.0308166847179905,
+			 -0.0446175578015425, "W", "Y", "M", "", "<unicode>", "<unicode>",
+			 "", 0.196176082349745, 0.0238422716352212, -1.29252301078838,
+			 1, -0.00296122890168854, 0.00450914140851467, 0.000773956253413065,
+			 0.0011205630387737, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
+			 "<unicode>", 0.684655810647974, 0.00190574173023804, 0.406118122478429,
+			 -0.00589119840115841, 0.00506907910191818, -0.000411059649620117,
+			 -0.000595147656039078, "W", "mod", "Y", "M", "<unicode>", "<unicode>",
+			 "<unicode>", 0.883120251227061, 0.00279604053684911, -0.147014910621913
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.147948996708588, 0.116135688465705, -0.0159066541214415, -0.0230302535341328,
-			 "W", "<unicode>", 0.813347598335086, "M", 0.0673697800718175,
-			 -0.236109634089419, 1, -2.10110820470282, 2.83502607382475,
-			 0.366958934560965, 0.348453197312996, "jasp", "<unicode>", 0.77073564479617,
-			 "M", 1.25924106704592, 0.291412775650513, -0.413433882620032,
-			 0.107899969914886, -0.152766956352573, -0.144934680465498, "Z",
-			 "<unicode>", 0.250696109315949, "M", 0.132995773556844, -1.14866023383276,
-			 0.0028905648879694, 0.0180163398795304, 0.0104534523837499,
-			 0.263343062694822, "mod", "<unicode>", 0.00674721413960322,
-			 "M", 0.00385868697355441, 2.70906980934003, 0.0387464898678602,
-			 0.565434272654561, 0.302090381261211, 0.288797044296207, "Y",
-			 "<unicode>", 0.024554599581468, "M", 0.134361597187792, 2.24833871868158,
-			 -0.0194720938734558, 0.00121576385131691, -0.00912816501106944,
-			 -0.170429712489609, "W", "<unicode>", 0.0837015014975608, "jasp",
-			 0.00527761170306084, -1.72960147973285, -0.169849433838636,
-			 0.0899500027982267, -0.0399497155202047, -0.0609664182308724,
-			 "W", "<unicode>", 0.546659912050572, "Z", 0.0662765843367857,
-			 -0.602772697476375, 1, -1.87031193110395, 2.98033913143301,
-			 0.555013600164534, 0.555504679381811, "jasp", "<unicode>", 0.653778056597516,
-			 "Z", 1.23743372347611, 0.448519859799382, -3.17623798796469,
-			 3.69631216742168, 0.260037089728493, 0.0149449009614165, "W",
-			 "<unicode>", 0.882091377958021, "mod", 1.75323378633387, 0.148318548133987,
-			 -0.228615253195251, 0.0245922941384487, -0.102011479528401,
-			 -0.154494520527077, "W", "<unicode>", 0.11427905810986, "Y",
-			 0.0645949490222699, -1.57924854918968, -0.012530212645152, 0.0020646455096896,
-			 -0.0052327835677312, -0.13789199733451, "mod", "<unicode>",
-			 0.159891757636204, "Y", 0.00372324651625335, -1.40543569835845
+		list(-0.147948995755632, 0.116135688639212, -0.01590665355821, -0.0230302526393509,
+			 "W", "<unicode>", 0.813347604281526, "M", 0.0673697798729746,
+			 -0.236109626426002, 1, -2.10110807156531, 2.83502619224153,
+			 0.366959060338109, 0.348453318229441, "jasp", "<unicode>", 0.770735567749333,
+			 "M", 1.25924106329056, 0.291412876402869, -0.413433871909679,
+			 0.107899979085006, -0.152766946412337, -0.144934671866256, "Z",
+			 "<unicode>", 0.250696138747263, "M", 0.13299577316392, -1.14866016248538,
+			 0.00289056480701939, 0.0180163397543166, 0.010453452280668,
+			 0.263343061902569, "mod", "<unicode>", 0.00674721452166072,
+			 "M", 0.00385868696226241, 2.70906979055356, 0.0387464814467791,
+			 0.565434262660393, 0.302090372053586, 0.288797036883959, "Y",
+			 "<unicode>", 0.0245546035200324, "M", 0.134361596786487, 2.24833865686812,
+			 -0.0194720938533157, 0.00121576385215363, -0.00912816500058106,
+			 -0.170429711183469, "W", "<unicode>", 0.0837015015643359, "jasp",
+			 0.00527761169813643, -1.72960147935936, -0.169849431877761,
+			 0.0899500053558221, -0.0399497132609697, -0.0609664142234274,
+			 "W", "<unicode>", 0.546659935651779, "Z", 0.0662765844890132,
+			 -0.602772662003912, 1, -1.87031205328775, 2.98033902033267,
+			 0.555013483522457, 0.555504561813077, "jasp", "<unicode>", 0.653778125349646,
+			 "Z", 1.23743372630358, 0.448519764513268, -3.17623806385174,
+			 3.69631210995785, 0.260037023053054, 0.0149448969755527, "W",
+			 "<unicode>", 0.882091408283392, "mod", 1.75323379103376, 0.148318509706414,
+			 -0.228615249780674, 0.0245922979169573, -0.102011475931858,
+			 -0.154494513804413, "W", "<unicode>", 0.114279071396322, "Y",
+			 0.0645949491151114, -1.57924849124146, -0.012530212730386, 0.00206464545499054,
+			 -0.00523278363769775, -0.137891999459377, "mod", "<unicode>",
+			 0.159891752925481, "Y", 0.00372324652404304, -1.40543571420985
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.176023199935095, 0.0942455517666334, -0.0408888240842308, -0.0592003810595874,
-			 "Total", "W", "M", "<unicode>", 0.553151746868814, 0.0689473770522249,
-			 -0.593043939195237, -0.0779893376489408, 0.0280249977233621,
-			 -0.0249821699627893, -0.0361701275254546, "Total indirect",
-			 "W", "M", "<unicode>", 0.355628457145996, 0.0270449702669362,
-			 -0.923727026364354))
+		list(-0.176023199481491, 0.0942455510674642, -0.0408888242070132, -0.0592003810334755,
+			 "Total", "W", "M", "<unicode>", 0.553151743984262, 0.0689473767581446,
+			 -0.593043943505553, -0.0779893374890208, 0.0280249961914144,
+			 -0.0249821706488032, -0.0361701283941246, "Total indirect",
+			 "W", "M", "<unicode>", 0.355628436258906, 0.0270449698353293,
+			 -0.923727066471657))
 
 
 
@@ -2474,15 +2508,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.102707277732093, "jasp", 0.0290462868992908, "Z", 0.00671759165660502,
-			 "mod", 0.000223350064746608, "Y", 0.0435195189310436))
+		list("M", 0.102707275423778, "jasp", 0.0290462864540807, "Z", 0.00671759002216155,
+			 "mod", 0.000223349945609908, "Y", 0.0435195172520966))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 82 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2493,8 +2527,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -2505,29 +2542,29 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "mod"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "mod",
-            processType = "mediators", processVariable = "Y")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "mod"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "mod", 
+            processType = "mediators", processVariable = "Y")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2540,97 +2577,97 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.180704808730328, 0.319295191038147, 0.249999999884237, "sm",
-			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553390268909,
-			 7.0710678150785, 0.679351239017548, 1.20070868331726, 0.940029961167402,
-			 "M", "<unicode>", 1.57407420431355e-12, "M", 0.133001791974778,
-			 7.06779921691328, -0.0155310360409273, 0.015901321346984, 0.000185142653028361,
-			 "Y", "<unicode>", 0.981579174401771, "jasp", 0.0080186058610887,
-			 0.0230891324795984, -0.781706195292346, 0.0840275744384795,
-			 -0.348839310426933, "mod", "<unicode>", 0.114221818813752, "jasp",
-			 0.220854509715388, -1.57949824468822, 0.00480662801191764, 0.0084930402246428,
-			 0.00664983411828022, "jasp", "<unicode>", 1.53743684450092e-12,
-			 "jasp", 0.000940428559351885, 7.07106781493651, 0.415818962568938,
-			 0.877332208264479, 0.646575585416708, "Y", "<unicode>", 3.97900377091531e-08,
-			 "Z", 0.11773513425142, 5.49178110279271, -6.63530159455768,
-			 3.59524109747847, -1.5200302485396, "mod", "<unicode>", 0.560287998937135,
-			 "Z", 2.60988027655951, -0.582413784337798, 0.707778596528062,
-			 1.25060480683957, 0.979191701683816, "Z", "<unicode>", 1.53743684450092e-12,
-			 "Z", 0.138478618636172, 7.07106780330087, 507.892714690368,
-			 901.011119528301, 704.451917109335, "mod", "<unicode>", 2.15072404330385e-12,
-			 "mod", 100.287150156534, 7.02434874268325, 0.716666293529629,
-			 1.26647572327931, 0.99157100840447, "Y", "<unicode>", 1.55475632368507e-12,
-			 "Y", 0.140260084901179, 7.06951667042756))
+		list(0.180704808636146, 0.319295190706542, 0.249999999671344, "sm",
+			 "<unicode>", 1.53743684450092e-12, "sm", 0.0353553389663229,
+			 7.07106782117058, 0.679351243115519, 1.20070869755428, 0.9400299703349,
+			 "M", "<unicode>", 1.57407420431355e-12, "M", 0.133001794561319,
+			 7.06779914839049, -0.0155310362302896, 0.0159013211515292, 0.00018514246061978,
+			 "Y", "<unicode>", 0.981579193538551, "jasp", 0.00801860585953447,
+			 0.0230891084888076, -0.781706197707031, 0.0840275723654797,
+			 -0.348839312670776, "mod", "<unicode>", 0.114221816628086, "jasp",
+			 0.220854509802555, -1.57949825422465, 0.00480662800829978, 0.00849304021203239,
+			 0.00664983411016609, "jasp", "<unicode>", 1.53743684450092e-12,
+			 "jasp", 0.000940428557057825, 7.07106782355738, 0.415818963481424,
+			 0.877332211433967, 0.646575587457696, "Y", "<unicode>", 3.97900397075546e-08,
+			 "Z", 0.117735134827196, 5.49178109327089, -6.63530162158488,
+			 3.59524110018423, -1.52003026070032, "mod", "<unicode>", 0.560287996939229,
+			 "Z", 2.60988028414459, -0.582413787304627, 0.707778597543075,
+			 1.25060481030174, 0.979191703922407, "Z", "<unicode>", 1.53743684450092e-12,
+			 "Z", 0.138478619260458, 7.07106778758886, 507.892715157413,
+			 901.011120926868, 704.45191804214, "mod", "<unicode>", 2.15072404330385e-12,
+			 "mod", 100.287150394171, 7.0243487353399, 0.716666294424239,
+			 1.26647572636302, 0.991571010393628, "Y", "<unicode>", 1.55475632368507e-12,
+			 "Y", 0.140260085459632, 7.06951665646182))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0910081224725078, 0.860751929259853, 0.475880025866181, 0.451881397144094,
-			 "s", "M", "", "", "<unicode>", "", "", 0.0153749805220957, "m",
-			 0.196366824303657, 2.42342375069574, 1, -0.0327065874144014,
-			 0.0226541864902512, -0.0050262004620751, -0.00477272918314809,
-			 "s", "jasp", "M", "", "<unicode>", "<unicode>", "", 0.721922972814061,
-			 "m", 0.0141229059159585, -0.355889962871992, 1, -0.04952974707603,
-			 0.106054836558549, 0.0282625447412593, 0.0268372646682991, "s",
-			 "Z", "M", "", "<unicode>", "<unicode>", "", 0.476421330290286,
-			 "m", 0.0396906741301907, 0.712070161583914, 1, -0.126072868172848,
-			 0.100247146419103, -0.0129128608768725, -0.0122616653295074,
-			 "s", "mod", "M", "", "<unicode>", "<unicode>", "", 0.823026170644271,
-			 "m", 0.0577357585080989, -0.223654477061406, 1, -0.138320655423621,
-			 0.0912558701983019, -0.0235323926126597, -0.0223456541017805,
-			 "s", "Y", "M", "", "<unicode>", "<unicode>", "", 0.687826618468944,
-			 "m", 0.0585665163831564, -0.401806254937635, 1, -0.00284859619040834,
-			 0.00402188839589021, 0.000586646102740937, 0.000557061540990707,
-			 "s", "jasp", "Z", "M", "<unicode>", "<unicode>", "<unicode>",
-			 0.73784489268874, "m", 0.00175270684576147, 0.334708627492162,
-			 1, -0.0147815474651881, 0.0185253899009152, 0.00187192121786353,
-			 0.00177752023471082, "s", "mod", "Y", "M", "<unicode>", "<unicode>",
-			 "<unicode>", 0.825631019351605, "m", 0.00849682382656624, 0.220308347692318
+		list(1, 0.0910081151591596, 0.860751925681795, 0.475880020420478, 0.451881390127785,
+			 "s", "M", "", "", "<unicode>", "", "", 0.0153749821937657, "m",
+			 0.196366825256555, 2.42342371120344, 1, -0.03270658743966, 0.0226541865742595,
+			 -0.00502620043270026, -0.00477272913576544, "s", "jasp", "M",
+			 "", "<unicode>", "<unicode>", "", 0.721922974897842, "m", 0.0141229059438332,
+			 -0.355889960089619, 1, -0.0495297473635335, 0.106054839391619,
+			 0.0282625460140428, 0.0268372657673077, "s", "Z", "M", "", "<unicode>",
+			 "<unicode>", "", 0.476421319277345, "m", 0.0396906749262701,
+			 0.712070179369429, 1, -0.126072864011851, 0.100247149342161,
+			 -0.0129128573348449, -0.0122616619160345, "s", "mod", "M", "",
+			 "<unicode>", "<unicode>", "", 0.823026217432581, "m", 0.0577357581922923,
+			 -0.223654416935825, 1, -0.138320657665931, 0.0912558712760281,
+			 -0.0235323931949514, -0.0223456545634599, "s", "Y", "M", "",
+			 "<unicode>", "<unicode>", "", 0.687826615428019, "m", 0.0585665172301199,
+			 -0.401806259069286, 1, -0.00284859623689668, 0.00402188843811842,
+			 0.000586646100610873, 0.000557061536693332, "s", "jasp", "Z",
+			 "M", "<unicode>", "<unicode>", "<unicode>", 0.737844896866185,
+			 "m", 0.00175270686839366, 0.334708621954868, 1, -0.0147815480029481,
+			 0.0185253894752994, 0.00187192073617564, 0.00177751977005605,
+			 "s", "mod", "Y", "M", "<unicode>", "<unicode>", "<unicode>",
+			 0.825631064077139, "m", 0.008496823855175, 0.220308290260194
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0910081224725078, 0.860751929259853, 0.475880025866181, 0.451881397144094,
-			 "sm", "<unicode>", 0.0153749805220957, "M", 0.196366824303657,
-			 2.42342375069574, 1, -1.79290884127227, 2.94034877890532, 0.573719968816522,
-			 0.544787271973417, "jasp", "<unicode>", 0.634690061553928, "M",
-			 1.20748586645289, 0.475135970329726, -0.367051095396393, 0.14350331678753,
-			 -0.111773889304432, -0.106043304632345, "Z", "<unicode>", 0.390795230450944,
-			 "M", 0.130245865794247, -0.858176101197744, 0.00343201054080372,
-			 0.0181440175053956, 0.0107880140230996, 0.271959696209718, "mod",
-			 "<unicode>", 0.00404792007154309, "M", 0.00375313196585199,
-			 2.8744030642287, 0.0358514443861678, 0.542472331293712, 0.28916188783994,
-			 0.276437462120014, "Y", "<unicode>", 0.0252627608038503, "M",
-			 0.129242397029666, 2.23736091627553, 1, -0.0407263673121724,
-			 0.0232049257195319, -0.00876072079632024, -0.107277532357785,
-			 "sm", "<unicode>", 0.591156438387134, "jasp", 0.0163093030116845,
-			 -0.537160955930723, 1, -0.641306843553368, 0.135597595765052,
-			 -0.252854623894158, -0.253078350975052, "sm", "<unicode>", 0.202027488900194,
-			 "Z", 0.198193549842381, -1.27579643280646, 1, -1.77925887403205,
-			 2.97744968035564, 0.599095403161793, 0.599625485877554, "jasp",
-			 "<unicode>", 0.621514529069439, "Z", 1.21346835755861, 0.493705006339943,
-			 1, -11.6494093208209, 9.25548197715544, -1.19696367183275, -0.0450863326455992,
-			 "sm", "<unicode>", 0.822410573160282, "mod", 5.33297842788732,
-			 -0.22444562415133, 1, -0.471868158437157, 0.309105404407237,
-			 -0.0813813770149599, -0.0808343917297258, "sm", "<unicode>",
-			 0.682924078848467, "Y", 0.199231610632801, -0.408476229030502,
-			 -0.0127958409040199, 0.00197912205577032, -0.00540835942412481,
-			 -0.142617475672555, "mod", "<unicode>", 0.151319742569027, "Y",
-			 0.00376919246382415, -1.43488544987634))
+		list(1, 0.0910081151591596, 0.860751925681795, 0.475880020420478, 0.451881390127785,
+			 "sm", "<unicode>", 0.0153749821937657, "M", 0.196366825256555,
+			 2.42342371120344, 1, -1.79290886614477, 2.94034877712902, 0.573719955492124,
+			 0.54478725709636, "jasp", "<unicode>", 0.634690071071061, "M",
+			 1.20748587234488, 0.475135956976446, -0.367051101000445, 0.143503313667698,
+			 -0.111773893666374, -0.106043308449287, "Z", "<unicode>", 0.390795214266433,
+			 "M", 0.130245866427988, -0.858176130512154, 0.00343201045778388,
+			 0.0181440174942476, 0.0107880139760157, 0.271959694054828, "mod",
+			 "<unicode>", 0.00404792041234647, "M", 0.00375313198418699,
+			 2.87440303764128, 0.0358514470251727, 0.542472336404138, 0.289161891714655,
+			 0.276437464979478, "Y", "<unicode>", 0.0252627595587525, "M",
+			 0.129242397660142, 2.23736093534135, 1, -0.0407263674437826,
+			 0.0232049255466156, -0.00876072094858352, -0.107277534282321,
+			 "sm", "<unicode>", 0.591156431699144, "jasp", 0.016309303001147,
+			 -0.537160965613761, 1, -0.641306845518521, 0.135597594691101,
+			 -0.25285462541371, -0.253078352229477, "sm", "<unicode>", 0.202027486706696,
+			 "Z", 0.198193550069732, -1.27579643900998, 1, -1.77925891324293,
+			 2.97744964763213, 0.599095367194599, 0.599625449247176, "jasp",
+			 "<unicode>", 0.621514550480846, "Z", 1.21346835921358, 0.493704976026616,
+			 1, -11.6494090035406, 9.25548230608666, -1.19696334872695, -0.0450863204514508,
+			 "sm", "<unicode>", 0.822410620396135, "mod", 5.33297843085953,
+			 -0.224445563439871, 1, -0.471868159750371, 0.309105403873998,
+			 -0.0813813779381867, -0.080834392563681, "sm", "<unicode>",
+			 0.682924075746507, "Y", 0.199231610831778, -0.408476233256486,
+			 -0.0127958409095292, 0.00197912206976741, -0.00540835941988089,
+			 -0.142617475488869, "mod", "<unicode>", 0.151319743429843, "Y",
+			 0.00376919246880035, -1.43488544685601))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0625107978025213, 0.867748570150353, 0.465129683976437, 0.441673194973658,
-			 "Total", "s", "M", "<unicode>", 0.0235575802096637, "m", 0.205421573737947,
-			 2.26426891544407, 1, -0.156837434248426, 0.135336750468939,
-			 -0.0107503418897435, -0.0102082021704354, "Total indirect",
-			 "s", "M", "<unicode>", 0.885318086689426, "m", 0.0745356004043945,
-			 -0.144230969247143))
+		list(1, 0.0625107943168258, 0.867748570300795, 0.46512968230881, 0.441673191586582,
+			 "Total", "s", "M", "<unicode>", 0.0235575813371369, "m", 0.205421574665551,
+			 2.26426889710145, 1, -0.156837430716453, 0.135336754493118,
+			 -0.0107503381116672, -0.0102081985412028, "Total indirect",
+			 "s", "M", "<unicode>", 0.885318126906147, "m", 0.0745356005299597,
+			 -0.144230918315954))
 
 
 
@@ -2648,15 +2685,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.15239078702792, "jasp", 0.00287711723586159, "Z", 0.0190747439475411,
-			 "mod", 0.00050819434762206, "Y", 0.021713407519492))
+		list("M", 0.15239078568407, "jasp", 0.00287711733664131, "Z", 0.0190747437706668,
+			 "mod", 0.000508194072294632, "Y", 0.021713407567578))
 
 })
 
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 92 - continuous works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2667,8 +2704,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -2679,35 +2719,35 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "jasp", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "Z", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "W",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "Z", processIndependent = "jasp",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "moderators", processVariable = "Y"),
-        list(processDependent = "M", processIndependent = "Z",
-            processType = "moderators", processVariable = "Y")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "jasp", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "Z", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "W", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "Z", processIndependent = "jasp", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "moderators", processVariable = "Y"), 
+        list(processDependent = "M", processIndependent = "Z", 
+            processType = "moderators", processVariable = "Y")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
@@ -2720,154 +2760,153 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.031054182654645, 0.588772519858598, 0.278859168601977, "Z:Y",
-			 "<unicode>", 0.0778043814331941, "W", 0.158121962291746, 1.76357012372173,
-			 -0.0314754290819636, 0.0177811834917298, -0.00684712279511689,
-			 "jasp:Y", "<unicode>", 0.585818107713644, "W", 0.0125656932888112,
-			 -0.544906089758988, -0.675381645622852, 0.2244882430367, -0.225446701293076,
-			 "W:Y", "<unicode>", 0.326065578181026, "W", 0.229562863337697,
-			 -0.982069564803407, -0.54484820947102, 0.0642086573079608, -0.240319776081529,
-			 "Y", "<unicode>", 0.121932451799242, "W", 0.155374504731501,
-			 -1.54671306271785, 1.68041090534446, 2.96919117888309, 2.32480104211378,
-			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776519289221,
-			 7.07106774881534, 0.738695301374869, 1.30523287732007, 1.02196408934747,
-			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.144527547550357,
-			 7.07106781142461, -0.00203828314664171, 0.000358957801668553,
-			 -0.000839662672486581, "jasp:Y", "<unicode>", 0.169751649994788,
-			 "jasp", 0.000611552295659359, -1.37300224109416, 0.00465468573351061,
-			 0.00822456679171098, 0.00643962626261079, "jasp", "<unicode>",
-			 1.53743684450092e-12, "jasp", 0.000910700677757125, 7.07106782710463,
-			 -0.0732461996187064, 0.204985660064946, 0.0658697302231199,
-			 "Z:Y", "<unicode>", 0.353397442456731, "Z", 0.0709788194778858,
-			 0.928019523396585, 0.377831608335292, 0.66761130730426, 0.522721457819776,
-			 "Z", "<unicode>", 1.53832502292062e-12, "Z", 0.0739247509787714,
-			 7.07099382681564, -0.0802370535241582, 0.325471998594874, 0.122617472535358,
-			 "Z:Y", "<unicode>", 0.236128141066089, "Y", 0.103499108993638,
-			 1.18472007853609, -0.0184311889365843, 0.0140555530740054, -0.00218781793128943,
-			 "jasp:Y", "<unicode>", 0.791789671871789, "Y", 0.00828758647272117,
-			 -0.263987342815752, -0.253361709274831, 0.338176447485766, 0.0424073691054672,
-			 "W:Y", "<unicode>", 0.778695345908037, "Y", 0.150905363931831,
-			 0.281019627139456, 0.732634583405442, 1.29452391896651, 1.01357925118598,
-			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341750152856,
-			 7.07106792058228, -0.382157413108089, 0.218246235359302, -0.0819555888743933,
-			 "Z:Y", "<unicode>", 0.592599121786578, "W:Y", 0.153167010517361,
-			 -0.53507337250735, -0.0692279341985296, -0.0179641237642334,
-			 -0.0435960289813815, "jasp:Y", "<unicode>", 0.000857283160555555,
-			 "W:Y", 0.0130777429684062, -3.33360497195141, 1.6226999944245,
-			 2.86721926797579, 2.24495963120014, "W:Y", "<unicode>", 1.53743684450092e-12,
-			 "W:Y", 0.317485240383982, 7.07106770848617, -0.0296956307501333,
-			 0.00339989102393425, -0.0131478698630995, "Z:Y", "<unicode>",
-			 0.11940611084056, "jasp:Y", 0.00844289028653608, -1.5572711970528,
-			 0.00489761033845794, 0.00864572639156059, 0.00677166836500927,
-			 "jasp:Y", "<unicode>", 1.41997524849558e-12, "jasp:Y", 0.000956169624204147,
-			 7.08207852832133, 0.753193284742336, 1.33085000273074, 1.04202164373654,
-			 "Z:Y", "<unicode>", 1.53743684450092e-12, "Z:Y", 0.147364115500307,
-			 7.07106774399475))
+		list(-0.0310541926923948, 0.588772499372189, 0.278859153339897, "Z:Y",
+			 "<unicode>", 0.0778043926869112, "W", 0.158121959626222, 1.76357005692998,
+			 -0.0314754298939083, 0.0177811827121855, -0.00684712359086141,
+			 "jasp:Y", "<unicode>", 0.585818064403842, "W", 0.0125656932970768,
+			 -0.544906152727305, -0.675381649774356, 0.224488230301556, -0.2254467097364,
+			 "W:Y", "<unicode>", 0.326065555447833, "W", 0.229562861147953,
+			 -0.982069610951138, -0.54484821808001, 0.0642086541313947, -0.240319781974308,
+			 "Y", "<unicode>", 0.121932445977929, "W", 0.155374506117349,
+			 -1.54671308684838, 1.68041090054524, 2.9691911621447, 2.32480103134497,
+			 "W", "<unicode>", 1.53743684450092e-12, "W", 0.328776516243461,
+			 7.07106778156697, 0.738695301374337, 1.30523287731821, 1.02196408934627,
+			 "M", "<unicode>", 1.53743684450092e-12, "M", 0.144527547550019,
+			 7.0710678114329, -0.0020382831580517, 0.000358957801533497,
+			 -0.000839662678259102, "jasp:Y", "<unicode>", 0.16975164906791,
+			 "jasp", 0.000611552298535669, -1.37300224407566, 0.00465468573331568,
+			 0.00822456679103104, 0.00643962626217336, "jasp", "<unicode>",
+			 1.53743684450092e-12, "jasp", 0.000910700677633398, 7.07106782758498,
+			 -0.0732461984026672, 0.204985658026567, 0.0658697298119499,
+			 "Z:Y", "<unicode>", 0.353397439831003, "Z", 0.0709788186476618,
+			 0.928019528458575, 0.377831607223804, 0.667611303423464, 0.522721455323634,
+			 "Z", "<unicode>", 1.53832502292062e-12, "Z", 0.0739247502723025,
+			 7.07099386062428, -0.0802370547389897, 0.325471998668297, 0.122617471964654,
+			 "Z:Y", "<unicode>", 0.236128144734849, "Y", 0.103499109322281,
+			 1.18472006926013, -0.0184311887642872, 0.0140555537932661, -0.00218781748551055,
+			 "jasp:Y", "<unicode>", 0.791789716744175, "Y", 0.00828758661225525,
+			 -0.26398728458238, -0.253361714174984, 0.338176446563941, 0.0424073661944785,
+			 "W:Y", "<unicode>", 0.778695362153051, "Y", 0.150905364946729,
+			 0.281019605959328, 0.732634589082298, 1.29452393876705, 1.01357926392467,
+			 "Y", "<unicode>", 1.53743684450092e-12, "Y", 0.143341753755901,
+			 7.07106783171298, -0.382157374336327, 0.218246263750897, -0.0819555552927151,
+			 "Z:Y", "<unicode>", 0.592599266992852, "W:Y", 0.153167007869311,
+			 -0.535073162509275, -0.0692279334064391, -0.0179641232020844,
+			 -0.0435960283042618, "jasp:Y", "<unicode>", 0.00085728327403789,
+			 "W:Y", 0.0130777429097466, -3.33360493512764, 1.62269998869272,
+			 2.86721924798555, 2.24495961833913, "W:Y", "<unicode>", 1.53743684450092e-12,
+			 "W:Y", 0.317485236746554, 7.07106774899038, -0.0296956321425228,
+			 0.00339988964252166, -0.0131478712500006, "Z:Y", "<unicode>",
+			 0.119406071978639, "jasp:Y", 0.00844289028933636, -1.55727136080481,
+			 0.00489761035265517, 0.00864572643902434, 0.00677166839583975,
+			 "jasp:Y", "<unicode>", 1.41997524849558e-12, "jasp:Y", 0.000956169632690662,
+			 7.08207849770785, 0.753193280500949, 1.33084998791291, 1.04202163420693,
+			 "Z:Y", "<unicode>", 1.53743684450092e-12, "Z:Y", 0.147364112802184,
+			 7.07106780879343))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, -0.246051488919606, 0.136946834670581, -0.0545523271245121,
-			 -0.0789750495465024, "W", "M", "", "", "<unicode>", "", "",
-			 0.576615963231862, 0.0977054493376484, -0.558334540133902, 50,
-			 -0.167681831779048, 0.106697487029615, -0.0304921723747166,
-			 -0.0441433198363354, "W", "M", "", "", "<unicode>", "", "",
-			 0.663107166827128, 0.0699960103789997, -0.435627290892923, 84,
-			 -0.223662444870801, 0.21518959779024, -0.00423642354028043,
-			 -0.00613304283481763, "W", "M", "", "", "<unicode>", "", "",
-			 0.969814681636494, 0.111954108882268, -0.037840715116008, 1,
-			 16, -0.02617074550978, 0.0522800429125744, 0.0130546487013972,
-			 0.0188991301077194, "W", "jasp", "M", "", "<unicode>", "<unicode>",
-			 "", 0.514209030704999, 0.020013323979717, 0.652297874887135,
-			 1, 50, -0.0226274287861929, 0.0237489432502052, 0.000560757232006149,
-			 0.000811804601482274, "W", "jasp", "M", "", "<unicode>", "<unicode>",
-			 "", 0.962196355089898, 0.0118309245481573, 0.0473975833184982,
-			 1, 84, -0.10077078311816, 0.0326678922649206, -0.0340514454266195,
-			 -0.0492960563086401, "W", "jasp", "M", "", "<unicode>", "<unicode>",
-			 "", 0.31716351145622, 0.034041103927324, -1.00030379447498,
-			 16, -0.0235627937204136, 0.0866940853068529, 0.0315656457932197,
-			 0.0456973803298435, "W", "Z", "M", "", "<unicode>", "<unicode>",
-			 "", 0.261758952638146, 0.0281272716991125, 1.12224342733589,
-			 50, -0.0276546689203294, 0.0130488553495269, -0.00730290678540124,
-			 -0.010572370705546, "W", "Z", "M", "", "<unicode>", "<unicode>",
-			 "", 0.48186758695854, 0.01038374291337, -0.703301964072909,
-			 84, -0.0685118166986682, 0.0610012613099561, -0.00375527769435609,
-			 -0.00543649111972325, "W", "Z", "M", "", "<unicode>", "<unicode>",
-			 "", 0.909507557273645, 0.0330396576238663, -0.113659703653934,
-			 1, 16, -0.00574680023355742, 0.00396762439775286, -0.000889587917902283,
-			 -0.00128785064900989, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
-			 "<unicode>", 0.719622649318644, 0.00247821508658741, -0.358963159701879,
-			 1, 50, -0.00251794175166093, 0.00511545475288314, 0.00129875650061111,
-			 0.00188020134779029, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
-			 "<unicode>", 0.50480924879718, 0.00194733080933, 0.666941895228351,
-			 1, 84, -0.00948161489412559, 0.0106443059324208, 0.000581345519147609,
-			 0.000841610131012906, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
-			 "<unicode>", 0.909849214750852, 0.00513425781935206, 0.113228735213958
+		list(16, -0.2456492207091, 0.136697674865004, -0.0544757729220484,
+			 -0.078864222336069, "W", "M", "", "", "<unicode>", "", "", 0.576502353297274,
+			 0.0975392656676367, -0.558500953940679, 50, -0.167681835591794,
+			 0.10669748321782, -0.0304921761869872, -0.0441433252495965,
+			 "W", "M", "", "", "<unicode>", "", "", 0.663107127305924, 0.0699960103792423,
+			 -0.435627345355526, 84, -0.223273240621108, 0.214592936404391,
+			 -0.00434015210835847, -0.00628320999383941, "W", "M", "", "",
+			 "<unicode>", "", "", 0.969006370561351, 0.111702607925281, -0.0388545280094233,
+			 1, 16, -0.0260448407481378, 0.0521329417237948, 0.0130440504878285,
+			 0.0188837870975606, "W", "jasp", "M", "", "<unicode>", "<unicode>",
+			 "", 0.513083221327012, 0.0199436783248542, 0.654044368113016,
+			 1, 50, -0.0226274290490582, 0.0237489435254463, 0.000560757238194062,
+			 0.000811804608495926, "W", "jasp", "M", "", "<unicode>", "<unicode>",
+			 "", 0.962196355111359, 0.0118309246854318, 0.0473975832915713,
+			 1, 84, -0.100298083963663, 0.032554831364264, -0.0338716262996993,
+			 -0.0490357332094424, "W", "jasp", "M", "", "<unicode>", "<unicode>",
+			 "", 0.317596834915586, 0.0338916725959899, -0.999408518531099,
+			 16, -0.02351982099719, 0.0862759727595964, 0.0313780758812032,
+			 0.0454258364780665, "W", "Z", "M", "", "<unicode>", "<unicode>",
+			 "", 0.262603132230203, 0.0280096457442182, 1.12025964797075,
+			 50, -0.0276546683881674, 0.0130488552950554, -0.00730290654655601,
+			 -0.0105723703344468, "W", "Z", "M", "", "<unicode>", "<unicode>",
+			 "", 0.481867594974622, 0.0103837427637158, -0.703301951207298,
+			 84, -0.0683308768527712, 0.060603527898782, -0.00386367447699457,
+			 -0.00559341642428664, "W", "Z", "M", "", "<unicode>", "<unicode>",
+			 "", 0.906491296524271, 0.0328920341824063, -0.11746535515463,
+			 1, 16, -0.00572360180303247, 0.00395727641963929, -0.000883162691696588,
+			 -0.00127854888771465, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
+			 "<unicode>", 0.720638651502008, 0.00246965717202798, -0.357605380090619,
+			 1, 50, -0.00251794175229726, 0.00511545471230799, 0.00129875648000536,
+			 0.00188020131345576, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
+			 "<unicode>", 0.504809253327409, 0.00194733079914134, 0.666941888136334,
+			 1, 84, -0.00941609019709921, 0.0106115399071694, 0.0005977248550351,
+			 0.000865322387086384, "W", "jasp", "Z", "M", "<unicode>", "<unicode>",
+			 "<unicode>", 0.906867743225966, 0.00510918319475358, 0.116990296149271
 			))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.167314803501713, 0.108745859218847, -0.0292844721414328, -0.0423949400551537,
-			 "W", "<unicode>", 0.677537808380871, "M", 0.070424932523784,
-			 -0.415825348949292, 1, -2.44872019205925, 2.5646580748573, 0.0579689413990266,
-			 0.0550400854012691, "jasp", "<unicode>", 0.963847830766619,
-			 "M", 1.27894652821721, 0.0453255395124552, -0.441990003843973,
-			 0.108510390422134, -0.16673980671092, -0.158160302581677, "Z",
-			 "<unicode>", 0.235110086137741, "M", 0.140436354598448, -1.18729802683701,
-			 -0.0126098987768805, 0.525930639295538, 0.256660370259329, 0.245341717818706,
-			 "Y", "<unicode>", 0.0617371145197585, "M", 0.137385314811996,
-			 1.86817907438327, -0.125417992266295, 0.174812684834136, 0.0246973462839207,
-			 0.0359961267344277, "W:Y", "<unicode>", 0.747105663216367, "M",
-			 0.0765908658191202, 0.322458115857404, 1, -0.267223192933636,
-			 5.10203571149693, 2.41740625928165, 2.31079930149947, "jasp:Y",
-			 "<unicode>", 0.0775851644097694, "M", 1.3697340733765, 1.76487269045046,
-			 -0.0582256148997298, 0.349435665116295, 0.145605025108283, 0.139047572977482,
-			 "Z:Y", "<unicode>", 0.161487302871986, "M", 0.103997135465653,
-			 1.4000868817812, -0.0199964286470305, 0.000987820740046105,
-			 -0.00950430395349218, -0.177452510871392, "W", "<unicode>",
-			 0.0758259627682201, "jasp", 0.00535322321037469, -1.7754357664505,
-			 -0.0156987568018804, 0.0159388848590211, 0.000120064028570368,
-			 0.00148016695161461, "Y", "<unicode>", 0.988131087201773, "jasp",
-			 0.008070975260376, 0.0148760248541234, -0.0145563047813346,
-			 0.00654286005513335, -0.00400672236310061, -0.0753147324674699,
-			 "W:Y", "<unicode>", 0.456638969154397, "jasp", 0.0053825389147187,
-			 -0.744392641945257, -0.0476143612546109, 0.145877661227691,
-			 0.0491316499865398, 0.0749859298371018, "W", "<unicode>", 0.319565453556594,
-			 "Z", 0.0493611168390189, 0.995351262954048, 1, -0.908751497193613,
-			 2.64668645358226, 0.868967478194323, 0.869819338484187, "jasp",
-			 "<unicode>", 0.33803717864298, "Z", 0.907016143873233, 0.958050729376843,
-			 0.515985277337612, 0.801184084439717, 0.658584680888665, 0.663691134429253,
-			 "Y", "<unicode>", 0, "Z", 0.0727561346411763, 9.05194708510447,
-			 0.0430810148873367, 0.248415860509208, 0.145748437698272, 0.223950066562918,
-			 "W:Y", "<unicode>", 0.00539587315761736, "Z", 0.0523823007059126,
-			 2.7823985532163, 1, -0.509167170547942, 3.22696265234419, 1.35889774089812,
-			 1.36943419639378, "jasp:Y", "<unicode>", 0.153940969060858,
-			 "Z", 0.953111856228545, 1.42574843867253))
+		list(-0.16731480712501, 0.108745855596148, -0.0292844757644308, -0.042394945198594,
+			 "W", "<unicode>", 0.677537770734161, "M", 0.0704249325239364,
+			 -0.415825400393212, 1, -2.44872019211077, 2.56465807494881,
+			 0.0579689414190209, 0.0550400854158902, "jasp", "<unicode>",
+			 0.963847830755189, "M", 1.2789465282537, 0.0453255395267954,
+			 -0.441990002867531, 0.10851039138668, -0.166739805740425, -0.158160301532953,
+			 "Z", "<unicode>", 0.235110088852498, "M", 0.140436354595413,
+			 -1.1872980199521, -0.0126098979681463, 0.525930640104592, 0.256660371068223,
+			 0.245341720114211, "Y", "<unicode>", 0.06173711369951, "M",
+			 0.137385314812078, 1.86817908026994, -0.125417988391391, 0.174812688700445,
+			 0.0246973501545271, 0.0359961325157737, "W:Y", "<unicode>",
+			 0.747105624930136, "M", 0.0765908658169274, 0.322458166402771,
+			 1, -0.26722319285707, 5.10203571088105, 2.41740625901199, 2.31079931557963,
+			 "jasp:Y", "<unicode>", 0.077585164404602, "M", 1.36973407319985,
+			 1.7648726904812, -0.0582256168186351, 0.349435663189522, 0.145605023185444,
+			 0.139047571902339, "Z:Y", "<unicode>", 0.161487308399948, "M",
+			 0.103997135463646, 1.40008686331887, -0.019996428757904, 0.000987820629373339,
+			 -0.00950430406426535, -0.177452512476974, "W", "<unicode>",
+			 0.0758259593569424, "jasp", 0.00535322321042592, -1.7754357871263,
+			 -0.0156987566671099, 0.0159388849940893, 0.00012006416348973,
+			 0.00148016862379092, "Y", "<unicode>", 0.988131073865433, "jasp",
+			 0.00807097526045194, 0.0148760415705954, -0.0145563048413358,
+			 0.0065428599953351, -0.00400672242300033, -0.0753147338703362,
+			 "W:Y", "<unicode>", 0.456638962428156, "jasp", 0.00538253891477047,
+			 -0.744392653066622, -0.04761436220526, 0.145877659820269, 0.0491316488075047,
+			 0.0749859279187778, "W", "<unicode>", 0.319565464027308, "Z",
+			 0.0493611167224933, 0.995351241417841, 1, -0.908751514062795,
+			 2.64668642816764, 0.868967457052424, 0.869819317957476, "jasp",
+			 "<unicode>", 0.338037189235161, "Z", 0.907016141693236, 0.958050708370216,
+			 0.515985274909522, 0.801184081316195, 0.658584678112858, 0.663691136287785,
+			 "Y", "<unicode>", 0, "Z", 0.0727561344637668, 9.05194706902466,
+			 0.0430810138704747, 0.248415858972143, 0.145748436421309, 0.223950065653145,
+			 "W:Y", "<unicode>", 0.00539587344576109, "Z", 0.0523823005732054,
+			 2.78239853588756, 1, -0.509167248157746, 3.22696256531853, 1.35889765858039,
+			 1.36943412304451, "jasp:Y", "<unicode>", 0.153940992962451,
+			 "Z", 0.953111853826497, 1.42574835589839))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(16, -0.201021460732574, 0.179378219636978, -0.0108216205477976,
-			 -0.0156663897579494, "Total", "W", "M", "<unicode>", 0.911208591226793,
-			 0.0970425179671913, -0.111514218452743, 50, -0.171680566664871,
-			 0.09980943580987, -0.0359355654275005, -0.0520236845926088,
-			 "Total", "W", "M", "<unicode>", 0.603859592754693, 0.0692589263415603,
-			 -0.518858251574377, 84, -0.245854281966373, 0.162930679682156,
-			 -0.0414618011421084, -0.060023980132168, "Total", "W", "M",
-			 "<unicode>", 0.690935208519209, 0.104283794210754, -0.397586235290936,
-			 16, -0.0230775247652702, 0.110538937918699, 0.0437307065767145,
-			 0.063308659788553, "Total indirect", "W", "M", "<unicode>",
-			 0.199514893360599, 0.034086458664016, 1.28293487474777, 50,
-			 -0.0361476519436325, 0.0252608658380645, -0.00544339305278399,
-			 -0.0078803647562734, "Total indirect", "W", "M", "<unicode>",
-			 0.728237139570426, 0.0156657260710093, -0.347471481890483, 84,
-			 -0.125313677207976, 0.0508629220043199, -0.037225377601828,
-			 -0.0538909372973504, "Total indirect", "W", "M", "<unicode>",
-			 0.407520800017268, 0.0449438358566674, -0.828264363561342))
+		list(16, -0.200809254819233, 0.178935636329806, -0.0109368092447133,
+			 -0.0158331476481566, "Total", "W", "M", "<unicode>", 0.910113372494238,
+			 0.0968754768313137, -0.11289553974281, 50, -0.171680570224686,
+			 0.0998094321939984, -0.0359355690153438, -0.0520236896620917,
+			 "Total", "W", "M", "<unicode>", 0.603859556552413, 0.0692589263272598,
+			 -0.518858303484843, 84, -0.245392549309463, 0.162437093249428,
+			 -0.0414777280300173, -0.060047037240482, "Total", "W", "M",
+			 "<unicode>", 0.690135901175965, 0.104040085883159, -0.398670643895838,
+			 16, -0.0230159644434301, 0.1100938917981, 0.0435389636773352,
+			 0.0630310746879125, "Total indirect", "W", "M", "<unicode>",
+			 0.19978265638429, 0.0339572199518675, 1.28217102987374, 50,
+			 -0.0361476517417547, 0.0252608660850415, -0.00544339282835659,
+			 -0.00788036441249515, "Total indirect", "W", "M", "<unicode>",
+			 0.72823715052299, 0.0156657260825145, -0.347471467309282, 84,
+			 -0.124851460137818, 0.0505763082945006, -0.0371375759216588,
+			 -0.0537638272466426, "Total indirect", "W", "M", "<unicode>",
+			 0.406630401976535, 0.0447528040862156, -0.829837966133113))
 
 
 
@@ -2885,7 +2924,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0786957077444094, "jasp", 0.0343971584572194, "Z", 0.476253178346806
+		list("M", 0.0786957078915479, "jasp", 0.0343971590848509, "Z", 0.476253180082036
 			))
 
 })
@@ -2893,7 +2932,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 ###--------------------------------------------------------------------------------------------------------------------------###
 
 test_that("Test that model number 92 - factor works with bad variable names", {
-
+ 
 options <- jaspTools::analysisOptions("ClassicProcess")
 options$hayesNumber <- TRUE
 options$standardizedModelEstimates <- TRUE
@@ -2904,8 +2943,11 @@ options$estimator <- "default"
 options$dependent <- "M"
 options$covariates <- list("W", "Y", "Z", "jasp", "mod")
 options$factors <- list("s", "med")
-options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50,
+options$moderationProbes <- list(list(probePercentile = 16, value = "16"), list(probePercentile = 50, 
     value = "50"), list(probePercentile = 84, value = "84"))
+options$moderationProbeType <- "percentile"
+options$moderationProbesMeanSD <- list(list(probeSD = -1, value = "-1"), list(probeSD = 0, value = "0"), 
+    list(probeSD = 1, value = "1"))
 options$statisticalPathPlotsParameterEstimates <- FALSE
 options$statisticalPathPlotsCovariances <- TRUE
 options$statisticalPathPlotsResidualVariances <- TRUE
@@ -2916,184 +2958,185 @@ options$pathPlotsColor <- TRUE
 options$colorPalette <- "colorblind"
 options$pathPlotsColorPalette <- "colorblind"
 options$pathPlotsLabelLength <- 3
-options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
-    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
-    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
-    modelNumberIndependent = "", modelNumberMediators = list(),
-    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1",
+options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovariances = TRUE, 
+    inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE, 
+    dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(), 
+    modelNumberIndependent = "", modelNumberMediators = list(), 
+    modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "jasp"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "mediators", processVariable = "Z"),
-        list(processDependent = "jasp", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "Z", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "s",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "Z", processIndependent = "jasp",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "jasp",
-            processType = "moderators", processVariable = "med"),
-        list(processDependent = "M", processIndependent = "Z",
-            processType = "moderators", processVariable = "med")),
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
-    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "jasp"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "mediators", processVariable = "Z"), 
+        list(processDependent = "jasp", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "Z", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "s", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "Z", processIndependent = "jasp", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "jasp", 
+            processType = "moderators", processVariable = "med"), 
+        list(processDependent = "M", processIndependent = "Z", 
+            processType = "moderators", processVariable = "med")), 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
-results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", options)
+results <- jaspTools::runAnalysis("ClassicProcess", testthat::test_path("data", "badVarNames.csv"), options)
 
 
 
 	table <- results[["results"]][["modelSummaryTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(504.655507907652, 616.67782590514, 1, "Model 1", 100, -209.327753953826,
+		list(504.655507907651, 616.677825905139, 1, "Model 1", 100, -209.327753953825,
 			 92))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.132162243635336, 0.00110487816185023, -0.0655286827367427,
-			 "Z:medexperimental", "<unicode>", 0.0539217027322965, "sm",
-			 0.0339973394532706, -1.92746502492679, -0.00809051533365547,
-			 0.00312057865026881, -0.00248496834169333, "jasp:medexperimental",
-			 "<unicode>", 0.384922452227631, "sm", 0.0028600255087226, -0.868862300044037,
-			 0.0922263505865238, 0.197773633399271, 0.144999991992897, "sm:medexperimental",
-			 "<unicode>", 7.2378255833172e-08, "sm", 0.0269258220164479,
-			 5.38516491360311, -0.00962233045533177, 0.0896223126233599,
-			 0.0399999910840141, "medexperimental", "<unicode>", 0.114128679432551,
-			 "sm", 0.0253179762132164, 1.57990475807199, 0.180704805838334,
-			 0.319295180947901, 0.249999993393117, "sm", "<unicode>", 1.53743684450092e-12,
-			 "sm", 0.0353553371905684, 7.07106799874641, 0.748461126015611,
+		list(-0.132162254918479, 0.001104872863604, -0.0655286910274376, "Z:medexperimental",
+			 "<unicode>", 0.0539216831462341, "sm", 0.0339973409800581, -1.92746518222925,
+			 -0.00809051540103477, 0.00312057875642259, -0.00248496832230609,
+			 "jasp:medexperimental", "<unicode>", 0.384922463292701, "sm",
+			 0.00286002555299205, -0.868862279816489, 0.0922263541808922,
+			 0.197773643759227, 0.144999998970059, "sm:medexperimental",
+			 "<unicode>", 7.23782904721304e-08, "sm", 0.0269258237423947,
+			 5.38516482753902, -0.00962232494995641, 0.0896223234096945,
+			 0.0399999992298691, "medexperimental", "<unicode>", 0.11412862499502,
+			 "sm", 0.0253179775604246, 1.57990499574478, 0.180704808369429,
+			 0.31929518977599, 0.24999999907271, "sm", "<unicode>", 1.53743684450092e-12,
+			 "sm", 0.0353553387969738, 7.07106783810846, 0.748461126015613,
 			 1.32248853790154, 1.03547483195858, "M", "<unicode>", 1.53743684450092e-12,
-			 "M", 0.146438255093916, 7.07106781144374, 0.00209870132077307,
-			 0.00428660403109907, 0.00319265267593607, "jasp:medexperimental",
-			 "<unicode>", 1.06476778505282e-08, "jasp", 0.000558148702625123,
-			 5.72007542241014, 0.00474535372806117, 0.0083847720894234, 0.00656506290874229,
-			 "jasp", "<unicode>", 1.53743684450092e-12, "jasp", 0.000928440111672843,
-			 7.07106772553536, 0.263016412043752, 0.555092919046792, 0.409054665545272,
-			 "Z:medexperimental", "<unicode>", 4.02208075733768e-08, "Z",
-			 0.0745106821622493, 5.48987948673645, 0.683668041411474, 1.20866503443951,
-			 0.946166537925492, "Z", "<unicode>", 1.61048951952125e-12, "Z",
-			 0.133930265343941, 7.06462079721621, -0.101566996638401, 0.0299523215015227,
-			 -0.0358073375684393, "Z:medexperimental", "<unicode>", 0.285865166669648,
-			 "medexperimental", 0.033551462980272, -1.0672362510539, -0.00757037629078561,
-			 0.00362505678342446, -0.00197265975368057, "jasp:medexperimental",
-			 "<unicode>", 0.489754172586672, "medexperimental", 0.00285603030528066,
-			 -0.690699867586566, 0.0922263515083516, 0.19777363480432, 0.144999993156336,
-			 "sm:medexperimental", "<unicode>", 7.23782485057001e-08, "medexperimental",
-			 0.0269258221397209, 5.38516493215753, 0.180704805825834, 0.319295180907466,
-			 0.24999999336665, "medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "medexperimental", 0.0353553371834418, 7.07106799942312, -0.141970623378853,
-			 -0.0191649172531609, -0.080567770316007, "Z:medexperimental",
-			 "<unicode>", 0.01011995393982, "sm:medexperimental", 0.0313285619262313,
-			 -2.57170343489491, -0.00842285740400191, 0.00179588630916955,
-			 -0.00331348554741618, "jasp:medexperimental", "<unicode>", 0.203707711813691,
-			 "sm:medexperimental", 0.00260687027766214, -1.27105885390958,
-			 0.148828477385756, 0.26297150857812, 0.205899992981938, "sm:medexperimental",
-			 "<unicode>", 1.53743684450092e-12, "sm:medexperimental", 0.0291186552642573,
-			 7.07106805288077, -0.00263766765641854, 0.0085819885986533,
-			 0.00297216047111738, "Z:medexperimental", "<unicode>", 0.299077071234964,
-			 "jasp:medexperimental", 0.00286220980170326, 1.03841460865262,
-			 0.00234888455393216, 0.004145511972967, 0.00324719826344958,
+			 "M", 0.146438255093915, 7.07106781144377, 0.00209870130042374,
+			 0.00428660396316496, 0.00319265263179435, "jasp:medexperimental",
+			 "<unicode>", 1.06476749639484e-08, "jasp", 0.000558148690485925,
+			 5.72007546773033, 0.00474535369799492, 0.00838477198455388,
+			 0.0065650628412744, "jasp", "<unicode>", 1.53743684450092e-12,
+			 "jasp", 0.000928440092590025, 7.0710677982035, 0.263016405560715,
+			 0.555092898589646, 0.40905465207518, "Z:medexperimental", "<unicode>",
+			 4.02207889216299e-08, "Z", 0.0745106785973603, 5.48987956861357,
+			 0.683668026648553, 1.20866498290685, 0.946166504777701, "Z",
+			 "<unicode>", 1.61048951952125e-12, "Z", 0.133930255963733, 7.06462104450775,
+			 -0.101567002479681, 0.0299523207370953, -0.0358073408712926,
+			 "Z:medexperimental", "<unicode>", 0.285865140826588, "medexperimental",
+			 0.0335514642754111, -1.06723630829832, -0.00757037633241256,
+			 0.0036250568982263, -0.00197265971709313, "jasp:medexperimental",
+			 "<unicode>", 0.48975418670502, "medexperimental", 0.0028560303451867,
+			 -0.690699845125132, 0.092226354192001, 0.197773643643947, 0.144999998917974,
+			 "sm:medexperimental", "<unicode>", 7.23782886957736e-08, "medexperimental",
+			 0.0269258237101523, 5.38516483205311, 0.180704808213354, 0.31929518923504,
+			 0.249999998724197, "medexperimental", "<unicode>", 1.53743684450092e-12,
+			 "medexperimental", 0.0353553386987896, 7.07106784788788, -0.141970629954453,
+			 -0.0191649179966216, -0.0805677739755374, "Z:medexperimental",
+			 "<unicode>", 0.0101199540953405, "sm:medexperimental", 0.0313285634140493,
+			 -2.57170342957401, -0.00842285741394062, 0.0017958864994219,
+			 -0.00331348545725936, "jasp:medexperimental", "<unicode>", 0.20370773297425,
+			 "sm:medexperimental", 0.00260687032873223, -1.27105879442449,
+			 0.148828479978893, 0.262971517621992, 0.205899998800442, "sm:medexperimental",
+			 "<unicode>", 1.53743684450092e-12, "sm:medexperimental", 0.0291186569098832,
+			 7.07106785308346, -0.0026376677203267, 0.00858198866510652,
+			 0.00297216047238991, "Z:medexperimental", "<unicode>", 0.299077076642801,
+			 "jasp:medexperimental", 0.00286220983495932, 1.03841459703186,
+			 0.0023488845388817, 0.00414551192237815, 0.00324719823062993,
 			 "jasp:medexperimental", "<unicode>", 1.39221967287995e-12, "jasp:medexperimental",
-			 0.000458331743135691, 7.08482079210524, 0.32176416975378, 0.568539115739565,
-			 0.445151642746672, "Z:medexperimental", "<unicode>", 1.53743684450092e-12,
-			 "Z:medexperimental", 0.062953949136901, 7.07106780193624))
+			 0.000458331734069612, 7.08482086064051, 0.321764169412278, 0.56853911586797,
+			 0.445151642640124, "Z:medexperimental", "<unicode>", 1.53743684450092e-12,
+			 "Z:medexperimental", 0.0629539492567775, 7.07106778677907))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0345966305301646, 1.17847272954598, 0.606534680038075, 0.575947196299481,
-			 "s", "M", "", "", 0, "<unicode>", "", "", 0.0376612569345014,
-			 "m", 0.291810489386175, 2.07852254150947, 1, -0.30763449696441,
-			 0.879612205949782, 0.285988854492686, 0.271566464934244, "s",
-			 "M", "", "", 1, "<unicode>", "", "", 0.345042766170694, "m",
-			 0.302874622258124, 0.944248324143028, 1, -0.0184745280283097,
-			 0.0173922226424977, -0.00054115269290599, -0.000513862416291767,
-			 "s", "jasp", "M", "", 0, "<unicode>", "<unicode>", "", 0.952837935448324,
-			 "m", 0.00914984942420364, -0.0591433440942215, 1, -0.0660872214254745,
-			 0.0606455675363312, -0.0027208269445717, -0.00258361591169656,
-			 "s", "jasp", "M", "", 1, "<unicode>", "<unicode>", "", 0.932931641527606,
-			 "m", 0.0323303871809528, -0.084156955168624, 1, -0.0747982028314841,
-			 0.0925091371673744, 0.00885546716794517, 0.00840888683723733,
-			 "s", "Z", "M", "", 0, "<unicode>", "<unicode>", "", 0.835635633498567,
-			 "m", 0.042681228154843, 0.207479202234258, 1, -0.122561092897031,
-			 0.187496891150044, 0.0324678991265069, 0.0308305461947734, "s",
-			 "Z", "M", "", 1, "<unicode>", "<unicode>", "", 0.681455705978873,
-			 "m", 0.0790978779438737, 0.410477499150425, 1, -0.00610425770896581,
-			 0.00500147322094188, -0.000551392244011967, -0.000523585587851359,
+		list(1, 0.0345966305869928, 1.17847272948909, 0.606534680038042, 0.575947195890298,
+			 "s", "M", "", "", 0, "<unicode>", "", "", 0.0376612569154997,
+			 "m", 0.291810489357163, 2.078522541716, 1, -0.307634496982247,
+			 0.879612205967503, 0.285988854492628, 0.271566464741269, "s",
+			 "M", "", "", 1, "<unicode>", "", "", 0.345042766185239, "m",
+			 0.302874622267195, 0.944248324114557, 1, -0.0184745278693301,
+			 0.0173922224930781, -0.000541152688126033, -0.000513862411387817,
+			 "s", "jasp", "M", "", 0, "<unicode>", "<unicode>", "", 0.952837935459368,
+			 "m", 0.00914984934552894, -0.0591433440803554, 1, -0.0660872190792973,
+			 0.0606455653849254, -0.002720826847186, -0.00258361581738662,
+			 "s", "jasp", "M", "", 1, "<unicode>", "<unicode>", "", 0.932931641547945,
+			 "m", 0.0323303860335891, -0.0841569551430422, 1, -0.0747982068649331,
+			 0.0925091258618762, 0.00885545949847157, 0.00840887954856088,
+			 "s", "Z", "M", "", 0, "<unicode>", "<unicode>", "", 0.835635766776841,
+			 "m", 0.0426812262996943, 0.207479031560417, 1, -0.122561094175085,
+			 0.187496893217302, 0.032467899521108, 0.030830546547573, "s",
+			 "Z", "M", "", 1, "<unicode>", "<unicode>", "", 0.681455705568158,
+			 "m", 0.0790978787972853, 0.410477499710426, 1, -0.00610425814823727,
+			 0.0050014735678786, -0.000551392290179332, -0.000523585631318555,
 			 "s", "jasp", "Z", "M", 0, "<unicode>", "<unicode>", "<unicode>",
-			 0.845688997717813, "m", 0.00283314668471163, -0.194621848204125,
-			 1, -0.00422952543368368, 0.00545046555714282, 0.000610470061729567,
-			 0.000579684117082709, "s", "jasp", "Z", "M", 1, "<unicode>",
-			 "<unicode>", "<unicode>", 0.804745059293082, "m", 0.00246943083321455,
-			 0.247210836407552))
+			 0.845688995746767, "m", 0.00283314688527862, -0.194621850721695,
+			 1, -0.00422952558137298, 0.00545046590505371, 0.000610470161840366,
+			 0.000579684211733125, "s", "jasp", "Z", "M", 1, "<unicode>",
+			 "<unicode>", "<unicode>", 0.804745037715016, "m", 0.00246943095964549,
+			 0.247210864290778))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0345966305301646, 1.17847272954598, 0.606534680038075, 0.575947196299481,
-			 "sm", "<unicode>", 0.0376612569345014, "M", 0.291810489386175,
-			 2.07852254150947, 1, -3.54941875636986, 3.33345905819285, -0.107979849088506,
-			 -0.102534436011906, "jasp", "<unicode>", 0.950963762965308,
-			 "M", 1.75586844167902, -0.0614965486738014, -0.121894548040853,
-			 0.422376825381274, 0.150241138670211, 0.142596575947402, "Z",
-			 "<unicode>", 0.279225738086974, "M", 0.138847289469416, 1.08206029260156,
-			 1, -0.400140359809734, 0.74882626491738, 0.174342952553823,
-			 0.165550854753506, "medexperimental", "<unicode>", 0.551973404466303,
-			 "M", 0.293109116746536, 0.594805629006022, 1, -1.14486482680427,
-			 0.503773175713493, -0.320545825545389, -0.304380731365237, "sm:medexperimental",
-			 "<unicode>", 0.445967916312546, "M", 0.420578647240972, -0.762154302526278,
-			 1, -4.67371878797698, 5.19520576582867, 0.260743488925845, 0.247594220648287,
-			 "jasp:medexperimental", "<unicode>", 0.917512913792683, "M",
-			 2.51762905636289, 0.103567079616776, 1, -0.631934803232522,
-			 0.196704100540977, -0.217615351345772, -0.206542657025607, "Z:medexperimental",
-			 "<unicode>", 0.303271561223815, "M", 0.211391359818266, -1.02944297975497,
-			 1, -0.0404917965057887, 0.0505150128276125, 0.00501160816091189,
-			 0.0613685752465893, "sm", "<unicode>", 0.829093338697142, "jasp",
-			 0.0232164493968387, 0.215864539630866, 1, -0.0488496029230871,
-			 0.0421572064101505, -0.00334619825646826, -0.0409751546606775,
-			 "medexperimental", "<unicode>", 0.885397427564876, "jasp", 0.023216449396797,
-			 -0.144130491242554, 1, -0.0871738374547366, 0.0415292265724166,
-			 -0.02282230544116, -0.279465657289462, "sm:medexperimental",
-			 "<unicode>", 0.486991205196575, "jasp", 0.0328330176070444,
-			 -0.695102281316457, 1, -0.487522911188144, 0.605406298472415,
-			 0.0589416936421356, 0.0589697668500751, "sm", "<unicode>", 0.8325737585275,
-			 "Z", 0.278813595117422, 0.211401792001256, 1, -3.63372114040035,
-			 2.16910210460413, -0.732309517898109, -0.732658307966763, "jasp",
-			 "<unicode>", 0.620818726616415, "Z", 1.48033925387824, -0.494690332624487,
-			 1, -0.530602629647264, 0.562676421224623, 0.0160368957886797,
-			 0.0160445339660439, "medexperimental", "<unicode>", 0.954146956446408,
-			 "Z", 0.278902841964325, 0.0574999368085716, 1, -1.31510027247852,
-			 0.233408987865493, -0.540845642306515, -0.541103240472456, "sm:medexperimental",
-			 "<unicode>", 0.170965610061498, "Z", 0.39503513139998, -1.36910770540785,
-			 1, -3.46987591719204, 5.95196056674456, 1.24104232477626, 1.24163341806002,
-			 "jasp:medexperimental", "<unicode>", 0.605622487524827, "Z",
-			 2.40357388152406, 0.51633208960872))
+		list(1, 0.0345966305869928, 1.17847272948909, 0.606534680038042, 0.575947195890298,
+			 "sm", "<unicode>", 0.0376612569154997, "M", 0.291810489357163,
+			 2.078522541716, 1, -3.54941875620192, 3.33345905802491, -0.107979849088505,
+			 -0.102534435939065, "jasp", "<unicode>", 0.950963762962919,
+			 "M", 1.75586844159334, -0.0614965486768017, -0.121894548040955,
+			 0.422376825381409, 0.150241138670227, 0.142596573494121, "Z",
+			 "<unicode>", 0.279225738087133, "M", 0.138847289469477, 1.08206029260121,
+			 1, -0.400140359815118, 0.748826264922699, 0.174342952553791,
+			 0.165550854635869, "medexperimental", "<unicode>", 0.551973404470081,
+			 "M", 0.293109116749267, 0.59480562900037, 1, -1.1448648267883,
+			 0.50377317569747, -0.320545825545413, -0.304380731149029, "sm:medexperimental",
+			 "<unicode>", 0.445967916303684, "M", 0.42057864723281, -0.762154302541129,
+			 1, -4.67371878736335, 5.19520576521504, 0.260743488925845, 0.247594220472397,
+			 "jasp:medexperimental", "<unicode>", 0.917512913782462, "M",
+			 2.51762905604981, 0.103567079629656, 1, -0.631934803230273,
+			 0.196704100538756, -0.217615351345759, -0.20654265347214, "Z:medexperimental",
+			 "<unicode>", 0.303271561221236, "M", 0.211391359817126, -1.02944297976047,
+			 1, -0.0404917963184988, 0.0505150125517884, 0.00501160811664482,
+			 0.0613685750102747, "sm", "<unicode>", 0.82909333932716, "jasp",
+			 0.0232164492786953, 0.215864538822643, 1, -0.048849603281832,
+			 0.042157205588832, -0.00334619884649997, -0.0409751620899296,
+			 "medexperimental", "<unicode>", 0.885397406918179, "jasp", 0.0232164492787914,
+			 -0.144130517389529, 1, -0.0871738364454916, 0.0415292269266914,
+			 -0.0228223047594001, -0.27946565033346, "sm:medexperimental",
+			 "<unicode>", 0.486991215991843, "jasp", 0.0328330174399572,
+			 -0.695102264089373, 1, -0.487522955632798, 0.605406240821537,
+			 0.0589416425943693, 0.0589697167506454, "sm", "<unicode>", 0.832573899390366,
+			 "Z", 0.278813591748425, 0.211401611466462, 1, -3.63372117635152,
+			 2.16910200498795, -0.732309585681789, -0.732658387867239, "jasp",
+			 "<unicode>", 0.62081869045779, "Z", 1.48033923763687, -0.494690383841213,
+			 1, -0.530602628714164, 0.562676408941011, 0.0160368901134237,
+			 0.0160445285527241, "medexperimental", "<unicode>", 0.95414697210164,
+			 "Z", 0.278902838592653, 0.0574999171551857, 1, -1.31510021791832,
+			 0.233409023686686, -0.540845597115817, -0.541103204185223, "sm:medexperimental",
+			 "<unicode>", 0.170965640636973, "Z", 0.395035126619532, -1.36910760757921,
+			 1, -3.46987569256291, 5.95196068095496, 1.24104249419602, 1.24163360804005,
+			 "jasp:medexperimental", "<unicode>", 0.60562243407769, "Z",
+			 2.4035738533555, 0.516332166146453))
 
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(1, 0.0368779785318392, 1.19171722600636, 0.614297602269102, 0.583318635132575,
-			 "Total", "s", "M", 0, "<unicode>", 0.0370565279811126, "m",
-			 0.294607262323122, 2.08514073083286, 1, -0.256333956688915,
-			 0.889026750161617, 0.316346396736351, 0.300393079334403, "Total",
-			 "s", "M", 1, "<unicode>", 0.278952051106587, "m", 0.292189222833938,
-			 1.08267647132264, 1, -0.0780757317152694, 0.0936015761773238,
-			 0.00776292223102721, 0.0073714388330942, "Total indirect", "s",
-			 "M", 0, "<unicode>", 0.859310681845455, "m", 0.0437960363676991,
-			 0.17725170757125, 1, -0.134546039973661, 0.195261124460991,
-			 0.0303575422436647, 0.0288266144001596, "Total indirect", "s",
-			 "M", 1, "<unicode>", 0.718237733154948, "m", 0.0841360267423608,
-			 0.36081502085456))
+		list(1, 0.0368779710018534, 1.19171721811456, 0.614297594558208, 0.583318627396153,
+			 "Total", "s", "M", 0, "<unicode>", 0.0370565302969523, "m",
+			 0.29460726223082, 2.08514070531267, 1, -0.256333956090564, 0.889026750747345,
+			 0.316346397328391, 0.300393079683189, "Total", "s", "M", 1,
+			 "<unicode>", 0.278952050201606, "m", 0.292189222830718, 1.08267647336079,
+			 1, -0.0780757360475609, 0.0936015650878933, 0.0077629145201662,
+			 0.00737143150585451, "Total indirect", "s", "M", 0, "<unicode>",
+			 0.859310814654149, "m", 0.0437960346439075, 0.1772515384848,
+			 1, -0.134546040654617, 0.195261126326142, 0.0303575428357624,
+			 0.0288266149419195, "Total indirect", "s", "M", 1, "<unicode>",
+			 0.718237729976222, "m", 0.0841360273918897, 0.360815025106459
+			))
 
 
 
@@ -3111,7 +3154,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "data/badVarNames.csv", opti
 
 	table <- results[["results"]][["rSquaredTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list("M", 0.0663295605335603, "jasp", 0.0155883202989389, "Z", 0.0529319523321141
+		list("M", 0.0663295618601134, "jasp", 0.015588320606548, "Z", 0.0529319542694938
 			))
 
 })
