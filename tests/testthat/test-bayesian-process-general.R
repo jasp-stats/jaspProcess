@@ -1,5 +1,9 @@
 
+# MCMC results are not reproducible across platforms (different BLAS/RNG),
+# so Bayesian table comparisons are skipped on CI.
+
 test_that("Missing values work without independent covariances", {
+  skip_on_ci()
   options <- getOptionsBayesian()
   options$covariates <- list("contGamma", "debMiss1", "debMiss30", "debMiss80")
   options$processModels <- list(getProcessModel(list(list(processDependent = "debMiss80",
@@ -82,6 +86,7 @@ test_that("Missing values work without independent covariances", {
 })
 
 test_that("Incomplete Hayes configuration works", {
+  skip_on_ci()
   options <- getOptionsBayesian()
   options$standardizedModelEstimates <- FALSE
   options$processModels <- list(getProcessModel(list()))
