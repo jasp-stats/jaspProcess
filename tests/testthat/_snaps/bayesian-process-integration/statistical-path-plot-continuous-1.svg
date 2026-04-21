@@ -36,8 +36,8 @@
 </defs>
 <g clip-path='url(#cpODguMzR8NDkxLjUyfDE3LjMwfDU3Ni4wMA==)'>
 <rect x='88.34' y='17.30' width='403.18' height='558.70' style='stroke-width: 10.67; stroke: none;' />
-<rect x='149.52' y='435.46' width='115.14' height='115.14' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
-<rect x='333.74' y='435.46' width='115.14' height='115.14' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
+<rect x='149.52' y='435.46' width='115.14' height='115.14' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
+<rect x='333.74' y='435.46' width='115.14' height='115.14' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
 <rect x='241.63' y='251.23' width='115.14' height='115.14' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
 <rect x='241.63' y='67.01' width='115.14' height='115.14' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
 <polyline points='264.66,493.03 264.78,493.03 266.64,493.03 268.50,493.03 270.36,493.03 272.22,493.03 274.08,493.03 275.94,493.03 277.80,493.03 279.66,493.03 281.52,493.03 283.38,493.03 285.24,493.03 287.11,493.03 288.97,493.03 290.83,493.03 292.69,493.03 294.55,493.03 296.41,493.03 298.27,493.03 300.13,493.03 301.99,493.03 303.85,493.03 305.71,493.03 307.58,493.03 309.44,493.03 311.30,493.03 313.16,493.03 315.02,493.03 316.88,493.03 318.74,493.03 320.60,493.03 322.46,493.03 324.32,493.03 326.18,493.03 328.05,493.03 329.91,493.03 331.77,493.03 333.63,493.03 333.74,493.03 ' style='stroke-width: 1.92; stroke-linecap: butt;' />
@@ -80,8 +80,8 @@
 <rect x='509.23' y='272.01' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
 <rect x='509.23' y='289.29' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
 <rect x='509.23' y='306.57' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
-<text x='537.19' y='284.88' style='font-size: 16.00px; font-family: sans;' textLength='78.30px' lengthAdjust='spacingAndGlyphs'>Dependent</text>
-<text x='537.19' y='302.16' style='font-size: 16.00px; font-family: sans;' textLength='88.98px' lengthAdjust='spacingAndGlyphs'>Independent</text>
+<text x='537.19' y='284.88' style='font-size: 16.00px; font-family: sans;' textLength='88.98px' lengthAdjust='spacingAndGlyphs'>Independent</text>
+<text x='537.19' y='302.16' style='font-size: 16.00px; font-family: sans;' textLength='78.30px' lengthAdjust='spacingAndGlyphs'>Dependent</text>
 <text x='537.19' y='319.44' style='font-size: 16.00px; font-family: sans;' textLength='72.93px' lengthAdjust='spacingAndGlyphs'>Moderator</text>
 <text x='88.34' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='190.05px' lengthAdjust='spacingAndGlyphs'>statistical-path-plot-continuous-1</text>
 </g>

@@ -528,7 +528,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffectsTable <- createJaspTable(title = gettext("Direct and indirect effects"))
   medEffectsTable$dependOn(
-    options = c( "moderationProbes"),
+    options = c("moderationProbes", "moderationProbeType", "moderationProbesMeanSD"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "mediationEffects"))
   )
 
@@ -557,7 +557,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
   totEffectsTable$dependOn(
-    options = c( "moderationProbes"),
+    options = c("moderationProbes", "moderationProbeType", "moderationProbesMeanSD"),
     nestedOptions = list(c("processModels", as.character(modelIdx), "totalEffects"))
   )
 

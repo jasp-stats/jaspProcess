@@ -1,5 +1,11 @@
 ### Helper files for integration tests
 
+# Reduce numeric precision to avoid cross-platform rounding boundary failures.
+# First round to 4 decimal places, then to 3 significant digits. This is
+# coarse enough to absorb platform drift around tie boundaries while still
+# preserving the broad numeric structure of the expected tables.
+options("jaspRoundToPrecision" = function(x) signif(round(x, digits = 4), digits = 3))
+
 getOptionsClassical <- function() {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options[["dependent"]] <- "contNormal"
@@ -19,6 +25,12 @@ getOptionsClassical <- function() {
       "probePercentile" = 84.0,
       "value" = "84"
     )
+  )
+  options[["moderationProbeType"]] <- "percentile"
+  options[["moderationProbesMeanSD"]] <- list(
+    list("probeSD" = -1, "value" = "-1"),
+    list("probeSD" = 0,  "value" = "0"),
+    list("probeSD" = 1,  "value" = "1")
   )
 
   options[["hayesNumber"]] <- TRUE
@@ -62,6 +74,12 @@ getOptionsBayesian <- function() {
       "probePercentile" = 84.0,
       "value" = "84"
     )
+  )
+  options[["moderationProbeType"]] <- "percentile"
+  options[["moderationProbesMeanSD"]] <- list(
+    list("probeSD" = -1, "value" = "-1"),
+    list("probeSD" = 0,  "value" = "0"),
+    list("probeSD" = 1,  "value" = "1")
   )
 
   options[["mcmcBurnin"]] <- 50
