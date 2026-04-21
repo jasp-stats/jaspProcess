@@ -1,8 +1,10 @@
 ### Helper files for integration tests
 
 # Reduce numeric precision to avoid cross-platform rounding boundary failures.
-# Using significant digits avoids decimal-place tie issues (e.g., 0.0495).
-options("jaspRoundToPrecision" = function(x) signif(x, digits = 3))
+# First round to 4 decimal places, then to 3 significant digits. This is
+# coarse enough to absorb platform drift around tie boundaries while still
+# preserving the broad numeric structure of the expected tables.
+options("jaspRoundToPrecision" = function(x) signif(round(x, digits = 4), digits = 3))
 
 getOptionsClassical <- function() {
   options <- jaspTools::analysisOptions("ClassicProcess")
