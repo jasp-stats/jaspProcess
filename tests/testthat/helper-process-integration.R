@@ -1,7 +1,8 @@
 ### Helper files for integration tests
 
-# Reduce numeric precision to avoid cross-platform rounding boundary failures
-options("jaspRoundToPrecision" = function(x) signif(round(x, digits = 3), digits = 3))
+# Reduce numeric precision to avoid cross-platform rounding boundary failures.
+# Using significant digits avoids decimal-place tie issues (e.g., 0.0495).
+options("jaspRoundToPrecision" = function(x) signif(x, digits = 3))
 
 getOptionsClassical <- function() {
   options <- jaspTools::analysisOptions("ClassicProcess")
