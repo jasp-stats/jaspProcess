@@ -3,8 +3,16 @@
     "Version": "4.5.2",
     "Repositories": [
       {
+        "Name": "RSPM",
+        "URL": "https://packagemanager.posit.co/cran/2026-04-22"
+      },
+      {
+        "Name": "RPSM2",
+        "URL": "https://packagemanager.posit.co/cran/2026-03-18"
+      },
+      {
         "Name": "CRAN",
-        "URL": "https://cloud.r-project.org"
+        "URL": "https://cran.rstudio.com"
       }
     ]
   },
@@ -877,7 +885,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
-      "RemoteSha": "a5770b1bb36f6c5aebca3d15e5eab0dd4976602e"
+      "RemoteSha": "93f004588f6d56b46d23210e23bff003ae7b1ff4"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
@@ -902,11 +910,11 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
-      "RemoteSha": "db3c899263a1d8d236ed0e7e3a7b6814b48c14ae"
+      "RemoteSha": "1eb48e7e0fe9559bbd15da25f30703c7cca246bb"
     },
     "jaspJags": {
       "Package": "jaspJags",
-      "Version": "0.95.5",
+      "Version": "0.96.3",
       "Source": "GitHub",
       "Requirements": [
         "R",
@@ -926,7 +934,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspJags",
-      "RemoteSha": "9266b3d041c792e6f216acccd1044ae3a43ba735"
+      "RemoteSha": "a6656f654e7141e9c96a5d742b4e6fb63fff7ca4"
     },
     "jpeg": {
       "Package": "jpeg",
