@@ -24,5 +24,4 @@ Suggests:
 Remotes:
   jasp-stats/jaspBase,
   jasp-stats/jaspGraphs,
-  jasp-stats/jaspJags,
-  nlesc-jasp-projects/blavaan
+  jasp-stats/jaspJags

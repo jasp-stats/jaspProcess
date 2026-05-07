@@ -773,3 +773,27 @@ test_that("Test that .procGraphLayoutStatistical works - Two moderated moderator
   expect_equal(igraph::V(graphWithLayout)$posX, rep(c(0, 1, 0.5), c(1, 1, 12)))
   expect_equal(igraph::V(graphWithLayout)$posY, c(0, 0 , 1, 2, -1, -2, 3, 4, -3, -4, 5, -5, 6, -6))
 })
+
+# SD probe labels ---------------------------------------------------------
+
+test_that("Test that .procSDProbeLabels produces lavaan-safe labels", {
+  labels <- jaspProcess:::.procSDProbeLabels(c(-2, -1, 0, 1, 2))
+  expect_equal(labels, c("Mean_minus_2SD", "Mean_minus_1SD", "Mean", "Mean_plus_1SD", "Mean_plus_2SD"))
+})
+
+test_that("Test that .procSDProbeLabels handles decimal SD values", {
+  labels <- jaspProcess:::.procSDProbeLabels(c(-1.5, 0, 1.5))
+  expect_equal(labels, c("Mean_minus_1p5SD", "Mean", "Mean_plus_1p5SD"))
+})
+
+test_that("Test that .procEffectsTablesGetConditionalLabels converts SD labels for display", {
+  # Simulate a path with SD probe labels as they'd appear after lavaan parsing
+  paths <- list(
+    list(c("X", "Y"), c("W", "Mean_minus_1SD")),
+    list(c("X", "Y"), c("W", "Mean")),
+    list(c("X", "Y"), c("W", "Mean_plus_1p5SD"))
+  )
+  mods <- "W"
+  result <- jaspProcess:::.procEffectsTablesGetConditionalLabels(paths, mods)
+  expect_equal(result[["W"]], c("Mean-1SD", "Mean", "Mean+1.5SD"))
+})

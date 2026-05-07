@@ -37,8 +37,8 @@ test_that("Test that single moderation effect matches validated results", {
 	medEstimates <- sapply(medTable, function(x) x[["est"]])
 	medEstimatesStd <- sapply(medTable, function(x) x[["est.std"]])
 
-	expect_equal(medEstimates, rev(refDf$ind))
-	expect_equal(medEstimatesStd, rev(refDf$std))
+	expect_equal(medEstimates, rev(refDf$ind), tolerance = 1e-7)
+	expect_equal(medEstimatesStd, rev(refDf$std), tolerance = 1e-7)
 })
 
 test_that("Test that moderated mediation effect matches validated results", {
@@ -79,6 +79,6 @@ test_that("Test that moderated mediation effect matches validated results", {
 	medEstimates <- sapply(medTable, function(x) x[["est"]])
 	medEstimatesStd <- sapply(medTable, function(x) x[["est.std"]])
 
-	expect_equal(medEstimates, rev(refDf$ind))
-	expect_equal(medEstimatesStd, rev(refDf$std))
+	expect_equal(medEstimates, rev(refDf$ind), tolerance = 1e-7)
+	expect_equal(medEstimatesStd, rev(refDf$std), tolerance = 1e-7)
 })

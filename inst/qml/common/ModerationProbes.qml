@@ -20,20 +20,61 @@ import QtQuick
 import JASP
 import JASP.Controls
 
-ComponentsList
+Group
 {
-	name: "moderationProbes"
 	title: qsTr("Probe Conditional Continuous Effects")
-	preferredWidth: parent.width/2
-	values: [16, 50, 84]
-	minimumItems: 1
-	maximumItems: 10
-	rowComponent: DoubleField
+
+	RadioButtonGroup
 	{
-		name: "probePercentile"
-		afterLabel: qsTr("th percentile")
-		defaultValue: rowValue
-		min: 0
-		max: 100
+		name: "moderationProbeType"
+		title: qsTr("Probe method")
+
+		RadioButton
+		{
+			value: "percentile"
+			label: qsTr("Percentiles")
+			checked: true
+
+			ComponentsList
+			{
+				name: "moderationProbes"
+				preferredWidth: parent.width/2
+				values: [16, 50, 84]
+				minimumItems: 1
+				maximumItems: 10
+				rowComponent: DoubleField
+				{
+					name: "probePercentile"
+					afterLabel: qsTr("th percentile")
+					defaultValue: rowValue
+					min: 0
+					max: 100
+				}
+			}
+		}
+
+		RadioButton
+		{
+			value: "meanSD"
+			label: qsTr("Mean ± SD")
+
+			ComponentsList
+			{
+				name: "moderationProbesMeanSD"
+				preferredWidth: parent.width/2
+				values: [-1, 0, 1]
+				minimumItems: 1
+				maximumItems: 10
+				rowComponent: DoubleField
+				{
+					name: "probeSD"
+					afterLabel: qsTr(" SD from the mean")
+					defaultValue: rowValue
+					min: -10
+					max: 10
+					negativeValues: true
+				}
+			}
+		}
 	}
 }

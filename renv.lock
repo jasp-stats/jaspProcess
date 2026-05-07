@@ -206,8 +206,8 @@
     },
     "blavaan": {
       "Package": "blavaan",
-      "Version": "0.5-2",
-      "Source": "GitHub",
+      "Version": "0.5-10",
+      "Source": "Repository",
       "Requirements": [
         "R",
         "Rcpp",
@@ -233,12 +233,7 @@
         "semTools",
         "tinytest",
         "brms"
-      ],
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "nlesc-jasp-projects",
-      "RemoteRepo": "blavaan",
-      "RemoteSha": "520443b37e75473985c48b1160df80cc911ff4db"
+      ]
     },
     "boot": {
       "Package": "boot",
@@ -378,7 +373,7 @@
     },
     "data.table": {
       "Package": "data.table",
-      "Version": "1.18.0",
+      "Version": "1.18.2.1",
       "Source": "Repository",
       "Requirements": [
         "methods",
@@ -535,7 +530,7 @@
     },
     "gdtools": {
       "Package": "gdtools",
-      "Version": "0.4.4",
+      "Version": "0.5.0",
       "Source": "Repository",
       "Requirements": [
         "fontquiver",
@@ -1376,7 +1371,7 @@
     },
     "ragg": {
       "Package": "ragg",
-      "Version": "1.5.0",
+      "Version": "1.5.2",
       "Source": "Repository",
       "Requirements": [
         "systemfonts",

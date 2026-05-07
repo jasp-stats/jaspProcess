@@ -36,8 +36,8 @@
 </defs>
 <g clip-path='url(#cpMTQ2Ljg5fDQzMi45N3wxNy4zMHw1NzYuMDA=)'>
 <rect x='146.89' y='17.30' width='286.08' height='558.70' style='stroke-width: 10.67; stroke: none;' />
-<rect x='287.90' y='503.62' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
-<rect x='363.07' y='503.62' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
+<rect x='287.90' y='503.62' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
+<rect x='363.07' y='503.62' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
 <rect x='325.49' y='428.46' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
 <rect x='325.49' y='353.29' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
 <rect x='325.49' y='278.12' width='46.98' height='46.98' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
@@ -166,8 +166,8 @@
 <rect x='450.68' y='272.01' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
 <rect x='450.68' y='289.29' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
 <rect x='450.68' y='306.57' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
-<text x='478.64' y='284.88' style='font-size: 16.00px; font-family: sans;' textLength='78.30px' lengthAdjust='spacingAndGlyphs'>Dependent</text>
-<text x='478.64' y='302.16' style='font-size: 16.00px; font-family: sans;' textLength='88.98px' lengthAdjust='spacingAndGlyphs'>Independent</text>
+<text x='478.64' y='284.88' style='font-size: 16.00px; font-family: sans;' textLength='88.98px' lengthAdjust='spacingAndGlyphs'>Independent</text>
+<text x='478.64' y='302.16' style='font-size: 16.00px; font-family: sans;' textLength='78.30px' lengthAdjust='spacingAndGlyphs'>Dependent</text>
 <text x='478.64' y='319.44' style='font-size: 16.00px; font-family: sans;' textLength='72.93px' lengthAdjust='spacingAndGlyphs'>Moderator</text>
 <text x='146.89' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='190.05px' lengthAdjust='spacingAndGlyphs'>statistical-path-plot-continuous-3</text>
 </g>

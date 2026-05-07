@@ -36,8 +36,8 @@
 </defs>
 <g clip-path='url(#cpMTE3LjAwfDQ2Mi44NnwxNy4zMHw1NzYuMDA=)'>
 <rect x='117.00' y='17.30' width='345.86' height='558.70' style='stroke-width: 10.67; stroke: none;' />
-<rect x='132.72' y='236.19' width='120.93' height='120.93' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
-<rect x='326.21' y='236.19' width='120.93' height='120.93' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
+<rect x='132.72' y='236.19' width='120.93' height='120.93' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
+<rect x='326.21' y='236.19' width='120.93' height='120.93' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
 <rect x='229.47' y='42.70' width='120.93' height='120.93' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
 <rect x='229.47' y='429.67' width='120.93' height='120.93' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
 <rect x='229.47' y='236.19' width='120.93' height='120.93' style='stroke-width: 1.92; stroke: none; stroke-linecap: butt; stroke-linejoin: miter;' />
@@ -58,8 +58,8 @@
 <rect x='480.58' y='272.01' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #1B9E77;' />
 <rect x='480.58' y='289.29' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #B27D5D;' />
 <rect x='480.58' y='306.57' width='14.73' height='14.73' style='stroke-width: 1.92; stroke-linecap: butt; stroke-linejoin: miter; fill: #666666;' />
-<text x='508.54' y='284.88' style='font-size: 16.00px; font-family: sans;' textLength='78.30px' lengthAdjust='spacingAndGlyphs'>Dependent</text>
-<text x='508.54' y='302.16' style='font-size: 16.00px; font-family: sans;' textLength='88.98px' lengthAdjust='spacingAndGlyphs'>Independent</text>
+<text x='508.54' y='284.88' style='font-size: 16.00px; font-family: sans;' textLength='88.98px' lengthAdjust='spacingAndGlyphs'>Independent</text>
+<text x='508.54' y='302.16' style='font-size: 16.00px; font-family: sans;' textLength='78.30px' lengthAdjust='spacingAndGlyphs'>Dependent</text>
 <text x='508.54' y='319.44' style='font-size: 16.00px; font-family: sans;' textLength='72.93px' lengthAdjust='spacingAndGlyphs'>Moderator</text>
 <text x='117.00' y='9.08' style='font-size: 13.20px; font-family: sans;' textLength='168.78px' lengthAdjust='spacingAndGlyphs'>conceptual-path-plot-factor-2</text>
 </g>
