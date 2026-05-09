@@ -732,3 +732,19 @@ msgstr "從 "
 msgctxt "ClassicProcess|"
 msgid "Moderated mediation index"
 msgstr "調節式中介指標"
+
+msgctxt "ModerationProbes|"
+msgid "Probe method"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Percentiles"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Mean ± SD"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid " SD from the mean"
+msgstr ""

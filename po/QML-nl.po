@@ -710,3 +710,19 @@ msgstr ""
 msgctxt "ClassicProcess|"
 msgid "Moderated mediation index"
 msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Probe method"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Percentiles"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Mean ± SD"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid " SD from the mean"
+msgstr ""

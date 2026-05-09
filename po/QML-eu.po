@@ -708,3 +708,19 @@ msgstr ""
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
 msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Probe method"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Percentiles"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid "Mean ± SD"
+msgstr ""
+
+msgctxt "ModerationProbes|"
+msgid " SD from the mean"
+msgstr ""
