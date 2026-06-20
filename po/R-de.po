@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
 "POT-Creation-Date: 2025-07-19 04:00\n"
-"PO-Revision-Date: 2026-05-24 16:11+0000\n"
+"PO-Revision-Date: 2026-06-20 05:04+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspprocess-"
 "r/de/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 #, fuzzy
 msgid "Process Analysis"
@@ -221,14 +221,12 @@ msgstr "Gesamt indirekt"
 msgid "Local tests"
 msgstr "Lokale Tests"
 
-#, fuzzy
 msgid "Conditional independence tests"
 msgstr "Bedingte Unabhängigkeitstests"
 
 msgid "Model did not converge."
 msgstr "Modell ist nicht konvergiert."
 
-#, fuzzy
 msgid "RMSEA"
 msgstr "RMSEA"
 
@@ -354,6 +352,8 @@ msgid ""
 "Model does not contain moderated indirect effects for<br>which the moderated "
 "medation index can be calculated."
 msgstr ""
+"Das Modell enthält keine moderierten indirekten Effekte für <br>, die der "
+"moderierte Mediationsindex berechnet werden kann."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
 msgstr ""
