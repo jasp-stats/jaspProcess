@@ -16,7 +16,8 @@
 
 # jaspProcess (development version)
 
-
+## Fixed
+* Process models with a categorical predictor no longer error when a factor level label contains a space or other special character (e.g. "emotion regulation"). Such labels are now coerced to syntactically valid names before being used in mean-centering and lavaan model syntax ([Issue #3597](https://github.com/jasp-stats/jasp-issues/issues/3597)).
 
 ---
 

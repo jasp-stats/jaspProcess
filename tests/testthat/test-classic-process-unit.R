@@ -797,3 +797,41 @@ test_that("Test that .procEffectsTablesGetConditionalLabels converts SD labels f
   result <- jaspProcess:::.procEffectsTablesGetConditionalLabels(paths, mods)
   expect_equal(result[["W"]], c("Mean-1SD", "Mean", "Mean+1.5SD"))
 })
+
+# Safe factor levels ------------------------------------------------------
+# Factor dummy variables are named <factor><level> and later parsed as R/lavaan
+# code, so level labels with spaces or other special characters used to crash
+# the analysis. See jasp-stats/jasp-issues#3597.
+
+test_that("Test that .procSafeFactorLevels makes special characters in factor levels name-safe", {
+  dataset <- data.frame(
+    X = c("control", "emotion regulation", "self-help", "v2.0 test"),
+    stringsAsFactors = FALSE
+  )
+  result <- jaspProcess:::.procSafeFactorLevels(dataset, list(factors = list("X")))
+  expect_equal(levels(result[["X"]]), c("control", "emotion.regulation", "self.help", "v2.0.test"))
+})
+
+test_that("Test that .procSafeFactorLevels leaves valid and numeric levels unchanged", {
+  dataset <- data.frame(
+    fac = c("control", "experimental", "m", "f"),
+    num = c("1", "2", "3", "10"),
+    stringsAsFactors = FALSE
+  )
+  result <- jaspProcess:::.procSafeFactorLevels(dataset, list(factors = list("fac", "num")))
+  expect_equal(levels(result[["fac"]]), c("control", "experimental", "f", "m"))
+  expect_equal(levels(result[["num"]]), c("1", "10", "2", "3"))
+})
+
+test_that("Test that .procSafeFactorLevels keeps colliding levels distinct", {
+  dataset <- data.frame(X = c("a b", "a-b"), stringsAsFactors = FALSE)
+  result <- jaspProcess:::.procSafeFactorLevels(dataset, list(factors = list("X")))
+  expect_equal(levels(result[["X"]]), c("a.b", "a.b_1"))
+})
+
+test_that("Test that .procSafeFactorLevels only relabels declared factor columns", {
+  dataset <- data.frame(X = c("a b", "c d"), Z = c("e f", "g h"), stringsAsFactors = FALSE)
+  result <- jaspProcess:::.procSafeFactorLevels(dataset, list(factors = list("X")))
+  expect_equal(levels(result[["X"]]), c("a.b", "c.d"))
+  expect_identical(result[["Z"]], c("e f", "g h"))
+})

@@ -474,8 +474,37 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(graph)
 }
 
+.procSafeFactorLevels <- function(dataset, options) {
+  # Make factor level labels safe to embed in constructed variable names.
+  # Factor dummy variables are named <factor><level> (via model.matrix and
+  # paste0(factor, levels)), and those names are later parsed as code: as R
+  # expressions in .procMeanCenter (str2lang) and as lavaan model syntax. A
+  # level label containing a space or other character that is invalid inside a
+  # name (e.g. "emotion regulation", "self-help") therefore breaks parsing.
+  # See jasp-stats/jasp-issues#3597.
+  #
+  # Only characters that are invalid *within* a name are replaced; the level is
+  # always prefixed by the (already safe) factor name, so a leading digit is
+  # fine and purely numeric levels ("1", "2", ...) are left untouched. This is a
+  # positional 1:1 relabel, so contrasts, level ordering and all estimates are
+  # unchanged; only labels with special characters change (e.g.
+  # "emotion regulation" -> "emotion.regulation"). make.unique guards against the
+  # rare case of two distinct levels collapsing to the same safe label.
+  for (f in unlist(options[["factors"]])) {
+    if (is.null(dataset[[f]])) next
+    dataset[[f]] <- as.factor(dataset[[f]])
+    safeLevels <- gsub("[^A-Za-z0-9._]+", ".", levels(dataset[[f]]))
+    levels(dataset[[f]]) <- make.unique(safeLevels, sep = "_")
+  }
+  return(dataset)
+}
+
 .procAddFactorDummyIntVars <- function(jaspResults, dataset, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
+
+  # Make factor level labels safe before they are glued into dummy variable
+  # names and parsed as R/lavaan code (jasp-stats/jasp-issues#3597)
+  dataset <- .procSafeFactorLevels(dataset, options)
 
   for (i in 1:length(options[["processModels"]])) {
     modelOptions <- options[["processModels"]][[i]]
