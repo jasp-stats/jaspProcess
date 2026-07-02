@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-06-27 23:39+0000\n"
+"PO-Revision-Date: 2026-07-02 11:09+0000\n"
 "Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-qml/id/>\n"
@@ -23,7 +23,7 @@ msgstr "Klasik"
 
 msgctxt "Description|"
 msgid "Classical Process Model"
-msgstr ""
+msgstr "Modle Proses Klasik"
 
 msgctxt "Description|"
 msgid "Bayesian"
@@ -31,704 +31,704 @@ msgstr "Bayes"
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
-msgstr ""
+msgstr "Model Proses Bayes"
 
 msgctxt "BayesianProcess|"
 msgid "Models"
-msgstr ""
+msgstr "Model"
 
 msgctxt "BayesianProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "Model 1"
 
 msgctxt "BayesianProcess|"
 msgid "Options"
-msgstr ""
+msgstr "Opsi"
 
 msgctxt "BayesianProcess|"
 msgid "Prior distributions"
-msgstr ""
+msgstr "Distribusi priori"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "Label parameter"
 
 msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Sintaksis lavaan"
 
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "Berat BIC"
 
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Angka konfigurasi Hayes"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
-msgstr ""
+msgstr "Burnin"
 
 msgctxt "BayesianProcess|"
 msgid "Samples"
-msgstr ""
+msgstr "Sampel"
 
 msgctxt "BayesianProcess|"
 msgid "Chains"
-msgstr ""
+msgstr "Rantai"
 
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
-msgstr ""
+msgstr "Interval kredibel"
 
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "Moderaasi berpusat-rerata"
 
 msgctxt "BayesianProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "Diagram"
 
 msgctxt "BayesianProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "Palet warna"
 
 msgctxt "BayesianProcess|"
 msgid "MCMC Plots"
-msgstr ""
+msgstr "Diagram MCMC"
 
 msgctxt "BayesianProcess|"
 msgid "Aggregate chains for densities and histograms"
-msgstr ""
+msgstr "Agregasikan rantaian untuk kepadatan dan histogram"
 
 msgctxt "BayesianProcess|"
 msgid "Show legends"
-msgstr ""
+msgstr "Tampilkan legenda"
 
 msgctxt "BayesianProcess|"
 msgid "Density"
-msgstr ""
+msgstr "Kepadatan"
 
 msgctxt "BayesianProcess|"
 msgid "Histogram"
-msgstr ""
+msgstr "Histogram"
 
 msgctxt "BayesianProcess|"
 msgid "Trace"
-msgstr ""
+msgstr "Lacak"
 
 msgctxt "BayesianProcess|"
 msgid "Autocorrelation"
-msgstr ""
+msgstr "Korelasi Otomatis"
 
 msgctxt "BayesianProcess|"
 msgid "No. lags"
-msgstr ""
+msgstr "Jml. penundaan"
 
 msgctxt "BayesianProcess|"
 msgid "Type"
-msgstr ""
+msgstr "Jenis"
 
 msgctxt "BayesianProcess|"
 msgid "line"
-msgstr ""
+msgstr "Garis"
 
 msgctxt "BayesianProcess|"
 msgid "bar"
-msgstr ""
+msgstr "batang"
 
 msgctxt "BayesianProcess|"
 msgid "Bivariate scatter"
-msgstr ""
+msgstr "Pencaran bivariat"
 
 msgctxt "BayesianProcess|"
 msgid "Diagonal plot type"
-msgstr ""
+msgstr "Jenis diagram diagonal"
 
 msgctxt "BayesianProcess|"
 msgid "Off-diagonal plot type"
-msgstr ""
+msgstr "Jenis diagram off-diagonal"
 
 msgctxt "BayesianProcess|"
 msgid "Hexagonal"
-msgstr ""
+msgstr "Heksagonal"
 
 msgctxt "BayesianProcess|"
 msgid "Contour"
-msgstr ""
+msgstr "Kontur"
 
 msgctxt "BayesianProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "Lanjutan"
 
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "Atur untuk Semua Model"
 
 msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "Kovarians Residu"
 
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "Variabel independen"
 
 msgctxt "BayesianProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediator"
 
 msgctxt "BayesianProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "Variabel dependen"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Estimasi Parameter"
 
 msgctxt "BayesianProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "Jalur"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "Intersep"
 
 msgctxt "BayesianProcess|"
 msgid "Mediation"
-msgstr ""
+msgstr "Mediasi"
 
 msgctxt "BayesianProcess|"
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 msgctxt "BayesianProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kovarians residu"
 
 msgctxt "BayesianProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "Diagram Jalur"
 
 msgctxt "BayesianProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "Konseptual"
 
 msgctxt "BayesianProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "Statistikal"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts:"
-msgstr ""
+msgstr "Intersep:"
 
 msgctxt "BayesianProcess|"
 msgid "v ~ Normal(μ,σ)"
-msgstr ""
+msgstr "v ~ Normal(μ,σ)"
 
 msgctxt "BayesianProcess|"
 msgid "Path coefficients:"
-msgstr ""
+msgstr "Koefisien jalur:"
 
 msgctxt "BayesianProcess|"
 msgid "β ~ Normal(μ,σ)"
-msgstr ""
+msgstr "β ~ Normal(μ,σ)"
 
 msgctxt "BayesianProcess|"
 msgid "Standard deviations:"
-msgstr ""
+msgstr "Deviasi standar:"
 
 msgctxt "BayesianProcess|"
 msgid "ψ ~ Gamma(α,β)"
-msgstr ""
+msgstr "ψ ~ Gamma(α,β)"
 
 msgctxt "BayesianProcess|"
 msgid "Correlations:"
-msgstr ""
+msgstr "Korelasi:"
 
 msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
-msgstr ""
+msgstr "ρ ~ Beta(α,β)"
 
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr ""
+msgstr "Model"
 
 msgctxt "ClassicProcess|"
 msgid "Model 1"
-msgstr ""
+msgstr "Model 1"
 
 msgctxt "ClassicProcess|"
 msgid "Tests"
-msgstr ""
+msgstr "Uji"
 
 msgctxt "ClassicProcess|"
 msgid "Local tests"
-msgstr ""
+msgstr "Pengujian lokal"
 
 msgctxt "ClassicProcess|"
 msgid "Test type"
-msgstr ""
+msgstr "Jenis uji"
 
 msgctxt "ClassicProcess|"
 msgid "Linear"
-msgstr ""
+msgstr "Linear"
 
 msgctxt "ClassicProcess|"
 msgid "Loess"
-msgstr ""
+msgstr "Loess"
 
 msgctxt "ClassicProcess|"
 msgid "Chi-square"
-msgstr ""
+msgstr "Chi-kuadrat"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad"
-msgstr ""
+msgstr "Tetrad"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad within"
-msgstr ""
+msgstr "Tetrad dalam"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad between"
-msgstr ""
+msgstr "Tetrad antara"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad epistemic"
-msgstr ""
+msgstr "Tetrad epistemik"
 
 msgctxt "ClassicProcess|"
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap"
 
 msgctxt "ClassicProcess|"
 msgid "Replications"
-msgstr ""
+msgstr "Replikasi"
 
 msgctxt "ClassicProcess|"
 msgid "Options"
-msgstr ""
+msgstr "Opsi"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter labels"
-msgstr ""
+msgstr "Label parameter"
 
 msgctxt "ClassicProcess|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Sintaksis lavaan"
 
 msgctxt "ClassicProcess|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-kuadrat"
 
 msgctxt "ClassicProcess|"
 msgid "AIC weights"
-msgstr ""
+msgstr "Berat AIC"
 
 msgctxt "ClassicProcess|"
 msgid "BIC weights"
-msgstr ""
+msgstr "Berat BIC"
 
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Angka konfigurasi Hayes"
 
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "Moderaasi berpusat-rerata"
 
 msgctxt "ClassicProcess|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "Estimasi terstandardisasi"
 
 msgctxt "ClassicProcess|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Interval kepercayaan"
 
 msgctxt "ClassicProcess|"
 msgid "Method"
-msgstr ""
+msgstr "Metode"
 
 msgctxt "ClassicProcess|"
 msgid "Standard"
-msgstr ""
+msgstr "Standar"
 
 msgctxt "ClassicProcess|"
 msgid "Robust"
-msgstr ""
+msgstr "Kekuatan"
 
 msgctxt "ClassicProcess|"
 msgid "Type"
-msgstr ""
+msgstr "Jenis"
 
 msgctxt "ClassicProcess|"
 msgid "Percentile"
-msgstr ""
+msgstr "Persentil"
 
 msgctxt "ClassicProcess|"
 msgid "Bias-corrected percentile"
-msgstr ""
+msgstr "Persentil terkoreksi-bias"
 
 msgctxt "ClassicProcess|"
 msgid "Normal theory"
-msgstr ""
+msgstr "Teori normal"
 
 msgctxt "ClassicProcess|"
 msgid "Plots"
-msgstr ""
+msgstr "Diagram"
 
 msgctxt "ClassicProcess|"
 msgid "Color palette"
-msgstr ""
+msgstr "Palet warna"
 
 msgctxt "ClassicProcess|"
 msgid "Advanced"
-msgstr ""
+msgstr "Lanjutan"
 
 msgctxt "ClassicProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "Atur untuk Semua Model"
 
 msgctxt "ClassicProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "Kovarians Residu"
 
 msgctxt "ClassicProcess|"
 msgid "Independent variables"
-msgstr ""
+msgstr "Variabel independen"
 
 msgctxt "ClassicProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediator"
 
 msgctxt "ClassicProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "Variabel dependen"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Estimasi Parameter"
 
 msgctxt "ClassicProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "Jalur"
 
 msgctxt "ClassicProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "Intersep"
 
 msgctxt "ClassicProcess|"
 msgid "Indirect"
-msgstr ""
+msgstr "Tidak langsung"
 
 msgctxt "ClassicProcess|"
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 msgctxt "ClassicProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kovarians residu"
 
 msgctxt "ClassicProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "Diagram Jalur"
 
 msgctxt "ClassicProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "Konseptual"
 
 msgctxt "ClassicProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "Statistikal"
 
 msgctxt "ClassicProcess|"
 msgid "Adjustment method"
-msgstr ""
+msgstr "Metode penyesuaian"
 
 msgctxt "ClassicProcess|"
 msgid "None"
-msgstr ""
+msgstr "Tidak Ada"
 
 msgctxt "ClassicProcess|"
 msgid "Holm"
-msgstr ""
+msgstr "Holm"
 
 msgctxt "ClassicProcess|"
 msgid "Hochberg"
-msgstr ""
+msgstr "Hochberg"
 
 msgctxt "ClassicProcess|"
 msgid "Hommel"
-msgstr ""
+msgstr "Hommel"
 
 msgctxt "ClassicProcess|"
 msgid "Bonferroni"
-msgstr ""
+msgstr "Bonferroni"
 
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Hochberg"
-msgstr ""
+msgstr "Benjamini-Hochberg"
 
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Yekuteli"
-msgstr ""
+msgstr "Benjamini-Yekuteli"
 
 msgctxt "ClassicProcess|"
 msgid "Missing Value Handling"
-msgstr ""
+msgstr "Penanganan Nilai Hilang"
 
 msgctxt "ClassicProcess|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "Kecualikan kasus berdaftar"
 
 msgctxt "ClassicProcess|"
 msgid "Full Information Maximum Likelihood"
-msgstr ""
+msgstr "Maksimum Kemungkinan Informasi Lengkap"
 
 msgctxt "ClassicProcess|"
 msgid "Emulation"
-msgstr ""
+msgstr "Emulasi"
 
 msgctxt "ClassicProcess|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus"
 
 msgctxt "ClassicProcess|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS"
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
-msgstr ""
+msgstr "Estimator"
 
 msgctxt "ClassicProcess|"
 msgid "Auto"
-msgstr ""
+msgstr "Otomatis"
 
 msgctxt "ClassicProcess|"
 msgid "ML"
-msgstr ""
+msgstr "ML"
 
 msgctxt "ClassicProcess|"
 msgid "GLS"
-msgstr ""
+msgstr "GLS"
 
 msgctxt "ClassicProcess|"
 msgid "WLS"
-msgstr ""
+msgstr "WLS"
 
 msgctxt "ClassicProcess|"
 msgid "ULS"
-msgstr ""
+msgstr "ULS"
 
 msgctxt "ClassicProcess|"
 msgid "DWLS"
-msgstr ""
+msgstr "DWLS"
 
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
-msgstr ""
+msgstr "Angka konfigurasi Hayes"
 
 msgctxt "InputModelNumber|"
 msgid "Independent X"
-msgstr ""
+msgstr "Independen X"
 
 msgctxt "InputModelNumber|"
 msgid "Mediators M"
-msgstr ""
+msgstr "Mediator M"
 
 msgctxt "InputModelNumber|"
 msgid "Moderator W"
-msgstr ""
+msgstr "Moderator W"
 
 msgctxt "InputModelNumber|"
 msgid "Moderator Z"
-msgstr ""
+msgstr "Moderator Z"
 
 msgctxt "InputType|"
 msgid "Input type"
-msgstr ""
+msgstr "Jenis masukan"
 
 msgctxt "InputType|"
 msgid "Paths"
-msgstr ""
+msgstr "Jalur"
 
 msgctxt "InputType|"
 msgid "Hayes configuration"
-msgstr ""
+msgstr "Konfigurasi Hayes"
 
 msgctxt "InputVariables|"
 msgid "To"
-msgstr ""
+msgstr "Ke"
 
 msgctxt "InputVariables|"
 msgid "Process Type"
-msgstr ""
+msgstr "Jenis Proses"
 
 msgctxt "InputVariables|"
 msgid "Process Variable"
-msgstr ""
+msgstr "Variabel Proses"
 
 msgctxt "InputVariables|"
 msgid "Mediator"
-msgstr ""
+msgstr "Mediator"
 
 msgctxt "InputVariables|"
 msgid "Moderator"
-msgstr ""
+msgstr "Moderator"
 
 msgctxt "InputVariables|"
 msgid "Confounder"
-msgstr ""
+msgstr "Konfonder"
 
 msgctxt "InputVariables|"
 msgid "Direct"
-msgstr ""
+msgstr "Langsung"
 
 msgctxt "ModerationProbes|"
 msgid "Probe Conditional Continuous Effects"
-msgstr ""
+msgstr "Uji Efek Berkelanjutan Kondisional"
 
 msgctxt "ModerationProbes|"
 msgid "th percentile"
-msgstr ""
+msgstr "persentil ke"
 
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Estimasi Parameter"
 
 msgctxt "ParameterEstimates|"
 msgid "Paths"
-msgstr ""
+msgstr "Jalur"
 
 msgctxt "ParameterEstimates|"
 msgid "Intercepts"
-msgstr ""
+msgstr "Intersep"
 
 msgctxt "ParameterEstimates|"
 msgid "Indirect"
-msgstr ""
+msgstr "Tidak langsung"
 
 msgctxt "ParameterEstimates|"
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 msgctxt "ParameterEstimates|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kovarians residu"
 
 msgctxt "PathPlotOptions|"
 msgid "Statistical Path Plots"
-msgstr ""
+msgstr "Diagram Jalur Statistikal"
 
 msgctxt "PathPlotOptions|"
 msgid "Covariances"
-msgstr ""
+msgstr "Kovarians"
 
 msgctxt "PathPlotOptions|"
 msgid "Residual variances"
-msgstr ""
+msgstr "Varians residu"
 
 msgctxt "PathPlotOptions|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "Estimasi parameter"
 
 msgctxt "PathPlotOptions|"
 msgid "Legend"
-msgstr ""
+msgstr "Legenda"
 
 msgctxt "PathPlotOptions|"
 msgid "Labels"
-msgstr ""
+msgstr "Label"
 
 msgctxt "PathPlotOptions|"
 msgid "Color"
-msgstr ""
+msgstr "Warna"
 
 msgctxt "PathPlotOptions|"
 msgid "Label length"
-msgstr ""
+msgstr "Panjang label"
 
 msgctxt "PathPlots|"
 msgid "Path Plots"
-msgstr ""
+msgstr "Diagram Jalur"
 
 msgctxt "PathPlots|"
 msgid "Conceptual"
-msgstr ""
+msgstr "Konseptual"
 
 msgctxt "PathPlots|"
 msgid "Statistical"
-msgstr ""
+msgstr "Statistikal"
 
 msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "Kovarians Residu"
 
 msgctxt "ResidualCovariances|"
 msgid "Independent variables"
-msgstr ""
+msgstr "Variabel independen"
 
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediator"
 
 msgctxt "ResidualCovariances|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "Variabel dependen"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "Estimasi terstandardisasi"
 
 msgctxt "StandardizedEstimates|"
 msgid "Unstandardized"
-msgstr ""
+msgstr "Tidak terstandardisasi"
 
 msgctxt "StandardizedEstimates|"
 msgid "Mean-centered"
-msgstr ""
+msgstr "Berpusat-rerata"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized"
-msgstr ""
+msgstr "Terstandardisasi"
 
 msgctxt "VariablesForm|"
 msgid "Dependent Variable"
-msgstr ""
+msgstr "Variabel Dependen"
 
 msgctxt "VariablesForm|"
 msgid "Continuous Predictors"
-msgstr ""
+msgstr "Prediktor Berkelanjutan"
 
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
-msgstr ""
+msgstr "Prediktor Kategorikal"
 
 msgctxt "Description|"
 msgid "Process"
-msgstr ""
+msgstr "Proses"
 
 msgctxt "InputVariables|"
 msgid "From "
-msgstr ""
+msgstr "Dari "
 
 msgctxt "ClassicProcess|"
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "Indeks mediasi termoderasi"
 
 msgctxt "ModerationProbes|"
 msgid "Probe method"
-msgstr ""
+msgstr "Metode pengujian"
 
 msgctxt "ModerationProbes|"
 msgid "Percentiles"
-msgstr ""
+msgstr "Persentil"
 
 msgctxt "ModerationProbes|"
 msgid "Mean ± SD"
-msgstr ""
+msgstr "Rerata ± SD"
 
 msgctxt "ModerationProbes|"
 msgid " SD from the mean"
-msgstr ""
+msgstr " SD dari rerata"
