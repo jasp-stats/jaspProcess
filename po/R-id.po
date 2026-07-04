@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
 "POT-Creation-Date: 2025-11-15 03:50\n"
-"PO-Revision-Date: 2026-05-17 06:11+0000\n"
-"Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
+"PO-Revision-Date: 2026-07-02 11:09+0000\n"
+"Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/id/>\n"
 "Language: id\n"
@@ -11,28 +11,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 msgid "Process Analysis"
-msgstr ""
+msgstr "Analisis Proses"
 
 msgid "Model summary"
-msgstr ""
+msgstr "Ringkasan model"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
 msgstr "BIC"
 
 msgid "BIC weight"
-msgstr ""
+msgstr "Berat BIC"
 
 msgid "Estimate"
 msgstr "Estimasi"
@@ -41,13 +41,13 @@ msgid "SE"
 msgstr "SE"
 
 msgid "LOO Difference"
-msgstr ""
+msgstr "Perbedaan LOO"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
-msgstr ""
+msgstr "Rasio"
 
 msgid "n"
 msgstr "n"
@@ -86,7 +86,7 @@ msgid "Warning:"
 msgstr "Peringatan:"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "Koefisien jalur"
 
 msgid "Label"
 msgstr "Label"
@@ -95,55 +95,71 @@ msgid "Prior"
 msgstr "Priori"
 
 msgid "Direct and indirect effects"
-msgstr ""
+msgstr "Efek langsung dan tidak langsung"
 
 msgid "Total effects"
-msgstr ""
+msgstr "Total efek"
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kovarians residu"
 
 msgid "MCMC Plots"
-msgstr ""
+msgstr "Diagram MCMC"
 
 msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
 msgstr ""
+"Peringatan: Estimasi WAIC tidak dapat diandalkan -- setidaknya satu estimasi "
+"parameter efektif (p_waic) lebih besar dari 0.4. Kami merekomendasikan "
+"menggunakan LOO sebagai pengganti."
 
 msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
 msgstr ""
+"Peringatan: Estimasi LOO tidak dapat diandalkan -- setidaknya satu observasi "
+"dengan parameter bentuk (k) dari distribusi Pareto tergeneralisasi lebih "
+"besar dari 0.5."
 
 msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
 msgstr ""
+"WAIC dan LOO tidak dapat dihitung jika tidak ada kovarians diestimasikan "
+"untuk variabel independen dengan data hilang."
 
 msgid "Estimates might be biased -- %i divergent transitions after warmup."
-msgstr ""
+msgstr "Estimasi mungkin berbias -- %i transisi berbeda setelah pemanasan."
 
 msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
 msgstr ""
+"Pecahan Bayes dari Informasi Hilang (BFMI) terlalu rendah di %i rantai -- "
+"distribusi posterior tidak dijelajahi secara efisien."
 
 msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
 msgstr ""
+"Prosedur Monte Carlo Hamilton mungkin tidak efisien -- %i transisi melampaui "
+"maksimum kedalaman pohon."
 
 msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
 msgstr ""
+"Akurasi estimasi rendah untuk %1$s kuantitas -- Ukuran Sampel Efektif (ESS) "
+"terkecil adalah %2$.2f < %3$1.0f."
 
 msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
+"Inferensi secara mungkin tidak dapat diandalkan -- Rantai MCMC mungkin tidak "
+"disatukan; R-hat terbesar adalah %1$.3f > %2$.2f."
 
 msgid "Dependent variables must be continuous."
-msgstr ""
+msgstr "Variabel dependen harus berkelanjutan."
 
 msgid "Hayes number"
-msgstr ""
+msgstr "Angka Hayes"
 
 msgid "Model configuration number defined by Hayes (2022)."
-msgstr ""
+msgstr "Angka konfigurasi model didefinisikan oleh Hayes (2022)."
 
 msgid "AIC"
 msgstr "AIC"
 
 msgid "AIC weight"
-msgstr ""
+msgstr "Berat AIC"
 
 msgid "Log-likelihood"
 msgstr "Log-kemungkinan"
@@ -152,121 +168,148 @@ msgid "df"
 msgstr "df"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Galat Std."
 
 msgid "z-value"
-msgstr ""
+msgstr "nilai-z"
 
 msgid "p"
 msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% Interval Kepercayaan"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "Estimasi Std."
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "persentil terkoreksi-bias"
 
 msgid "percentile"
-msgstr ""
+msgstr "persentil"
 
 msgid "normal theory"
-msgstr ""
+msgstr "teori normal"
 
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "Indeks mediasi termoderasi"
 
 msgid "Total"
 msgstr "Total"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "Total tidak langsung"
 
 msgid "Local tests"
-msgstr ""
+msgstr "Pengujian lokal"
 
 msgid "Conditional independence tests"
-msgstr ""
+msgstr "Pengujian independen kondisional"
 
 msgid "Model did not converge."
-msgstr ""
+msgstr "Model tidak disatukan."
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
-msgstr ""
+msgstr "Galat Std."
 
 msgid "R-squared"
-msgstr ""
+msgstr "R-kuadrat"
 
 msgid "Conceptual path plot"
-msgstr ""
+msgstr "Diagram jalur konseptual"
 
 msgid "Statistical path plot"
-msgstr ""
+msgstr "Diagram jalur statistikal"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Sintaksis model"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr ""
+"Model harus berada di grafik akrilik langsung -- itu tidak harus berisi "
+"pengulangan."
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr ""
+msgstr "%1$s: Konfigurasi Hayes %2$s tidak diimplementasikan"
 
 msgid "Estimation failed because of an internal error."
-msgstr ""
+msgstr "Estimasi gagal karena galat internal."
 
 msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
 msgstr ""
+"Estimasi Kemungkinan Maksimum Informasi Lengkap hanya tersedia dengan "
+"estimator 'ML' atau 'Otomatis'. Silakan pilih estimator berbeda atau opsi "
+"untuk penanganan nilai hilang."
 
 msgid "<li>Some implied model variances are > 1,000,000</li>"
-msgstr ""
+msgstr "<li>Beberapa varians model bersirat adalah > 1,000,000</li>"
 
 msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
 msgstr ""
+"<li>Beberapa varians model bersirat adalah setidaknya faktor 1000 kali lebih "
+"besar dari lain</li>"
 
 msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
 msgstr ""
+"Matriks informasi tidak dapat dibalikkan. Ini mungkin berupa simptom bahwa "
+"model tidak diidentifikasikan. Alasan memungkinkan: <ul>%s</ul>"
 
 msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
 msgstr ""
+"Setidaknya satu model tidak lengkap atau tidak ada model ditentukan. Silakan "
+"tambahkan setidaknya satu model dan selesaikan model tertentu."
 
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
 msgstr ""
+"AIC, BIC dan kriteria informasi tambahan hanya tersedia dengan estimator "
+"jenis-ML."
 
 msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
 msgstr ""
+"<b>Penting</b>: Estimasi parameter hanya dapat diinterpretasikan sebagai "
+"efek kausal jika semua efek perancu dihitung dan jika arahan efek kausal "
+"secara benar ditentukan."
 
 msgid "Please check the model specification and lavaan syntax."
-msgstr ""
+msgstr "Silakan periksa spesifikasi model dan sintaksis lavaan."
 
 msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
 msgstr ""
+"Jenis pengujian linear tidak dapat diterapkan ke variabel faktor. Pilih "
+"jenis pengujian berbeda atau hapus semua variabel faktor dari model."
 
 msgid "The specified model does not imply any (conditional) independencies that can be tested."
 msgstr ""
+"Model tertentu tidak menyiratkan independen (kondisonal) apa pun yang dapat "
+"diuji."
 
 msgid "Partially standardized estimate because effect involves categorical predictor."
 msgstr ""
+"Estimasi terstandardisasi secara parsial karena efek melibatkan prediktor "
+"kategorikal."
 
 msgid "Moderation effect estimates are based on mean-centered variables."
-msgstr ""
+msgstr "Estimasi efek moderasi berdasarkan variabel terpusat-rerata."
 
 msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
 msgstr ""
+"Interval kepercayaan %s terbootstrap. Galat standar, nilai-<em>z</em> dan "
+"nilai-<em>p</em> berdasarkan metode delta."
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
-msgstr ""
+msgstr "Tidak semua sampel bootstrap berhasil: CI berdasarkan %.0f sampel."
 
 msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
 msgstr ""
+"Model tidak berisi efek tidak langsung termoderasi yang<br>mana indeks "
+"meditasi termoderasi dapat dihitung."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
 msgstr ""
+"nilai-<em>p</em> disesuaikan untuk beberapa perbandingan dengan metode %s."
