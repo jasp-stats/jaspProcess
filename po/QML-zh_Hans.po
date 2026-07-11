@@ -6,6 +6,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
+"PO-Revision-Date: 2026-07-10 05:01+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspprocess-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 
 msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
@@ -61,7 +67,7 @@ msgstr "Hayes 配置编号"
 
 msgctxt "BayesianProcess|"
 msgid "Burnin"
-msgstr ""
+msgstr "预烧"
 
 msgctxt "BayesianProcess|"
 msgid "Samples"
@@ -69,7 +75,7 @@ msgstr "样本"
 
 msgctxt "BayesianProcess|"
 msgid "Chains"
-msgstr ""
+msgstr "链"
 
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
@@ -77,7 +83,7 @@ msgstr "可信区间"
 
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "均值中心化调节"
 
 msgctxt "BayesianProcess|"
 msgid "Plots"
@@ -109,7 +115,7 @@ msgstr "直方图"
 
 msgctxt "BayesianProcess|"
 msgid "Trace"
-msgstr ""
+msgstr "轨迹"
 
 msgctxt "BayesianProcess|"
 msgid "Autocorrelation"
@@ -117,7 +123,7 @@ msgstr "自相关"
 
 msgctxt "BayesianProcess|"
 msgid "No. lags"
-msgstr ""
+msgstr "滞后(lag)阶数"
 
 msgctxt "BayesianProcess|"
 msgid "Type"
@@ -141,15 +147,15 @@ msgstr "对角线图类型"
 
 msgctxt "BayesianProcess|"
 msgid "Off-diagonal plot type"
-msgstr ""
+msgstr "非对角线图类型"
 
 msgctxt "BayesianProcess|"
 msgid "Hexagonal"
-msgstr ""
+msgstr "六边形(Hexagonal)"
 
 msgctxt "BayesianProcess|"
 msgid "Contour"
-msgstr ""
+msgstr "轮廓(Contour)"
 
 msgctxt "BayesianProcess|"
 msgid "Advanced"
@@ -157,11 +163,11 @@ msgstr "高级选项"
 
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "为所有模型设置"
 
 msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
@@ -169,67 +175,67 @@ msgstr "因变量"
 
 msgctxt "BayesianProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "中介变量"
 
 msgctxt "BayesianProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "参数估计"
 
 msgctxt "BayesianProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "路径"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "截距"
 
 msgctxt "BayesianProcess|"
 msgid "Mediation"
-msgstr ""
+msgstr "中介效应"
 
 msgctxt "BayesianProcess|"
 msgid "Total"
-msgstr ""
+msgstr "总计"
 
 msgctxt "BayesianProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgctxt "BayesianProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "路径图"
 
 msgctxt "BayesianProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "概念的"
 
 msgctxt "BayesianProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "统计的"
 
 msgctxt "BayesianProcess|"
 msgid "Intercepts:"
-msgstr ""
+msgstr "截距："
 
 msgctxt "BayesianProcess|"
 msgid "v ~ Normal(μ,σ)"
-msgstr ""
+msgstr "v ~ 正态(μ, σ)"
 
 msgctxt "BayesianProcess|"
 msgid "Path coefficients:"
-msgstr ""
+msgstr "路径系数："
 
 msgctxt "BayesianProcess|"
 msgid "β ~ Normal(μ,σ)"
-msgstr ""
+msgstr "β ~ 正态(μ, σ)"
 
 msgctxt "BayesianProcess|"
 msgid "Standard deviations:"
-msgstr ""
+msgstr "标准差："
 
 msgctxt "BayesianProcess|"
 msgid "ψ ~ Gamma(α,β)"
@@ -237,223 +243,211 @@ msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Correlations:"
-msgstr ""
+msgstr "相关系数："
 
 msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
 msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Models"
 msgstr "模型"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Model 1"
 msgstr "模型 1"
 
 msgctxt "ClassicProcess|"
 msgid "Tests"
-msgstr ""
+msgstr "检验"
 
 msgctxt "ClassicProcess|"
 msgid "Local tests"
-msgstr ""
+msgstr "局部检验"
 
 msgctxt "ClassicProcess|"
 msgid "Test type"
-msgstr ""
+msgstr "检验类型"
 
 msgctxt "ClassicProcess|"
 msgid "Linear"
-msgstr ""
+msgstr "线性"
 
 msgctxt "ClassicProcess|"
 msgid "Loess"
-msgstr ""
+msgstr "局部加权回归（LOESS）"
 
 msgctxt "ClassicProcess|"
 msgid "Chi-square"
-msgstr ""
+msgstr "卡方"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad"
-msgstr ""
+msgstr "四元组"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad within"
-msgstr ""
+msgstr "四元组内"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad between"
-msgstr ""
+msgstr "四元组间"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad epistemic"
-msgstr ""
+msgstr "认识论四元组"
 
 msgctxt "ClassicProcess|"
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap 自助抽样"
 
 msgctxt "ClassicProcess|"
 msgid "Replications"
-msgstr ""
+msgstr "复制"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Options"
 msgstr "选项"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Parameter labels"
 msgstr "参数标签"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Lavaan syntax"
 msgstr "Lavaan 语法"
 
 msgctxt "ClassicProcess|"
 msgid "R-squared"
-msgstr ""
+msgstr "R 平方"
 
 msgctxt "ClassicProcess|"
 msgid "AIC weights"
-msgstr ""
+msgstr "AIC 权重"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "BIC weights"
 msgstr "BIC 权重"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
 msgstr "Hayes 配置编号"
 
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
-msgstr ""
+msgstr "均值中心化调节"
 
 msgctxt "ClassicProcess|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "标准化估计"
 
 msgctxt "ClassicProcess|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "置信区间"
 
 msgctxt "ClassicProcess|"
 msgid "Method"
-msgstr ""
+msgstr "方法"
 
 msgctxt "ClassicProcess|"
 msgid "Standard"
-msgstr ""
+msgstr "标准"
 
 msgctxt "ClassicProcess|"
 msgid "Robust"
-msgstr ""
+msgstr "稳健"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Type"
 msgstr "类型"
 
 msgctxt "ClassicProcess|"
 msgid "Percentile"
-msgstr ""
+msgstr "百分位"
 
 msgctxt "ClassicProcess|"
 msgid "Bias-corrected percentile"
-msgstr ""
+msgstr "偏差校正百分位数"
 
 msgctxt "ClassicProcess|"
 msgid "Normal theory"
-msgstr ""
+msgstr "正态理论"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Plots"
 msgstr "绘图"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Color palette"
 msgstr "调色板"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Advanced"
 msgstr "高级选项"
 
 msgctxt "ClassicProcess|"
 msgid "Set for All Models"
-msgstr ""
+msgstr "为所有模型设置"
 
 msgctxt "ClassicProcess|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "残差协方差"
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Independent variables"
-msgstr "因变量"
+msgstr "自变量"
 
 msgctxt "ClassicProcess|"
 msgid "Mediators"
-msgstr ""
+msgstr "中介变量"
 
 msgctxt "ClassicProcess|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "ClassicProcess|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "参数估计"
 
 msgctxt "ClassicProcess|"
 msgid "Paths"
-msgstr ""
+msgstr "路径"
 
 msgctxt "ClassicProcess|"
 msgid "Intercepts"
-msgstr ""
+msgstr "截距"
 
 msgctxt "ClassicProcess|"
 msgid "Indirect"
-msgstr ""
+msgstr "间接"
 
 msgctxt "ClassicProcess|"
 msgid "Total"
-msgstr ""
+msgstr "总计"
 
 msgctxt "ClassicProcess|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgctxt "ClassicProcess|"
 msgid "Path Plots"
-msgstr ""
+msgstr "路径图"
 
 msgctxt "ClassicProcess|"
 msgid "Conceptual"
-msgstr ""
+msgstr "概念的"
 
 msgctxt "ClassicProcess|"
 msgid "Statistical"
-msgstr ""
+msgstr "统计的"
 
 msgctxt "ClassicProcess|"
 msgid "Adjustment method"
-msgstr ""
+msgstr "校正方法"
 
 msgctxt "ClassicProcess|"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 msgctxt "ClassicProcess|"
 msgid "Holm"
@@ -481,19 +475,19 @@ msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Missing Value Handling"
-msgstr ""
+msgstr "缺失值处理方式"
 
 msgctxt "ClassicProcess|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "按列表排除个案"
 
 msgctxt "ClassicProcess|"
 msgid "Full Information Maximum Likelihood"
-msgstr ""
+msgstr "全信息最大似然估计（FIML）"
 
 msgctxt "ClassicProcess|"
 msgid "Emulation"
-msgstr ""
+msgstr "仿真"
 
 msgctxt "ClassicProcess|"
 msgid "Mplus"
@@ -505,238 +499,236 @@ msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
-msgstr ""
+msgstr "估计器"
 
 msgctxt "ClassicProcess|"
 msgid "Auto"
-msgstr ""
+msgstr "自动"
 
 msgctxt "ClassicProcess|"
 msgid "ML"
-msgstr ""
+msgstr "极大似然法(ML)"
 
 msgctxt "ClassicProcess|"
 msgid "GLS"
-msgstr ""
+msgstr "广义最小二乘法(GLS)"
 
 msgctxt "ClassicProcess|"
 msgid "WLS"
-msgstr ""
+msgstr "加权最小二乘法(WLS)"
 
 msgctxt "ClassicProcess|"
 msgid "ULS"
-msgstr ""
+msgstr "未加权最小二乘法 (ULS)"
 
 msgctxt "ClassicProcess|"
 msgid "DWLS"
-msgstr ""
+msgstr "对角加权最小二乘法(DWLS)"
 
-#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
 msgstr "Hayes 配置编号"
 
 msgctxt "InputModelNumber|"
 msgid "Independent X"
-msgstr ""
+msgstr "自变量 X"
 
 msgctxt "InputModelNumber|"
 msgid "Mediators M"
-msgstr ""
+msgstr "中介变量 M"
 
 msgctxt "InputModelNumber|"
 msgid "Moderator W"
-msgstr ""
+msgstr "调节变量 W"
 
 msgctxt "InputModelNumber|"
 msgid "Moderator Z"
-msgstr ""
+msgstr "调节变量 Z"
 
 msgctxt "InputType|"
 msgid "Input type"
-msgstr ""
+msgstr "输入类型"
 
 msgctxt "InputType|"
 msgid "Paths"
-msgstr ""
+msgstr "路径"
 
 msgctxt "InputType|"
 msgid "Hayes configuration"
-msgstr ""
+msgstr "Hayes 配置编号"
 
 msgctxt "InputVariables|"
 msgid "To"
-msgstr ""
+msgstr "到"
 
 msgctxt "InputVariables|"
 msgid "Process Type"
-msgstr ""
+msgstr "过程类型"
 
 msgctxt "InputVariables|"
 msgid "Process Variable"
-msgstr ""
+msgstr "过程变量"
 
 msgctxt "InputVariables|"
 msgid "Mediator"
-msgstr ""
+msgstr "中介变量"
 
 msgctxt "InputVariables|"
 msgid "Moderator"
-msgstr ""
+msgstr "调节变量"
 
 msgctxt "InputVariables|"
 msgid "Confounder"
-msgstr ""
+msgstr "混杂变量"
 
 msgctxt "InputVariables|"
 msgid "Direct"
-msgstr ""
+msgstr "直接"
 
 msgctxt "ModerationProbes|"
 msgid "Probe Conditional Continuous Effects"
-msgstr ""
+msgstr "探测条件连续效应"
 
 msgctxt "ModerationProbes|"
 msgid "th percentile"
-msgstr ""
+msgstr "百分位数"
 
 msgctxt "ParameterEstimates|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "参数估计"
 
 msgctxt "ParameterEstimates|"
 msgid "Paths"
-msgstr ""
+msgstr "路径"
 
 msgctxt "ParameterEstimates|"
 msgid "Intercepts"
-msgstr ""
+msgstr "截距"
 
 msgctxt "ParameterEstimates|"
 msgid "Indirect"
-msgstr ""
+msgstr "间接"
 
 msgctxt "ParameterEstimates|"
 msgid "Total"
-msgstr ""
+msgstr "总计"
 
 msgctxt "ParameterEstimates|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgctxt "PathPlotOptions|"
 msgid "Statistical Path Plots"
-msgstr ""
+msgstr "统计路径图"
 
 msgctxt "PathPlotOptions|"
 msgid "Covariances"
-msgstr ""
+msgstr "协方差"
 
 msgctxt "PathPlotOptions|"
 msgid "Residual variances"
-msgstr ""
+msgstr "残差方差"
 
 msgctxt "PathPlotOptions|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "参数估计"
 
 msgctxt "PathPlotOptions|"
 msgid "Legend"
-msgstr ""
+msgstr "图例"
 
 msgctxt "PathPlotOptions|"
 msgid "Labels"
-msgstr ""
+msgstr "标签"
 
 msgctxt "PathPlotOptions|"
 msgid "Color"
-msgstr ""
+msgstr "颜色"
 
 msgctxt "PathPlotOptions|"
 msgid "Label length"
-msgstr ""
+msgstr "标签长度"
 
 msgctxt "PathPlots|"
 msgid "Path Plots"
-msgstr ""
+msgstr "路径图"
 
 msgctxt "PathPlots|"
 msgid "Conceptual"
-msgstr ""
+msgstr "概念的"
 
 msgctxt "PathPlots|"
 msgid "Statistical"
-msgstr ""
+msgstr "统计的"
 
 msgctxt "ResidualCovariances|"
 msgid "Residual Covariances"
-msgstr ""
+msgstr "残差协方差"
 
-#, fuzzy
 msgctxt "ResidualCovariances|"
 msgid "Independent variables"
-msgstr "因变量"
+msgstr "自变量"
 
 msgctxt "ResidualCovariances|"
 msgid "Mediators"
-msgstr ""
+msgstr "中介变量"
 
 msgctxt "ResidualCovariances|"
 msgid "Dependent variables"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "标准化估计"
 
 msgctxt "StandardizedEstimates|"
 msgid "Unstandardized"
-msgstr ""
+msgstr "未标准化的"
 
 msgctxt "StandardizedEstimates|"
 msgid "Mean-centered"
-msgstr ""
+msgstr "均值中心化"
 
 msgctxt "StandardizedEstimates|"
 msgid "Standardized"
-msgstr ""
+msgstr "标准化的"
 
 msgctxt "VariablesForm|"
 msgid "Dependent Variable"
-msgstr ""
+msgstr "因变量"
 
 msgctxt "VariablesForm|"
 msgid "Continuous Predictors"
-msgstr ""
+msgstr "连续预测变量"
 
 msgctxt "VariablesForm|"
 msgid "Categorical Predictors"
-msgstr ""
+msgstr "分类预测变量"
 
 msgctxt "Description|"
 msgid "Process"
-msgstr ""
+msgstr "过程"
 
 msgctxt "InputVariables|"
 msgid "From "
-msgstr ""
+msgstr "从 "
 
 msgctxt "ClassicProcess|"
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "有调节的中介效应指数"
 
 msgctxt "ModerationProbes|"
 msgid "Probe method"
-msgstr ""
+msgstr "探测方法"
 
 msgctxt "ModerationProbes|"
 msgid "Percentiles"
-msgstr ""
+msgstr "百分位数"
 
 msgctxt "ModerationProbes|"
 msgid "Mean ± SD"
-msgstr ""
+msgstr "均值 ± 标准差"
 
 msgctxt "ModerationProbes|"
 msgid " SD from the mean"
-msgstr ""
+msgstr " 个标准差距离均值"
