@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.0\n"
 "POT-Creation-Date: 2025-07-19 04:00\n"
-"PO-Revision-Date: 2026-05-21 07:11+0000\n"
-"Last-Translator: Akira Harada <momoldo@gmail.com>\n"
+"PO-Revision-Date: 2026-07-28 05:01+0000\n"
+"Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/ja/>\n"
 "Language: ja\n"
@@ -11,262 +11,295 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
 msgid "Process Analysis"
-msgstr ""
+msgstr "プロセス分析"
 
 msgid "Model summary"
-msgstr ""
+msgstr "モデルの要約"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
-msgstr ""
+msgstr "BIC重み"
 
 msgid "Estimate"
-msgstr ""
+msgstr "推定値"
 
 msgid "SE"
-msgstr ""
+msgstr "SE"
 
 msgid "LOO Difference"
-msgstr ""
+msgstr "LOO差"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
-msgstr ""
+msgstr "比"
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Posterior"
-msgstr ""
+msgstr "事後分布"
 
 msgid "%s%% Credible Interval"
-msgstr ""
+msgstr "%s%% 信用区間"
 
 msgid "Mean"
-msgstr "平均値"
+msgstr "平均"
 
 msgid "Median"
-msgstr ""
+msgstr "中央値"
 
 msgid "SD"
-msgstr ""
+msgstr "SD"
 
 msgid "Lower"
-msgstr ""
+msgstr "下限"
 
 msgid "Upper"
-msgstr ""
+msgstr "上限"
 
 msgid "R-hat"
-msgstr ""
+msgstr "R-hat"
 
 msgid "ESS (bulk)"
-msgstr ""
+msgstr "ESS (bulk)"
 
 msgid "ESS (tail)"
-msgstr ""
+msgstr "ESS (tail)"
 
 msgid "Warning:"
-msgstr ""
+msgstr "警告:"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "パス係数"
 
 msgid "Label"
-msgstr ""
+msgstr "ラベル"
 
 msgid "Prior"
-msgstr ""
+msgstr "事前分布"
 
 msgid "Direct and indirect effects"
-msgstr ""
+msgstr "直接効果と間接効果"
 
 msgid "Total effects"
-msgstr ""
+msgstr "全体効果"
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差共分散"
 
 msgid "MCMC Plots"
-msgstr ""
+msgstr "MCMCプロット"
 
 msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
 msgstr ""
+"警告: WAIC の推定値は信頼できません -- 有効パラメータ数の推定値 (p_waic) が "
+"0.4 を超えるものが少なくとも1つあります。代わりに LOO を使うことをおすすめし"
+"ます。"
 
 msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
 msgstr ""
+"警告: LOO の推定値は信頼できません -- 一般化パレート分布の形状パラメータ (k) "
+"が 0.5 を超える観測値が少なくとも1つあります。"
 
 msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
 msgstr ""
+"欠測のある独立変数について共分散を推定しない場合、WAIC と LOO は計算できませ"
+"ん。"
 
 msgid "Estimates might be biased -- %i divergent transitions after warmup."
 msgstr ""
+"推定値に偏りがある可能性があります -- ウォームアップ後に %i 件の発散遷移があ"
+"りました。"
 
 msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
 msgstr ""
+"%i 本のチェーンで欠測情報のベイズ的割合 (BFMI) が低すぎました -- 事後分布が効"
+"率よく探索されていません。"
 
 msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
 msgstr ""
+"ハミルトニアン・モンテカルロの手続きが非効率かもしれません -- %i 件の遷移が最"
+"大ツリー深度を超えました。"
 
 msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
 msgstr ""
+"%1$s の量について推定精度が低いです -- 有効サンプルサイズ(ESS)の最小値は "
+"%2$.2f < %3$1.0f です。"
 
 msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
+"推論の信頼性が低い可能性があります -- MCMCチェーンが収束していない可能性があ"
+"ります。最大の R-hat は %1$.3f > %2$.2f です。"
 
 msgid "Dependent variables must be continuous."
-msgstr ""
+msgstr "従属変数は連続でなければなりません。"
 
 msgid "Hayes number"
-msgstr ""
+msgstr "Hayes 番号"
 
 msgid "Model configuration number defined by Hayes (2022)."
-msgstr ""
+msgstr "Hayes (2022) が定義したモデル構成の番号です。"
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
-msgstr ""
+msgstr "AIC重み"
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "対数尤度"
 
 msgid "df"
-msgstr ""
+msgstr "df"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "標準誤差"
 
 msgid "z-value"
-msgstr ""
+msgstr "z値"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% 信頼区間"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "標準化推定値"
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "バイアス修正パーセンタイル"
 
 msgid "percentile"
-msgstr ""
+msgstr "パーセンタイル"
 
 msgid "normal theory"
-msgstr ""
+msgstr "正規理論"
 
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "調整媒介指標"
 
 msgid "Total"
-msgstr ""
+msgstr "合計"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "間接効果の合計"
 
 msgid "Local tests"
-msgstr ""
+msgstr "局所的な検定"
 
 msgid "Conditional independence tests"
-msgstr ""
+msgstr "条件付き独立性の検定"
 
 msgid "Model did not converge."
-msgstr ""
+msgstr "モデルは収束しませんでした。"
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
-msgstr ""
+msgstr "標準誤差"
 
 msgid "R-squared"
-msgstr ""
+msgstr "R二乗"
 
 msgid "Conceptual path plot"
-msgstr ""
+msgstr "概念的なパス図"
 
 msgid "Statistical path plot"
-msgstr ""
+msgstr "統計的なパス図"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "モデルのシンタックス"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
-msgstr ""
+msgstr "モデルは有向非巡回グラフでなければなりません -- ループを含んではいけません。"
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr ""
+msgstr "%1$s: Hayes の構成 %2$s は実装されていません"
 
 msgid "Estimation failed because of an internal error."
-msgstr ""
+msgstr "内部エラーのため推定に失敗しました。"
 
 msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
 msgstr ""
+"完全情報最尤推定は 'ML' または 'Auto' の推定量でのみ使えます。別の推定量を選"
+"ぶか、欠測値の扱いを変えてください。"
 
 msgid "<li>Some implied model variances are > 1,000,000</li>"
-msgstr ""
+msgstr "<li>モデルが含意する分散に 1,000,000 を超えるものがあります</li>"
 
 msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
-msgstr ""
+msgstr "<li>モデルが含意する分散に、ほかの1000倍以上大きいものがあります</li>"
 
 msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
 msgstr ""
+"情報行列を逆行列にできませんでした。モデルが識別されていない兆候かもしれませ"
+"ん。考えられる理由: <ul>%s</ul>"
 
 msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
 msgstr ""
+"少なくとも1つのモデルが不完全であるか、モデルが指定されていません。モデルを少"
+"なくとも1つ追加し、指定したモデルを完成させてください。"
 
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
-msgstr ""
+msgstr "AIC・BIC などの情報量規準は、ML系の推定量でのみ使えます。"
 
 msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
 msgstr ""
+"<b>重要</b>: パラメータ推定値を因果効果として解釈できるのは、すべての交絡効果"
+"が考慮されており、かつ因果効果の向きが正しく指定されている場合だけです。"
 
 msgid "Please check the model specification and lavaan syntax."
-msgstr ""
+msgstr "モデルの指定と lavaan のシンタックスを確認してください。"
 
 msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
 msgstr ""
+"線形の検定は因子型の変数には適用できません。別の検定の種類を選ぶか、モデルか"
+"ら因子型の変数をすべて外してください。"
 
 msgid "The specified model does not imply any (conditional) independencies that can be tested."
-msgstr ""
+msgstr "指定されたモデルは、検定できる(条件付き)独立性を1つも含意しません。"
 
 msgid "Partially standardized estimate because effect involves categorical predictor."
-msgstr ""
+msgstr "カテゴリカルな予測変数を含む効果のため、部分的に標準化された推定値です。"
 
 msgid "Moderation effect estimates are based on mean-centered variables."
-msgstr ""
+msgstr "調整効果の推定値は、平均中心化した変数にもとづいています。"
 
 msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
 msgstr ""
+"信頼区間は %s ブートストラップによるものです。標準誤差・ <em>z</em>値・ <em>"
+"p</em>値はデルタ法にもとづいています。"
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
 msgstr ""
+"一部のブートストラップ標本が失敗しました: 信頼区間は %.0f 件の標本にもとづき"
+"ます。"
 
 msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
 msgstr ""
+"このモデルには、調整媒介指標を計算できる<br>調整された間接効果が含まれていま"
+"せん。"
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
-msgstr ""
+msgstr "<em>p</em>値は %s 法で多重比較の調整をしています。"
