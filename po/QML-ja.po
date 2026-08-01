@@ -6,7 +6,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Language: ja\n"
 "X-Qt-Contexts: true\n"
-"PO-Revision-Date: 2026-07-28 08:02+0000\n"
+"PO-Revision-Date: 2026-08-01 04:48+0000\n"
 "Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-qml/ja/>\n"
@@ -19,7 +19,7 @@ msgstr "因果的・条件付きプロセスモデルを検定し比較します
 
 msgctxt "Description|"
 msgid "Classical"
-msgstr "古典的"
+msgstr "伝統的"
 
 msgctxt "Description|"
 msgid "Classical Process Model"
@@ -27,7 +27,7 @@ msgstr "古典的プロセスモデル"
 
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr "ベイズ"
+msgstr "ベイジアン"
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
