@@ -3,685 +3,567 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
+
+msgctxt "Description|"
+msgid "Process"
+msgstr ""
 
 msgctxt "Description|"
 msgid "Test and compare causal and conditional process models."
 msgstr ""
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Classical"
-msgstr "སྲོལ་རྒྱུན།"
+msgstr ""
 
 msgctxt "Description|"
 msgid "Classical Process Model"
 msgstr ""
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Bayesian"
-msgstr "བྷེ་ཡེ་སིའི།"
+msgstr ""
 
 msgctxt "Description|"
 msgid "Bayesian Process Model"
 msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Models"
-msgstr "དཔེ་དབྱིབས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Model 1"
-msgstr "དཔེ་དབྱིབས་ ༡"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Options"
-msgstr "འདེམས་ཀ"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Prior distributions"
-msgstr "སྔོན་ཚུད་ཁྱབ་ཚུལ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Parameter labels"
-msgstr "ཞུགས་གྲངས་ཀྱི་ཁ་བྱང་།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Lavaan syntax"
-msgstr "Lavaan syntax"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "BIC weights"
-msgstr "BIC weights"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Hayes configuration number"
-msgstr "Hayes configuration number"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Burnin"
-msgstr "Burnin"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Samples"
-msgstr "མ་དཔེ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Chains"
-msgstr "Chains"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Credible intervals"
-msgstr "དད་རུང་བར་མཚམས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mean-centered moderation"
-msgstr "ཆ་སྙོམས་ལྟེ་བར་བཞག་པའི་ moderation"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Plots"
-msgstr "དཔེ་རིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Color palette"
-msgstr "ཚོན་མདོག་མཐུན་སྦྱོར།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "MCMC Plots"
-msgstr "MCMC དཔེ་རིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Aggregate chains for densities and histograms"
-msgstr "densities དང་ histograms གི་ཆེད་དུ་ aggregate chains"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Show legends"
-msgstr "རྟགས་འགྲེལ་སྟོན་པ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Density"
-msgstr "སྟུག་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Histogram"
-msgstr "Histogram"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Trace"
-msgstr "Trace"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Autocorrelation"
-msgstr "རང་ལྟོས་འབྲེལ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "No. lags"
-msgstr "ལག་གྲངས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Type"
-msgstr "རིགས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "line"
-msgstr "ཐིག"
+msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "bar"
 msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Bivariate scatter"
-msgstr "Bivariate scatter"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Diagonal plot type"
-msgstr "Diagonal དཔེ་རིས་ཀྱི་རིགས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Off-diagonal plot type"
-msgstr "Off-diagonal དཔེ་རིས་ཀྱི་རིགས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Hexagonal"
-msgstr "Hexagonal"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Contour"
-msgstr "Contour"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Advanced"
-msgstr "མཐོ་རིམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Set for All Models"
-msgstr "དཔེ་དབྱིབས་ཚང་མར་སྒྲིག་པ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Residual Covariances"
-msgstr "ལྷག་མའི་མཉམ་འགྱུར་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Independent variables"
-msgstr "རང་དབང་ཅན་གྱི་འགྱུར་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mediators"
-msgstr "Mediators"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Dependent variables"
-msgstr "ལྟོས་བཅས་འགྱུར་ཚད།"
+msgstr ""
 
 msgctxt "BayesianProcess|"
 msgid "Parameter Estimates"
 msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Paths"
-msgstr "ལམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Intercepts"
-msgstr "Intercepts"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Mediation"
-msgstr "Mediation"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Total"
-msgstr "ཁྱོན་བསྡོམས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Residual covariances"
-msgstr "ལྷག་མའི་མཉམ་འགྱུར་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Path Plots"
-msgstr "ལམ་གྱི་དཔེ་རིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Conceptual"
-msgstr "Conceptual"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Statistical"
-msgstr "སྡོམ་རྩིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Intercepts:"
-msgstr "Intercepts:"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "v ~ Normal(μ,σ)"
-msgstr "v ~ Normal(μ,σ)"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Path coefficients:"
-msgstr "ལམ་གྱི་བཏགས་གྲངས།:"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "β ~ Normal(μ,σ)"
-msgstr "β ~ Normal(μ,σ)"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Standard deviations:"
-msgstr "ཚད་ལྡན་ཁྱད་འགྱུར།:"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "ψ ~ Gamma(α,β)"
-msgstr "ψ ~ Gamma(α,β)"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "Correlations:"
-msgstr "ལྟོས་འབྲེལ།:"
+msgstr ""
 
-#, fuzzy
 msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
-msgstr "ρ ~ Beta(α,β)"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Models"
-msgstr "དཔེ་དབྱིབས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Model 1"
-msgstr "དཔེ་དབྱིབས་ ༡"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Tests"
-msgstr "ཚོད་ལྟ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Local tests"
-msgstr "Local tests"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Test type"
-msgstr "ཚོད་ལྟའི་རིགས།"
+msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Linear"
 msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Loess"
-msgstr "Loess"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Chi-square"
-msgstr "Chi-square"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Tetrad"
-msgstr "Tetrad"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Tetrad within"
-msgstr "Tetrad within"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Tetrad between"
-msgstr "Tetrad between"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Tetrad epistemic"
-msgstr "Tetrad epistemic"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Bootstrap"
-msgstr "Bootstrap"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Replications"
-msgstr "Replications"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Options"
-msgstr "འདེམས་ཀ"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Parameter labels"
-msgstr "ཞུགས་གྲངས་ཀྱི་ཁ་བྱང་།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Lavaan syntax"
-msgstr "Lavaan syntax"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "R-squared"
-msgstr "R-squared"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "AIC weights"
-msgstr "AIC weights"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "BIC weights"
-msgstr "BIC weights"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Hayes configuration number"
-msgstr "Hayes configuration number"
+msgstr ""
 
-#, fuzzy
+msgctxt "ClassicProcess|"
+msgid "Moderated mediation index"
+msgstr ""
+
 msgctxt "ClassicProcess|"
 msgid "Mean-centered moderation"
-msgstr "ཆ་སྙོམས་ལྟེ་བར་བཞག་པའི་ moderation"
+msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Standardized estimates"
 msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Confidence intervals"
-msgstr "ཡིད་རྟོན་བར་མཚམས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Method"
-msgstr "ཐབས་ལམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Standard"
-msgstr "ཚད་ལྡན།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Robust"
-msgstr "བརྟན་པོ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Type"
-msgstr "རིགས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Percentile"
-msgstr "བརྒྱ་ཆའི་གྲངས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Bias-corrected percentile"
-msgstr "Bias-corrected percentile"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Normal theory"
-msgstr "Normal theory"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Plots"
-msgstr "དཔེ་རིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Color palette"
-msgstr "ཚོན་མདོག་མཐུན་སྦྱོར།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Advanced"
-msgstr "མཐོ་རིམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Set for All Models"
-msgstr "དཔེ་དབྱིབས་ཚང་མར་སྒྲིག་པ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Residual Covariances"
-msgstr "ལྷག་མའི་མཉམ་འགྱུར་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Independent variables"
-msgstr "རང་དབང་ཅན་གྱི་འགྱུར་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Mediators"
-msgstr "Mediators"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Dependent variables"
-msgstr "ལྟོས་བཅས་འགྱུར་ཚད།"
+msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Parameter Estimates"
 msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Paths"
-msgstr "ལམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Intercepts"
-msgstr "Intercepts"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Indirect"
-msgstr "Indirect"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Total"
-msgstr "ཁྱོན་བསྡོམས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Residual covariances"
-msgstr "ལྷག་མའི་མཉམ་འགྱུར་ཚད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Path Plots"
-msgstr "ལམ་གྱི་དཔེ་རིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Conceptual"
-msgstr "Conceptual"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Statistical"
-msgstr "སྡོམ་རྩིས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Adjustment method"
-msgstr "སྙོམ་སྒྲིག་ཐབས་ལམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "None"
-msgstr "མེད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Holm"
-msgstr "Holm"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Hochberg"
-msgstr "Hochberg"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Hommel"
-msgstr "Hommel"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Bonferroni"
-msgstr "Bonferroni"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Hochberg"
-msgstr "Benjamini-Hochberg"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Yekuteli"
-msgstr "Benjamini-Yekuteli"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Missing Value Handling"
-msgstr "ཆད་པའི་རིན་ཐང་ཐག་གཅོད།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Exclude cases listwise"
-msgstr "ཐོ་གཞུང་ལྟར་གནས་ཚུལ་ཕུད་པ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Full Information Maximum Likelihood"
-msgstr "Full Information Maximum Likelihood"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Emulation"
-msgstr "Emulation"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Mplus"
-msgstr "Mplus"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "EQS"
-msgstr "EQS"
+msgstr ""
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
 msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "Auto"
-msgstr "རང་འགུལ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "ML"
-msgstr "ML"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "GLS"
-msgstr "GLS"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "WLS"
-msgstr "WLS"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "ULS"
-msgstr "ULS"
+msgstr ""
 
-#, fuzzy
 msgctxt "ClassicProcess|"
 msgid "DWLS"
-msgstr "DWLS"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Hayes configuration number"
-msgstr "Hayes configuration number"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Independent X"
-msgstr "རང་དབང་ཅན་གྱི་ X"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Mediators M"
-msgstr "Mediators M"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Moderator W"
-msgstr "Moderator W"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputModelNumber|"
 msgid "Moderator Z"
-msgstr "Moderator Z"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputType|"
 msgid "Input type"
-msgstr "ནང་འཇུག་རིགས།"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputType|"
 msgid "Paths"
-msgstr "ལམ།"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputType|"
 msgid "Hayes configuration"
-msgstr "Hayes configuration"
+msgstr ""
 
-#, fuzzy
+msgctxt "InputVariables|"
+msgid "From "
+msgstr ""
+
 msgctxt "InputVariables|"
 msgid "To"
-msgstr "བར།"
+msgstr ""
 
 msgctxt "InputVariables|"
 msgid "Process Type"
@@ -691,183 +573,25 @@ msgctxt "InputVariables|"
 msgid "Process Variable"
 msgstr ""
 
-#, fuzzy
 msgctxt "InputVariables|"
 msgid "Mediator"
-msgstr "Mediator"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputVariables|"
 msgid "Moderator"
-msgstr "Moderator"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputVariables|"
 msgid "Confounder"
-msgstr "Confounder"
+msgstr ""
 
-#, fuzzy
 msgctxt "InputVariables|"
 msgid "Direct"
-msgstr "ཐད་ཀར།"
+msgstr ""
 
-#, fuzzy
 msgctxt "ModerationProbes|"
 msgid "Probe Conditional Continuous Effects"
-msgstr "Probe Conditional Continuous Effects"
-
-#, fuzzy
-msgctxt "ModerationProbes|"
-msgid "th percentile"
-msgstr "th percentile"
-
-msgctxt "ParameterEstimates|"
-msgid "Parameter Estimates"
 msgstr ""
-
-#, fuzzy
-msgctxt "ParameterEstimates|"
-msgid "Paths"
-msgstr "ལམ།"
-
-#, fuzzy
-msgctxt "ParameterEstimates|"
-msgid "Intercepts"
-msgstr "Intercepts"
-
-#, fuzzy
-msgctxt "ParameterEstimates|"
-msgid "Indirect"
-msgstr "Indirect"
-
-#, fuzzy
-msgctxt "ParameterEstimates|"
-msgid "Total"
-msgstr "ཁྱོན་བསྡོམས།"
-
-#, fuzzy
-msgctxt "ParameterEstimates|"
-msgid "Residual covariances"
-msgstr "ལྷག་མའི་མཉམ་འགྱུར་ཚད།"
-
-#, fuzzy
-msgctxt "PathPlotOptions|"
-msgid "Statistical Path Plots"
-msgstr "སྡོམ་རྩིས་ལམ་གྱི་དཔེ་རིས།"
-
-#, fuzzy
-msgctxt "PathPlotOptions|"
-msgid "Covariances"
-msgstr "མཉམ་འགྱུར་ཚད།"
-
-msgctxt "PathPlotOptions|"
-msgid "Residual variances"
-msgstr ""
-
-msgctxt "PathPlotOptions|"
-msgid "Parameter estimates"
-msgstr ""
-
-#, fuzzy
-msgctxt "PathPlotOptions|"
-msgid "Legend"
-msgstr "རྟགས་འགྲེལ།"
-
-msgctxt "PathPlotOptions|"
-msgid "Labels"
-msgstr ""
-
-msgctxt "PathPlotOptions|"
-msgid "Color"
-msgstr ""
-
-#, fuzzy
-msgctxt "PathPlotOptions|"
-msgid "Label length"
-msgstr "ཁ་བྱང་གི་རིང་ཚད།"
-
-#, fuzzy
-msgctxt "PathPlots|"
-msgid "Path Plots"
-msgstr "ལམ་གྱི་དཔེ་རིས།"
-
-#, fuzzy
-msgctxt "PathPlots|"
-msgid "Conceptual"
-msgstr "Conceptual"
-
-#, fuzzy
-msgctxt "PathPlots|"
-msgid "Statistical"
-msgstr "སྡོམ་རྩིས།"
-
-#, fuzzy
-msgctxt "ResidualCovariances|"
-msgid "Residual Covariances"
-msgstr "ལྷག་མའི་མཉམ་འགྱུར་ཚད།"
-
-#, fuzzy
-msgctxt "ResidualCovariances|"
-msgid "Independent variables"
-msgstr "རང་དབང་ཅན་གྱི་འགྱུར་ཚད།"
-
-#, fuzzy
-msgctxt "ResidualCovariances|"
-msgid "Mediators"
-msgstr "Mediators"
-
-#, fuzzy
-msgctxt "ResidualCovariances|"
-msgid "Dependent variables"
-msgstr "ལྟོས་བཅས་འགྱུར་ཚད།"
-
-msgctxt "StandardizedEstimates|"
-msgid "Standardized estimates"
-msgstr ""
-
-#, fuzzy
-msgctxt "StandardizedEstimates|"
-msgid "Unstandardized"
-msgstr "ཚད་ལྡན་མིན་པ།"
-
-#, fuzzy
-msgctxt "StandardizedEstimates|"
-msgid "Mean-centered"
-msgstr "ཆ་སྙོམས་ལྟེ་བར་བཞག་པ།"
-
-#, fuzzy
-msgctxt "StandardizedEstimates|"
-msgid "Standardized"
-msgstr "ཚད་ལྡན་དུ་བཏང་བ།"
-
-#, fuzzy
-msgctxt "VariablesForm|"
-msgid "Dependent Variable"
-msgstr "ལྟོས་བཅས་འགྱུར་ཚད།"
-
-#, fuzzy
-msgctxt "VariablesForm|"
-msgid "Continuous Predictors"
-msgstr "རྒྱུན་མཐུད་སྔོན་དཔག་བྱེད་པ།"
-
-#, fuzzy
-msgctxt "VariablesForm|"
-msgid "Categorical Predictors"
-msgstr "དབྱེ་རིགས་སྔོན་དཔག་བྱེད་པ།"
-
-msgctxt "Description|"
-msgid "Process"
-msgstr ""
-
-#, fuzzy
-msgctxt "InputVariables|"
-msgid "From "
-msgstr "ནས། "
-
-#, fuzzy
-msgctxt "ClassicProcess|"
-msgid "Moderated mediation index"
-msgstr "Moderated mediation index"
 
 msgctxt "ModerationProbes|"
 msgid "Probe method"
@@ -878,9 +602,125 @@ msgid "Percentiles"
 msgstr ""
 
 msgctxt "ModerationProbes|"
+msgid "th percentile"
+msgstr ""
+
+msgctxt "ModerationProbes|"
 msgid "Mean ± SD"
 msgstr ""
 
 msgctxt "ModerationProbes|"
 msgid " SD from the mean"
+msgstr ""
+
+msgctxt "ParameterEstimates|"
+msgid "Parameter Estimates"
+msgstr ""
+
+msgctxt "ParameterEstimates|"
+msgid "Paths"
+msgstr ""
+
+msgctxt "ParameterEstimates|"
+msgid "Intercepts"
+msgstr ""
+
+msgctxt "ParameterEstimates|"
+msgid "Indirect"
+msgstr ""
+
+msgctxt "ParameterEstimates|"
+msgid "Total"
+msgstr ""
+
+msgctxt "ParameterEstimates|"
+msgid "Residual covariances"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Statistical Path Plots"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Covariances"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Residual variances"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Parameter estimates"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Legend"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Labels"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Color"
+msgstr ""
+
+msgctxt "PathPlotOptions|"
+msgid "Label length"
+msgstr ""
+
+msgctxt "PathPlots|"
+msgid "Path Plots"
+msgstr ""
+
+msgctxt "PathPlots|"
+msgid "Conceptual"
+msgstr ""
+
+msgctxt "PathPlots|"
+msgid "Statistical"
+msgstr ""
+
+msgctxt "ResidualCovariances|"
+msgid "Residual Covariances"
+msgstr ""
+
+msgctxt "ResidualCovariances|"
+msgid "Independent variables"
+msgstr ""
+
+msgctxt "ResidualCovariances|"
+msgid "Mediators"
+msgstr ""
+
+msgctxt "ResidualCovariances|"
+msgid "Dependent variables"
+msgstr ""
+
+msgctxt "StandardizedEstimates|"
+msgid "Standardized estimates"
+msgstr ""
+
+msgctxt "StandardizedEstimates|"
+msgid "Unstandardized"
+msgstr ""
+
+msgctxt "StandardizedEstimates|"
+msgid "Mean-centered"
+msgstr ""
+
+msgctxt "StandardizedEstimates|"
+msgid "Standardized"
+msgstr ""
+
+msgctxt "VariablesForm|"
+msgid "Dependent Variable"
+msgstr ""
+
+msgctxt "VariablesForm|"
+msgid "Continuous Predictors"
+msgstr ""
+
+msgctxt "VariablesForm|"
+msgid "Categorical Predictors"
 msgstr ""
