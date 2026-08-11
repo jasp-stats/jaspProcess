@@ -281,15 +281,15 @@ msgstr "Tetrade"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad within"
-msgstr ""
+msgstr "Tetrade innerhalb"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad between"
-msgstr ""
+msgstr "Tetrade zwischen"
 
 msgctxt "ClassicProcess|"
 msgid "Tetrad epistemic"
-msgstr ""
+msgstr "Epistemische Tetrade"
 
 msgctxt "ClassicProcess|"
 msgid "Bootstrap"
@@ -713,7 +713,7 @@ msgstr "Moderierter Mediationsindex"
 
 msgctxt "ModerationProbes|"
 msgid "Probe method"
-msgstr ""
+msgstr "Probenmethode"
 
 msgctxt "ModerationProbes|"
 msgid "Percentiles"
