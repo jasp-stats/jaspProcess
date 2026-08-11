@@ -12,297 +12,297 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 msgid "Process Analysis"
-msgstr ""
+msgstr "Procesanalyse"
 
 msgid "Model summary"
-msgstr ""
+msgstr "Modelsamenvatting"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
-msgstr ""
+msgstr "BIC-gewicht"
 
 msgid "Estimate"
-msgstr ""
+msgstr "Schatting"
 
 msgid "SE"
-msgstr ""
+msgstr "SE"
 
 msgid "LOO Difference"
-msgstr ""
+msgstr "LOO-verschil"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
-msgstr ""
+msgstr "Ratio"
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Posterior"
-msgstr ""
+msgstr "Posteriori"
 
 msgid "%s%% Credible Interval"
-msgstr ""
+msgstr "%s%% geloofwaardigheidsinterval"
 
 msgid "Mean"
-msgstr ""
+msgstr "Gemiddelde"
 
 msgid "Median"
-msgstr ""
+msgstr "Mediaan"
 
 msgid "SD"
-msgstr ""
+msgstr "SD"
 
 msgid "Lower"
-msgstr ""
+msgstr "Onder"
 
 msgid "Upper"
-msgstr ""
+msgstr "Boven"
 
 msgid "R-hat"
-msgstr ""
+msgstr "R-hat"
 
 msgid "ESS (bulk)"
-msgstr ""
+msgstr "ESS (bulk)"
 
 msgid "ESS (tail)"
-msgstr ""
+msgstr "ESS (staart)"
 
 msgid "Warning:"
-msgstr ""
+msgstr "Waarschuwing:"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "Padcoëfficiënten"
 
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 msgid "Prior"
-msgstr ""
+msgstr "A priori"
 
 msgid "Direct and indirect effects"
-msgstr ""
+msgstr "Directe en indirecte effecten"
 
 msgid "Total effects"
-msgstr ""
+msgstr "Totale effecten"
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "Residuele covarianties"
 
 msgid "MCMC Plots"
-msgstr ""
+msgstr "MCMC-diagrammen"
 
 msgid ""
 "Warning: WAIC estimate unreliable -- at least one effective parameter "
 "estimate (p_waic) larger than 0.4. We recommend using LOO instead."
-msgstr ""
+msgstr "Waarschuwing: de WAIC-schatting is onbetrouwbaar -- ten minste één effectieve parameterschatting (p_waic) groter dan 0.4. We raden aan om in plaats daarvan LOO te gebruiken."
 
 msgid ""
 "Warning: LOO estimate unreliable -- at least one observation with shape "
 "parameter (k) of the generalized Pareto distribution higher than 0.5."
-msgstr ""
+msgstr "Waarschuwing: de LOO-schatting is onbetrouwbaar -- ten minste één observatie met een vormparameter (k) van de gegeneraliseerde Pareto-verdeling hoger dan 0.5."
 
 msgid ""
 "WAIC and LOO cannot be calculated if no covariances are estimated for "
 "independent variables with missing data."
-msgstr ""
+msgstr "WAIC en LOO kunnen niet worden berekend als er geen covarianties worden geschat voor onafhankelijke variabelen met ontbrekende gegevens."
 
 msgid "Estimates might be biased -- %i divergent transitions after warmup."
-msgstr ""
+msgstr "Schattingen kunnen vertekend zijn -- %i divergente overgangen na de opwarmingsfase."
 
 msgid ""
 "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- "
 "the posterior distribution was not explored efficiently."
-msgstr ""
+msgstr "De Bayesian Fraction of Missing Information (BFMI) was te laag in %i ketens -- de posteriori-verdeling werd niet efficiënt verkend."
 
 msgid ""
 "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition "
 "exceeded the maximum tree depth."
-msgstr ""
+msgstr "De Hamiltoniaanse Monte Carlo-procedure kan inefficiënt zijn -- %i overgang overschreed de maximale boomdiepte."
 
 msgid ""
 "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample "
 "Size (ESS) is %2$.2f < %3$1.0f."
-msgstr ""
+msgstr "Lage schattingsnauwkeurigheid voor %1$s grootheden -- de kleinste Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
 
 msgid ""
 "Inference possibly unreliable -- MCMC chains might not have converged; the "
 "largest R-hat is %1$.3f > %2$.2f."
-msgstr ""
+msgstr "Inferentie is mogelijk onbetrouwbaar -- MCMC-ketens zijn mogelijk niet geconvergeerd; de grootste R-hat is %1$.3f > %2$.2f."
 
 msgid "Dependent variables must be continuous."
-msgstr ""
+msgstr "Afhankelijke variabelen moeten continu zijn."
 
 msgid "Hayes number"
-msgstr ""
+msgstr "Hayes-getal"
 
 msgid "Model configuration number defined by Hayes (2022)."
-msgstr ""
+msgstr "Modelconfiguratienummer gedefinieerd door Hayes (2022)."
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
-msgstr ""
+msgstr "AIC-gewicht"
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "Log-likelihood"
 
 msgid "df"
-msgstr ""
+msgstr "df"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Std. fout"
 
 msgid "z-value"
-msgstr ""
+msgstr "z-waarde"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% betrouwbaarheidsinterval"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "Std. schatting"
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "bias-gecorrigeerd percentiel"
 
 msgid "percentile"
-msgstr ""
+msgstr "percentiel"
 
 msgid "normal theory"
-msgstr ""
+msgstr "normale theorie"
 
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "Index van gemedieerde moderatie"
 
 msgid "Total"
-msgstr ""
+msgstr "Totaal"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "Totaal indirect"
 
 msgid "Local tests"
-msgstr ""
+msgstr "Lokale toetsen"
 
 msgid "Conditional independence tests"
-msgstr ""
+msgstr "Toetsen van conditionele onafhankelijkheid"
 
 msgid "Model did not converge."
-msgstr ""
+msgstr "Het model is niet geconvergeerd."
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
-msgstr ""
+msgstr "Std. fout"
 
 msgid "R-squared"
-msgstr ""
+msgstr "R-kwadraat"
 
 msgid "Conceptual path plot"
-msgstr ""
+msgstr "Conceptueel padplot"
 
 msgid "Statistical path plot"
-msgstr ""
+msgstr "Statistisch padplot"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Modelsyntax"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
-msgstr ""
+msgstr "Het model moet een gerichte acyclische graaf zijn -- het mag geen lussen bevatten."
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr ""
+msgstr "%1$s: Hayes-configuratie %2$s is niet geïmplementeerd"
 
 msgid "Estimation failed because of an internal error."
-msgstr ""
+msgstr "De schatting is mislukt vanwege een interne fout."
 
 msgid ""
 "Full Information Maximum Likelihood estimation only available with 'ML' or "
 "'Auto' estimators. Please choose a different estimator or option for missing "
 "value handling."
-msgstr ""
+msgstr "Full Information Maximum Likelihood-schatting is alleen beschikbaar met 'ML'- of 'Auto'-schatters. Kies een andere schatter of een andere optie voor het omgaan met ontbrekende waarden."
 
 msgid "<li>Some implied model variances are > 1,000,000</li>"
-msgstr ""
+msgstr "<li>Sommige geïmpliceerde modelvarianties zijn > 1,000,000</li>"
 
 msgid ""
 "<li>Some implied model variances are at least a factor 1000 times larger "
 "than others</li>"
-msgstr ""
+msgstr "<li>Sommige geïmpliceerde modelvarianties zijn minstens een factor 1000 groter dan andere</li>"
 
 msgid ""
 "The information matrix could not be inverted. This may be a symptom that the "
 "model is not identified. Possible reasons: <ul>%s</ul>"
-msgstr ""
+msgstr "De informatiematrix kon niet worden geïnverteerd. Dit kan een symptoom zijn dat het model niet is geïdentificeerd. Mogelijke redenen: <ul>%s</ul>"
 
 msgid ""
 "At least one model is incomplete or no model is specified. Please add at "
 "least one model and complete specified models."
-msgstr ""
+msgstr "Ten minste één model is onvolledig of er is geen model gespecificeerd. Voeg ten minste één model toe en voltooi de gespecificeerde modellen."
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators."
-msgstr ""
+msgstr "De AIC-, BIC- en aanvullende informatiecriteria zijn alleen beschikbaar met schatters van het ML-type."
 
 msgid ""
 "<b>Important</b>: Parameter estimates can only be interpreted as causal "
 "effects if all confounding effects are accounted for and if the causal "
 "effect directions are correctly specified."
-msgstr ""
+msgstr "<b>Belangrijk</b>: Parameterschattingen kunnen alleen als causale effecten worden geïnterpreteerd als rekening wordt gehouden met alle verstorende effecten en als de richtingen van de causale effecten correct zijn gespecificeerd."
 
 msgid "Please check the model specification and lavaan syntax."
-msgstr ""
+msgstr "Controleer de modelspecificatie en de lavaan-syntax."
 
 msgid ""
 "Linear test type cannot be applied to factor variables. Choose a different "
 "test type or remove all factor variables from the model."
-msgstr ""
+msgstr "Het lineaire toetstype kan niet worden toegepast op factorvariabelen. Kies een ander toetstype of verwijder alle factorvariabelen uit het model."
 
 msgid ""
 "The specified model does not imply any (conditional) independencies that can "
 "be tested."
-msgstr ""
+msgstr "Het gespecificeerde model impliceert geen (conditionele) onafhankelijkheden die kunnen worden getoetst."
 
 msgid ""
 "Partially standardized estimate because effect involves categorical "
 "predictor."
-msgstr ""
+msgstr "Gedeeltelijk gestandaardiseerde schatting omdat het effect een categorische voorspeller betreft."
 
 msgid "Moderation effect estimates are based on mean-centered variables."
-msgstr ""
+msgstr "Schattingen van moderatie-effecten zijn gebaseerd op gemiddeld-gecentreerde variabelen."
 
 msgid ""
 "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values "
 "and <em>p</em>-values are based on the delta method."
-msgstr ""
+msgstr "Betrouwbaarheidsintervallen zijn %s gebootstrapt. Standaardfouten, <em>z</em>-waarden en <em>p</em>-waarden zijn gebaseerd op de deltamethode."
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
-msgstr ""
+msgstr "Niet alle bootstrap-steekproeven waren succesvol: het BI is gebaseerd op %.0f steekproeven."
 
 msgid ""
 "Model does not contain moderated indirect effects for<br>which the moderated "
 "medation index can be calculated."
-msgstr ""
+msgstr "Het model bevat geen gemedieerde indirecte effecten<br>waarvoor de index van de gemedieerde moderatie kan worden berekend."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
-msgstr ""
+msgstr "<em>p</em>-waarden aangepast voor meervoudige vergelijkingen met de %s-methode."
