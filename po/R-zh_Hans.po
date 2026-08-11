@@ -20,16 +20,16 @@ msgid "Model summary"
 msgstr "模型摘要"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
 msgstr "BIC权重"
@@ -44,13 +44,13 @@ msgid "LOO Difference"
 msgstr "留一法差值"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
 msgstr "比率"
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Posterior"
 msgstr "后验"
@@ -74,7 +74,7 @@ msgid "Upper"
 msgstr "上界"
 
 msgid "R-hat"
-msgstr ""
+msgstr "R-hat"
 
 msgid "ESS (bulk)"
 msgstr "ESS 有效样本量（ bulk ）"
@@ -142,7 +142,7 @@ msgid "Model configuration number defined by Hayes (2022)."
 msgstr "由Hayes（2022）定义的模型配置编号。"
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
 msgstr "AIC权重"
@@ -160,7 +160,7 @@ msgid "z-value"
 msgstr "z 值"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "%s%% Confidence Interval"
 msgstr "%s%% 置信区间"
@@ -199,7 +199,7 @@ msgid "RMSEA"
 msgstr "近似误差均方根 （RMSEA）"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
 msgstr "标准误"

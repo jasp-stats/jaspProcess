@@ -233,7 +233,7 @@ msgstr "标准差："
 
 msgctxt "BayesianProcess|"
 msgid "ψ ~ Gamma(α,β)"
-msgstr ""
+msgstr "ψ ~ Gamma(α,β)"
 
 msgctxt "BayesianProcess|"
 msgid "Correlations:"
@@ -241,7 +241,7 @@ msgstr "相关系数："
 
 msgctxt "BayesianProcess|"
 msgid "ρ ~ Beta(α,β)"
-msgstr ""
+msgstr "ρ ~ Beta(α,β)"
 
 msgctxt "ClassicProcess|"
 msgid "Models"
@@ -445,27 +445,27 @@ msgstr "无"
 
 msgctxt "ClassicProcess|"
 msgid "Holm"
-msgstr ""
+msgstr "Holm"
 
 msgctxt "ClassicProcess|"
 msgid "Hochberg"
-msgstr ""
+msgstr "Hochberg"
 
 msgctxt "ClassicProcess|"
 msgid "Hommel"
-msgstr ""
+msgstr "Hommel"
 
 msgctxt "ClassicProcess|"
 msgid "Bonferroni"
-msgstr ""
+msgstr "Bonferroni"
 
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Hochberg"
-msgstr ""
+msgstr "Benjamini-Hochberg"
 
 msgctxt "ClassicProcess|"
 msgid "Benjamini-Yekuteli"
-msgstr ""
+msgstr "Benjamini-Yekuteli"
 
 msgctxt "ClassicProcess|"
 msgid "Missing Value Handling"
@@ -485,11 +485,11 @@ msgstr "仿真"
 
 msgctxt "ClassicProcess|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus"
 
 msgctxt "ClassicProcess|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS"
 
 msgctxt "ClassicProcess|"
 msgid "Estimator"
