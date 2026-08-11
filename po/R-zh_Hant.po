@@ -20,16 +20,16 @@ msgid "Model summary"
 msgstr "模型摘要"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
 msgstr "BIC 權重"
@@ -41,16 +41,16 @@ msgid "SE"
 msgstr "標準誤"
 
 msgid "LOO Difference"
-msgstr ""
+msgstr "LOO 差異"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
 msgstr "比率"
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Posterior"
 msgstr "後驗"
@@ -74,13 +74,13 @@ msgid "Upper"
 msgstr "上界"
 
 msgid "R-hat"
-msgstr ""
+msgstr "R-hat"
 
 msgid "ESS (bulk)"
-msgstr ""
+msgstr "ESS（主體）"
 
 msgid "ESS (tail)"
-msgstr ""
+msgstr "ESS（尾部）"
 
 msgid "Warning:"
 msgstr "警告："
@@ -212,7 +212,7 @@ msgid "Model did not converge."
 msgstr "模型未收斂。"
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "&#967;&sup2;"
 msgstr "&#967;&sup2;"
