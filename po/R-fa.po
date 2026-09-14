@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.96.4\n"
 "POT-Creation-Date: 2026-04-25 04:35\n"
-"PO-Revision-Date: 2026-09-14 02:25+0000\n"
+"PO-Revision-Date: 2026-09-15 03:56+0000\n"
 "Last-Translator: Sohrab Delshad <sdel4030@gmail.com>\n"
 "Language-Team: Persian <https://hosted.weblate.org/projects/jasp/jaspprocess-"
 "r/fa/>\n"
@@ -38,7 +38,7 @@ msgid "Estimate"
 msgstr "برآورد"
 
 msgid "SE"
-msgstr "خطای استاندارد (SE)"
+msgstr "خطای معیار"
 
 msgid "LOO Difference"
 msgstr ""
@@ -50,19 +50,19 @@ msgid "Ratio"
 msgstr ""
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Posterior"
-msgstr ""
+msgstr "پسین"
 
 msgid "%s%% Credible Interval"
-msgstr "فاصله باور %s%%"
+msgstr "بازه باورپذیر %s%%"
 
 msgid "Mean"
 msgstr "میانگین"
 
 msgid "Median"
-msgstr ""
+msgstr "میانه"
 
 msgid "SD"
 msgstr "انحراف معیار"
@@ -93,7 +93,7 @@ msgid "Label"
 msgstr ""
 
 msgid "Prior"
-msgstr ""
+msgstr "پیشین"
 
 msgid "Direct and indirect effects"
 msgstr ""
@@ -180,7 +180,7 @@ msgid "Moderated mediation index"
 msgstr ""
 
 msgid "Total"
-msgstr ""
+msgstr "کل"
 
 msgid "Total indirect"
 msgstr ""
