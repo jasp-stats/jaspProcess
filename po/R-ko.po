@@ -1,17 +1,15 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: jaspProcess 0.96.4\n"
-"POT-Creation-Date: 2026-04-25 04:35\n"
-"PO-Revision-Date: 2026-09-15 03:56+0000\n"
-"Last-Translator: Sohrab Delshad <sdel4030@gmail.com>\n"
-"Language-Team: Persian <https://hosted.weblate.org/projects/jasp/jaspprocess-"
-"r/fa/>\n"
-"Language: fa\n"
+"Project-Id-Version: jaspProcess 0.97.1\n"
+"POT-Creation-Date: 2026-07-04 04:55\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.10.dev0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "Process Analysis"
 msgstr ""
@@ -35,10 +33,10 @@ msgid "BIC weight"
 msgstr ""
 
 msgid "Estimate"
-msgstr "برآورد"
+msgstr ""
 
 msgid "SE"
-msgstr "خطای معیار"
+msgstr ""
 
 msgid "LOO Difference"
 msgstr ""
@@ -50,32 +48,31 @@ msgid "Ratio"
 msgstr ""
 
 msgid "n"
-msgstr "n"
+msgstr ""
 
 msgid "Posterior"
-msgstr "پسین"
+msgstr ""
 
 msgid "%s%% Credible Interval"
-msgstr "بازه باورپذیر %s%%"
+msgstr ""
 
 msgid "Mean"
-msgstr "میانگین"
+msgstr ""
 
 msgid "Median"
-msgstr "میانه"
+msgstr ""
 
 msgid "SD"
-msgstr "انحراف معیار"
+msgstr ""
 
 msgid "Lower"
-msgstr "پایین"
+msgstr ""
 
 msgid "Upper"
-msgstr "بالا"
+msgstr ""
 
-#, fuzzy
 msgid "R-hat"
-msgstr "R-hat"
+msgstr ""
 
 msgid "ESS (bulk)"
 msgstr ""
@@ -87,13 +84,13 @@ msgid "Warning:"
 msgstr ""
 
 msgid "Path coefficients"
-msgstr "ضرایب مسیر"
+msgstr ""
 
 msgid "Label"
 msgstr ""
 
 msgid "Prior"
-msgstr "پیشین"
+msgstr ""
 
 msgid "Direct and indirect effects"
 msgstr ""
@@ -147,10 +144,10 @@ msgid "AIC weight"
 msgstr ""
 
 msgid "Log-likelihood"
-msgstr "لگاریتم درستنمایی"
+msgstr ""
 
 msgid "df"
-msgstr "درجه آزادی"
+msgstr ""
 
 msgid "Std. Error"
 msgstr ""
@@ -159,7 +156,7 @@ msgid "z-value"
 msgstr ""
 
 msgid "p"
-msgstr "p"
+msgstr ""
 
 msgid "%s%% Confidence Interval"
 msgstr ""
@@ -180,7 +177,7 @@ msgid "Moderated mediation index"
 msgstr ""
 
 msgid "Total"
-msgstr "کل"
+msgstr ""
 
 msgid "Total indirect"
 msgstr ""
