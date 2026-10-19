@@ -127,10 +127,10 @@ msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transiti
 msgstr "哈密顿蒙特卡洛过程可能效率较低 — %i 次转移超过了最大树深。"
 
 msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
-msgstr "%1s量的估计精度较低——最小有效样本量（ESS）为.2f < %3$1.0f。"
+msgstr "%1$s量的估计精度较低——最小有效样本量（ESS）为 %2$.2f < %3$1.0f。"
 
 msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
-msgstr "推断可能不可靠 — MCMC链可能未收敛；最大的R-hat为 %1.3f>.3f>.2f。"
+msgstr "推断可能不可靠 — MCMC链可能未收敛；最大的R-hat为 %1$.3f > %2$.2f。"
 
 msgid "Dependent variables must be continuous."
 msgstr "因变量必须为连续变量。"
@@ -220,7 +220,7 @@ msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr "模型必须为有向无环图—不得包含回路。"
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr "%1s：未实现Hayes配置编号%2$s"
+msgstr "%1$s：未实现Hayes配置编号%2$s"
 
 msgid "Estimation failed because of an internal error."
 msgstr "估计因内部错误而失败。"
