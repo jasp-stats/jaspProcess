@@ -70,6 +70,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     localTestContainer <- .procContainerLocalTests(jaspResults, options)
     # Create tables with local test results
     .procLocalTestTables(localTestContainer, dataset, options, modelsContainer)
+    # Create residual plots for each dependent variable of each model if requested
+    .procResidualPlots(jaspResults, options, modelsContainer)
     # Create html output with lavaan syntax for each model
     .procPlotSyntax(jaspResults, options, modelsContainer)
   }
@@ -2754,6 +2756,145 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (container$getError()) return()
 
   procPathPlot$plotObject <- .procLavToGraph(modelContainer, type = "statistical", estimates = options[["statisticalPathPlotsParameterEstimates"]], options)
+}
+
+# Residual plots ----
+.procContainerResidualPlots <- function(jaspResults, options) {
+  if (!is.null(jaspResults[["residualPlotContainer"]]))
+    return(jaspResults[["residualPlotContainer"]])
+
+  residualPlotContainer <- createJaspContainer(gettext("Residual plots"))
+  residualPlotContainer$dependOn(.procGetDependencies())
+
+  jaspResults[["residualPlotContainer"]] <- residualPlotContainer
+
+  return(residualPlotContainer)
+}
+
+.procResidualPlots <- function(jaspResults, options, modelsContainer) {
+  showPlots <- sapply(options[["processModels"]], function(mod) mod[["residualVsFittedPlot"]] || mod[["residualQqPlot"]])
+
+  if (!any(showPlots)) return()
+
+  container <- .procContainerResidualPlots(jaspResults, options)
+
+  for (i in which(showPlots)) {
+    modelName <- options[["processModels"]][[i]][["name"]]
+
+    # Models that cannot be fitted yet (e.g., incomplete Hayes configurations) have no residuals
+    if (!.procCheckFitModel(modelsContainer[[modelName]][["graph"]]$object)) next
+
+    if (is.null(container[[modelName]])) {
+      modelContainer <- createJaspContainer(title = modelName)
+      modelContainer$dependOn(
+        nestedOptions = .procGetSingleModelsDependencies(as.character(i))
+      )
+      container[[modelName]] <- modelContainer
+    } else {
+      modelContainer <- container[[modelName]]
+    }
+
+    fittedModel <- modelsContainer[[modelName]][["fittedModel"]]$object
+    .procSetContainerError(modelContainer, fittedModel)
+
+    if (modelContainer$getError()) next
+
+    residuals <- try(.procResiduals(fittedModel))
+
+    if (jaspBase::isTryError(residuals)) {
+      modelContainer$setError(jaspBase::.extractErrorMessage(residuals))
+      next
+    }
+
+    for (j in seq_along(residuals)) {
+      .procResidualPlotsSingleVariable(modelContainer, options, residuals[[j]], names(residuals)[j], j, i)
+    }
+  }
+}
+
+.procResiduals <- function(fittedModel) {
+  # Residuals of the regression equation of each dependent variable (outcome and mediators):
+  # observed values minus the values predicted by the path coefficients
+  parTbl <- lavaan::parameterTable(fittedModel)
+  data   <- lavaan::lavInspect(fittedModel, "data")
+  regs   <- parTbl[parTbl$op == "~", ]
+
+  residuals <- lapply(unique(regs$lhs), function(dep) {
+    reg       <- regs[regs$lhs == dep, ]
+    preds     <- data[, reg$rhs, drop = FALSE]
+    intercept <- parTbl$est[parTbl$lhs == dep & parTbl$op == "~1"]
+
+    # Without a mean structure the intercepts are implied by the sample means
+    if (length(intercept) == 0)
+      intercept <- mean(data[, dep], na.rm = TRUE) - sum(reg$est * colMeans(preds, na.rm = TRUE))
+
+    predicted <- drop(intercept + preds %*% reg$est)
+    residual  <- data[, dep] - predicted
+    resVar    <- parTbl$est[parTbl$lhs == dep & parTbl$op == "~~" & parTbl$rhs == dep]
+    complete  <- !is.na(residual)
+
+    return(data.frame(
+      predicted    = predicted[complete],
+      residual     = residual[complete],
+      standardized = residual[complete] / sqrt(resVar)
+    ))
+  })
+  names(residuals) <- unique(regs$lhs)
+
+  return(residuals)
+}
+
+.procResidualPlotsSingleVariable <- function(container, options, residuals, varName, varIdx, modelIdx) {
+  varKey <- paste0("variable", varIdx)
+
+  if (is.null(container[[varKey]])) {
+    varContainer <- createJaspContainer(title = decodeColNames(varName))
+    varContainer$position <- varIdx
+    container[[varKey]] <- varContainer
+  } else {
+    varContainer <- container[[varKey]]
+  }
+
+  modelOptions <- options[["processModels"]][[modelIdx]]
+
+  if (modelOptions[["residualVsFittedPlot"]] && is.null(varContainer[["residualVsFittedPlot"]])) {
+    residualPlot <- createJaspPlot(title = gettext("Residuals vs. Predicted"), width = 530, height = 400)
+    residualPlot$dependOn(nestedOptions = list(c("processModels", as.character(modelIdx), "residualVsFittedPlot")))
+    residualPlot$position <- 1
+    varContainer[["residualVsFittedPlot"]] <- residualPlot
+
+    residualPlot$plotObject <- .procResidualVsFittedPlot(residuals)
+  }
+
+  if (modelOptions[["residualQqPlot"]] && is.null(varContainer[["residualQqPlot"]])) {
+    qqPlot <- createJaspPlot(title = gettext("Q-Q Plot Standardized Residuals"), width = 400, height = 400)
+    qqPlot$dependOn(nestedOptions = list(c("processModels", as.character(modelIdx), "residualQqPlot")))
+    qqPlot$position <- 2
+    varContainer[["residualQqPlot"]] <- qqPlot
+
+    qqPlot$plotObject <- jaspGraphs::plotQQnorm(
+      residuals[["standardized"]],
+      yName         = gettext("Standardized residuals"),
+      ablineColor   = "darkred",
+      ablineOrigin  = TRUE,
+      identicalAxes = TRUE
+    )
+  }
+}
+
+.procResidualVsFittedPlot <- function(residuals) {
+  xBreaks <- jaspGraphs::getPrettyAxisBreaks(residuals[["predicted"]])
+  yBreaks <- jaspGraphs::getPrettyAxisBreaks(c(residuals[["residual"]], 0))
+
+  plotObj <- ggplot2::ggplot(residuals, ggplot2::aes(x = predicted, y = residual)) +
+    ggplot2::geom_hline(yintercept = 0, colour = "darkred") +
+    jaspGraphs::geom_point() +
+    ggplot2::scale_x_continuous(name = gettext("Predicted Values"), breaks = xBreaks, limits = range(xBreaks)) +
+    ggplot2::scale_y_continuous(name = gettext("Residuals"), breaks = yBreaks, limits = range(yBreaks)) +
+    jaspGraphs::geom_rangeframe() +
+    jaspGraphs::themeJaspRaw()
+
+  return(plotObj)
 }
 
 .procMainGraphLayoutPosHelper <- function(nodes) {

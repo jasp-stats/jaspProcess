@@ -64,6 +64,8 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     .procBayesParameterEstimateTables(parEstContainer, options, modelsContainer)
 
     .procBayesMcmcPlots(jaspResults, options, modelsContainer)
+    # Create residual plots for each dependent variable of each model if requested
+    .procResidualPlots(jaspResults, options, modelsContainer)
 
     # Create html output with lavaan syntax for each model
     .procPlotSyntax(jaspResults, options, modelsContainer)

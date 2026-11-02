@@ -88,6 +88,12 @@ Form
 							conceptualPathPlotsChecked:		conceptualPathPlotsForAllModels.checked
 							statisticalPathPlotsChecked:	statisticalPathPlotsForAllModels.checked
 						}
+
+						Common.ResidualPlots
+						{
+							residualVsFittedPlotChecked:	residualVsFittedPlotForAllModels.checked
+							residualQqPlotChecked:			residualQqPlotForAllModels.checked
+						}
 					}
                 }
             }
@@ -339,6 +345,23 @@ Form
                     id:			statisticalPathPlotsForAllModels
                     name: 		"statisticalPathPlotsForAllModels"
                     label: 		qsTr("Statistical")
+                }
+            }
+
+            Group
+            {
+                title: qsTr("Residual Plots")
+                CheckBox
+                {
+                    id:			residualVsFittedPlotForAllModels
+                    name: 		"residualVsFittedPlotForAllModels"
+                    label: 		qsTr("Residuals vs. predicted")
+                }
+                CheckBox
+                {
+                    id:			residualQqPlotForAllModels
+                    name: 		"residualQqPlotForAllModels"
+                    label: 		qsTr("Q-Q plot standardized residuals")
                 }
             }
 		}

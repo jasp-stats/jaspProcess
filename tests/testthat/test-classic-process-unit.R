@@ -835,3 +835,25 @@ test_that("Test that .procSafeFactorLevels only relabels declared factor columns
   expect_equal(levels(result[["X"]]), c("a.b", "c.d"))
   expect_identical(result[["Z"]], c("e f", "g h"))
 })
+
+test_that("Test that .procResiduals works", {
+  set.seed(1)
+  dat <- data.frame(x = rnorm(100), w = rnorm(100))
+  dat$m <- 0.5 * dat$x + rnorm(100)
+  dat$y <- 0.3 * dat$x + 0.4 * dat$m + 0.2 * dat$w + 0.3 * dat$x * dat$w + rnorm(100)
+  lmM <- lm(m ~ x, dat)
+  lmY <- lm(y ~ x + m + w + x:w, dat)
+
+  # With and without a mean structure (intercepts), and with an interaction term
+  for (meanstructure in c(TRUE, FALSE)) {
+    fit <- lavaan::sem("m ~ x\ny ~ x + m + w + x:w", data = dat, fixed.x = TRUE, meanstructure = meanstructure)
+    res <- jaspProcess:::.procResiduals(fit)
+
+    expect_named(res, c("m", "y"))
+    expect_equal(res[["m"]][["predicted"]], unname(fitted(lmM)))
+    expect_equal(res[["y"]][["predicted"]], unname(fitted(lmY)))
+    expect_equal(res[["y"]][["residual"]], unname(residuals(lmY)))
+    # Standardized by the ML estimate of the residual variance
+    expect_equal(res[["y"]][["standardized"]], unname(residuals(lmY)) / sqrt(mean(residuals(lmY)^2)))
+  }
+})

@@ -64,6 +64,9 @@ This section allows users to specify multiple process models through one of two 
 - Path plots: Displays path plots in the output.
 	- Conceptual: Shows a conceptual path plot. These plots contain no parameter labels or estimates and simplify moderation effects in the model structure by omitting direct effects and interactions. Instead moderators point to the path they are moderating. These plots can be shown even when the model is not complete yet (when `Input type` is `Model number`) and are easier to understand than the statistical path plots.
 	- Statistical: Shows a statistical path plot including parameter labels or estimates for all paths.
+- Residual plots: Displays residual plots for each dependent variable in the model (the outcome and each mediator), to check the assumptions of its regression equation. The predicted values are based on the posterior means of the parameters.
+	- Residuals vs. predicted: Scatterplot of the residuals against the predicted values. If the variance of the residuals is constant (homoscedasticity), the residuals scatter evenly around zero across the predicted values.
+	- Q-Q plot standardized residuals: Q-Q plot of the residuals divided by their estimated standard deviation. If the residuals are normally distributed, the points lie close to the diagonal.
 
 #### Options
 

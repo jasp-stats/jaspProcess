@@ -36,7 +36,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -151,7 +151,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -270,7 +270,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "directs", processVariable = "")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -371,7 +371,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "directs", processVariable = "")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -474,7 +474,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "confounders", processVariable = "contcor1"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -613,7 +613,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "confounders", processVariable = "facExperim"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "facGender")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -755,7 +755,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -884,7 +884,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "facGender")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1013,7 +1013,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "debCollin1", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1143,7 +1143,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "debCollin1", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "facGender")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1275,7 +1275,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "confounders", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1414,7 +1414,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "confounders", processVariable = "facGender")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1553,7 +1553,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor1"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1710,7 +1710,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "facExperim"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "confounders", processVariable = "facGender")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1861,7 +1861,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "contcor1", 
             processType = "moderators", processVariable = "debCollin1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2001,7 +2001,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "facExperim", 
             processType = "moderators", processVariable = "debCollin1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2145,7 +2145,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2291,7 +2291,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)

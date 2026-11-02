@@ -46,7 +46,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -176,7 +176,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -305,7 +305,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor1"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -496,7 +496,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "facExperim"), 
         list(processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -676,7 +676,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor1"), 
         list(processDependent = "contNormal", processIndependent = "contcor1", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -909,7 +909,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "facExperim"), 
         list(processDependent = "contNormal", processIndependent = "facExperim", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -1133,7 +1133,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -1264,7 +1264,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "debCollin1"), 
         list(processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -1401,7 +1401,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor2"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -1672,7 +1672,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor2"), 
         list(processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -1913,7 +1913,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor2"), 
         list(processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -2203,7 +2203,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor2"), 
         list(processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -2466,7 +2466,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "contcor2"), 
         list(processDependent = "contNormal", processIndependent = "debMiss1", 
             processType = "mediators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -2646,7 +2646,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "contcor2"), 
         list(processDependent = "contNormal", processIndependent = "debMiss1", 
             processType = "mediators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -2833,7 +2833,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "contcor1"), 
         list(processDependent = "contNormal", processIndependent = "contcor2", 
             processType = "moderators", processVariable = "contcor1")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
@@ -3083,7 +3083,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "facExperim"), 
         list(processDependent = "contNormal", processIndependent = "contcor2", 
             processType = "moderators", processVariable = "facExperim")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE))
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
 results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
 
