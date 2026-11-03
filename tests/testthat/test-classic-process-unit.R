@@ -869,3 +869,9 @@ test_that("Test that .procGetAllModelsDependencies works", {
   expect_false(any(vapply(deps, function(dep) dep[3] %in% outputOptions, logical(1))))
   expect_length(jaspProcess:::.procGetAllModelsDependencies(list(processModels = list())), 0)
 })
+
+test_that("Test that .procGetDependencies includes the bootstrap options", {
+  # The fitted models depend on these, so changing one must refit (e.g., more bootstrap replications)
+  deps <- jaspProcess:::.procGetDependencies()
+  expect_true(all(c("errorCalculationMethod", "bootstrapSamples", "bootstrapCiType", "seed", "setSeed") %in% deps))
+})

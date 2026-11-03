@@ -83,8 +83,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procGetDependencies <- function() {
   return(c(
     "dependent", "covariates", "factors", "naAction", "emulation", "estimator",
-    "meanCenteredModeration", "standardizedModelEstimates", "errorCalculationMethod", "bootstrapCiType",
-    "mcmcBurnin", "mcmcSamples", "mcmcChains", "seed", "setSeed", "nuPriorMu",
+    "meanCenteredModeration", "standardizedModelEstimates", "errorCalculationMethod", "bootstrapSamples",
+    "bootstrapCiType", "mcmcBurnin", "mcmcSamples", "mcmcChains", "seed", "setSeed", "nuPriorMu",
     "nuPriorSigma", "betaPriorMu", "betaPriorSigma", "psiPriorAlpha",
     "psiPriorBeta", "rhoPriorAlpha", "rhoPriorBeta", "moderationProbes",
     "moderationProbeType", "moderationProbesMeanSD"
