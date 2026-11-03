@@ -1622,3 +1622,25 @@ test_that("Residual plots work", {
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "residuals-qq-plot-contNormal")
 })
+
+test_that("Residual Q-Q plot with confidence band works", {
+  options <- getOptionsClassical()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "contcor1")
+  options$factors <- list()
+  processModel <- getProcessModel(list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "mediators", processVariable = "contcor1")))
+  processModel$residualQqPlot <- TRUE
+  processModel$qqPlotCi <- TRUE
+  processModel$qqPlotCiLevel <- 0.9
+  options$processModels <- list(processModel)
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  modelPlots <- results[["results"]][["residualPlotContainer"]][["collection"]][["residualPlotContainer_Model 1"]][["collection"]]
+  outcomePlots <- modelPlots[[which(sapply(modelPlots, `[[`, "title") == "contNormal")]][["collection"]]
+  plotName <- outcomePlots[[grep("residualQqPlot$", names(outcomePlots))]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+  jaspTools::expect_equal_plots(testPlot, "residuals-qq-plot-ci-contNormal")
+})

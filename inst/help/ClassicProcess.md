@@ -70,6 +70,7 @@ This section allows users to specify multiple process models through one of two 
 - Residual plots: Displays residual plots for each dependent variable in the model (the outcome and each mediator), to check the assumptions of its regression equation.
 	- Residuals vs. predicted: Scatterplot of the residuals against the predicted values. If the variance of the residuals is constant (homoscedasticity), the residuals scatter evenly around zero across the predicted values.
 	- Q-Q plot standardized residuals: Q-Q plot of the residuals divided by their estimated standard deviation. If the residuals are normally distributed, the points lie close to the diagonal.
+		- Confidence interval: Adds a confidence band around the diagonal. The band shows the expected range of the standardized residuals under normality; points outside the band suggest deviations from normality.
 - Tests:
 	- Local tests: Test the local implications of the specified causal model. Conducts (conditional) independence tests for each implication of the model. Significant independence tests indicate that the model does not correctly account for the local implication (*local misfit*) and is misspecified.
 	- Test type: Type of the local test. For tetrads test types, see Kenny (1979).

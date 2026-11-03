@@ -28,6 +28,8 @@ getOptionsOneModel <- function() {
       "statisticalPathPlot" = TRUE,
       "residualVsFittedPlot" = FALSE,
       "residualQqPlot" = FALSE,
+      "qqPlotCi" = FALSE,
+      "qqPlotCiLevel" = 0.95,
       "totalEffects" = TRUE,
       "localTests" = FALSE,
       "localTestType" = "cis",
@@ -195,6 +197,8 @@ getOptionsOneModelBadVarNames <- function(k, parms) {
       "statisticalPathPlot" = TRUE,
       "residualVsFittedPlot" = FALSE,
       "residualQqPlot" = FALSE,
+      "qqPlotCi" = FALSE,
+      "qqPlotCiLevel" = 0.95,
       "totalEffects" = TRUE,
       "localTests" = FALSE,
       "localTestType" = "cis",
@@ -272,6 +276,8 @@ getOptionsOneModelBayes <- function() {
       "statisticalPathPlot" = TRUE,
       "residualVsFittedPlot" = FALSE,
       "residualQqPlot" = FALSE,
+      "qqPlotCi" = FALSE,
+      "qqPlotCiLevel" = 0.95,
       "totalEffects" = TRUE
     )
   )

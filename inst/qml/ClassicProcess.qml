@@ -145,6 +145,8 @@ Form
 					{
 						residualVsFittedPlotChecked:	residualVsFittedPlotForAllModels.checked
 						residualQqPlotChecked:			residualQqPlotForAllModels.checked
+						qqPlotCiChecked:				qqPlotCiForAllModels.checked
+						qqPlotCiLevelValue:				qqPlotCiLevelForAllModels.value
 					}
 				}
 			}
@@ -346,6 +348,15 @@ Form
 					id:			residualQqPlotForAllModels
 					name: 		"residualQqPlotForAllModels"
 					label: 		qsTr("Q-Q plot standardized residuals")
+
+					CheckBox
+					{
+						id:					qqPlotCiForAllModels
+						name: 				"qqPlotCiForAllModels"
+						label: 				qsTr("Confidence interval")
+						childrenOnSameRow:	true
+						CIField { id: qqPlotCiLevelForAllModels; name: "qqPlotCiLevelForAllModels" }
+					}
 				}
 			}
 

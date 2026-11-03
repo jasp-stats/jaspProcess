@@ -17,7 +17,7 @@
 # jaspProcess (development version)
 
 ## Added
-* Residual plots for each model (`Residuals vs. predicted` and `Q-Q plot standardized residuals`), shown for every dependent variable (the outcome and each mediator), to check the homoscedasticity and normality assumptions of the regression equations. Available in the classical and Bayesian analysis, per model or for all models at once.
+* Residual plots for each model (`Residuals vs. predicted` and `Q-Q plot standardized residuals`), shown for every dependent variable (the outcome and each mediator), to check the homoscedasticity and normality assumptions of the regression equations. Available in the classical and Bayesian analysis, per model or for all models at once. In the classical analysis, the Q-Q plot can show a confidence band, as in the other JASP analyses.
 
 ## Fixed
 * Process models with a categorical predictor no longer error when a factor level label contains a space or other special character (e.g. "emotion regulation"). Such labels are now coerced to syntactically valid names before being used in mean-centering and lavaan model syntax ([Issue #3597](https://github.com/jasp-stats/jasp-issues/issues/3597)).

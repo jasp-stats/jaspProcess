@@ -93,6 +93,7 @@ Form
 						{
 							residualVsFittedPlotChecked:	residualVsFittedPlotForAllModels.checked
 							residualQqPlotChecked:			residualQqPlotForAllModels.checked
+							qqPlotCiVisible:				false
 						}
 					}
                 }

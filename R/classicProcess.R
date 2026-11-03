@@ -2868,16 +2868,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (modelOptions[["residualQqPlot"]] && is.null(varContainer[["residualQqPlot"]])) {
     qqPlot <- createJaspPlot(title = gettext("Q-Q Plot Standardized Residuals"), width = 400, height = 400)
-    qqPlot$dependOn(nestedOptions = list(c("processModels", as.character(modelIdx), "residualQqPlot")))
+    qqPlot$dependOn(nestedOptions = list(
+      c("processModels", as.character(modelIdx), "residualQqPlot"),
+      c("processModels", as.character(modelIdx), "qqPlotCi"),
+      c("processModels", as.character(modelIdx), "qqPlotCiLevel")
+    ))
     qqPlot$position <- 2
     varContainer[["residualQqPlot"]] <- qqPlot
+
+    ciLevel <- if (modelOptions[["qqPlotCi"]]) modelOptions[["qqPlotCiLevel"]] else NULL
 
     qqPlot$plotObject <- jaspGraphs::plotQQnorm(
       residuals[["standardized"]],
       yName         = gettext("Standardized residuals"),
       ablineColor   = "darkred",
       ablineOrigin  = TRUE,
-      identicalAxes = TRUE
+      identicalAxes = TRUE,
+      ciLevel       = ciLevel
     )
   }
 }

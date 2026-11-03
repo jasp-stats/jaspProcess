@@ -23,6 +23,9 @@ Group
 {
 	property bool residualVsFittedPlotChecked: 	false
 	property bool residualQqPlotChecked: 		false
+	property bool qqPlotCiChecked: 				false
+	property real qqPlotCiLevelValue: 			95
+	property bool qqPlotCiVisible: 				true
 
 	title: qsTr("Residual Plots")
 	columns: 	1
@@ -39,5 +42,15 @@ Group
 		label: qsTr("Q-Q plot standardized residuals")
 		checked: residualQqPlotChecked
 		info: qsTr("For each dependent variable (the outcome and each mediator), a Q-Q plot of the standardized residuals. If the residuals are normally distributed, the points lie close to the diagonal.")
+		CheckBox
+		{
+			name:               "qqPlotCi"
+			label:              qsTr("Confidence interval")
+			childrenOnSameRow:  true
+			checked:            qqPlotCiChecked
+			visible:            qqPlotCiVisible
+			info:               qsTr("Adds a confidence band around the diagonal. The band shows the expected range of the standardized residuals under normality; points outside the band suggest deviations from normality.")
+			CIField { name: "qqPlotCiLevel"; defaultValue: qqPlotCiLevelValue }
+		}
 	}
 }
