@@ -46,7 +46,7 @@ Group
 		{
 			name:               "qqPlotCi"
 			label:              bayesian ? qsTr("Credible interval") : qsTr("Confidence interval")
-			childrenOnSameRow:  true
+			childrenOnSameRow:  !bayesian // the Bayesian form has no room for the level next to the label
 			checked:            qqPlotCiChecked
 			info:               bayesian ? qsTr("Adds the central credible interval of each standardized residual as an error bar.") : qsTr("Adds a confidence band around the diagonal. The band shows the expected range of the standardized residuals under normality; points outside the band suggest deviations from normality.")
 			CIField { name: "qqPlotCiLevel"; defaultValue: qqPlotCiLevelValue }

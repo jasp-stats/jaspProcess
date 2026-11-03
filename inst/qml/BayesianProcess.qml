@@ -371,7 +371,6 @@ Form
                         id:					qqPlotCiForAllModels
                         name: 				"qqPlotCiForAllModels"
                         label: 				qsTr("Credible interval")
-                        childrenOnSameRow:	true
                         CIField { id: qqPlotCiLevelForAllModels; name: "qqPlotCiLevelForAllModels" }
                     }
                 }
