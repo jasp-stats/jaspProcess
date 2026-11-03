@@ -18,6 +18,7 @@
 
 ## Added
 * Residual plots for each model (`Residuals vs. predicted` and `Q-Q plot standardized residuals`), shown for every dependent variable (the outcome and each mediator), to check the homoscedasticity and normality assumptions of the regression equations. Available in the classical and Bayesian analysis, per model or for all models at once. As in the other JASP analyses, the Q-Q plot can show a confidence band (classical) or the credible interval of each residual (Bayesian).
+* `Set seed` option (Options > Repeatability) in the classical analysis, so bootstrapped standard errors and confidence intervals, and bootstrapped local tests, can be reproduced.
 
 ## Fixed
 * Requesting output for a single model (e.g., a plot or a parameter estimates table) no longer recomputes the model summary and R² tables. In the Bayesian analysis, this avoids recomputing WAIC and LOO for every model.

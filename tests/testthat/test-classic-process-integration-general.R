@@ -997,6 +997,43 @@ test_that("Bootstrapping works (percentile interval)", {
 			 0.250253598445243))
 })
 
+test_that("Set seed makes bootstrapped estimates and local tests reproducible", {
+  options <- getOptionsClassical()
+  options$errorCalculationMethod <- "bootstrap"
+  options$bootstrapSamples <- 50
+  options$standardizedModelEstimates <- FALSE
+  options$meanCenteredModeration <- FALSE
+  options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
+                                                                      processIndependent = "contGamma", processType = "mediators",
+                                                                      processVariable = "debCollin1"), list(processDependent = "contNormal",
+                                                                                                            processIndependent = "contGamma", processType = "moderators",
+                                                                                                            processVariable = "contcor1"))))
+  options$processModels[[1]]$localTests <- TRUE
+  options$processModels[[1]]$localTestBootstrap <- TRUE
+  options$processModels[[1]]$localTestBootstrapSamples <- 50
+
+  # Run with a different global RNG state each time; only the analysis seed can make the results agree
+  getBootstrapTables <- function(globalSeed) {
+    set.seed(globalSeed)
+    results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+    list(
+      pathCoefficients = results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]],
+      localTests       = results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["data"]]
+    )
+  }
+
+  # Without the seed option both tables follow the global RNG state (so the check below is not vacuous)
+  options$setSeed <- FALSE
+  unseeded1 <- getBootstrapTables(1)
+  unseeded2 <- getBootstrapTables(2)
+  expect_false(identical(unseeded1$pathCoefficients, unseeded2$pathCoefficients))
+  expect_false(identical(unseeded1$localTests, unseeded2$localTests))
+
+  options$setSeed <- TRUE
+  options$seed <- 123
+  expect_identical(getBootstrapTables(1), getBootstrapTables(2))
+})
+
 test_that("Missing values work", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"

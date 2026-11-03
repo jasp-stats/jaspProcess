@@ -1706,6 +1706,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (doFit) {
     if (options$errorCalculationMethod == "bootstrap") {
+      # Seed per model, so a model's bootstrap does not depend on which other models were (re)fitted in this run
+      jaspBase::.setSeedJASP(options)
       fittedModel <- .procBootstrap(fittedModel, options$bootstrapSamples)
     }
   }
@@ -2622,6 +2624,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   graph <- dagitty::dagitty(paste("dag {", paste(arrows, collapse = "\n")," } "))
 
+  # Bootstrapped local tests (and cis.loess) resample the data
+  jaspBase::.setSeedJASP(options)
   localTestResult <- dagitty::localTests(
     graph,
     dataset,
