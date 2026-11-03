@@ -66,7 +66,8 @@ This section allows users to specify multiple process models through one of two 
 	- Statistical: Shows a statistical path plot including parameter labels or estimates for all paths.
 - Residual plots: Displays residual plots for each dependent variable in the model (the outcome and each mediator), to check the assumptions of its regression equation. The predicted values are based on the posterior means of the parameters.
 	- Residuals vs. predicted: Scatterplot of the residuals against the predicted values. If the variance of the residuals is constant (homoscedasticity), the residuals scatter evenly around zero across the predicted values.
-	- Q-Q plot standardized residuals: Q-Q plot of the residuals divided by their estimated standard deviation. If the residuals are normally distributed, the points lie close to the diagonal.
+	- Q-Q plot standardized residuals: Q-Q plot of the residuals divided by the residual standard deviation. The standardized residuals are computed for each posterior draw, and the points show their posterior means. If the residuals are normally distributed, the points lie close to the diagonal.
+		- Credible interval: Adds the central credible interval of each standardized residual as an error bar.
 
 #### Options
 

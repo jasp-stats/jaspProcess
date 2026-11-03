@@ -673,6 +673,58 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
+.procBayesStandardizedResiduals <- function(fittedModel, dep, ciLevel = NULL) {
+  parTbl <- lavaan::parameterTable(fittedModel)
+  # Only extract the draws of the model parameters: the Stan output also contains, e.g., the log-likelihood of each observation
+  draws  <- as.matrix(fittedModel@external$mcmcout, pars = unique(sub("\\[.*$", "", na.omit(parTbl$pxnames))))
+
+  return(.procBayesStandardizedResidualsFromDraws(parTbl, lavaan::lavInspect(fittedModel, "data"), draws, dep, ciLevel))
+}
+
+.procBayesStandardizedResidualsFromDraws <- function(parTbl, data, draws, dep, ciLevel = NULL, blockSize = 1000) {
+  # Posterior mean (and central credible interval) of the standardized residual of each observation in the regression
+  # equation of dep: for each draw, the observed minus the predicted value, divided by the residual standard deviation
+  parDraws <- function(rows) {
+    # Draws x parameters; fixed parameters have the same value in every draw
+    matrix(vapply(rows, function(r) {
+      if (is.na(parTbl$pxnames[r])) rep(parTbl$est[r], nrow(draws)) else draws[, parTbl$pxnames[r]]
+    }, numeric(nrow(draws))), nrow = nrow(draws))
+  }
+
+  regRows <- which(parTbl$lhs == dep & parTbl$op == "~")
+  preds   <- data[, parTbl$rhs[regRows], drop = FALSE]
+  beta    <- parDraws(regRows)
+  intRow  <- which(parTbl$lhs == dep & parTbl$op == "~1")
+
+  # Without a mean structure the intercepts are implied by the sample means (as in .procResiduals)
+  if (length(intRow) == 0)
+    intercept <- mean(data[, dep], na.rm = TRUE) - drop(beta %*% colMeans(preds, na.rm = TRUE))
+  else
+    intercept <- drop(parDraws(intRow))
+
+  residualSd <- sqrt(drop(parDraws(which(parTbl$lhs == dep & parTbl$op == "~~" & parTbl$rhs == dep))))
+  complete   <- which(stats::complete.cases(data[, dep], preds))
+  probs      <- if (!is.null(ciLevel)) c((1 - ciLevel) / 2, (1 + ciLevel) / 2)
+
+  # Observations x draws matrices, in blocks of observations to limit memory use for large data sets
+  blocks <- split(complete, ceiling(seq_along(complete) / blockSize))
+  blockSummaries <- lapply(blocks, function(obs) {
+    predicted    <- preds[obs, , drop = FALSE] %*% t(beta) + rep(intercept, each = length(obs))
+    standardized <- (data[obs, dep] - predicted) / rep(residualSd, each = length(obs))
+    blockSummary <- data.frame(mean = rowMeans(standardized))
+
+    if (!is.null(probs)) {
+      bounds             <- apply(standardized, 1, stats::quantile, probs = probs, names = FALSE)
+      blockSummary$lower <- bounds[1, ]
+      blockSummary$upper <- bounds[2, ]
+    }
+
+    return(blockSummary)
+  })
+
+  return(do.call(rbind, unname(blockSummaries)))
+}
+
 # Footnotes ----
 
 .procBayesBadWaicFootnote <- function() gettext("Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead.")

@@ -2807,7 +2807,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     for (j in seq_along(residuals)) {
-      .procResidualPlotsSingleVariable(modelContainer, options, residuals[[j]], names(residuals)[j], j, i)
+      .procResidualPlotsSingleVariable(modelContainer, options, residuals[[j]], names(residuals)[j], j, i, fittedModel)
     }
   }
 }
@@ -2844,7 +2844,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(residuals)
 }
 
-.procResidualPlotsSingleVariable <- function(container, options, residuals, varName, varIdx, modelIdx) {
+.procResidualPlotsSingleVariable <- function(container, options, residuals, varName, varIdx, modelIdx, fittedModel) {
   varKey <- paste0("variable", varIdx)
 
   if (is.null(container[[varKey]])) {
@@ -2878,14 +2878,33 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     ciLevel <- if (modelOptions[["qqPlotCi"]]) modelOptions[["qqPlotCiLevel"]] else NULL
 
-    qqPlot$plotObject <- jaspGraphs::plotQQnorm(
-      residuals[["standardized"]],
-      yName         = gettext("Standardized residuals"),
-      ablineColor   = "darkred",
-      ablineOrigin  = TRUE,
-      identicalAxes = TRUE,
-      ciLevel       = ciLevel
-    )
+    if (inherits(fittedModel, "blavaan")) {
+      # Posterior means of the standardized residuals, with the credible interval of each as an error bar
+      stdResiduals <- try(.procBayesStandardizedResiduals(fittedModel, varName, ciLevel))
+
+      if (jaspBase::isTryError(stdResiduals)) {
+        qqPlot$setError(jaspBase::.extractErrorMessage(stdResiduals))
+      } else {
+        qqPlot$plotObject <- jaspGraphs::plotQQnorm(
+          stdResiduals[["mean"]],
+          lower         = stdResiduals[["lower"]],
+          upper         = stdResiduals[["upper"]],
+          yName         = gettext("Standardized residuals"),
+          ablineColor   = "darkred",
+          ablineOrigin  = TRUE,
+          identicalAxes = TRUE
+        )
+      }
+    } else {
+      qqPlot$plotObject <- jaspGraphs::plotQQnorm(
+        residuals[["standardized"]],
+        yName         = gettext("Standardized residuals"),
+        ablineColor   = "darkred",
+        ablineOrigin  = TRUE,
+        identicalAxes = TRUE,
+        ciLevel       = ciLevel
+      )
+    }
   }
 }
 
