@@ -140,6 +140,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
         nestedOptions = .procGetSingleModelsDependencies(as.character(i))[-1] # omit model name
       )
       modelsContainer[[modelName]] <- container
+      # Tables that combine all models only depend on the options of the models they were created for (see
+      # .procGetAllModelsDependencies), so a model that was added has to be included by recreating them
+      jaspResults[["modelSummaryTable"]] <- NULL
+      jaspResults[["rSquaredTable"]]     <- NULL
     }
   }
 
@@ -1726,6 +1730,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   ))
 }
 
+# Dependencies of output that combines all models: only the options that change a fitted model,
+# so that requesting output for a single model (e.g., a plot) does not update it
+.procGetAllModelsDependencies <- function(options) {
+  return(unlist(lapply(seq_along(options[["processModels"]]), function(i) .procGetSingleModelsDependencies(as.character(i))), recursive = FALSE))
+}
+
 .procComputeResults <- function(jaspResults, dataset, options) {
   modelsContainer <- jaspResults[["modelsContainer"]]
   nModels <- length(options[["processModels"]])
@@ -1889,7 +1899,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   tableRowIsValid <- modelNumberIsValid & resultIsValid
 
   summaryTable <- createJaspTable(title = gettext("Model summary"), rowNames = modelNames[tableRowIsValid])
-  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "aicWeights", "bicWeights", "naAction", "hayesNumber"))
+  summaryTable$dependOn(
+    options = c(.procGetDependencies(), "aicWeights", "bicWeights", "naAction", "hayesNumber"),
+    nestedOptions = .procGetAllModelsDependencies(options)
+  )
   summaryTable$position <- 0
 
   if (options[["naAction"]] == "fiml" && !options[["estimator"]] %in% c("default", "ml")) {
@@ -1970,7 +1983,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (any(validModel) && is.null(parEstContainer[["warning"]])) {
     warningHtml <- createJaspHtml(text = .procCausalAssumptionsMsg())
     warningHtml$position <- 0
-    warningHtml$dependOn("processModels")
+    warningHtml$dependOn(nestedOptions = .procGetAllModelsDependencies(options))
     parEstContainer[["warning"]] <- warningHtml
   }
 
@@ -2660,7 +2673,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
                         overtitle = "R\u00B2", type = "number")
   }
   
-  tabr2$dependOn(c(.procGetDependencies(), "rSquared", "processModels"))
+  tabr2$dependOn(
+    options = c(.procGetDependencies(), "rSquared"),
+    nestedOptions = .procGetAllModelsDependencies(options)
+  )
   tabr2$position <- 1
   
   jaspResults[["rSquaredTable"]] <- tabr2

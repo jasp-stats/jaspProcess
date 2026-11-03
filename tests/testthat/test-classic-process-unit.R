@@ -857,3 +857,15 @@ test_that("Test that .procResiduals works", {
     expect_equal(res[["y"]][["standardized"]], unname(residuals(lmY)) / sqrt(mean(residuals(lmY)^2)))
   }
 })
+
+test_that("Test that .procGetAllModelsDependencies works", {
+  options <- list(processModels = list(list(name = "Model 1"), list(name = "Model 2")))
+  deps    <- jaspProcess:::.procGetAllModelsDependencies(options)
+
+  expect_identical(deps, c(jaspProcess:::.procGetSingleModelsDependencies("1"), jaspProcess:::.procGetSingleModelsDependencies("2")))
+  # Requesting output for a single model must not update the output that combines all models
+  outputOptions <- c("residualVsFittedPlot", "residualQqPlot", "qqPlotCi", "qqPlotCiLevel", "conceptualPathPlot",
+                     "statisticalPathPlot", "pathCoefficients", "mediationEffects", "totalEffects", "residualCovariances", "localTests")
+  expect_false(any(vapply(deps, function(dep) dep[3] %in% outputOptions, logical(1))))
+  expect_length(jaspProcess:::.procGetAllModelsDependencies(list(processModels = list())), 0)
+})

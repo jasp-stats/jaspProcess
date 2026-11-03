@@ -218,7 +218,10 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   tableRowIsValid <- modelNumberIsValid & resultIsValid
 
   summaryTable <- createJaspTable(title = gettext("Model summary"), rowNames = modelNames[tableRowIsValid])
-  summaryTable$dependOn(c(.procGetDependencies(), "processModels", "bicWeights", "hayesNumber"))
+  summaryTable$dependOn(
+    options = c(.procGetDependencies(), "bicWeights", "hayesNumber"),
+    nestedOptions = .procGetAllModelsDependencies(options)
+  )
   summaryTable$position <- 1
 
   ovtWaic <- gettext("WAIC")
