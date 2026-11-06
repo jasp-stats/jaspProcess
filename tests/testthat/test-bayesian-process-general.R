@@ -105,3 +105,33 @@ test_that("Incomplete Hayes configuration works", {
 	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
 	jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-incomplete")
 })
+
+test_that("Covariates in Hayes configuration work", {
+  skip_on_ci()
+  options <- getOptionsBayesian()
+  options$hayesNumber <- TRUE
+  options$processModels <- list(getProcessModel(list()))
+  options$processModels[[1]]$inputType <- "inputModelNumber"
+  options$processModels[[1]]$modelNumber <- 4
+  options$processModels[[1]]$modelNumberIndependent <- "contGamma"
+  options$processModels[[1]]$modelNumberMediators <- list("debCollin1")
+  options$processModels[[1]]$modelNumberCovariates <- list("contcor2", "facGender")
+  set.seed(1)
+  results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
+
+  # Covariates enter the mediator and outcome equations
+  coefTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+  paths <- sapply(coefTable, function(row) paste(row[["lhs"]], row[["rhs"]], sep = "->"))
+  expect_setequal(paths, c(
+    "contGamma->contNormal", "debCollin1->contNormal", "contcor2->contNormal", "facGenderm->contNormal",
+    "contGamma->debCollin1", "contcor2->debCollin1", "facGenderm->debCollin1"
+  ))
+
+  # Covariates are not focal: only the direct and indirect effect of X are reported
+  medTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  expect_length(medTable, 2)
+  expect_true(all(sapply(medTable, function(row) row[["lhs_1"]]) == "contGamma"))
+
+  summaryTable <- results[["results"]][["modelSummaryTable"]][["data"]]
+  expect_equal(summaryTable[[1]][["modelNumber"]], 4)
+})

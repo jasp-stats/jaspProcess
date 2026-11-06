@@ -82,3 +82,96 @@ test_that("Test that moderated mediation effect matches validated results", {
 	expect_equal(medEstimates, rev(refDf$ind), tolerance = 1e-7)
 	expect_equal(medEstimatesStd, rev(refDf$std), tolerance = 1e-7)
 })
+
+# Covariates in the Hayes configuration input enter every mediator and outcome
+# equation (the PROCESS default), so the path coefficients must equal the OLS
+# estimates of these equations (jasp-stats/jaspProcess#63)
+
+getHayesModelCovariates <- function(modelNumber, independent, mediators = list(), modW = "", covariates = list()) {
+  model <- getProcessModel(list())
+  model$inputType <- "inputModelNumber"
+  model$modelNumber <- modelNumber
+  model$modelNumberIndependent <- independent
+  model$modelNumberMediators <- mediators
+  model$modelNumberModeratorW <- modW
+  model$modelNumberModeratorZ <- ""
+  model$modelNumberCovariates <- covariates
+  return(model)
+}
+
+getPathCoefficients <- function(results, dependent) {
+  coefTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+  coefTable <- Filter(function(row) row[["rhs"]] == dependent, coefTable)
+  return(setNames(sapply(coefTable, function(row) row[["est"]]), sapply(coefTable, function(row) row[["lhs"]])))
+}
+
+test_that("Test that moderation with covariates in Hayes configuration matches linear regression", {
+  options <- getOptionsClassical()
+  options$dependent <- "GovernmentAction"
+  options$covariates <- list("NegativeEmotion", "Age", "PositiveEmotion", "Ideology", "Sex")
+  options$factors <- list()
+  options$naAction <- "listwise"
+  options$meanCenteredModeration <- FALSE
+  options$standardizedModelEstimates <- FALSE
+  options$processModels <- list(getHayesModelCovariates(1, "NegativeEmotion", modW = "Age",
+                                                        covariates = list("PositiveEmotion", "Ideology", "Sex")))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", test_path("global_warming.csv"), options)
+
+  data <- read.csv(test_path("global_warming.csv"))
+  fit <- lm(GovernmentAction ~ NegativeEmotion * Age + PositiveEmotion + Ideology + Sex, data = data)
+  refCoefs <- coef(fit)[-1]
+
+  coefs <- getPathCoefficients(results, "GovernmentAction")
+  expect_setequal(names(coefs), names(refCoefs))
+  expect_equal(coefs[names(refCoefs)], refCoefs, tolerance = 1e-6)
+
+  # Covariates are not focal: only conditional effects of X are reported
+  medTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  expect_length(medTable, 3)
+  expect_true(all(sapply(medTable, function(row) row[["lhs_1"]]) == "NegativeEmotion"))
+  probes <- quantile(data$Age, c(0.16, 0.5, 0.84))
+  expect_equal(sapply(medTable, function(row) row[["est"]]),
+               unname(refCoefs["NegativeEmotion"] + refCoefs["NegativeEmotion:Age"] * probes), tolerance = 1e-6)
+
+  # Covariates do not change the recognized Hayes configuration
+  summaryTable <- results[["results"]][["modelSummaryTable"]][["data"]]
+  expect_equal(summaryTable[[1]][["modelNumber"]], 1)
+
+  rSquaredTable <- results[["results"]][["rSquaredTable"]][["data"]]
+  expect_equal(rSquaredTable[[1]][["rsq_1"]], summary(fit)$r.squared, tolerance = 1e-6)
+})
+
+test_that("Test that mediation with continuous and categorical covariates in Hayes configuration matches linear regression", {
+  options <- getOptionsClassical()
+  options$naAction <- "listwise"
+  options$meanCenteredModeration <- FALSE
+  options$standardizedModelEstimates <- FALSE
+  options$processModels <- list(getHayesModelCovariates(4, "contGamma", mediators = list("debCollin1"),
+                                                        covariates = list("contcor2", "facGender")))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  data <- read.csv(system.file("jaspData", "debug.csv", package = "jaspTools"))
+  data <- data[complete.cases(data[, c("contNormal", "contGamma", "contcor1", "contcor2", "debCollin1", "facGender", "facExperim")]), ]
+  data$facGender <- factor(data$facGender)
+  refCoefsM <- coef(lm(debCollin1 ~ contGamma + contcor2 + facGender, data = data))[-1]
+  refCoefsY <- coef(lm(contNormal ~ contGamma + debCollin1 + contcor2 + facGender, data = data))[-1]
+
+  coefsM <- getPathCoefficients(results, "debCollin1")
+  coefsY <- getPathCoefficients(results, "contNormal")
+  expect_setequal(names(coefsM), names(refCoefsM))
+  expect_setequal(names(coefsY), names(refCoefsY))
+  expect_equal(coefsM[names(refCoefsM)], refCoefsM, tolerance = 1e-6)
+  expect_equal(coefsY[names(refCoefsY)], refCoefsY, tolerance = 1e-6)
+
+  # Covariates are not focal: only the direct and indirect effect of X are reported
+  medTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  expect_length(medTable, 2)
+  expect_true(all(sapply(medTable, function(row) row[["lhs_1"]]) == "contGamma"))
+  expect_equal(sapply(medTable, function(row) row[["est"]]),
+               unname(c(refCoefsY["contGamma"], refCoefsM["contGamma"] * refCoefsY["debCollin1"])), tolerance = 1e-6)
+
+  summaryTable <- results[["results"]][["modelSummaryTable"]][["data"]]
+  expect_equal(summaryTable[[1]][["modelNumber"]], 4)
+})

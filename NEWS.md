@@ -16,6 +16,9 @@
 
 # jaspProcess (development version)
 
+## Added
+* Covariates box for the "Hayes configuration" input type. As in PROCESS, covariates are added to every mediator and outcome equation, so the path coefficients, effects, and R² are adjusted for them. Covariates can be continuous or categorical, and they are left out of the mediation and total effects tables and the conceptual path plot ([Issue #63](https://github.com/jasp-stats/jaspProcess/issues/63), [Issue #4388](https://github.com/jasp-stats/jasp-issues/issues/4388), [Issue #3481](https://github.com/jasp-stats/jasp-issues/issues/3481)).
+
 ## Fixed
 * Process models with a categorical predictor no longer error when a factor level label contains a space or other special character (e.g. "emotion regulation"). Such labels are now coerced to syntactically valid names before being used in mean-centering and lavaan model syntax ([Issue #3597](https://github.com/jasp-stats/jasp-issues/issues/3597)).
 
