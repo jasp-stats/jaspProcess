@@ -525,10 +525,34 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (f in unlist(options[["factors"]])) {
     if (is.null(dataset[[f]])) next
     dataset[[f]] <- as.factor(dataset[[f]])
-    safeLevels <- gsub("[^A-Za-z0-9._]+", ".", levels(dataset[[f]]))
+    safeLevels <- .procSafeLevelLabels(levels(dataset[[f]]))
     levels(dataset[[f]]) <- make.unique(safeLevels, sep = "_")
   }
   return(dataset)
+}
+
+.procSafeLevelLabels <- function(levels) {
+  # Replace runs of characters that are invalid within a name (see .procSafeFactorLevels)
+  return(gsub("[^A-Za-z0-9._]+", ".", levels))
+}
+
+.procCheckFactorLevels <- function(dataset, factors) {
+  # "__" separates the terms of interaction variables (e.g. <X>__<W>), and
+  # factor dummy variables are named <factor><level>. A level label that
+  # contains "__" or ends with "_" (also after .procSafeLevelLabels) is
+  # therefore split at the wrong place when the interaction and centering
+  # variables are built, which crashes the analysis. Stop early with a clear
+  # message instead.
+  for (f in factors) {
+    levs <- levels(as.factor(dataset[[f]]))
+    badLevels <- levs[grepl("__|_$", .procSafeLevelLabels(levs))]
+    if (length(badLevels) > 0) {
+      .quitAnalysis(gettextf(
+        "Levels of the categorical variable %1$s must not contain two consecutive underscores (__) or end with an underscore (_), because __ separates the variables in interaction terms. Please rename these levels: %2$s.",
+        f, paste(badLevels, collapse = ", ")
+      ))
+    }
+  }
 }
 
 .procAddFactorDummyIntVars <- function(jaspResults, dataset, options) {
@@ -749,6 +773,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       }
     }
   }
+
+  .procCheckFactorLevels(dataset, factors)
 }
 
 .procModelCompleteCases <- function(graph, dataset, options) {

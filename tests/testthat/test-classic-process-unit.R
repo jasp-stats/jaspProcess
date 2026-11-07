@@ -836,6 +836,21 @@ test_that("Test that .procSafeFactorLevels only relabels declared factor columns
   expect_identical(result[["Z"]], c("e f", "g h"))
 })
 
+test_that("Test that .procCheckFactorLevels rejects levels that clash with the interaction separator", {
+  dataset <- data.frame(
+    ok    = c("ctrl", "treat_A", "_treat", "a b"),
+    dbl   = c("ctrl", "treat__A", "treat__B", "ctrl"),
+    trail = c("ctrl", "treat_", "ctrl", "ctrl"),
+    space = c("ctrl", "treat _", "ctrl", "ctrl"),
+    stringsAsFactors = FALSE
+  )
+  expect_silent(jaspProcess:::.procCheckFactorLevels(dataset, "ok"))
+  expect_error(jaspProcess:::.procCheckFactorLevels(dataset, c("ok", "dbl")), "treat__A, treat__B", class = "validationError")
+  expect_error(jaspProcess:::.procCheckFactorLevels(dataset, "trail"), "treat_\\.", class = "validationError")
+  # Also after the name-safe relabelling ("treat _" -> "treat._" ends with "_")
+  expect_error(jaspProcess:::.procCheckFactorLevels(dataset, "space"), "treat _", class = "validationError")
+})
+
 # Covariates in the Hayes configuration input ------------------------------
 
 createDummyGraphModelMediationCovariates <- function() {
