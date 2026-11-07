@@ -135,3 +135,34 @@ test_that("Covariates in Hayes configuration work", {
   summaryTable <- results[["results"]][["modelSummaryTable"]][["data"]]
   expect_equal(summaryTable[[1]][["modelNumber"]], 4)
 })
+
+test_that("Mean-centered moderation evaluates conditional effects at the requested moderator values", {
+  skip_on_ci()
+  # The moderator probes are computed on the mean-centered moderator, so the model
+  # must be fitted on centered data too. Otherwise the conditional effects are
+  # evaluated at moderator values shifted by the moderator mean (here by
+  # b_XW * mean(Age), about 0.35). With weak priors and n = 815, the posterior
+  # means are close to the OLS conditional effects at the raw percentiles.
+  options <- getOptionsBayesian()
+  options$dependent <- "GovernmentAction"
+  options$covariates <- list("NegativeEmotion", "Age")
+  options$factors <- list()
+  options$meanCenteredModeration <- TRUE
+  options$mcmcBurnin <- 500
+  options$mcmcSamples <- 1000
+  options$processModels <- list(getProcessModel(list(list(processDependent = "GovernmentAction",
+          processIndependent = "NegativeEmotion", processType = "moderators",
+          processVariable = "Age"))))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("BayesianProcess", test_path("global_warming.csv"), options)
+
+  data <- read.csv(test_path("global_warming.csv"))
+  refCoefs <- coef(lm(GovernmentAction ~ NegativeEmotion * Age, data = data))
+  probes <- quantile(data$Age, c(0.16, 0.5, 0.84))
+  refEffects <- unname(refCoefs["NegativeEmotion"] + refCoefs["NegativeEmotion:Age"] * probes)
+
+  medTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
+  effects <- sapply(medTable, function(row) row[["mean"]])
+  expect_length(effects, 3)
+  expect_lt(max(abs(effects - refEffects)), 0.03)
+})

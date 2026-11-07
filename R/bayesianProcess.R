@@ -135,6 +135,12 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
       do.fit          = doFit
     ))
   } else {
+    # Mean-center moderators as in the classic analysis: the moderator probes
+    # (.procModProbes) are computed on the centered data, so the conditional
+    # effects are only evaluated at the requested moderator values if the
+    # model is fitted on the centered data too
+    dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
+
     # Necessary for JASP to find function blavaan
     blavaan <- blavaan::blavaan
 
