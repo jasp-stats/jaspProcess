@@ -21,6 +21,9 @@
 
 ## Fixed
 * Process models with a categorical predictor no longer error when a factor level label contains a space or other special character (e.g. "emotion regulation"). Such labels are now coerced to syntactically valid names before being used in mean-centering and lavaan model syntax ([Issue #3597](https://github.com/jasp-stats/jasp-issues/issues/3597)).
+* With listwise deletion, mean-centering of moderators and the moderator probe values now use each model's own complete cases. Previously, missing values in any other variable in the variable boxes (for example a covariate used only in another model) restricted the centering sample and changed the estimates of models with complete data.
+* The Bayesian analysis now fits the mean-centered data when "Mean-centered moderation" is selected (the default). Previously only the moderator probe values were centered, so conditional effects were evaluated at moderator values shifted by the moderator mean.
+* Factor levels that contain two consecutive underscores or end with an underscore now stop the analysis with a message asking to rename them, instead of causing an unrelated error later.
 
 ---
 

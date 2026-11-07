@@ -58,6 +58,7 @@ This section allows users to specify multiple process models through one of two 
 		- Mediators M: Mediator variables.
 		- Moderator W: First moderator variable.
 		- Moderator Z: Second moderator variable.
+		- Covariates: Control variables (continuous or categorical). As in the PROCESS macro, every covariate is added as a predictor to each mediator and outcome equation (paths labelled f into mediators and g into the outcome), so all path coefficients and effects are adjusted for the covariates. Covariates do not appear in the mediation effects tables or the conceptual path plot, and they do not change the Hayes configuration number. A covariate cannot also be the independent variable, a mediator, a moderator, or the dependent variable.
 
 - Residual Covariances: Adds covariances between the residuals of variables indicating that they have a common cause not specified in the model. Also adds variances for independent (exogenous) variables. This adds degrees of freedom corresponding to the number of covariances and variances added.
 - Parameter Estimates: Determines which parameter estimates are shown in the output. Requesting intercepts adds the mean structure to the model, which adds parameters and will therefore affect some fit indices (such as the information criteria AIC and BIC).
