@@ -751,17 +751,27 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
+.procModelCompleteCases <- function(graph, dataset, options) {
+  # Rows that lavaan uses for this model. With listwise deletion, these are the
+  # cases that are complete on the model's own (dummy-coded) variables only.
+  # Missing values in variables of other models, or in variables that are only
+  # listed in the variable boxes, must not restrict this model's sample:
+  # otherwise its moderators are centered and probed on a smaller sample than
+  # the one lavaan fits, and the excluded rows enter the fit uncentered.
+  if (is.null(options$naAction) || options$naAction != "listwise") {
+    return(!logical(nrow(dataset)))
+  }
+  modelVars <- intersect(igraph::V(graph)$name, names(dataset))
+  return(complete.cases(dataset[, modelVars, drop = FALSE]))
+}
+
 .procMeanCenter <- function(graph, dataset, options) {
   # Center interacting variables
   if (options$meanCenteredModeration) {
     # Only use complete cases for standardization with listwise deletion
     # Otherwise data entered into lavaan is not actually standardized
-    if (!is.null(options$naAction) && options$naAction == "listwise") {
-      isComplete <- complete.cases(dataset)
-    } else {
-      isComplete <- !logical(nrow(dataset))
-    }
-    
+    isComplete <- .procModelCompleteCases(graph, dataset, options)
+
     for (v in unique(unlist(igraph::V(graph)[intLength > 1]$intVars))) {
       # Only center continuous variables
       if (v %in% options[["covariates"]]) {
@@ -822,6 +832,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Mean-center data set before quantile computation
   dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
 
+  # If listwise missing value deletion, only use the model's complete cases for quantiles
+  isComplete <- .procModelCompleteCases(graph, dataset, options)
+
   modProbes <- lapply(modVars, function(nms) {
     # Is moderator factor
     matchFac <- sapply(options[["factors"]], grepl, x = nms)
@@ -833,12 +846,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       row.names(conMat) <- as.character(conMat[, colIdx])
       # Return matrix with dummy coding for each factor
       return(conMat[, colIdx])
-    }
-    # If listwise missing value deletion, only use complete cases for quantiles
-    if (options$naAction == "listwise") {
-      isComplete <- complete.cases(dataset)
-    } else {
-      isComplete <- !logical(nrow(dataset))
     }
 
     vComplete <- dataset[[nms]][isComplete]

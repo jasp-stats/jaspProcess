@@ -99,8 +99,8 @@ getHayesModelCovariates <- function(modelNumber, independent, mediators = list()
   return(model)
 }
 
-getPathCoefficients <- function(results, dependent) {
-  coefTable <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
+getPathCoefficients <- function(results, dependent, model = "Model 1") {
+  coefTable <- results[["results"]][["parEstContainer"]][["collection"]][[paste0("parEstContainer_", model)]][["collection"]][[paste0("parEstContainer_", model, "_pathCoefficientsTable")]][["data"]]
   coefTable <- Filter(function(row) row[["rhs"]] == dependent, coefTable)
   return(setNames(sapply(coefTable, function(row) row[["est"]]), sapply(coefTable, function(row) row[["lhs"]])))
 }
@@ -174,4 +174,47 @@ test_that("Test that mediation with continuous and categorical covariates in Hay
 
   summaryTable <- results[["results"]][["modelSummaryTable"]][["data"]]
   expect_equal(summaryTable[[1]][["modelNumber"]], 4)
+})
+
+test_that("Test that moderators are centered and probed on each model's own complete cases", {
+  # Model 2 adds a covariate with 30 missing values. With listwise deletion, these
+  # must not change the sample on which Model 1 (complete data) is centered and probed.
+  options <- getOptionsClassical()
+  options$covariates <- c(options$covariates, list("debMiss30"))
+  options$naAction <- "listwise"
+  options$meanCenteredModeration <- TRUE
+  options$standardizedModelEstimates <- FALSE
+  model2 <- getHayesModelCovariates(1, "contGamma", modW = "contcor1", covariates = list("debMiss30"))
+  model2$name <- "Model 2"
+  options$processModels <- list(getHayesModelCovariates(1, "contGamma", modW = "contcor1"), model2)
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
+
+  data <- read.csv(system.file("jaspData", "debug.csv", package = "jaspTools"))
+  centerXW <- function(d) transform(d, contGamma = contGamma - mean(contGamma), contcor1 = contcor1 - mean(contcor1))
+  data1 <- centerXW(data)
+  data2 <- centerXW(data[!is.na(data$debMiss30), ])
+  refCoefs1 <- coef(lm(contNormal ~ contGamma * contcor1, data = data1))[-1]
+  refCoefs2 <- coef(lm(contNormal ~ contGamma * contcor1 + debMiss30, data = data2))[-1]
+
+  coefs1 <- getPathCoefficients(results, "contNormal", "Model 1")
+  coefs2 <- getPathCoefficients(results, "contNormal", "Model 2")
+  expect_setequal(names(coefs1), names(refCoefs1))
+  expect_setequal(names(coefs2), names(refCoefs2))
+  expect_equal(coefs1[names(refCoefs1)], refCoefs1, tolerance = 1e-6)
+  expect_equal(coefs2[names(refCoefs2)], refCoefs2, tolerance = 1e-6)
+
+  summaryTable <- results[["results"]][["modelSummaryTable"]][["data"]]
+  expect_equal(sapply(summaryTable, function(row) row[["N"]]), c(100, 70))
+
+  # Conditional effects of X at the percentiles of the centered moderator in each model's sample
+  for (i in 1:2) {
+    model <- paste("Model", i)
+    refCoefs <- list(refCoefs1, refCoefs2)[[i]]
+    # Probe values enter the lavaan syntax with 3 significant digits
+    probes <- signif(quantile(list(data1, data2)[[i]]$contcor1, c(0.16, 0.5, 0.84)), 3)
+    medTable <- results[["results"]][["parEstContainer"]][["collection"]][[paste0("parEstContainer_", model)]][["collection"]][[paste0("parEstContainer_", model, "_mediationEffectsTable")]][["data"]]
+    expect_equal(sapply(medTable, function(row) row[["est"]]),
+                 unname(refCoefs["contGamma"] + refCoefs["contGamma:contcor1"] * probes), tolerance = 1e-6)
+  }
 })
