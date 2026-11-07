@@ -3121,8 +3121,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   nodeTypeLevels <- unique(na.omit(nodeType))
   if (options[["useColorPalette"]]) {
-    typeCols <- colorFun(length(nodeTypeLevels))
-    names(typeCols) <- nodeTypeLevels
+    # colorFun interpolates the palette, so each colour depends on the number of
+    # node types. Covariates therefore get a fixed light grey outside the palette:
+    # adding covariates, or dropping them in the conceptual plot, must not
+    # recolour the other node types
+    paletteLevels <- nodeTypeLevels[nodeTypeLevels != "Covariate"]
+    typeCols <- c(colorFun(length(paletteLevels)), "#D9D9D9")
+    names(typeCols) <- c(paletteLevels, "Covariate")
+    # Same order as nodeTypeLevels, which labels the legend
+    typeCols <- typeCols[nodeTypeLevels]
     igraph::V(graph)$nodeFill <- ifelse(is.na(nodeType), "transparent", typeCols[nodeType])
   } else {
     igraph::V(graph)$nodeFill <- "transparent"
