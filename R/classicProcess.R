@@ -1949,6 +1949,24 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
+.procModeledVariables <- function(fit) {
+  # Variables whose distribution enters the likelihood. With independent covariances
+  # (fixed.x = FALSE, the default) the likelihood also includes the exogenous
+  # variables (X, moderators, covariates, interaction terms); otherwise it is
+  # conditional on them, as in a regression.
+  what <- if (fit@Options[["fixed.x"]]) "ov.nox" else "ov"
+  return(sort(lavaan::lavNames(fit, what)))
+}
+
+.procModelsShareData <- function(fits) {
+  # Information criteria and log-likelihoods are only comparable between models
+  # of the same data: the same modeled variables and the same cases. Models with
+  # different predictors or covariates qualify only without independent covariances.
+  modeledVars <- lapply(fits, .procModeledVariables)
+  caseIdx     <- lapply(fits, lavaan::lavInspect, what = "case.idx")
+  return(all(sapply(modeledVars, identical, modeledVars[[1]])) && all(sapply(caseIdx, identical, caseIdx[[1]])))
+}
+
 .procModelSummaryTable <- function(jaspResults, options, modelsContainer, errors) {
   if (!is.null(jaspResults[["modelSummaryTable"]])) return()
 
@@ -2032,6 +2050,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
     if (options[["bicWeights"]]) {
       summaryTable[["wBIC"]][converged] <- .computeWeights(bic)
+    }
+
+    if (sum(converged) > 1 && !.procModelsShareData(procResults[converged])) {
+      summaryTable$addFootnote(message = .procIncomparableModelsMsg())
     }
   }
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
@@ -3358,6 +3380,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procModelIncompleteMsg <- function() gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models.")
 
 .procInformationCriteriaMsg <- function() gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators.")
+
+.procIncomparableModelsMsg <- function() gettext("The models differ in the variables they describe or in the cases used, so their information criteria and log-likelihoods cannot be compared. With 'Independent variables' selected under 'Residual Covariances', a model also describes its independent variables, moderators, and covariates; otherwise only its mediators and dependent variables.")
 
 .procCausalAssumptionsMsg <- function() gettext(
   "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."

@@ -259,6 +259,10 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     summaryTable[["wBIC"]] <- .computeWeights(bic)
   }
 
+  if (length(procResults) > 1 && !.procModelsShareData(procResults)) {
+    summaryTable$addFootnote(message = .procIncomparableModelsMsg())
+  }
+
   logLikResults <- lapply(procResults, .procBayesCalcModelCaseLogLik)
 
   # Try to calc loo, will fail if LL contains NAs
@@ -274,7 +278,12 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
 
   waicResults <- lapply(logLikResults, function(mod) try(loo::waic(mod)))
 
-  if (length(looResults[looIsValid]) > 1) {
+  # loo_compare() stops when the models have different numbers of cases. Without
+  # independent covariances (fixed.x = TRUE), blavaan removes cases with missing
+  # predictors, so a covariate with missing values in only one model leads to this
+  looNobs <- sapply(looResults[looIsValid], function(res) nrow(res$pointwise))
+
+  if (length(looResults[looIsValid]) > 1 && all(looNobs == looNobs[1])) {
     ovtDiff <- gettext("LOO Difference")
 
     summaryTable$addColumnInfo(name = "elpdDiff", title = gettext("ELPD"), type = "number", overtitle = ovtDiff)

@@ -166,3 +166,32 @@ test_that("Mean-centered moderation evaluates conditional effects at the request
   expect_length(effects, 3)
   expect_lt(max(abs(effects - refEffects)), 0.03)
 })
+
+test_that("Model summary works for models fitted to different numbers of cases", {
+  skip_on_ci()
+  # Without independent covariances, cases with a missing predictor are removed, here
+  # only from Model 2, which has a covariate with missing values. loo_compare() stops for
+  # models with different numbers of cases, so the LOO difference must be left out, and
+  # a footnote says that the information criteria are not comparable.
+  options <- getOptionsBayesian()
+  options$covariates <- c(options$covariates, list("debMiss30"))
+  hayesModel4 <- function(name, covariates = list()) {
+    model <- getProcessModel(list(), name = name)
+    model$inputType <- "inputModelNumber"
+    model$modelNumber <- 4
+    model$modelNumberIndependent <- "contGamma"
+    model$modelNumberMediators <- list("debCollin1")
+    model$modelNumberCovariates <- covariates
+    model$independentCovariances <- FALSE
+    return(model)
+  }
+  options$processModels <- list(hayesModel4("Model 1"), hayesModel4("Model 2", list("debMiss30")))
+  set.seed(1)
+  results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
+
+  summaryTable <- results[["results"]][["modelSummaryTable"]]
+  expect_equal(sapply(summaryTable[["data"]][1:2], function(row) row[["N"]]), c(100, 70))
+  expect_false(any(sapply(summaryTable[["data"]], function(row) "elpdDiff" %in% names(row))))
+  footnotes <- sapply(summaryTable[["footnotes"]], function(fn) fn[["text"]])
+  expect_true(jaspProcess:::.procIncomparableModelsMsg() %in% footnotes)
+})

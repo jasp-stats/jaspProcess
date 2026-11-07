@@ -218,3 +218,44 @@ test_that("Test that moderators are centered and probed on each model's own comp
                  unname(refCoefs["contGamma"] + refCoefs["contGamma:contcor1"] * probes), tolerance = 1e-6)
   }
 })
+
+test_that("Test that the model summary flags information criteria of models fitted to different data", {
+  # Information criteria are only comparable between models of the same data. With
+  # independent covariances (the default), the likelihood also includes the predictors
+  # and covariates, so adding a covariate changes the data. Without them, the likelihood
+  # is conditional on the predictors, as in lm(), so only the cases must be the same.
+  runModels <- function(covariate, independentCovariances) {
+    options <- getOptionsClassical()
+    options$covariates <- c(options$covariates, list("debMiss30"))
+    options$naAction <- "listwise"
+    options$standardizedModelEstimates <- FALSE
+    model1 <- getHayesModelCovariates(4, "contGamma", mediators = list("debCollin1"))
+    model2 <- getHayesModelCovariates(4, "contGamma", mediators = list("debCollin1"), covariates = list(covariate))
+    model2$name <- "Model 2"
+    model1$independentCovariances <- model2$independentCovariances <- independentCovariances
+    options$processModels <- list(model1, model2)
+    set.seed(1)
+    return(jaspTools::runAnalysis("ClassicProcess", "debug.csv", options))
+  }
+  hasIncomparableFootnote <- function(results) {
+    footnotes <- sapply(results[["results"]][["modelSummaryTable"]][["footnotes"]], function(fn) fn[["text"]])
+    return(jaspProcess:::.procIncomparableModelsMsg() %in% footnotes)
+  }
+
+  # Without independent covariances, adding a covariate changes AIC as in lm()
+  results <- runModels("contcor2", independentCovariances = FALSE)
+  expect_false(hasIncomparableFootnote(results))
+  data <- read.csv(system.file("jaspData", "debug.csv", package = "jaspTools"))
+  refAic <- c(
+    AIC(lm(debCollin1 ~ contGamma, data = data)) + AIC(lm(contNormal ~ contGamma + debCollin1, data = data)),
+    AIC(lm(debCollin1 ~ contGamma + contcor2, data = data)) + AIC(lm(contNormal ~ contGamma + debCollin1 + contcor2, data = data))
+  )
+  aic <- sapply(results[["results"]][["modelSummaryTable"]][["data"]], function(row) row[["AIC"]])
+  expect_equal(diff(aic), diff(refAic), tolerance = 1e-6)
+
+  # With independent covariances, the models describe different variables
+  expect_true(hasIncomparableFootnote(runModels("contcor2", independentCovariances = TRUE)))
+
+  # A covariate with missing values removes cases from Model 2 only
+  expect_true(hasIncomparableFootnote(runModels("debMiss30", independentCovariances = FALSE)))
+})
