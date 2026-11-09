@@ -37,7 +37,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "M", processIndependent = "W", 
             processType = "moderators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -167,7 +167,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
         list(processDependent = "M", processIndependent = "s", 
             processType = "moderators", processVariable = "med")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -295,7 +295,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Y"), 
         list(processDependent = "M", processIndependent = "W", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -482,7 +482,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "med"), 
         list(processDependent = "M", processIndependent = "s", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -657,7 +657,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Y"), 
         list(processDependent = "M", processIndependent = "Y", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -873,7 +873,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "med"), 
         list(processDependent = "M", processIndependent = "med", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1084,7 +1084,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "jasp"), 
         list(processDependent = "M", processIndependent = "W", 
             processType = "mediators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1215,7 +1215,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "jasp"), 
         list(processDependent = "M", processIndependent = "s", 
             processType = "mediators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1353,7 +1353,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Z"), 
         list(processDependent = "M", processIndependent = "W", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1616,7 +1616,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Z"), 
         list(processDependent = "M", processIndependent = "s", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -1852,7 +1852,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Z"), 
         list(processDependent = "M", processIndependent = "W", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2130,7 +2130,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Z"), 
         list(processDependent = "M", processIndependent = "s", 
             processType = "moderators", processVariable = "Z")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2383,7 +2383,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "Z"), 
         list(processDependent = "M", processIndependent = "mod", 
             processType = "mediators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2560,7 +2560,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "mediators", processVariable = "Z"), 
         list(processDependent = "M", processIndependent = "mod", 
             processType = "mediators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2743,7 +2743,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "Y"), 
         list(processDependent = "M", processIndependent = "Z", 
             processType = "moderators", processVariable = "Y")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)
@@ -2982,7 +2982,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
             processType = "moderators", processVariable = "med"), 
         list(processDependent = "M", processIndependent = "Z", 
             processType = "moderators", processVariable = "med")), 
-    residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE, 
+    residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE, 
     localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE, 
     localTestBootstrapSamples = 1000))
 set.seed(1)

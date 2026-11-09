@@ -26,6 +26,10 @@ getOptionsOneModel <- function() {
       "processRelationships" = list(),
       "residualCovariances" = TRUE,
       "statisticalPathPlot" = TRUE,
+      "residualVsFittedPlot" = FALSE,
+      "residualQqPlot" = FALSE,
+      "qqPlotCi" = FALSE,
+      "qqPlotCiLevel" = 0.95,
       "totalEffects" = TRUE,
       "localTests" = FALSE,
       "localTestType" = "cis",
@@ -191,6 +195,10 @@ getOptionsOneModelBadVarNames <- function(k, parms) {
       "processRelationships" = list(),
       "residualCovariances" = TRUE,
       "statisticalPathPlot" = TRUE,
+      "residualVsFittedPlot" = FALSE,
+      "residualQqPlot" = FALSE,
+      "qqPlotCi" = FALSE,
+      "qqPlotCiLevel" = 0.95,
       "totalEffects" = TRUE,
       "localTests" = FALSE,
       "localTestType" = "cis",
@@ -266,6 +274,10 @@ getOptionsOneModelBayes <- function() {
       "processRelationships" = list(),
       "residualCovariances" = TRUE,
       "statisticalPathPlot" = TRUE,
+      "residualVsFittedPlot" = FALSE,
+      "residualQqPlot" = FALSE,
+      "qqPlotCi" = FALSE,
+      "qqPlotCiLevel" = 0.95,
       "totalEffects" = TRUE
     )
   )
