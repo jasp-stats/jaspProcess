@@ -105,3 +105,34 @@ test_that("Incomplete Hayes configuration works", {
 	testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
 	jaspTools::expect_equal_plots(testPlot, "statistical-path-plot-incomplete")
 })
+
+test_that("Residual Q-Q plot with credible intervals works", {
+  skip_on_ci()
+  options <- getOptionsBayesian()
+  options$dependent <- "contNormal"
+  options$covariates <- list("contGamma", "contcor1")
+  options$factors <- list()
+  processModel <- getProcessModel(list(
+          list(processDependent = "contNormal", processIndependent = "contGamma",
+              processType = "mediators", processVariable = "contcor1")))
+  processModel$residualQqPlot <- TRUE
+  processModel$qqPlotCi <- TRUE
+  options$processModels <- list(processModel)
+  set.seed(1)
+  results <- jaspTools::runAnalysis("BayesianProcess", "debug.csv", options)
+
+  modelPlots <- results[["results"]][["residualPlotContainer"]][["collection"]][["residualPlotContainer_Model 1"]][["collection"]]
+  # One container per dependent variable: the outcome and the mediator
+  expect_setequal(sapply(modelPlots, `[[`, "title"), c("contNormal", "contcor1"))
+
+  outcomePlots <- modelPlots[[which(sapply(modelPlots, `[[`, "title") == "contNormal")]][["collection"]]
+  plotName <- outcomePlots[[grep("residualQqPlot$", names(outcomePlots))]][["data"]]
+  testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
+
+  # One credible interval (error bar) per observation, around its posterior mean
+  isErrorbar <- sapply(testPlot$layers, function(layer) inherits(layer$geom, "GeomErrorbar"))
+  expect_equal(sum(isErrorbar), 1)
+  bars <- ggplot2::layer_data(testPlot, which(isErrorbar))
+  expect_equal(nrow(bars), 100)
+  expect_true(all(bars$ymin < bars$y & bars$y < bars$ymax))
+})

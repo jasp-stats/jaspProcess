@@ -140,6 +140,14 @@ Form
 						conceptualPathPlotsChecked:		conceptualPathPlotsForAllModels.checked
 						statisticalPathPlotsChecked:	statisticalPathPlotsForAllModels.checked
 					}
+
+					Common.ResidualPlots
+					{
+						residualVsFittedPlotChecked:	residualVsFittedPlotForAllModels.checked
+						residualQqPlotChecked:			residualQqPlotForAllModels.checked
+						qqPlotCiChecked:				qqPlotCiForAllModels.checked
+						qqPlotCiLevelValue:				qqPlotCiLevelForAllModels.value
+					}
 				}
 			}
 		}
@@ -206,6 +214,7 @@ Form
 					}
 				}
 			}
+			SetSeed {}
 		}
 	}
 
@@ -323,6 +332,32 @@ Form
 					id:			statisticalPathPlotsForAllModels
 					name: 		"statisticalPathPlotsForAllModels"
 					label: 		qsTr("Statistical")
+				}
+			}
+
+			Group
+			{
+				title: qsTr("Residual Plots")
+				CheckBox
+				{
+					id:			residualVsFittedPlotForAllModels
+					name: 		"residualVsFittedPlotForAllModels"
+					label: 		qsTr("Residuals vs. predicted")
+				}
+				CheckBox
+				{
+					id:			residualQqPlotForAllModels
+					name: 		"residualQqPlotForAllModels"
+					label: 		qsTr("Q-Q plot standardized residuals")
+
+					CheckBox
+					{
+						id:					qqPlotCiForAllModels
+						name: 				"qqPlotCiForAllModels"
+						label: 				qsTr("Confidence interval")
+						childrenOnSameRow:	true
+						CIField { id: qqPlotCiLevelForAllModels; name: "qqPlotCiLevelForAllModels" }
+					}
 				}
 			}
 

@@ -126,7 +126,8 @@ getProcessModel <- function(processRelationships, name = "Model 1") {
               modelNumberIndependent = list(value = ""), modelNumberMediators = list(value = c()),
               modelNumberModeratorW = list(value = ""), modelNumberModeratorZ = list(value = ""), name = name,
               pathCoefficients = TRUE, intercepts = FALSE, processRelationships = processRelationships,
-              residualCovariances = TRUE, statisticalPathPlot = TRUE, totalEffects = TRUE,
+              residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE,
+              qqPlotCi = FALSE, qqPlotCiLevel = 0.95, totalEffects = TRUE,
               localTests = FALSE, localTestType = "cis", localTestBootstrap = FALSE,
               localTestBootstrapSamples = 1000))
 }
