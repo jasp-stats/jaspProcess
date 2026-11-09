@@ -3316,10 +3316,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
 
     if (options[["statisticalPathPlotsResidualVariances"]]) {
-      p <- p + 
+      # Look up the loop direction now: the plot can be drawn after its data has been decoded,
+      # when the variable names in `source` no longer match the vertex names of `graph`
+      covLoopEdges <- ggraph::get_edges()(covPlotLayout)
+      covLoopEdges$loopDirection <- ifelse(igraph::V(graph)[covLoopEdges$source]$isDep, 45, 135)
+      p <- p +
         ggraph::geom_edge_loop(
-          data = ggraph::get_edges()(covPlotLayout),
-          mapping = ggplot2::aes(label = covEdgeLabels, direction = ifelse(igraph::V(graph)[source]$isDep, 45, 135)),
+          data = covLoopEdges,
+          mapping = ggplot2::aes(label = covEdgeLabels, direction = loopDirection),
           edge_width = 0.9,
           color = "black",
           alpha = 0.5,

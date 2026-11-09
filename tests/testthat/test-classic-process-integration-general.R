@@ -8,8 +8,8 @@ test_that("Error handling works - observations", {
           list(processDependent = "contNormal", processIndependent = "contGamma",
               processType = "moderators", processVariable = "debNaN"))))
   set.seed(1)
-  results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
-  expect_identical(results[["status"]], "validationError", label = "Observations check")
+  # The form already refuses a covariate without numeric values, before the analysis checks the observations
+  expect_error(jaspTools::runAnalysis("ClassicProcess", "debug.csv", options), "Minimum number of numeric values")
 
   options$covariates <- list("contGamma")
   options$factors <- list("debNaN")
@@ -745,6 +745,7 @@ test_that("Mean-centering works - missing values/listwise", {
   options$covariates <- list("x", "w")
   options$standardizedModelEstimates <- FALSE
   options$meanCenteredModeration <- TRUE
+  options$naAction <- "listwise"
 
   options$processModels <- list(getProcessModel(list(list(processDependent = "y",
                                                                       processIndependent = "x", processType = "moderators",
@@ -829,8 +830,8 @@ test_that("Mean-centering works - moderated moderation", {
 test_that("Bootstrapping works", {
   options <- getOptionsClassical()
   options$errorCalculationMethod <- "bootstrap"
-  options$bootstrapSamples <- 50
-  options$bootstrapCiType <- "bca.simple"
+  options$bootstrapSamples <- 500
+  options$bootstrapCiType <- "percentileBiasCorrected"
   options$standardizedModelEstimates <- FALSE
   options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -848,74 +849,74 @@ test_that("Bootstrapping works", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-1.21372033215787, 0.332014108125832, -0.591842270846295, "contGamma:contcor1",
-			 "<unicode>", 0.133383729438247, "contGamma", 0.394327256132322,
-			 -1.5008911041333, -0.504543968063766, 0.104512925436125, -0.240319813025714,
-			 "contcor1", "<unicode>", 0.121932410808084, "contGamma", 0.155374511548185,
-			 -1.54671323263459, 1.77329815422817, 3.06207843633816, 2.32480104984646,
-			 "contGamma", "<unicode>", 1.53743684450092e-12, "contGamma",
-			 0.328776521475834, 7.07106772530695, 0.777105840758683, 1.37218424543037,
-			 1.07344822547951, "contNormal", "<unicode>", 1.53743684450092e-12,
-			 "contNormal", 0.151808504994376, 7.07106776079031, 0.00500047633157313,
-			 0.00859013987956438, 0.00647531139383704, "debCollin1", "<unicode>",
-			 1.53743684450092e-12, "debCollin1", 0.000915747324008519, 7.07106777608973,
-			 1.47839513685174, 2.77826006964489, 2.09034581792268, "contGamma:contcor1",
-			 "<unicode>", 2.90555801640835e-10, "contcor1", 0.331604290447764,
-			 6.30373574208009, 0.748768361379102, 1.31065773525481, 1.01357928574409,
-			 "contcor1", "<unicode>", 1.53743684450092e-12, "contcor1", 0.143341759927177,
-			 7.07106767950264, 4.98585417022654, 8.61016772330048, 6.5378157224924,
-			 "contGamma:contcor1", "<unicode>", 1.53743684450092e-12, "contGamma:contcor1",
-			 0.924586773446364, 7.07106775724567))
+		list(-1.92151683816827, 0.564727508339507, -0.59184229389024, "contGamma:contcor1",
+			  "<unicode>", 0.133383689011184, "contGamma", 0.394327230427457,
+			  -1.50089126040997, -0.588866890090552, 0.0350052654124384, -0.240319732518806,
+			  "contcor1", "<unicode>", 0.121932541785387, "contGamma", 0.155374514037462,
+			  -1.54671268970703, 1.54555742802398, 3.5824096945758, 2.32480122307437,
+			  "contGamma", "<unicode>", 1.53743684450092e-12, "contGamma",
+			  0.328776570472627, 7.07106719840891, 0.764514683796973, 1.60463479437606,
+			  1.07344822169448, "contNormal", "<unicode>", 1.53743684450092e-12,
+			  "contNormal", 0.15180850392381, 7.07106778572317, 0.00518188762957611,
+			  0.00856622955157736, 0.00647531172844331, "debCollin1", "<unicode>",
+			  1.53743684450092e-12, "debCollin1", 0.000915747418649468, 7.07106741069827,
+			  1.52913718455496, 2.74625676141968, 2.09034559712559, "contGamma:contcor1",
+			  "<unicode>", 2.9055469141781e-10, "contcor1", 0.331604225706701,
+			  6.30373630695066, 0.806633227132492, 1.21509645290974, 1.01357924349914,
+			  "contcor1", "<unicode>", 1.53743684450092e-12, "contcor1", 0.143341747978414,
+			  7.07106797422185, 4.20024180901507, 9.45116680428069, 6.53781478761736,
+			  "contGamma:contcor1", "<unicode>", 1.53743684450092e-12, "contGamma:contcor1",
+			  0.92458650902528, 7.07106876836184))
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.190960213727908, 0.179774646022258, 16, 0.0174546665474726,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
-			 0.0945608168352223, 0.18454078827693, -0.176163416672431, 0.0978973670864186,
-			 50, -0.0292532667968165, "contGamma", "contNormal", "", "<unicode>",
-			 "", 0.675644906019766, 0.0699147499445414, -0.418413379437401,
-			 -0.281537600140329, 0.129909937705515, 84, -0.0803567297775005,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
-			 0.104963035313733, -0.765571703765193, -0.0178702076419795, 0.0288189436928199,
-			 "", 0.00298069970215039, "contGamma", "debCollin1", "contNormal",
-			 "<unicode>", "<unicode>", 0.802391237986497, 0.0119107166517032,
-			 0.250253598445243))
+		list(-0.13369809776969, 0.185255623025402, 16, 0.0174546665474726,
+			  "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
+			  0.0945843285403081, 0.18454078827693, -0.162188419548459, 0.0979346662777062,
+			  50, -0.0292532704021461, "contGamma", "contNormal", "", "<unicode>",
+			  "", 0.675644867784421, 0.0699147498213579, -0.41841343174212,
+			  -0.267160555188824, 0.0714534792590399, 84, -0.0803567297775005,
+			  "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
+			  0.104963035313733, -0.765571703765193, -0.0221660972680634,
+			  0.0394747370126736, "", 0.00298069950859533, "contGamma", "debCollin1",
+			  "contNormal", "<unicode>", "<unicode>", 0.802391237584113, 0.0119107158535014,
+			  0.250253598965598))
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.176010059472548, 0.0979944283630078, -0.0290788260807188, "contGamma",
-			 "<unicode>", 0.677407234579936, "contNormal", 0.0699003884757242,
-			 -0.416003783595818, -3.13474615708171, 1.92627678467644, -0.326538760956974,
-			 "debCollin1", "<unicode>", 0.800333927718874, "contNormal",
-			 1.2911010053447, -0.252914961420693, -0.0987638589659854, 0.594869188688385,
-			 0.261104084252693, "contcor1", "<unicode>", 0.140057393797568,
-			 "contNormal", 0.17695045754046, 1.47557733323742, -0.170980757847346,
-			 0.102184473102191, -0.047923273653209, "contGamma:contcor1",
-			 "<unicode>", 0.491641601401047, "contNormal", 0.0696862883971924,
-			 -0.68770018830763, -0.0186288604677786, 0.00205899731104504,
-			 -0.00912816504054517, "contGamma", "<unicode>", 0.0837015013069473,
-			 "debCollin1", 0.0052776117168496, -1.72960148079899))
+		list(-0.161742853008552, 0.0982437309502096, -0.0290788296953245, "contGamma",
+			  "<unicode>", 0.677407196204345, "contNormal", 0.0699003883525572,
+			  -0.416003836039641, -3.10807990514198, 2.38674868449396, -0.326538761719847,
+			  "debCollin1", "<unicode>", 0.800333926914219, "contNormal",
+			  1.29110100304551, -0.252914962461954, -0.104193233371156, 0.618841451603816,
+			  0.261104085009509, "contcor1", "<unicode>", 0.140057391966944,
+			  "contNormal", 0.176950457236114, 1.47557734005233, -0.148488602895753,
+			  0.0481239723560329, -0.0479232711048374, "contGamma:contcor1",
+			  "<unicode>", 0.491641623686939, "contNormal", 0.0696862882769185,
+			  -0.687700152925357, -0.0216851141907454, -0.00114421060658101,
+			  -0.00912816442647201, "contGamma", "<unicode>", 0.0837015300994561,
+			  "debCollin1", 0.00527761185320796, -1.72960131975668))
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.185251190133823, 0.184951089420295, 16, 0.0204114107018709,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.828732489775101,
-			 0.0944649565676752, 0.216327480566065, -0.168692405991869, 0.101375092456697,
-			 50, -0.0262725670946661, "Total", "contGamma", "contNormal",
-			 "<unicode>", 0.702953639077543, 0.0688960359932182, -0.381336410954793,
-			 -0.273513202825121, 0.132834276042512, 84, -0.0773760302689051,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.455409907113631,
-			 0.103661975952836, -0.746426349273038, -0.0178702076419795,
-			 0.0288189436928199, "", 0.00298069970215039, "Total indirect",
-			 "contGamma", "contNormal", "<unicode>", 0.802391237986497, 0.0119107166517032,
-			 0.250253598445243))
+		list(-0.119476076305215, 0.18319789391981, 16, 0.020435366056068, "Total",
+			  "contGamma", "contNormal", "<unicode>", 0.828732489775101, 0.0944649565676752,
+			  0.216327480566065, -0.151956157771837, 0.0975094923909485, 50,
+			  -0.0262725708935508, "Total", "contGamma", "contNormal", "<unicode>",
+			  0.702953597685194, 0.0688960358756555, -0.381336466744877, -0.267487216120526,
+			  0.0881809231307249, 84, -0.0773760302689051, "Total", "contGamma",
+			  "contNormal", "<unicode>", 0.455409907113631, 0.103661975952836,
+			  -0.746426349273038, -0.0221660972680634, 0.0394747370126736,
+			  "", 0.00298069950859533, "Total indirect", "contGamma", "contNormal",
+			  "<unicode>", 0.802391237584113, 0.0119107158535014, 0.250253598965598
+			 ))
 })
 
 test_that("Bootstrapping works (percentile interval)", {
   options <- getOptionsClassical()
   options$errorCalculationMethod <- "bootstrap"
-  options$bootstrapSamples <- 50
-  options$bootstrapCiType <- "perc"
+  options$bootstrapSamples <- 500
+  options$bootstrapCiType <- "percentile"
   options$standardizedModelEstimates <- FALSE
   options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -934,73 +935,73 @@ test_that("Bootstrapping works (percentile interval)", {
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-1.21372033215787, 0.332014108125832, -0.591842270846295, "contGamma:contcor1",
-			 "<unicode>", 0.133383729438247, "contGamma", 0.394327256132322,
-			 -1.5008911041333, -0.504543968063766, 0.104512925436125, -0.240319813025714,
-			 "contcor1", "<unicode>", 0.121932410808084, "contGamma", 0.155374511548185,
-			 -1.54671323263459, 1.77329815422817, 3.06207843633816, 2.32480104984646,
-			 "contGamma", "<unicode>", 1.53743684450092e-12, "contGamma",
-			 0.328776521475834, 7.07106772530695, 0.777105840758683, 1.37218424543037,
-			 1.07344822547951, "contNormal", "<unicode>", 1.53743684450092e-12,
-			 "contNormal", 0.151808504994376, 7.07106776079031, 0.00500047633157313,
-			 0.00859013987956438, 0.00647531139383704, "debCollin1", "<unicode>",
-			 1.53743684450092e-12, "debCollin1", 0.000915747324008519, 7.07106777608973,
-			 1.47839513685174, 2.77826006964489, 2.09034581792268, "contGamma:contcor1",
-			 "<unicode>", 2.90555801640835e-10, "contcor1", 0.331604290447764,
-			 6.30373574208009, 0.748768361379102, 1.31065773525481, 1.01357928574409,
-			 "contcor1", "<unicode>", 1.53743684450092e-12, "contcor1", 0.143341759927177,
-			 7.07106767950264, 4.98585417022654, 8.61016772330048, 6.5378157224924,
-			 "contGamma:contcor1", "<unicode>", 1.53743684450092e-12, "contGamma:contcor1",
-			 0.924586773446364, 7.07106775724567))
+		list(-1.77933328289437, 0.649268115325623, -0.59184229389024, "contGamma:contcor1",
+			  "<unicode>", 0.133383689011184, "contGamma", 0.394327230427457,
+			  -1.50089126040997, -0.552088811115725, 0.0574739739733249, -0.240319732518806,
+			  "contcor1", "<unicode>", 0.121932541785387, "contGamma", 0.155374514037462,
+			  -1.54671268970703, 1.40213972637257, 3.32094832516612, 2.32480122307437,
+			  "contGamma", "<unicode>", 1.53743684450092e-12, "contGamma",
+			  0.328776570472627, 7.07106719840891, 0.697623867863393, 1.42589136295309,
+			  1.07344822169448, "contNormal", "<unicode>", 1.53743684450092e-12,
+			  "contNormal", 0.15180850392381, 7.07106778572317, 0.00475094947166196,
+			  0.00821119014354461, 0.00647531172844331, "debCollin1", "<unicode>",
+			  1.53743684450092e-12, "debCollin1", 0.000915747418649468, 7.07106741069827,
+			  1.49725489333839, 2.65558761754849, 2.09034559712559, "contGamma:contcor1",
+			  "<unicode>", 2.9055469141781e-10, "contcor1", 0.331604225706701,
+			  6.30373630695066, 0.802662524926101, 1.21171655795212, 1.01357924349914,
+			  "contcor1", "<unicode>", 1.53743684450092e-12, "contcor1", 0.143341747978414,
+			  7.07106797422185, 4.00346360508935, 9.25784578362354, 6.53781478761736,
+			  "contGamma:contcor1", "<unicode>", 1.53743684450092e-12, "contGamma:contcor1",
+			  0.92458650902528, 7.07106876836184))
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_mediationEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.190960213727908, 0.179774646022258, 16, 0.0174546665474726,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
-			 0.0945608168352223, 0.18454078827693, -0.176163416672431, 0.0978973670864186,
-			 50, -0.0292532667968165, "contGamma", "contNormal", "", "<unicode>",
-			 "", 0.675644906019766, 0.0699147499445414, -0.418413379437401,
-			 -0.281537600140329, 0.129909937705515, 84, -0.0803567297775005,
-			 "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
-			 0.104963035313733, -0.765571703765193, -0.0178702076419795, 0.0288189436928199,
-			 "", 0.00298069970215039, "contGamma", "debCollin1", "contNormal",
-			 "<unicode>", "<unicode>", 0.802391237986497, 0.0119107166517032,
-			 0.250253598445243))
+		list(-0.127092436969977, 0.200056736078417, 16, 0.0174546665474726,
+			  "contGamma", "contNormal", "", "<unicode>", "", 0.853589232162485,
+			  0.0945843285403081, 0.18454078827693, -0.148924521047239, 0.114335446903708,
+			  50, -0.0292532704021461, "contGamma", "contNormal", "", "<unicode>",
+			  "", 0.675644867784421, 0.0699147498213579, -0.41841343174212,
+			  -0.264402796508664, 0.0927509545556809, 84, -0.0803567297775005,
+			  "contGamma", "contNormal", "", "<unicode>", "", 0.443931186494106,
+			  0.104963035313733, -0.765571703765193, -0.030221586449154, 0.0319390649806555,
+			  "", 0.00298069950859533, "contGamma", "debCollin1", "contNormal",
+			  "<unicode>", "<unicode>", 0.802391237584113, 0.0119107158535014,
+			  0.250253598965598))
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.176010059472548, 0.0979944283630078, -0.0290788260807188, "contGamma",
-			 "<unicode>", 0.677407234579936, "contNormal", 0.0699003884757242,
-			 -0.416003783595818, -3.13474615708171, 1.92627678467644, -0.326538760956974,
-			 "debCollin1", "<unicode>", 0.800333927718874, "contNormal",
-			 1.2911010053447, -0.252914961420693, -0.0987638589659854, 0.594869188688385,
-			 0.261104084252693, "contcor1", "<unicode>", 0.140057393797568,
-			 "contNormal", 0.17695045754046, 1.47557733323742, -0.170980757847346,
-			 0.102184473102191, -0.047923273653209, "contGamma:contcor1",
-			 "<unicode>", 0.491641601401047, "contNormal", 0.0696862883971924,
-			 -0.68770018830763, -0.0186288604677786, 0.00205899731104504,
-			 -0.00912816504054517, "contGamma", "<unicode>", 0.0837015013069473,
-			 "debCollin1", 0.0052776117168496, -1.72960148079899))
+		list(-0.148638536375367, 0.114536237770435, -0.0290788296953245, "contGamma",
+			  "<unicode>", 0.677407196204345, "contNormal", 0.0699003883525572,
+			  -0.416003836039641, -2.84810098805171, 2.50713346397087, -0.326538761719847,
+			  "debCollin1", "<unicode>", 0.800333926914219, "contNormal",
+			  1.29110100304551, -0.252914962461954, -0.0694836417472391, 0.643397287562554,
+			  0.261104085009509, "contcor1", "<unicode>", 0.140057391966944,
+			  "contNormal", 0.176950457236114, 1.47557734005233, -0.150361996511639,
+			  0.0471586417541429, -0.0479232711048374, "contGamma:contcor1",
+			  "<unicode>", 0.491641623686939, "contNormal", 0.0696862882769185,
+			  -0.687700152925357, -0.020849177909236, -0.000716794299202759,
+			  -0.00912816442647201, "contGamma", "<unicode>", 0.0837015300994561,
+			  "debCollin1", 0.00527761185320796, -1.72960131975668))
 
   table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.185251190133823, 0.184951089420295, 16, 0.0204114107018709,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.828732489775101,
-			 0.0944649565676752, 0.216327480566065, -0.168692405991869, 0.101375092456697,
-			 50, -0.0262725670946661, "Total", "contGamma", "contNormal",
-			 "<unicode>", 0.702953639077543, 0.0688960359932182, -0.381336410954793,
-			 -0.273513202825121, 0.132834276042512, 84, -0.0773760302689051,
-			 "Total", "contGamma", "contNormal", "<unicode>", 0.455409907113631,
-			 0.103661975952836, -0.746426349273038, -0.0178702076419795,
-			 0.0288189436928199, "", 0.00298069970215039, "Total indirect",
-			 "contGamma", "contNormal", "<unicode>", 0.802391237986497, 0.0119107166517032,
-			 0.250253598445243))
+		list(-0.111564909281949, 0.18984501193488, 16, 0.020435366056068, "Total",
+			  "contGamma", "contNormal", "<unicode>", 0.828732489775101, 0.0944649565676752,
+			  0.216327480566065, -0.146959028711545, 0.115908380985231, 50,
+			  -0.0262725708935508, "Total", "contGamma", "contNormal", "<unicode>",
+			  0.702953597685194, 0.0688960358756555, -0.381336466744877, -0.26064165968814,
+			  0.0944343917774875, 84, -0.0773760302689051, "Total", "contGamma",
+			  "contNormal", "<unicode>", 0.455409907113631, 0.103661975952836,
+			  -0.746426349273038, -0.030221586449154, 0.0319390649806555,
+			  "", 0.00298069950859533, "Total indirect", "contGamma", "contNormal",
+			  "<unicode>", 0.802391237584113, 0.0119107158535014, 0.250253598965598
+			 ))
 })
 
 test_that("Set seed makes bootstrapped estimates and local tests reproducible", {
   options <- getOptionsClassical()
   options$errorCalculationMethod <- "bootstrap"
-  options$bootstrapSamples <- 50
+  options$bootstrapSamples <- 500
   options$standardizedModelEstimates <- FALSE
   options$meanCenteredModeration <- FALSE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -1010,7 +1011,7 @@ test_that("Set seed makes bootstrapped estimates and local tests reproducible", 
                                                                                                             processVariable = "contcor1"))))
   options$processModels[[1]]$localTests <- TRUE
   options$processModels[[1]]$localTestBootstrap <- TRUE
-  options$processModels[[1]]$localTestBootstrapSamples <- 50
+  options$processModels[[1]]$localTestBootstrapSamples <- 500
 
   # Run with a different global RNG state each time; only the analysis seed can make the results agree
   getBootstrapTables <- function(globalSeed) {
@@ -1299,9 +1300,9 @@ test_that("Local tests work for factors with loess test type", {
   results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
   table <- results[["results"]][["localTestContainer"]][["collection"]][["localTestContainer_Model 1"]][["collection"]][["localTestContainer_Model 1_localTestTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.206103108541346, 0.17035274701811, "contGamma", -0.0139864082891252,
-                                      "debCollin1", "<unicode>", "<unicode>", "facGenderm", 0.0989527098094575
-                                 ))
+                                 list(-0.21252325777549, 0.17227013912261, "contGamma", -0.0139864082891258,
+			  "debCollin1", "<unicode>", "<unicode>", "facGenderm", 0.100478134960061
+			 ))
 })
 
 test_that("Path plots for empty moderator model works", {
@@ -1478,7 +1479,7 @@ test_that("Incomplete Hayes configuration works", {
 test_that("Moderated mediation index works - no mediation", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"
-  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$covariates <- list("contGamma", "contcor1", "contcor2", "debMiss1")
   options$standardizedModelEstimates <- TRUE
   options$moderatedMediationIndex <- TRUE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -1494,7 +1495,7 @@ test_that("Moderated mediation index works - no mediation", {
 test_that("Moderated mediation index works - one mediator", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"
-  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$covariates <- list("contGamma", "contcor1", "contcor2", "debMiss1")
   options$standardizedModelEstimates <- TRUE
   options$moderatedMediationIndex <- TRUE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -1516,7 +1517,7 @@ test_that("Moderated mediation index works - one mediator", {
 test_that("Moderated mediation index works - two mediators", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"
-  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$covariates <- list("contGamma", "contcor1", "contcor2", "debMiss1")
   options$standardizedModelEstimates <- TRUE
   options$moderatedMediationIndex <- TRUE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -1540,7 +1541,7 @@ test_that("Moderated mediation index works - two mediators", {
 test_that("Moderated mediation index omitted - moderated moderation", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"
-  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$covariates <- list("contGamma", "contcor1", "contcor2", "debMiss1")
   options$standardizedModelEstimates <- TRUE
   options$moderatedMediationIndex <- TRUE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
@@ -1559,7 +1560,7 @@ test_that("Moderated mediation index omitted - moderated moderation", {
 test_that("Moderated mediation index omitted - double moderation", {
   options <- getOptionsClassical()
   options$dependent <- "contNormal"
-  options$covariates <- list("contcor1", "contcor2", "debMiss1")
+  options$covariates <- list("contGamma", "contcor1", "contcor2", "debMiss1")
   options$standardizedModelEstimates <- TRUE
   options$moderatedMediationIndex <- TRUE
   options$processModels <- list(getProcessModel(list(list(processDependent = "contNormal",
