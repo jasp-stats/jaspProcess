@@ -895,6 +895,21 @@ test_that("Test that .procGraphAddCovariates works - moderated mediation", {
   expect_equal(igraph::V(graph)[isTreat]$name, "contGamma")
 })
 
+test_that("Test that .procGraphAddCovariates rejects covariates that are already in the model", {
+  edgeList <- matrix(c("contGamma", "contNormal",
+                       "contGamma", "contcor1",
+                       "contcor1", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graph <- create_graph_from_edgeList(edgeList)
+
+  # X, a mediator, or Y as a covariate
+  for (v in c("contGamma", "contcor1", "contNormal")) {
+    expect_error(jaspProcess:::.procGraphAddCovariates(graph, c("contcor2", v)), paste0("Remove ", v, " from the covariates"))
+  }
+  # A moderator as a covariate
+  expect_error(jaspProcess:::.procGraphAddCovariates(createDummyGraphModelModeratedMediation(), "contcor2"), "Remove contcor2 from the covariates")
+})
+
 test_that("Test that .procModelGraphSingleModel adds covariates for Hayes configurations", {
   modelOptions <- list(
     inputType = "inputModelNumber",

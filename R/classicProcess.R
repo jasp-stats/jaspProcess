@@ -195,8 +195,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Endogenous variables that are not interaction terms: mediators and outcome
   targets <- igraph::V(graph)[!isExo & !isInt]$name
 
-  covNotInGraph <- covariates[!covariates %in% igraph::V(graph)$name]
-  graph <- igraph::add_vertices(graph, length(covNotInGraph), name = covNotInGraph)
+  # A covariate must be a separate variable: as X, M or Y it would be regressed on
+  # itself or duplicate a focal path, and as W or Z it would duplicate the
+  # moderator's paths. The dialog prevents this, but R syntax does not.
+  inModel <- covariates[covariates %in% igraph::V(graph)$name]
+  if (length(inModel) > 0)
+    stop(gettextf("Covariates must not also be the independent variable, a mediator, a moderator, or the dependent variable. Remove %s from the covariates.", paste(inModel, collapse = ", ")), call. = FALSE)
+
+  graph <- igraph::add_vertices(graph, length(covariates), name = covariates)
 
   edgeSources <- rep(covariates, each = length(targets))
   edgeTargets <- rep(targets, times = length(covariates))
