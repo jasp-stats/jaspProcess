@@ -1,6 +1,7 @@
 
 # MCMC results are not reproducible across platforms (different BLAS/RNG),
-# so Bayesian table comparisons are skipped on CI.
+# so tests that compare MCMC estimates exactly are skipped on CI. Tests that
+# check structure, or estimates against a tolerance, run everywhere.
 
 test_that("Missing values work without independent covariances", {
   skip_on_ci()
@@ -86,6 +87,8 @@ test_that("Missing values work without independent covariances", {
 })
 
 test_that("Incomplete Hayes configuration works", {
+  # TODO run on CI once the snapshots are regenerated in the current svglite
+  # format (720x576), as jasp-stats/jaspProcess#234 does for the classical ones
   skip_on_ci()
   options <- getOptionsBayesian()
   options$standardizedModelEstimates <- FALSE
@@ -107,7 +110,6 @@ test_that("Incomplete Hayes configuration works", {
 })
 
 test_that("Covariates in Hayes configuration work", {
-  skip_on_ci()
   options <- getOptionsBayesian()
   options$hayesNumber <- TRUE
   options$processModels <- list(getProcessModel(list()))
@@ -137,7 +139,6 @@ test_that("Covariates in Hayes configuration work", {
 })
 
 test_that("Mean-centered moderation evaluates conditional effects at the requested moderator values", {
-  skip_on_ci()
   # The moderator probes are computed on the mean-centered moderator, so the model
   # must be fitted on centered data too. Otherwise the conditional effects are
   # evaluated at moderator values shifted by the moderator mean (here by
@@ -168,7 +169,6 @@ test_that("Mean-centered moderation evaluates conditional effects at the request
 })
 
 test_that("Model summary works for models fitted to different numbers of cases", {
-  skip_on_ci()
   # Without independent covariances, cases with a missing predictor are removed, here
   # only from Model 2, which has a covariate with missing values. loo_compare() stops for
   # models with different numbers of cases, so the LOO difference must be left out, and
@@ -197,7 +197,6 @@ test_that("Model summary works for models fitted to different numbers of cases",
 })
 
 test_that("Residual Q-Q plot with credible intervals works", {
-  skip_on_ci()
   options <- getOptionsBayesian()
   options$dependent <- "contNormal"
   options$covariates <- list("contGamma", "contcor1")
