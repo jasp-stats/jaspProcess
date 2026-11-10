@@ -1644,7 +1644,7 @@ test_that("Covariates do not change the node colours of the other variables in p
   runModel7 <- function(covariates) {
     options <- getOptionsClassical()
     options$useColorPalette <- TRUE
-    options$pathPlotsLabelLength <- 20 # full labels, so that nodes can be matched across plots
+    options$pathPlotsLabelLength <- 10 # full labels (the form's maximum), so that nodes can be matched across plots
     options$processModels <- list(getProcessModel(list()))
     options$processModels[[1]]$inputType <- "inputModelNumber"
     options$processModels[[1]]$modelNumber <- 7
