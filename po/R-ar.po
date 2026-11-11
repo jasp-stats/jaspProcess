@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.97.1\n"
 "POT-Creation-Date: 2026-07-04 04:55\n"
-"PO-Revision-Date: 2026-11-11 19:11+0000\n"
+"PO-Revision-Date: 2026-11-12 10:41+0000\n"
 "Last-Translator: Fahad Mahfouz Al-Subhi "
 "<fahadalsubhi@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/jasp/jaspprocess-"
@@ -16,25 +16,25 @@ msgstr ""
 "X-Generator: Weblate 2026.11.2.dev0\n"
 
 msgid "Process Analysis"
-msgstr ""
+msgstr "تحليل العملية"
 
 msgid "Model summary"
-msgstr ""
+msgstr "ملخص النموذج"
 
 msgid "WAIC"
-msgstr ""
+msgstr "WAIC"
 
 msgid "LOOIC"
-msgstr ""
+msgstr "LOOIC"
 
 msgid "PPP"
-msgstr ""
+msgstr "PPP"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "BIC weight"
-msgstr ""
+msgstr "وزن BIC"
 
 msgid "Estimate"
 msgstr "التقدير"
@@ -43,13 +43,13 @@ msgid "SE"
 msgstr "الخطأ المعياري (SE)"
 
 msgid "LOO Difference"
-msgstr ""
+msgstr "الفرق في LOO"
 
 msgid "ELPD"
-msgstr ""
+msgstr "ELPD"
 
 msgid "Ratio"
-msgstr ""
+msgstr "النسبة"
 
 msgid "n"
 msgstr "n"
@@ -79,73 +79,86 @@ msgid "R-hat"
 msgstr "R-hat"
 
 msgid "ESS (bulk)"
-msgstr ""
+msgstr "حجم العينة الفعّال (جسم التوزيع)"
 
 msgid "ESS (tail)"
-msgstr ""
+msgstr "حجم العينة الفعّال (الذيل)"
 
 msgid "Warning:"
-msgstr ""
+msgstr "تحذير:"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "معاملات المسار"
 
 msgid "Label"
-msgstr ""
+msgstr "التسمية"
 
 msgid "Prior"
 msgstr "قبلي"
 
 msgid "Direct and indirect effects"
-msgstr ""
+msgstr "الآثار المباشرة وغير المباشرة"
 
 msgid "Total effects"
-msgstr ""
+msgstr "التأثيرات الكلية"
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "تغايرات البواقي"
 
 msgid "MCMC Plots"
-msgstr ""
+msgstr "مخططات مونت كارلو بسلسلة ماركوف (MCMC)"
 
 msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
 msgstr ""
+"تحذير: تقدير WAIC غير موثوق؛ يوجد تقدير واحد على الأقل للمعلمات الفعّالة "
+"(p_waic) أكبر من 0.4. نوصي باستخدام LOO بدلًا منه."
 
 msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
 msgstr ""
+"تحذير: تقدير LOO غير موثوق؛ توجد مشاهدة واحدة على الأقل تتجاوز فيها معلمة "
+"الشكل (k) لتوزيع باريتو المعمّم 0.5."
 
 msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
 msgstr ""
+"لا يمكن حساب WAIC وLOO إن لم تُقدَّر تغايرات المتغيرات المستقلة التي تتضمن "
+"بيانات مفقودة."
 
 msgid "Estimates might be biased -- %i divergent transitions after warmup."
-msgstr ""
+msgstr "قد تكون التقديرات متحيزة؛ عدد الانتقالات المتباعدة بعد التهيئة: %i."
 
 msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
 msgstr ""
+"كان الكسر البايزي للمعلومات المفقودة (BFMI) منخفضًا جدًا في %i من السلاسل؛ فلم "
+"يُستكشف التوزيع البعدي بكفاءة."
 
 msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
 msgstr ""
+"قد يكون إجراء مونت كارلو الهاملتوني غير كفؤ؛ تجاوزت %i من الانتقالات أقصى عمق "
+"للشجرة."
 
 msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
 msgstr ""
+"دقة تقدير منخفضة للكميات %1$s؛ أصغر حجم عينة فعّال (ESS) هو %2$.2f < %3$1.0f."
 
 msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
+"قد يكون الاستدلال غير موثوق؛ ربما لم تتقارب سلاسل MCMC، وأكبر قيمة R-hat هي "
+"%1$.3f > %2$.2f."
 
 msgid "Dependent variables must be continuous."
-msgstr ""
+msgstr "يجب أن تكون المتغيرات التابعة مستمرة."
 
 msgid "Hayes number"
-msgstr ""
+msgstr "رقم هايز"
 
 msgid "Model configuration number defined by Hayes (2022)."
-msgstr ""
+msgstr "رقم تشكيل النموذج المعرَّف بواسطة هايز (2022)."
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "AIC weight"
-msgstr ""
+msgstr "وزن AIC"
 
 msgid "Log-likelihood"
 msgstr "لوغاريتم الإمكان"
@@ -154,121 +167,137 @@ msgid "df"
 msgstr "درجات الحرية"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "الخطأ المعياري"
 
 msgid "z-value"
-msgstr ""
+msgstr "قيمة z"
 
 msgid "p"
 msgstr "p"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "فترة الثقة %s%%"
 
 msgid "Std. Estimate"
-msgstr ""
+msgstr "التقدير المعياري"
 
 msgid "bias-corrected percentile"
-msgstr ""
+msgstr "المئين المصحح للتحيز"
 
 msgid "percentile"
-msgstr ""
+msgstr "المئين"
 
 msgid "normal theory"
-msgstr ""
+msgstr "نظرية التوزيع الطبيعي"
 
 msgid "Moderated mediation index"
-msgstr ""
+msgstr "مؤشر الوساطة المعدَّلة"
 
 msgid "Total"
 msgstr "الإجمالي"
 
 msgid "Total indirect"
-msgstr ""
+msgstr "إجمالي الأثر غير المباشر"
 
 msgid "Local tests"
-msgstr ""
+msgstr "اختبارات محلية"
 
 msgid "Conditional independence tests"
-msgstr ""
+msgstr "اختبارات الاستقلال المشروط"
 
 msgid "Model did not converge."
-msgstr ""
+msgstr "النموذج لم يتقارب."
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Std. error"
-msgstr ""
+msgstr "الخطأ المعياري"
 
 msgid "R-squared"
-msgstr ""
+msgstr "R المربع"
 
 msgid "Conceptual path plot"
-msgstr ""
+msgstr "مخطط المسار النظري"
 
 msgid "Statistical path plot"
-msgstr ""
+msgstr "مخطط المسار الإحصائي"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "صياغة النموذج"
 
 msgid "Model must be a directed acyclic graph -- it must not contain loops."
 msgstr ""
+"يجب أن يكون النموذج رسمًا بيانيًا موجهًا غير دوري، أي يجب ألا يحتوي على حلقات."
 
 msgid "%1$s: Hayes configuration %2$s not implemented"
-msgstr ""
+msgstr "%1$s: تشكيلة هايز %2$s غير منفّذة"
 
 msgid "Estimation failed because of an internal error."
-msgstr ""
+msgstr "فشل التقدير بسبب خطأ داخلي."
 
 msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
 msgstr ""
+"تقدير الإمكان الأعظم بالمعلومات الكاملة متاح فقط مع المقدِّرين «ML» أو «تلقائي». "
+"يرجى اختيار مقدِّر آخر أو خيار مختلف لمعالجة القيم المفقودة."
 
 msgid "<li>Some implied model variances are > 1,000,000</li>"
-msgstr ""
+msgstr "<li>بعض تباينات النموذج الضمنية > 1,000,000</li>"
 
 msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
 msgstr ""
+"<li>بعض تباينات النموذج الضمنية أكبر من غيرها بما لا يقل عن 1000 ضعف</li>"
 
 msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
 msgstr ""
+"تعذر إيجاد معكوس مصفوفة المعلومات. قد يشير ذلك إلى أن النموذج غير قابل "
+"للتعيين. الأسباب المحتملة: <ul>%s</ul>"
 
 msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
 msgstr ""
+"يوجد نموذج واحد على الأقل غير مكتمل، أو لم يُحدَّد أي نموذج. يرجى إضافة نموذج "
+"واحد على الأقل وإكمال جميع النماذج المحددة."
 
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
 msgstr ""
+"لا تتوفر معايير المعلومات AIC وBIC والمعايير الإضافية إلا مع مقدِّرات من نوع ML."
 
 msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
 msgstr ""
+"<b>مهم</b>: لا يمكن تفسير تقديرات المعلمات كآثار سببية إلا عند ضبط جميع آثار "
+"العوامل المربكة وتوصيف اتجاهات الآثار السببية بصورة صحيحة."
 
 msgid "Please check the model specification and lavaan syntax."
-msgstr ""
+msgstr "يرجى التحقق من توصيف النموذج وصياغة lavaan."
 
 msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
 msgstr ""
+"لا يمكن تطبيق الاختبار الخطي على المتغيرات الفئوية. اختر نوع اختبار آخر أو أزل "
+"جميع المتغيرات الفئوية من النموذج."
 
 msgid "The specified model does not imply any (conditional) independencies that can be tested."
-msgstr ""
+msgstr "لا يقتضي النموذج المحدد أي علاقات استقلال (شرطي) يمكن اختبارها."
 
 msgid "Partially standardized estimate because effect involves categorical predictor."
-msgstr ""
+msgstr "تقدير معياري جزئيًا لأن الأثر يتضمن متغيرًا متنبئًا فئويًا."
 
 msgid "Moderation effect estimates are based on mean-centered variables."
-msgstr ""
+msgstr "تستند تقديرات أثر التعديل إلى متغيرات متمركزة حول متوسطاتها."
 
 msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
 msgstr ""
+"فترات الثقة محسوبة بالبوتستراب بطريقة %s. تستند الأخطاء المعيارية وقيم <em>z</"
+"em> وقيم <em>p</em> إلى طريقة دلتا."
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
-msgstr ""
+msgstr "لم تنجح جميع عينات البوتستراب: تستند فترة الثقة إلى %.0f من العينات."
 
 msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
 msgstr ""
+"لا يتضمن النموذج آثارًا غير مباشرة معدَّلة يمكن<br>حساب مؤشر الوساطة المعدَّلة لها."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
-msgstr ""
+msgstr "عُدّلت قيم <em>p</em> للمقارنات المتعددة بطريقة %s."
