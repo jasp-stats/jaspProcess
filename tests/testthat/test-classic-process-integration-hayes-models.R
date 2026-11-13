@@ -20673,6 +20673,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_totalEffectsTable"]][["data"]]
+	# The z of the near-zero first total effect differs around its 4th decimal between platforms
+	withr::with_options(list(jaspRoundToPrecision = function(x) signif(round(x, digits = 3), digits = 3)),
 	jaspTools::expect_equal_tables(table,
 		list(-0.185157807744304, 0.190009066763626, 16, 0.00242562950966114,
 			 0.0035091403879007, "Total", "contGamma", "contNormal", "<unicode>",
@@ -20691,7 +20693,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 0.0157028014735802, 0.548293893818917, -0.0233451957096076,
 			 0.0299160870217001, 84, 0.00328544565604624, 0.00475303008887594,
 			 "Total indirect", "contGamma", "contNormal", "<unicode>", 0.808933216211515,
-			 0.0135873115912909, 0.241802481231984))
+			 0.0135873115912909, 0.241802481231984)))
 
 
 

@@ -198,9 +198,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     # Encode variable names if the model is defined through the "Paths" dialog
     if (inputVariables) {
-      dependent       <- encodeColNames(dependent)
-      independent     <- encodeColNames(independent)
-      processVariable <- encodeColNames(processVariable)
+      dependent       <- .procEncodeColNames(dependent)
+      independent     <- .procEncodeColNames(independent)
+      processVariable <- .procEncodeColNames(processVariable)
     }
 
     # Add vertices for independent and dependent var
@@ -393,6 +393,17 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(lapply(processRelationships, .procEncodePath))
 }
 
+.procEncodeColNames <- function(varNames) {
+  # The analysis form sends the variables picked in a model's rows encoded (older JASP versions sent the plain names).
+  # Encoding an encoded name again would also encode any column whose name occurs in it, e.g. a column "Encoded".
+  if (length(varNames) == 0)
+    return(varNames)
+
+  isEncoded <- varNames != "" & decodeColNames(varNames, strict = TRUE) != varNames
+  varNames[!isEncoded] <- encodeColNames(varNames[!isEncoded])
+  return(varNames)
+}
+
 .procDecodeVarNames <- function(varNames) {
   # Decode a vector of var names
   encoding <- .procVarEncoding()
@@ -414,23 +425,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Apply the JASP coding to X, W, Z, and M if the user has specified the variables and 'vars' still contains the dummy version
   if (independent != "" && encoding$X %in% vars) {
     # Apply JASP encoding:
-    jaspCodedX <- encodeColNames(independent)
+    jaspCodedX <- .procEncodeColNames(independent)
     # Sub the JASP-coded name into 'vars':
     vars       <- gsub(encoding$X, jaspCodedX, vars)
   }
 
   if (all(modW != "") && encoding$W %in% vars) {
-    jaspCodedW <- encodeColNames(modW)
+    jaspCodedW <- .procEncodeColNames(modW)
     vars       <- gsub(encoding$W, jaspCodedW, vars)
   }
 
   if (all(modZ != "") && encoding$Z %in% vars) {
-    jaspCodedZ <- encodeColNames(modZ)
+    jaspCodedZ <- .procEncodeColNames(modZ)
     vars       <- gsub(encoding$Z, jaspCodedZ, vars)
   }
 
   if (length(mediators) > 0 && any(grepl(encoding$M, vars))) {
-    jaspCodedM <- encodeColNames(mediators)
+    jaspCodedM <- .procEncodeColNames(mediators)
 
     ## Find the mediators in 'vars':
     meds <- grep(paste0("^", encoding$M, "\\d?$"), vars, value = TRUE)
