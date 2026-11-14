@@ -736,3 +736,82 @@ msgstr ""
 msgctxt "ModerationProbes|"
 msgid " SD from the mean"
 msgstr ""
+
+msgctxt "BayesianProcess|"
+msgid "Residual Plots"
+msgstr ""
+
+msgctxt "BayesianProcess|"
+msgid "Residuals vs. predicted"
+msgstr ""
+
+msgctxt "BayesianProcess|"
+msgid "Q-Q plot standardized residuals"
+msgstr ""
+
+msgctxt "BayesianProcess|"
+msgid "Credible interval"
+msgstr ""
+
+msgctxt "ClassicProcess|"
+msgid "Residual Plots"
+msgstr ""
+
+msgctxt "ClassicProcess|"
+msgid "Residuals vs. predicted"
+msgstr ""
+
+msgctxt "ClassicProcess|"
+msgid "Q-Q plot standardized residuals"
+msgstr ""
+
+msgctxt "ClassicProcess|"
+msgid "Confidence interval"
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid "Residual Plots"
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid "Residuals vs. predicted"
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid ""
+"For each dependent variable (the outcome and each mediator), a scatterplot "
+"of the residuals against the predicted values. Under constant residual "
+"variance (homoscedasticity), the residuals scatter evenly around zero."
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid "Q-Q plot standardized residuals"
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid ""
+"For each dependent variable (the outcome and each mediator), a Q-Q plot of "
+"the standardized residuals. If the residuals are normally distributed, the "
+"points lie close to the diagonal."
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid "Credible interval"
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid "Confidence interval"
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid ""
+"Adds the central credible interval of each standardized residual as an error "
+"bar."
+msgstr ""
+
+msgctxt "ResidualPlots|"
+msgid ""
+"Adds a confidence band around the diagonal. The band shows the expected "
+"range of the standardized residuals under normality; points outside the band "
+"suggest deviations from normality."
+msgstr ""

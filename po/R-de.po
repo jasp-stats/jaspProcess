@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
-"POT-Creation-Date: 2025-07-19 04:00\n"
+"POT-Creation-Date: 2026-11-14 03:46\n"
 "PO-Revision-Date: 2026-10-14 19:51+0000\n"
-"Last-Translator: Johannes Keyser <jokeyser@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Johannes Keyser "
+"<jokeyser@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspprocess-"
 "r/de/>\n"
 "Language: de\n"
@@ -242,6 +242,27 @@ msgstr "Konzeptuelles Pfaddiagramm"
 
 msgid "Statistical path plot"
 msgstr "Statistisches Pfaddiagramm"
+
+#, fuzzy
+msgid "Residual plots"
+msgstr "Residualkovarianzen"
+
+#, fuzzy
+msgid "Residuals vs. Predicted"
+msgstr "Residualkovarianzen"
+
+msgid "Q-Q Plot Standardized Residuals"
+msgstr ""
+
+msgid "Standardized residuals"
+msgstr ""
+
+msgid "Predicted Values"
+msgstr ""
+
+#, fuzzy
+msgid "Residuals"
+msgstr "Residualkovarianzen"
 
 msgid "Model syntax"
 msgstr "Modell-Syntax"

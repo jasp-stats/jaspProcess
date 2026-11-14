@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.97.1\n"
-"POT-Creation-Date: 2026-07-04 04:55\n"
+"POT-Creation-Date: 2026-11-14 03:46\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,6 +206,24 @@ msgid "Conceptual path plot"
 msgstr ""
 
 msgid "Statistical path plot"
+msgstr ""
+
+msgid "Residual plots"
+msgstr ""
+
+msgid "Residuals vs. Predicted"
+msgstr ""
+
+msgid "Q-Q Plot Standardized Residuals"
+msgstr ""
+
+msgid "Standardized residuals"
+msgstr ""
+
+msgid "Predicted Values"
+msgstr ""
+
+msgid "Residuals"
 msgstr ""
 
 msgid "Model syntax"

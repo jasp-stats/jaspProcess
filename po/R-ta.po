@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
-"POT-Creation-Date: 2025-07-19 04:00\n"
+"POT-Creation-Date: 2026-11-14 03:46\n"
 "PO-Revision-Date: 2026-01-01 18:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspprocess-r/"
@@ -240,6 +240,27 @@ msgstr "கருத்தியல் பாதை சூழ்ச்சி"
 msgid "Statistical path plot"
 msgstr "புள்ளிவிவர பாதை சூழ்ச்சி"
 
+#, fuzzy
+msgid "Residual plots"
+msgstr "மீதமுள்ள இணை வேறுபாடுகள்"
+
+#, fuzzy
+msgid "Residuals vs. Predicted"
+msgstr "மீதமுள்ள இணை வேறுபாடுகள்"
+
+msgid "Q-Q Plot Standardized Residuals"
+msgstr ""
+
+msgid "Standardized residuals"
+msgstr ""
+
+msgid "Predicted Values"
+msgstr ""
+
+#, fuzzy
+msgid "Residuals"
+msgstr "மீதமுள்ள இணை வேறுபாடுகள்"
+
 msgid "Model syntax"
 msgstr "மாதிரி தொடரியல்"
 
@@ -337,14 +358,14 @@ msgstr ""
 "<em> ப </em>-மதிப்புகள் டெல்டா முறையை அடிப்படையாகக் கொண்டவை."
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
-msgstr ""
-"அனைத்து துவக்க மாதிரிகளும் வெற்றிபெறவில்லை: சிஐ %.0f மாதிரிகள் அடிப்படையில்."
+msgstr "அனைத்து துவக்க மாதிரிகளும் வெற்றிபெறவில்லை: சிஐ %.0f மாதிரிகள் அடிப்படையில்."
 
 msgid ""
 "Model does not contain moderated indirect effects for<br>which the moderated "
 "medation index can be calculated."
 msgstr ""
-"மாதிரியில் மிதமான மறைமுக விளைவுகள் இல்லை,<br>அதற்காக மிதமான தியான குறியீட்டைக் கணக்கிடலாம்."
+"மாதிரியில் மிதமான மறைமுக விளைவுகள் இல்லை,<br>அதற்காக மிதமான தியான குறியீட்டைக் "
+"கணக்கிடலாம்."
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."
 msgstr "<em> ப </em>- %s முறையுடன் பல ஒப்பீடுகளுக்கு சரிசெய்யப்பட்ட மதிப்புகள்."

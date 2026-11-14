@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.5\n"
-"POT-Creation-Date: 2025-11-15 03:50\n"
+"POT-Creation-Date: 2026-11-14 03:46\n"
 "PO-Revision-Date: 2025-12-29 01:00+0000\n"
 "Last-Translator: Zev Oster <zevelijah@gmail.com>\n"
 "Language-Team: Tibetan <https://hosted.weblate.org/projects/jasp/jaspprocess-"
@@ -106,28 +106,42 @@ msgstr ""
 msgid "MCMC Plots"
 msgstr ""
 
-msgid "Warning: WAIC estimate unreliable -- at least one effective parameter estimate (p_waic) larger than 0.4. We recommend using LOO instead."
+msgid ""
+"Warning: WAIC estimate unreliable -- at least one effective parameter "
+"estimate (p_waic) larger than 0.4. We recommend using LOO instead."
 msgstr ""
 
-msgid "Warning: LOO estimate unreliable -- at least one observation with shape parameter (k) of the generalized Pareto distribution higher than 0.5."
+msgid ""
+"Warning: LOO estimate unreliable -- at least one observation with shape "
+"parameter (k) of the generalized Pareto distribution higher than 0.5."
 msgstr ""
 
-msgid "WAIC and LOO cannot be calculated if no covariances are estimated for independent variables with missing data."
+msgid ""
+"WAIC and LOO cannot be calculated if no covariances are estimated for "
+"independent variables with missing data."
 msgstr ""
 
 msgid "Estimates might be biased -- %i divergent transitions after warmup."
 msgstr ""
 
-msgid "Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- the posterior distribution was not explored efficiently."
+msgid ""
+"Bayesian Fraction of Missing Information (BFMI) was too low in %i chains -- "
+"the posterior distribution was not explored efficiently."
 msgstr ""
 
-msgid "The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition exceeded the maximum tree depth."
+msgid ""
+"The Hamiltonian Monte Carlo procedure might be inefficient -- %i transition "
+"exceeded the maximum tree depth."
 msgstr ""
 
-msgid "Low estimation accuracy for %1$s quantities -- the smallest Effective Sample Size (ESS) is %2$.2f < %3$1.0f."
+msgid ""
+"Low estimation accuracy for %1$s quantities -- the smallest Effective Sample "
+"Size (ESS) is %2$.2f < %3$1.0f."
 msgstr ""
 
-msgid "Inference possibly unreliable -- MCMC chains might not have converged; the largest R-hat is %1$.3f > %2$.2f."
+msgid ""
+"Inference possibly unreliable -- MCMC chains might not have converged; the "
+"largest R-hat is %1$.3f > %2$.2f."
 msgstr ""
 
 msgid "Dependent variables must be continuous."
@@ -211,6 +225,24 @@ msgstr ""
 msgid "Statistical path plot"
 msgstr ""
 
+msgid "Residual plots"
+msgstr ""
+
+msgid "Residuals vs. Predicted"
+msgstr ""
+
+msgid "Q-Q Plot Standardized Residuals"
+msgstr ""
+
+msgid "Standardized residuals"
+msgstr ""
+
+msgid "Predicted Values"
+msgstr ""
+
+msgid "Residuals"
+msgstr ""
+
 msgid "Model syntax"
 msgstr ""
 
@@ -223,49 +255,73 @@ msgstr ""
 msgid "Estimation failed because of an internal error."
 msgstr ""
 
-msgid "Full Information Maximum Likelihood estimation only available with 'ML' or 'Auto' estimators. Please choose a different estimator or option for missing value handling."
+msgid ""
+"Full Information Maximum Likelihood estimation only available with 'ML' or "
+"'Auto' estimators. Please choose a different estimator or option for missing "
+"value handling."
 msgstr ""
 
 msgid "<li>Some implied model variances are > 1,000,000</li>"
 msgstr ""
 
-msgid "<li>Some implied model variances are at least a factor 1000 times larger than others</li>"
+msgid ""
+"<li>Some implied model variances are at least a factor 1000 times larger "
+"than others</li>"
 msgstr ""
 
-msgid "The information matrix could not be inverted. This may be a symptom that the model is not identified. Possible reasons: <ul>%s</ul>"
+msgid ""
+"The information matrix could not be inverted. This may be a symptom that the "
+"model is not identified. Possible reasons: <ul>%s</ul>"
 msgstr ""
 
-msgid "At least one model is incomplete or no model is specified. Please add at least one model and complete specified models."
+msgid ""
+"At least one model is incomplete or no model is specified. Please add at "
+"least one model and complete specified models."
 msgstr ""
 
-msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators."
+msgid ""
+"The AIC, BIC and additional information criteria are only available with ML-"
+"type estimators."
 msgstr ""
 
-msgid "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."
+msgid ""
+"<b>Important</b>: Parameter estimates can only be interpreted as causal "
+"effects if all confounding effects are accounted for and if the causal "
+"effect directions are correctly specified."
 msgstr ""
 
 msgid "Please check the model specification and lavaan syntax."
 msgstr ""
 
-msgid "Linear test type cannot be applied to factor variables. Choose a different test type or remove all factor variables from the model."
+msgid ""
+"Linear test type cannot be applied to factor variables. Choose a different "
+"test type or remove all factor variables from the model."
 msgstr ""
 
-msgid "The specified model does not imply any (conditional) independencies that can be tested."
+msgid ""
+"The specified model does not imply any (conditional) independencies that can "
+"be tested."
 msgstr ""
 
-msgid "Partially standardized estimate because effect involves categorical predictor."
+msgid ""
+"Partially standardized estimate because effect involves categorical "
+"predictor."
 msgstr ""
 
 msgid "Moderation effect estimates are based on mean-centered variables."
 msgstr ""
 
-msgid "Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values and <em>p</em>-values are based on the delta method."
+msgid ""
+"Confidence intervals are %s bootstrapped. Standard errors, <em>z</em>-values "
+"and <em>p</em>-values are based on the delta method."
 msgstr ""
 
 msgid "Not all bootstrap samples were successful: CI based on %.0f samples."
 msgstr ""
 
-msgid "Model does not contain moderated indirect effects for<br>which the moderated medation index can be calculated."
+msgid ""
+"Model does not contain moderated indirect effects for<br>which the moderated "
+"medation index can be calculated."
 msgstr ""
 
 msgid "<em>p</em>-values adjusted for multiple comparisons with the %s method."

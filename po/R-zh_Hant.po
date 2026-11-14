@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.19.2\n"
-"POT-Creation-Date: 2025-07-19 04:00\n"
+"POT-Creation-Date: 2026-11-14 03:46\n"
 "PO-Revision-Date: 2026-05-24 16:11+0000\n"
 "Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
@@ -229,6 +229,27 @@ msgstr "概念模型圖"
 msgid "Statistical path plot"
 msgstr "統計模型圖"
 
+#, fuzzy
+msgid "Residual plots"
+msgstr "殘差共變數"
+
+#, fuzzy
+msgid "Residuals vs. Predicted"
+msgstr "殘差共變數"
+
+msgid "Q-Q Plot Standardized Residuals"
+msgstr ""
+
+msgid "Standardized residuals"
+msgstr ""
+
+msgid "Predicted Values"
+msgstr ""
+
+#, fuzzy
+msgid "Residuals"
+msgstr "殘差共變數"
+
 msgid "Model syntax"
 msgstr "模型的 Lavaan 程式碼"
 
@@ -265,7 +286,8 @@ msgstr "資訊矩陣無法求逆。此可能為模型未能識別之徵兆。可
 msgid ""
 "At least one model is incomplete or no model is specified. Please add at "
 "least one model and complete specified models."
-msgstr "至少有一個模型未完整設定，或未指定任何模型。請至少新增一個模型並完成設定。"
+msgstr ""
+"至少有一個模型未完整設定，或未指定任何模型。請至少新增一個模型並完成設定。"
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
