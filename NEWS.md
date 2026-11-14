@@ -17,6 +17,8 @@
 # jaspProcess (development version)
 
 ## Added
+* Covariates box for the "Hayes configuration" input type. As in PROCESS, covariates are added to every mediator and outcome equation, so the path coefficients, effects, and R² are adjusted for them. Covariates can be continuous or categorical, and they are left out of the mediation and total effects tables and the conceptual path plot ([Issue #63](https://github.com/jasp-stats/jaspProcess/issues/63), [Issue #4388](https://github.com/jasp-stats/jasp-issues/issues/4388), [Issue #3481](https://github.com/jasp-stats/jasp-issues/issues/3481)).
+* The model summary table adds a footnote when the compared models differ in the variables they describe or in the cases used, because their information criteria are then not comparable. With `Independent variables` selected under `Residual Covariances` (the default), this includes models with different independent variables, moderators, or covariates, because the likelihood then also describes these variables.
 * Residual plots for each model (`Residuals vs. predicted` and `Q-Q plot standardized residuals`), shown for every dependent variable (the outcome and each mediator), to check the homoscedasticity and normality assumptions of the regression equations. Available in the classical and Bayesian analysis, per model or for all models at once. As in the other JASP analyses, the Q-Q plot can show a confidence band (classical) or the credible interval of each residual (Bayesian).
 * `Set seed` option (Options > Repeatability) in the classical analysis, so bootstrapped standard errors and confidence intervals, and bootstrapped local tests, can be reproduced.
 
@@ -24,6 +26,10 @@
 * Changing the number of bootstrap replications in the classical analysis now refits the models; before, the results of the previous number of replications were kept.
 * Requesting output for a single model (e.g., a plot or a parameter estimates table) no longer recomputes the model summary and R² tables. In the Bayesian analysis, this avoids recomputing WAIC and LOO for every model.
 * Process models with a categorical predictor no longer error when a factor level label contains a space or other special character (e.g. "emotion regulation"). Such labels are now coerced to syntactically valid names before being used in mean-centering and lavaan model syntax ([Issue #3597](https://github.com/jasp-stats/jasp-issues/issues/3597)).
+* With listwise deletion, mean-centering of moderators and the moderator probe values now use each model's own complete cases. Previously, missing values in any other variable in the variable boxes (for example a covariate used only in another model) restricted the centering sample and changed the estimates of models with complete data.
+* The Bayesian analysis now fits the mean-centered data when "Mean-centered moderation" is selected (the default). Previously only the moderator probe values were centered, so conditional effects were evaluated at moderator values shifted by the moderator mean.
+* Factor levels that contain two consecutive underscores or end with an underscore now stop the analysis with a message asking to rename them, instead of causing an unrelated error later.
+* The Bayesian analysis no longer stops with an error when the models have different numbers of cases, for example without independent covariances and with a covariate with missing values in only one model. The LOO difference is then left out of the model summary table.
 
 ---
 

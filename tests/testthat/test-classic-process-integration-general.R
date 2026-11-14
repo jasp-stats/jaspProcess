@@ -1631,6 +1631,44 @@ test_that("Moderated mediation index works - three-level factor independent", {
 			 0.0556237127253498, -0.172836674711031))
 })
 
+test_that("Covariates do not change the node colours of the other variables in path plots", {
+  # The palette is interpolated, so the colour of each node type depends on the
+  # number of node types; covariates get a fixed colour outside the palette
+  nodeFills <- function(results, plot) {
+    plotName <- results[["results"]][["pathPlotContainer"]][["collection"]][["pathPlotContainer_Model 1"]][["collection"]][[paste0("pathPlotContainer_Model 1_", plot)]][["data"]]
+    built <- ggplot2::ggplot_build(results[["state"]][["figures"]][[plotName]][["obj"]])
+    # Layer 1 draws the node tiles and layer 3 the node labels, both in node order
+    fills <- setNames(built$data[[1]]$fill, built$data[[3]]$label)
+    return(fills[names(fills) != ""]) # drop invisible helper nodes
+  }
+  runModel7 <- function(covariates) {
+    options <- getOptionsClassical()
+    options$useColorPalette <- TRUE
+    options$pathPlotsLabelLength <- 10 # full labels (the form's maximum), so that nodes can be matched across plots
+    options$processModels <- list(getProcessModel(list()))
+    options$processModels[[1]]$inputType <- "inputModelNumber"
+    options$processModels[[1]]$modelNumber <- 7
+    options$processModels[[1]]$modelNumberIndependent <- "contGamma"
+    options$processModels[[1]]$modelNumberMediators <- list("debCollin1")
+    options$processModels[[1]]$modelNumberModeratorW <- "contcor1"
+    options$processModels[[1]]$modelNumberCovariates <- covariates
+    set.seed(1)
+    return(jaspTools::runAnalysis("ClassicProcess", "debug.csv", options))
+  }
+  resultsNoCov <- runModel7(list())
+  resultsCov   <- runModel7(list("contcor2"))
+
+  # The conceptual plot leaves covariates out
+  conceptFills <- nodeFills(resultsCov, "conceptPathPlot")
+  expect_identical(conceptFills, nodeFills(resultsNoCov, "conceptPathPlot"))
+
+  # In the statistical plot, only the covariate node is added, in its own colour
+  statFillsNoCov <- nodeFills(resultsNoCov, "statPathPlot")
+  statFillsCov   <- nodeFills(resultsCov, "statPathPlot")
+  expect_identical(statFillsCov[names(statFillsNoCov)], statFillsNoCov)
+  expect_identical(unname(statFillsCov["contcor2"]), "#D9D9D9")
+  expect_false("#D9D9D9" %in% conceptFills)
+})
 
 test_that("Residual plots work", {
   options <- getOptionsClassical()
