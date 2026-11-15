@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspProcess 0.95.0\n"
 "POT-Creation-Date: 2026-11-14 03:46\n"
-"PO-Revision-Date: 2026-11-08 05:51+0000\n"
+"PO-Revision-Date: 2026-11-16 06:38+0000\n"
 "Last-Translator: Koji Kosugi <kosugitti@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
 "jaspprocess-r/ja/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.11.2.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 msgid "Process Analysis"
 msgstr "プロセス分析"
@@ -242,26 +242,23 @@ msgstr "概念的なパス図"
 msgid "Statistical path plot"
 msgstr "統計的なパス図"
 
-#, fuzzy
 msgid "Residual plots"
-msgstr "残差共分散"
+msgstr "残差プロット"
 
-#, fuzzy
 msgid "Residuals vs. Predicted"
-msgstr "残差共分散"
+msgstr "残差と予測値"
 
 msgid "Q-Q Plot Standardized Residuals"
-msgstr ""
+msgstr "標準化残差のQ-Qプロット"
 
 msgid "Standardized residuals"
-msgstr ""
+msgstr "標準化残差"
 
 msgid "Predicted Values"
-msgstr ""
+msgstr "予測値"
 
-#, fuzzy
 msgid "Residuals"
-msgstr "残差共分散"
+msgstr "残差"
 
 msgid "Model syntax"
 msgstr "モデルのシンタックス"
