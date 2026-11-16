@@ -72,6 +72,15 @@ replaceVariablesFactors <- function(v) {
 }
 
 
+# JASP's ComponentsList keys its rows by `value` ("#", "#2", ...): the analysis form merges rows without one
+nameProcessRelationships <- function(processRelationships) {
+  for (i in seq_along(processRelationships))
+    if (is.null(processRelationships[[i]][["value"]]))
+      processRelationships[[i]][["value"]] <- if (i == 1) "#" else paste0("#", i)
+  processRelationships
+}
+
+
 addProcessRelationshipsFromModelNumber <- function(k, options, replaceFun) {
 
   processRelationships <- jaspProcess:::.procGetHardCodedModel(k, 2)
@@ -80,7 +89,7 @@ addProcessRelationshipsFromModelNumber <- function(k, options, replaceFun) {
     return(row)
   })
 
-  options$processModels[[1]][["processRelationships"]] <- processRelationships
+  options$processModels[[1]][["processRelationships"]] <- nameProcessRelationships(processRelationships)
 
   if (k >= 82) {
     options[["covariates"]] <- c(options[["covariates"]], "debMiss1")
@@ -139,7 +148,7 @@ addProcessRelationshipsFromCustomModel <- function(k, options, replaceFun) {
     return(row)
   })
 
-  options$processModels[[1]][["processRelationships"]] <- processRelationships
+  options$processModels[[1]][["processRelationships"]] <- nameProcessRelationships(processRelationships)
 
   return(options)
 }
@@ -221,7 +230,7 @@ getProcessRelationships <- function(k, parms) {
   else
     x <- customModels[[k]]
 
-  x |> lapply(lapply, replaceVariables, map = parms$map)
+  x |> lapply(lapply, replaceVariables, map = parms$map) |> nameProcessRelationships()
 }
 
 captureTestCode <- function(k, opts, parms, testObjective = "works") {

@@ -6,6 +6,19 @@
 # preserving the broad numeric structure of the expected tables.
 options("jaspRoundToPrecision" = function(x) signif(round(x, digits = 4), digits = 3))
 
+# jaspTools installs the module (when its sources changed) before each runAnalysis(). Unit tests that call
+# jaspProcess::: functions directly need the same, as no runAnalysis() may have run yet (e.g. on CI, where the
+# Bayesian integration tests are skipped).
+installJaspProcessForUnitTests <- function() {
+  jaspTools:::reinstallChangedModules()
+}
+
+# Unit tests check the logic on plain variable names, but a preceding runAnalysis() leaves the column encoder of its
+# data set behind, with which encodeColNames() would encode them. Lasts until `env` (the caller) exits.
+localPlainColumnNames <- function(env = parent.frame()) {
+  testthat::local_mocked_bindings(encodeColNames = function(x, ...) x, .package = "jaspProcess", .env = env)
+}
+
 getOptionsClassical <- function() {
   options <- jaspTools::analysisOptions("ClassicProcess")
   options[["dependent"]] <- "contNormal"
@@ -120,6 +133,11 @@ getOptionsBayesian <- function() {
 }
 
 getProcessModel <- function(processRelationships, name = "Model 1") {
+  # JASP's ComponentsList keys its rows by `value` ("#", "#2", ...): the analysis form merges rows without one
+  for (i in seq_along(processRelationships))
+    if (is.null(processRelationships[[i]][["value"]]))
+      processRelationships[[i]][["value"]] <- if (i == 1) "#" else paste0("#", i)
+
   return(list(conceptualPathPlot = TRUE, independentCovariances = TRUE,
               inputType = "inputVariables", mediationEffects = TRUE, mediatorCovariances = TRUE,
               dependentCovariances = TRUE, modelNumber = 1, modelNumberCovariates = list(),
