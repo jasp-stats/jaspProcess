@@ -2035,21 +2035,23 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
     .procSetContainerError(modelContainer, procResults[[i]])
 
+    contrasts <- modelsContainer[[modelNames[i]]][["contrasts"]]$object
+
     if (options[["processModels"]][[i]][["pathCoefficients"]])
-      .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
+      .procPathCoefficientsTable(modelContainer, options, procResults[[i]], i, contrasts)
 
     if (options[["processModels"]][[i]][["mediationEffects"]])
-      .procPathMediationEffectsTable(modelContainer, options, procResults[[i]], i)
+      .procPathMediationEffectsTable(modelContainer, options, procResults[[i]], i, contrasts)
 
     if (options[["moderatedMediationIndex"]]) {
-      .procPathModeratedMediationIndexTable(modelContainer, options, procResults[[i]], i)
+      .procPathModeratedMediationIndexTable(modelContainer, options, procResults[[i]], i, contrasts)
     }
 
     if (options[["processModels"]][[i]][["totalEffects"]])
-      .procPathTotalEffectsTable(modelContainer, options, procResults[[i]], i)
+      .procPathTotalEffectsTable(modelContainer, options, procResults[[i]], i, contrasts)
 
     if (options[["processModels"]][[i]][["residualCovariances"]])
-      .procCovariancesTable(modelContainer, options, procResults[[i]], i)
+      .procCovariancesTable(modelContainer, options, procResults[[i]], i, contrasts)
   }
 }
 
@@ -2122,7 +2124,26 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procPathCoefficientsTable <- function(container, options, procResults, modelIdx) {
+.procFormatFactorLevels <- function(varNames, contrasts) {
+  # Display dummy-coded factor variables as "<factor> (<level>)" instead of the
+  # dummy name "<factor><level>" used in the lavaan syntax, like jaspRegression
+  # labels categorical predictors. Terms of interaction variables are separated
+  # by "__" and displayed with ":", e.g. "facGenderm__contcor1" becomes
+  # "facGender (m):contcor1". Terms are matched exactly against the dummy names
+  # of the contrasts, so continuous variables and factor names are unchanged.
+  dummyNames  <- unlist(lapply(names(contrasts), function(f) paste0(f, colnames(contrasts[[f]]))))
+  prettyNames <- unlist(lapply(names(contrasts), function(f) paste0(f, " (", colnames(contrasts[[f]]), ")")))
+
+  terms <- strsplit(as.character(varNames), "__", fixed = TRUE)
+
+  return(vapply(terms, function(trm) {
+    idx <- match(trm, dummyNames)
+    trm[!is.na(idx)] <- prettyNames[idx[!is.na(idx)]]
+    return(paste(trm, collapse = ":"))
+  }, character(1)))
+}
+
+.procPathCoefficientsTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
@@ -2161,9 +2182,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
 
-  pathCoefTable[["lhs"]] <- gsub("__", ":", pathCoefs$rhs)
+  pathCoefTable[["lhs"]] <- .procFormatFactorLevels(pathCoefs$rhs, contrasts)
   pathCoefTable[["op"]]  <- rep("\u2192", nrow(pathCoefs))
-  pathCoefTable[["rhs"]] <- gsub("__", ":", pathCoefs$lhs)
+  pathCoefTable[["rhs"]] <- .procFormatFactorLevels(pathCoefs$lhs, contrasts)
 
   if (options$parameterLabels) {
     pathCoefTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
@@ -2237,7 +2258,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(lengthSortIdx)
 }
 
-.procPathMediationEffectsTableHelper <- function(tbl, medEffects) {
+.procPathMediationEffectsTableHelper <- function(tbl, medEffects, contrasts) {
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
   # Only use label splits of length > 1 to omit total effects
@@ -2251,14 +2272,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medLengthSortIdx], uniqueMods)
 
   for (mod in uniqueMods) {
-    tbl$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    tbl$addColumnInfo(name = mod, title = .procFormatFactorLevels(mod, contrasts), type = "string", combine = FALSE)
     tbl[[mod]] <- modProbes[[mod]]
   }
 
   return(medEffects)
 }
 
-.procPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
+.procPathMediationEffectsTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["mediationEffectsTable"]])) return()
 
   medEffectsTable <- createJaspTable(title = gettext("Direct and indirect effects"))
@@ -2289,7 +2310,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  medEffects <- .procPathMediationEffectsTableHelper(medEffectsTable, medEffects)
+  medEffects <- .procPathMediationEffectsTableHelper(medEffectsTable, medEffects, contrasts)
 
   # Add column with parameter labels
   if (options$parameterLabels) {
@@ -2299,7 +2320,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   .procCoefficientsTable(medEffectsTable, options, medEffects)
 }
 
-.procPathModMedIndEffectsTableHelper <- function(tbl, medEffects) {
+.procPathModMedIndEffectsTableHelper <- function(tbl, medEffects, contrasts) {
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
   
   isModMedIndEffect <- sapply(labelSplit, function(path) length(path[[1]]) == 1 && all(path[[1]] == "modMedIndex"))
@@ -2321,7 +2342,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(labelSplit[medLengthSortIdx], uniqueMods)
 
   for (mod in uniqueMods) {
-    tbl$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    tbl$addColumnInfo(name = mod, title = .procFormatFactorLevels(mod, contrasts), type = "string", combine = FALSE)
     isMod <- ifelse(sapply(mods, function(modVars) mod %in% modVars), "X", "")
     probes <- modProbes[[mod]]
     tbl[[mod]] <- ifelse(is.na(probes), isMod, probes)
@@ -2330,7 +2351,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(modMedIndEffects)
 }
 
-.procPathModeratedMediationIndexTable <- function(container, options, procResults, modelIdx) {
+.procPathModeratedMediationIndexTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["modMedIndTable"]])) return()
 
   modMedIndTable <- createJaspTable(title = gettext("Moderated mediation index"))
@@ -2360,7 +2381,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  modMedIndEffects <- .procPathModMedIndEffectsTableHelper(modMedIndTable, medEffects)
+  modMedIndEffects <- .procPathModMedIndEffectsTableHelper(modMedIndTable, medEffects, contrasts)
 
   # Add column with parameter labels
   if (options$parameterLabels) {
@@ -2374,7 +2395,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procPathTotalEffectsTableHelper <- function(tbl, medEffects) {
+.procPathTotalEffectsTableHelper <- function(tbl, medEffects, contrasts) {
   labelSplit <- lapply(strsplit(medEffects$lhs, "\\."), strsplit, split = "__")
 
   # Only use label splits of length == 1 to get total effects
@@ -2400,14 +2421,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   modProbes <- .procEffectsTablesGetConditionalLabels(lapply(labelSplit, function(path) path[-2]), uniqueMods)
 
   for (mod in uniqueMods) {
-    tbl$addColumnInfo(name = mod, title = mod, type = "string", combine = FALSE)
+    tbl$addColumnInfo(name = mod, title = .procFormatFactorLevels(mod, contrasts), type = "string", combine = FALSE)
     tbl[[mod]] <- modProbes[[mod]]
   }
 
   return(totEffects)
 }
 
-.procPathTotalEffectsTable <- function(container, options, procResults, modelIdx) {
+.procPathTotalEffectsTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["totalEffectsTable"]])) return()
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
@@ -2438,7 +2459,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   medEffects <- pathCoefs[pathCoefs$op == ":=",]
 
-  totEffects <- .procPathTotalEffectsTableHelper(totEffectsTable, medEffects)
+  totEffects <- .procPathTotalEffectsTableHelper(totEffectsTable, medEffects, contrasts)
 
   # Add column with parameter labels
   if (options$parameterLabels) {
@@ -2454,7 +2475,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   return(jaspTable)
 }
 
-.procCovariancesTable <- function(container, options, procResults, modelIdx) {
+.procCovariancesTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["covariancesTable"]])) return()
 
   pathCoefTable <- createJaspTable(title = gettext("Residual covariances"))
@@ -2483,9 +2504,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
 
-  pathCoefTable[["lhs"]] <- gsub("__", ":", pathCoefs$rhs)
+  pathCoefTable[["lhs"]] <- .procFormatFactorLevels(pathCoefs$rhs, contrasts)
   pathCoefTable[["op"]]  <- rep("\u2194", nrow(pathCoefs))
-  pathCoefTable[["rhs"]] <- gsub("__", ":", pathCoefs$lhs)
+  pathCoefTable[["rhs"]] <- .procFormatFactorLevels(pathCoefs$lhs, contrasts)
 
   .procCoefficientsTable(pathCoefTable, options, pathCoefs)
 }
@@ -2637,10 +2658,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   if (nrow(localTestResult) > 0) {
     implicationSplit <- strsplit(row.names(localTestResult), "\\s+(\\|+|_+\\|+_+)\\s+")
-    localTestTable[["lhs"]]  <- sapply(implicationSplit, function(row) row[1])
+    localTestTable[["lhs"]]  <- .procFormatFactorLevels(sapply(implicationSplit, function(row) row[1]), contrasts)
     localTestTable[["op1"]]  <- rep("\u2AEB", length(implicationSplit))
-    localTestTable[["rhs"]]  <- sapply(implicationSplit, function(row) row[2])
-    localTestTable[["cond"]] <- sapply(implicationSplit, function(row) { if (length(row) == 3) row[3] else "" })
+    localTestTable[["rhs"]]  <- .procFormatFactorLevels(sapply(implicationSplit, function(row) row[2]), contrasts)
+    localTestTable[["cond"]] <- sapply(implicationSplit, function(row) {
+      if (length(row) < 3) return("")
+      # The conditioning set can contain several variables, separated by ", "
+      return(paste(.procFormatFactorLevels(strsplit(row[3], ", ", fixed = TRUE)[[1]], contrasts), collapse = ", "))
+    })
     localTestTable[["op2"]]  <- sapply(implicationSplit, function(row) { if (length(row) == 3) "\u2223" else "" })
     localTestTable[[keyEst]] <- localTestResult[[keyEst]]
     localTestTable[[keyErr]] <- p.adjust(localTestResult[[keyErr]], method = adjustMethod)
