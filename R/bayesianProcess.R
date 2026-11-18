@@ -351,17 +351,19 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
     
     .procSetContainerError(modelContainer, procResults[[i]])
 
+    contrasts <- modelsContainer[[modelNames[i]]][["contrasts"]]$object
+
     if (options[["processModels"]][[i]][["pathCoefficients"]])
-      .procBayesPathCoefficientsTable(modelContainer, options, procResults[[i]], i)
+      .procBayesPathCoefficientsTable(modelContainer, options, procResults[[i]], i, contrasts)
 
     if (options[["processModels"]][[i]][["mediationEffects"]])
-      .procBayesPathMediationEffectsTable(modelContainer, options, procResults[[i]], i)
+      .procBayesPathMediationEffectsTable(modelContainer, options, procResults[[i]], i, contrasts)
 
     if (options[["processModels"]][[i]][["totalEffects"]])
-      .procBayesPathTotalEffectsTable(modelContainer, options, procResults[[i]], i)
+      .procBayesPathTotalEffectsTable(modelContainer, options, procResults[[i]], i, contrasts)
 
     if (options[["processModels"]][[i]][["residualCovariances"]])
-      .procBayesCovariancesTable(modelContainer, options, procResults[[i]], i)
+      .procBayesCovariancesTable(modelContainer, options, procResults[[i]], i, contrasts)
   }
 }
 
@@ -468,7 +470,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   }
 }
 
-.procBayesPathCoefficientsTable <- function(container, options, procResults, modelIdx) {
+.procBayesPathCoefficientsTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["pathCoefficientsTable"]])) return()
 
   pathCoefTable <- createJaspTable(title = gettext("Path coefficients"))
@@ -493,9 +495,9 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   pathCoefTable$addColumnInfo(name = "op",  title = "", type = "string")
   pathCoefTable$addColumnInfo(name = "rhs", title = "", type = "string")
 
-  pathCoefTable[["lhs"]] <- gsub("__", ":", parTable$rhs)
+  pathCoefTable[["lhs"]] <- .procFormatFactorLevels(parTable$rhs, contrasts)
   pathCoefTable[["op"]]  <- rep("\u2192", nrow(parTable))
-  pathCoefTable[["rhs"]] <- gsub("__", ":", parTable$lhs)
+  pathCoefTable[["rhs"]] <- .procFormatFactorLevels(parTable$lhs, contrasts)
 
   if (options$parameterLabels) {
     pathCoefTable$addColumnInfo(name = "label", title = gettext("Label"), type = "string")
@@ -528,7 +530,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   return(array(medEffectSamples, dim = c(dim(as.array(stanFit))[1:2], length(rhs)), dimnames = list(NULL, NULL, parameters = parTable$label[parTable$op == ":="])))
 }
 
-.procBayesPathMediationEffectsTable <- function(container, options, procResults, modelIdx) {
+.procBayesPathMediationEffectsTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["mediationEffectsTable"]])) return()
 
   medEffectsTable <- createJaspTable(title = gettext("Direct and indirect effects"))
@@ -544,7 +546,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   parTable <- lavaan::parameterTable(procResults)
   medEffects <- parTable[parTable$op == ":=",]
 
-  medEffects <- .procPathMediationEffectsTableHelper(medEffectsTable, medEffects)
+  medEffects <- .procPathMediationEffectsTableHelper(medEffectsTable, medEffects, contrasts)
 
   parStats <- .procBayesGetParStats(.procBayesAddMedSamples(procResults@external$mcmcout, parTable), medEffects, options)
 
@@ -557,7 +559,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   .procBayesModelFitChecks(medEffectsTable, procResults@external$mcmcout, parStats)
 }
 
-.procBayesPathTotalEffectsTable <- function(container, options, procResults, modelIdx) {
+.procBayesPathTotalEffectsTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["totalEffectsTable"]])) return()
 
   totEffectsTable <- createJaspTable(title = gettext("Total effects"))
@@ -573,7 +575,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   parTable <- lavaan::parameterTable(procResults)
   medEffects <- parTable[parTable$op == ":=",]
 
-  totEffects <- .procPathTotalEffectsTableHelper(totEffectsTable, medEffects)
+  totEffects <- .procPathTotalEffectsTableHelper(totEffectsTable, medEffects, contrasts)
 
   parStats <- .procBayesGetParStats(.procBayesAddMedSamples(procResults@external$mcmcout, parTable), totEffects, options)
 
@@ -586,7 +588,7 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   .procBayesModelFitChecks(totEffectsTable, procResults@external$mcmcout, parStats)
 }
 
-.procBayesCovariancesTable <- function(container, options, procResults, modelIdx) {
+.procBayesCovariancesTable <- function(container, options, procResults, modelIdx, contrasts) {
   if (!is.null(container[["covariancesTable"]])) return()
 
   covTable <- createJaspTable(title = gettext("Residual covariances"))
@@ -607,9 +609,9 @@ BayesianProcess <- function(jaspResults, dataset = NULL, options) {
   covTable$addColumnInfo(name = "op",  title = "", type = "string")
   covTable$addColumnInfo(name = "rhs", title = "", type = "string")
 
-  covTable[["lhs"]] <- gsub("__", ":", covEffects$rhs)
+  covTable[["lhs"]] <- .procFormatFactorLevels(covEffects$rhs, contrasts)
   covTable[["op"]]  <- rep("\u2194", nrow(covEffects))
-  covTable[["rhs"]] <- gsub("__", ":", covEffects$lhs)
+  covTable[["rhs"]] <- .procFormatFactorLevels(covEffects$lhs, contrasts)
 
   .procBayesCoefficientsTable(covTable, options, parStats)
   .procBayesModelFitChecks(covTable, procResults@external$mcmcout, parStats)

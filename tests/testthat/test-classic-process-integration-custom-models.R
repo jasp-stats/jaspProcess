@@ -173,8 +173,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 7.07106781262135, 0.797583248451353, 1.40928455391441, 1.10343390118288,
 			 "contNormal", "<unicode>", 1.53743684450092e-12, "contNormal",
 			 0.156049118832815, 7.07106781144378, 0.180704818055353, 0.319295223563333,
-			 0.250000020809343, "facExperimexperimental", "<unicode>", 1.53743684450092e-12,
-			 "facExperimexperimental", 0.0353553449454082, 7.07106722322652
+			 0.250000020809343, "facExperim (experimental)", "<unicode>", 1.53743684450092e-12,
+			 "facExperim (experimental)", 0.0353553449454082, 7.07106722322652
 			))
 
 
@@ -196,10 +196,10 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 		list(-0.178349084221028, 0.092475711277026, -0.0429366864720011, -0.0621653534241846,
 			 "contGamma", "<unicode>", 0.534292291302118, "contNormal", 0.0690892275659873,
 			 -0.621467166223448, 1, -0.329844405685423, 0.496024877188491,
-			 0.0830902357515342, 0.0788999955022789, "facExperimexperimental",
+			 0.0830902357515342, 0.0788999955022789, "facExperim (experimental)",
 			 "<unicode>", 0.693299245993697, "contNormal", 0.210684810891492,
 			 0.394381708866178, 1, -0.366802567861926, 0.825182751341926,
-			 0.22919009174, 0.150315215732546, "facExperimexperimental",
+			 0.22919009174, 0.150315215732546, "facExperim (experimental)",
 			 "<unicode>", 0.451024688010575, "contGamma", 0.304083475157217,
 			 0.753707815334274))
 
@@ -635,13 +635,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 7.07106781262135, 0.755960143301373, 1.33573887791417, 1.04584951060777,
 			 "contNormal", "<unicode>", 1.53743684450092e-12, "contNormal",
 			 0.147905456219098, 7.07106781144378, -0.0096223246903854, 0.0896223218018682,
-			 0.0399999985557414, "facGenderm", "<unicode>", 0.114128624284707,
-			 "facExperimexperimental", 0.025317977084039, 1.57990499884599,
-			 0.180704807082293, 0.319295185286688, 0.24999999618449, "facExperimexperimental",
-			 "<unicode>", 1.53743684450092e-12, "facExperimexperimental",
+			 0.0399999985557414, "facGender (m)", "<unicode>", 0.114128624284707,
+			 "facExperim (experimental)", 0.025317977084039, 1.57990499884599,
+			 0.180704807082293, 0.319295185286688, 0.24999999618449, "facExperim (experimental)",
+			 "<unicode>", 1.53743684450092e-12, "facExperim (experimental)",
 			 0.0353553379800797, 7.0710679197961, 0.180704807446503, 0.319295186560267,
-			 0.249999997003385, "facGenderm", "<unicode>", 1.53743684450092e-12,
-			 "facGenderm", 0.0353553382120661, 7.07106789656067))
+			 0.249999997003385, "facGender (m)", "<unicode>", 1.53743684450092e-12,
+			 "facGender (m)", 0.0353553382120661, 7.07106789656067))
 
 
 
@@ -668,15 +668,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 		list(-0.196182963686263, 0.0696578957542365, -0.0632625339660134, -0.0915938817265045,
 			 "contGamma", "<unicode>", 0.350907268541034, "contNormal", 0.0678177919434792,
 			 -0.932830930543089, 1, -0.397396510564326, 0.41602550207446,
-			 0.00931449575506697, 0.00884476577560088, "facExperimexperimental",
+			 0.00931449575506697, 0.00884476577560088, "facExperim (experimental)",
 			 "<unicode>", 0.964197301929217, "contNormal", 0.207509428503522,
 			 0.0448870965634647, 1, 0.0807497114853277, 0.89967807767553,
-			 0.490213894580429, 0.465492410058844, "facGenderm", "<unicode>",
+			 0.490213894580429, 0.465492410058844, "facGender (m)", "<unicode>",
 			 0.0189514272219928, "contNormal", 0.208914136343781, 2.34648503523836,
 			 1, -0.432590739610384, 0.765060581369004, 0.16623492087931,
-			 0.109025821380414, "facExperimexperimental", "<unicode>", 0.586380226079385,
+			 0.109025821380414, "facExperim (experimental)", "<unicode>", 0.586380226079385,
 			 "contGamma", 0.305528910333636, 0.544089005187047, 1, -0.20535584262159,
-			 0.992295478380211, 0.39346981787931, 0.258058715074907, "facGenderm",
+			 0.992295478380211, 0.39346981787931, 0.258058715074907, "facGender (m)",
 			 "<unicode>", 0.197804552747082, "contGamma", 0.305528910339354,
 			 1.28783170614617))
 
@@ -908,8 +908,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 0.147883159283095, 7.07106781144379, 0.0046804794821323, 0.00827014268751115,
 			 0.00647531108482172, "debCollin1", "<unicode>", 1.53743684450092e-12,
 			 "debCollin1", 0.000915747236605789, 7.0710681135358, 0.180704808304197,
-			 0.319295189548617, 0.249999998926407, "facGenderm", "<unicode>",
-			 1.53743684450092e-12, "facGenderm", 0.0353553387556104, 7.07106784224307
+			 0.319295189548617, 0.249999998926407, "facGender (m)", "<unicode>",
+			 1.53743684450092e-12, "facGender (m)", 0.0353553387556104, 7.07106784224307
 			))
 
 
@@ -936,13 +936,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 -0.94064213931971, -2.65809965643224, 2.32566023378008, -0.166219711326077,
 			 -0.0128908014359423, "debCollin1", "<unicode>", 0.895982174641953,
 			 "contNormal", 1.27139068103383, -0.130738500608574, 1, 0.0859003151279228,
-			 0.89569980224869, 0.490800058688307, 0.466091240853119, "facGenderm",
+			 0.89569980224869, 0.490800058688307, 0.466091240853119, "facGender (m)",
 			 "<unicode>", 0.017512166894867, "contNormal", 0.206585297869849,
 			 2.37577438350678, -0.0194720965822817, 0.00121576070290193,
 			 -0.00912816793968989, -0.170429769188409, "contGamma", "<unicode>",
 			 0.0837013957146231, "debCollin1", 0.00527761159091872, -1.72960207139853,
 			 1, -0.17191788766554, 1.01205269810554, 0.42006740522, 0.275502846462066,
-			 "facGenderm", "<unicode>", 0.164294363425838, "contGamma", 0.302038862731685,
+			 "facGender (m)", "<unicode>", 0.164294363425838, "contGamma", 0.302038862731685,
 			 1.39077270196572))
 
 
@@ -1167,8 +1167,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 0.1562301342418, 7.07106781144613, 0.00467600901609724, 0.00826224317561128,
 			 0.00646912609585426, "debCollin1", "<unicode>", 1.53743684450092e-12,
 			 "debCollin1", 0.00091487246393347, 7.07106875644768, 0.180704803474458,
-			 0.319295172702757, 0.249999988088607, "facGenderm", "<unicode>",
-			 1.53743684450092e-12, "facGenderm", 0.0353553356902174, 7.07106814878244
+			 0.319295172702757, 0.249999988088607, "facGender (m)", "<unicode>",
+			 1.53743684450092e-12, "facGender (m)", 0.0353553356902174, 7.07106814878244
 			))
 
 
@@ -1200,9 +1200,9 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 "contGamma", "<unicode>", 0.0946553208352301, "debCollin1",
 			 0.00532586283935847, -1.67133604380168, 1, -0.0368533455520637,
 			 0.0268102193593242, -0.00502156309636974, -0.0614904850031108,
-			 "facGenderm", "<unicode>", 0.757176665843934, "debCollin1",
+			 "facGender (m)", "<unicode>", 0.757176665843934, "debCollin1",
 			 0.0162410037667932, -0.309190439733594, 1, -0.171917887668096,
-			 1.0120526981081, 0.42006740522, 0.275502846575382, "facGenderm",
+			 1.0120526981081, 0.42006740522, 0.275502846575382, "facGender (m)",
 			 "<unicode>", 0.164294363427659, "contGamma", 0.302038862732989,
 			 1.39077270195972))
 
@@ -1431,7 +1431,7 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(-0.0458149261601921, 0.255848629885303, 0.105016851862555, "facGenderm",
+		list(-0.0458149261601921, 0.255848629885303, 0.105016851862555, "facGender (m)",
 			 "<unicode>", 0.172370041742522, "contGamma", 0.076956402879078,
 			 1.36462786634621, 1.68041089584409, 2.96919114574589, 2.32480102079499,
 			 "contGamma", "<unicode>", 1.53743684450092e-12, "contGamma",
@@ -1440,8 +1440,8 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 "contNormal", 0.147883159283096, 7.07106781144378, 0.00467600940080281,
 			 0.00826224451744211, 0.00646912695912246, "debCollin1", "<unicode>",
 			 1.53743684450092e-12, "debCollin1", 0.000914872708102564, 7.07106781285383,
-			 0.180704808782256, 0.3192951912193, 0.250000000000778, "facGenderm",
-			 "<unicode>", 1.53743684450092e-12, "facGenderm", 0.0353553390598568,
+			 0.180704808782256, 0.3192951912193, 0.250000000000778, "facGender (m)",
+			 "<unicode>", 1.53743684450092e-12, "facGender (m)", 0.0353553390598568,
 			 7.07106781178159))
 
 
@@ -1470,13 +1470,13 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 -0.940642135351945, -2.6580996563109, 2.32566023378102, -0.166219711264941,
 			 -0.012889633691387, "debCollin1", "<unicode>", 0.895982174677495,
 			 "contNormal", 1.27139068100312, -0.130738500563647, 1, 0.0859003151807574,
-			 0.895699802300167, 0.490800058740462, 0.466049013825033, "facGenderm",
+			 0.895699802300167, 0.490800058740462, 0.466049013825033, "facGender (m)",
 			 "<unicode>", 0.017512166882697, "contNormal", 0.206585297869503,
 			 2.37577438376323, -0.0193398289916252, 0.00153717110480582,
 			 -0.00890132894340971, -0.166194512437293, "contGamma", "<unicode>",
 			 0.0946545119878845, "debCollin1", 0.00532586319470822, -1.67134014111629,
 			 1, -0.0368533470582378, 0.0268102221009376, -0.00502156247865012,
-			 -0.0614904690813373, "facGenderm", "<unicode>", 0.757176710466698,
+			 -0.0614904690813373, "facGender (m)", "<unicode>", 0.757176710466698,
 			 "debCollin1", 0.0162410048504323, -0.30919038106909))
 
 
@@ -1727,30 +1727,30 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
-		list(0.627274027846072, 1.32814769192849, 0.977710859887281, "contGamma:facExperimexperimental",
+		list(0.627274027846072, 1.32814769192849, 0.977710859887281, "contGamma:facExperim (experimental)",
 			 "<unicode>", 4.54486885903549e-08, "contGamma", 0.17879758750947,
 			 5.468255324393, -0.10581029933316, 0.186799957411388, 0.0404948290391141,
-			 "facExperimexperimental", "<unicode>", 0.587484113658183, "contGamma",
+			 "facExperim (experimental)", "<unicode>", 0.587484113658183, "contGamma",
 			 0.0746468453126232, 0.542485471013818, 1.64852433860403, 2.91284940590342,
 			 2.28068687225373, "contGamma", "<unicode>", 1.53743684450092e-12,
 			 "contGamma", 0.32253783163166, 7.07106778983461, 0.728706145776807,
 			 1.28758260354611, 1.00814437466146, "contNormal", "<unicode>",
 			 1.53743684450092e-12, "contNormal", 0.14257314475614, 7.07106781144378,
 			 -0.00962232415901557, 0.0896223241711082, 0.0400000000060463,
-			 "facGenderm", "<unicode>", 0.114128617865521, "facExperimexperimental",
+			 "facGender (m)", "<unicode>", 0.114128617865521, "facExperim (experimental)",
 			 0.025317977552892, 1.57990502687199, -0.0687837206856411, 0.126081242309251,
-			 0.028648760811805, "contGamma:facExperimexperimental", "<unicode>",
-			 0.564411033525636, "facExperimexperimental", 0.0497113632015594,
+			 0.028648760811805, "contGamma:facExperim (experimental)", "<unicode>",
+			 0.564411033525636, "facExperim (experimental)", 0.0497113632015594,
 			 0.576302055842763, 0.180704808439051, 0.319295190017036, 0.249999999228044,
-			 "facExperimexperimental", "<unicode>", 1.53743684450092e-12,
-			 "facExperimexperimental", 0.0353553388407053, 7.07106783375568,
+			 "facExperim (experimental)", "<unicode>", 1.53743684450092e-12,
+			 "facExperim (experimental)", 0.0353553388407053, 7.07106783375568,
 			 -0.0717450401219704, 0.123055822638848, 0.0256553912584387,
-			 "facGenderm", "<unicode>", 0.605675007803684, "contGamma:facExperimexperimental",
+			 "facGender (m)", "<unicode>", 0.605675007803684, "contGamma:facExperim (experimental)",
 			 0.0496950108005511, 0.5162568806234, 0.712125014905554, 1.25828468417248,
-			 0.985204849539019, "contGamma:facExperimexperimental", "<unicode>",
-			 1.53743684450092e-12, "contGamma:facExperimexperimental", 0.139329006444753,
+			 0.985204849539019, "contGamma:facExperim (experimental)", "<unicode>",
+			 1.53743684450092e-12, "contGamma:facExperim (experimental)", 0.139329006444753,
 			 7.07106778895804, 0.180704808040152, 0.319295188630881, 0.249999998335516,
-			 "facGenderm", "<unicode>", 1.53743684450092e-12, "facGenderm",
+			 "facGender (m)", "<unicode>", 1.53743684450092e-12, "facGender (m)",
 			 0.0353553385888497, 7.0710678588823))
 
 
@@ -1776,14 +1776,14 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 			 -0.251989399974028, "contGamma", "<unicode>", 0.0475335885186532,
 			 "contNormal", 0.0878344940206779, -1.98151464635344, 1, -0.397726268417295,
 			 0.401048980587081, 0.00166135608489325, 0.00157757390495678,
-			 "facExperimexperimental", "<unicode>", 0.99349493764304, "contNormal",
+			 "facExperim (experimental)", "<unicode>", 0.99349493764304, "contNormal",
 			 0.203772940550187, 0.00815297693799574, 1, -0.00348417438369047,
-			 0.520959850420884, 0.258737838018597, 0.374610397024033, "contGamma:facExperimexperimental",
+			 0.520959850420884, 0.258737838018597, 0.374610397024033, "contGamma:facExperim (experimental)",
 			 "<unicode>", 0.0531227537877437, "contNormal", 0.133789199429511,
 			 1.93392171507027, 1, 0.108832959968581, 0.914012149351937, 0.511422554660259,
-			 0.485631517514317, "facGenderm", "<unicode>", 0.0127813019124332,
+			 0.485631517514317, "facGender (m)", "<unicode>", 0.0127813019124332,
 			 "contNormal", 0.205406628829536, 2.48980550225903, 1, -0.17191789735424,
-			 1.01205269254392, 0.42006739759484, 0.275502841126665, "facGenderm",
+			 1.01205269254392, 0.42006739759484, 0.275502841126665, "facGender (m)",
 			 "<unicode>", 0.164294372554289, "contGamma", 0.302038863784531,
 			 1.39077267187215))
 
@@ -2019,20 +2019,20 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.00758080459604627, 0.00363548509922648, -0.00197265974840989,
-			 "facExperimexperimental:debCollin1", "<unicode>", 0.490561823492442,
-			 "facExperimexperimental", 0.00286135096964674, -0.689415513628317,
-			 0.180704809012174, 0.31929519202124, 0.250000000516707, "facExperimexperimental",
-			 "<unicode>", 1.53743684450092e-12, "facExperimexperimental",
+			 "facExperim (experimental):debCollin1", "<unicode>", 0.490561823492442,
+			 "facExperim (experimental)", 0.00286135096964674, -0.689415513628317,
+			 0.180704809012174, 0.31929519202124, 0.250000000516707, "facExperim (experimental)",
+			 "<unicode>", 1.53743684450092e-12, "facExperim (experimental)",
 			 0.0353553392057837, 7.0710677971889, 0.800623470732841, 1.41465645497939,
 			 1.10763996285612, "contNormal", "<unicode>", 1.53743684450092e-12,
 			 "contNormal", 0.156643945779097, 7.07106781144378, 0.00213588775134652,
-			 0.0043517136280209, 0.00324380068968371, "facExperimexperimental:debCollin1",
+			 0.0043517136280209, 0.00324380068968371, "facExperim (experimental):debCollin1",
 			 "<unicode>", 9.55319334750016e-09, "debCollin1", 0.000565272090240569,
 			 5.73847664812748, 0.00477549282399899, 0.00843802607595792,
 			 0.00660675944997846, "debCollin1", "<unicode>", 1.53743684450092e-12,
 			 "debCollin1", 0.000934336875791729, 7.07106785695479, 0.00235593261017279,
-			 0.00416279986027401, 0.0032593662352234, "facExperimexperimental:debCollin1",
-			 "<unicode>", 1.53743684450092e-12, "facExperimexperimental:debCollin1",
+			 0.00416279986027401, 0.0032593662352234, "facExperim (experimental):debCollin1",
+			 "<unicode>", 1.53743684450092e-12, "facExperim (experimental):debCollin1",
 			 0.000460943992939042, 7.07106781984777))
 
 
@@ -2058,15 +2058,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(1, -0.342506177791371, 0.486475374510185, 0.0719845983594068,
-			 0.0683544153617944, "facExperimexperimental", "<unicode>", 0.733565201074938,
+			 0.0683544153617944, "facExperim (experimental)", "<unicode>", 0.733565201074938,
 			 "contNormal", 0.211478771763271, 0.340386875520471, -3.59103269068143,
 			 3.52301253058054, -0.0340100800504482, -0.0026373374679157,
 			 "debCollin1", "<unicode>", 0.98504853454813, "contNormal", 1.81484080252919,
 			 -0.0187399798390312, 1, -5.16866925629936, 4.98408300667599,
-			 -0.0922931248116825, -0.00715694040519209, "facExperimexperimental:debCollin1",
+			 -0.0922931248116825, -0.00715694040519209, "facExperim (experimental):debCollin1",
 			 "<unicode>", 0.971574258146553, "contNormal", 2.59003541469613,
 			 -0.0356339238791878, 1, -0.0476432272503267, 0.016080669942014,
-			 -0.0157812786541563, -0.193246272247228, "facExperimexperimental",
+			 -0.0157812786541563, -0.193246272247228, "facExperim (experimental)",
 			 "<unicode>", 0.331661043500685, "debCollin1", 0.0162563949376077,
 			 -0.970773576474066))
 
@@ -2309,20 +2309,20 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_covariancesTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(-0.00758080459604627, 0.00363548509922648, -0.00197265974840989,
-			 "debCollin1:facExperimexperimental", "<unicode>", 0.490561823492442,
-			 "facExperimexperimental", 0.00286135096964674, -0.689415513628317,
-			 0.180704809012174, 0.31929519202124, 0.250000000516707, "facExperimexperimental",
-			 "<unicode>", 1.53743684450092e-12, "facExperimexperimental",
+			 "debCollin1:facExperim (experimental)", "<unicode>", 0.490561823492442,
+			 "facExperim (experimental)", 0.00286135096964674, -0.689415513628317,
+			 0.180704809012174, 0.31929519202124, 0.250000000516707, "facExperim (experimental)",
+			 "<unicode>", 1.53743684450092e-12, "facExperim (experimental)",
 			 0.0353553392057837, 7.0710677971889, 0.800623470732841, 1.41465645497939,
 			 1.10763996285612, "contNormal", "<unicode>", 1.53743684450092e-12,
 			 "contNormal", 0.156643945779097, 7.07106781144378, 0.00213588775134652,
-			 0.0043517136280209, 0.00324380068968371, "debCollin1:facExperimexperimental",
+			 0.0043517136280209, 0.00324380068968371, "debCollin1:facExperim (experimental)",
 			 "<unicode>", 9.55319334750016e-09, "debCollin1", 0.000565272090240569,
 			 5.73847664812748, 0.00477549282399899, 0.00843802607595792,
 			 0.00660675944997846, "debCollin1", "<unicode>", 1.53743684450092e-12,
 			 "debCollin1", 0.000934336875791729, 7.07106785695479, 0.00235593261017279,
-			 0.00416279986027401, 0.0032593662352234, "debCollin1:facExperimexperimental",
-			 "<unicode>", 1.53743684450092e-12, "debCollin1:facExperimexperimental",
+			 0.00416279986027401, 0.0032593662352234, "debCollin1:facExperim (experimental)",
+			 "<unicode>", 1.53743684450092e-12, "debCollin1:facExperim (experimental)",
 			 0.000460943992939042, 7.07106781984777))
 
 
@@ -2345,15 +2345,15 @@ results <- jaspTools::runAnalysis("ClassicProcess", "debug.csv", options)
 	table <- results[["results"]][["parEstContainer"]][["collection"]][["parEstContainer_Model 1"]][["collection"]][["parEstContainer_Model 1_pathCoefficientsTable"]][["data"]]
 	jaspTools::expect_equal_tables(table,
 		list(1, -0.342506177791371, 0.486475374510185, 0.0719845983594068,
-			 0.0683544153617944, "facExperimexperimental", "<unicode>", 0.733565201074938,
+			 0.0683544153617944, "facExperim (experimental)", "<unicode>", 0.733565201074938,
 			 "contNormal", 0.211478771763271, 0.340386875520471, -3.59103269068143,
 			 3.52301253058054, -0.0340100800504482, -0.0026373374679157,
 			 "debCollin1", "<unicode>", 0.98504853454813, "contNormal", 1.81484080252919,
 			 -0.0187399798390312, 1, -5.16866925629936, 4.98408300667599,
-			 -0.0922931248116825, -0.00715694040519209, "debCollin1:facExperimexperimental",
+			 -0.0922931248116825, -0.00715694040519209, "debCollin1:facExperim (experimental)",
 			 "<unicode>", 0.971574258146553, "contNormal", 2.59003541469613,
 			 -0.0356339238791878, 1, -0.0476432272503267, 0.016080669942014,
-			 -0.0157812786541563, -0.193246272247228, "facExperimexperimental",
+			 -0.0157812786541563, -0.193246272247228, "facExperim (experimental)",
 			 "<unicode>", 0.331661043500685, "debCollin1", 0.0162563949376077,
 			 -0.970773576474066))
 
