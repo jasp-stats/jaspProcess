@@ -54,13 +54,6 @@ Group
 			title: 				qsTr("Mediators M")
 			allowedColumns: 	["scale"]
 		}
-		// TODO
-		// AssignedVariablesList
-		// {
-		//     name: 				"modelNumberCovariates"
-		//     title: 				qsTr("Covariates")
-		//     allowedColumns: 	["scale", "ordinal"]
-		// }
 		AssignedVariablesList
 		{
 			id: modelNumberModeratorW
@@ -74,6 +67,12 @@ Group
 			name: 				"modelNumberModeratorZ"
 			title: 				qsTr("Moderator Z")
 			singleVariable: 	true
+		}
+		// Covariates enter every mediator and outcome equation (PROCESS default)
+		AssignedVariablesList
+		{
+			name: 				"modelNumberCovariates"
+			title: 				qsTr("Covariates")
 		}
 	}
 }

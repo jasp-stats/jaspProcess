@@ -179,12 +179,48 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   graph <- .procProcessRelationshipsToGraph(processRelationships, modelOptions[["inputType"]] == "inputVariables")
 
-  if (modelOptions[["inputType"]] == "inputModelNumber")
+  if (modelOptions[["inputType"]] == "inputModelNumber") {
     graph <- .procModelGraphInputModelNumber(graph, modelOptions, globalDependent)
-  
+    covariates <- unlist(modelOptions[["modelNumberCovariates"]])
+    if (length(covariates) > 0)
+      graph <- .procGraphAddCovariates(graph, encodeColNames(covariates))
+  }
+
   if (!igraph::is_dag(graph)) stop(.procDagMsg())
 
   return(graph)
+}
+
+.procGraphAddCovariates <- function(graph, covariates) {
+  # Covariates (statistical controls) are regressed into every mediator and
+  # outcome equation, but not into the equation of X, as in the default of the
+  # PROCESS macro. They are stored as a graph attribute, so that later steps can
+  # keep them out of the focal effects (see `isCov` in .procGraphAddAttributes)
+  if (length(covariates) == 0) return(graph)
+
+  # Endogenous variables that are not interaction terms: mediators and outcome
+  targets <- igraph::V(graph)[!isExo & !isInt]$name
+
+  # A covariate must be a separate variable: as X, M or Y it would be regressed on
+  # itself or duplicate a focal path, and as W or Z it would duplicate the
+  # moderator's paths. The dialog prevents this, but R syntax does not.
+  inModel <- covariates[covariates %in% igraph::V(graph)$name]
+  if (length(inModel) > 0)
+    stop(gettextf("Covariates must not also be the independent variable, a mediator, a moderator, or the dependent variable. Remove %s from the covariates.", paste(inModel, collapse = ", ")), call. = FALSE)
+
+  graph <- igraph::add_vertices(graph, length(covariates), name = covariates)
+
+  edgeSources <- rep(covariates, each = length(targets))
+  edgeTargets <- rep(targets, times = length(covariates))
+  graph <- igraph::add_edges(graph,
+    edges = as.vector(rbind(edgeSources, edgeTargets)),
+    source = edgeSources,
+    target = edgeTargets
+  )
+
+  igraph::graph_attr(graph, "covariates") <- covariates
+
+  return(.procGraphAddAttributes(graph))
 }
 
 .procProcessRelationshipsToGraph <- function(processRelationships, inputVariables = TRUE) {
@@ -325,8 +361,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   igraph::V(graph)$isPartOfThreewayInt <- sapply(igraph::V(graph)$name, function(v) {
     any(sapply(igraph::V(graph)$intVars, function(vars) length(vars) > 2))
   })
-  # Is treatment variable (i.e., X): When exo, not int, and not part of int
-  igraph::V(graph)$isTreat <- igraph::V(graph)$isExo & !igraph::V(graph)$isInt & !igraph::V(graph)$isPartOfInt
+  # Is covariate (statistical control, see .procGraphAddCovariates)
+  igraph::V(graph)$isCov <- igraph::V(graph)$name %in% igraph::graph_attr(graph, "covariates")
+  # Is treatment variable (i.e., X): When exo, not int, not part of int, and not a covariate
+  igraph::V(graph)$isTreat <- igraph::V(graph)$isExo & !igraph::V(graph)$isInt & !igraph::V(graph)$isPartOfInt & !igraph::V(graph)$isCov
   # Is edge moderated
   igraph::E(graph)$isMod <- FALSE
 
@@ -499,10 +537,34 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   for (f in unlist(options[["factors"]])) {
     if (is.null(dataset[[f]])) next
     dataset[[f]] <- as.factor(dataset[[f]])
-    safeLevels <- gsub("[^A-Za-z0-9._]+", ".", levels(dataset[[f]]))
+    safeLevels <- .procSafeLevelLabels(levels(dataset[[f]]))
     levels(dataset[[f]]) <- make.unique(safeLevels, sep = "_")
   }
   return(dataset)
+}
+
+.procSafeLevelLabels <- function(levels) {
+  # Replace runs of characters that are invalid within a name (see .procSafeFactorLevels)
+  return(gsub("[^A-Za-z0-9._]+", ".", levels))
+}
+
+.procCheckFactorLevels <- function(dataset, factors) {
+  # "__" separates the terms of interaction variables (e.g. <X>__<W>), and
+  # factor dummy variables are named <factor><level>. A level label that
+  # contains "__" or ends with "_" (also after .procSafeLevelLabels) is
+  # therefore split at the wrong place when the interaction and centering
+  # variables are built, which crashes the analysis. Stop early with a clear
+  # message instead.
+  for (f in factors) {
+    levs <- levels(as.factor(dataset[[f]]))
+    badLevels <- levs[grepl("__|_$", .procSafeLevelLabels(levs))]
+    if (length(badLevels) > 0) {
+      .quitAnalysis(gettextf(
+        "Levels of the categorical variable %1$s must not contain two consecutive underscores (__) or end with an underscore (_), because __ separates the variables in interaction terms. Please rename these levels: %2$s.",
+        f, paste(badLevels, collapse = ", ")
+      ))
+    }
+  }
 }
 
 .procAddFactorDummyIntVars <- function(jaspResults, dataset, options) {
@@ -565,6 +627,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Split terms of predictor vars
     sourcVarsSplit <- strsplit(unique(igraph::E(graph)$source), "__")
 
+    # Covariates are carried over to the new graph under their dummy-coded names
+    covariates <- igraph::graph_attr(graph, "covariates")
+    facCovariates <- character(0)
+
     # Replace dummy-coded variables in graph
     # Goes through all source variables and replaces them with dummy coded variable names
     # if necessary
@@ -581,6 +647,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       # Concatenate source var and interaction terms in dummy coded variable
       contr <- .doCallPaste(contr, sep = "__")
       sourceName <- paste(vars, collapse = "__")
+
+      if (sourceName %in% covariates)
+        facCovariates <- c(facCovariates, contr)
       
 
       # Add nodes for source variables not in graph
@@ -610,6 +679,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       }
     }
 
+    if (length(facCovariates) > 0)
+      igraph::graph_attr(facGraph, "covariates") <- facCovariates
+
     # Add attributes to graph
     facGraph <- .procGraphAddAttributes(facGraph)
 
@@ -638,8 +710,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
 .procGraphAddParNamesSingleModel <- function(graph) {
   igraph::E(graph)$parSymbol <- ifelse(
-    # If source is mediator and target is global dependent -> b
-    igraph::V(graph)[igraph::E(graph)$source]$isMed & igraph::V(graph)[igraph::E(graph)$target]$isDep, "b",
+    # If source is covariate -> f into a mediator, g into the global dependent
+    # (as in the processR package), so that covariate paths are not read as a or c paths
+    igraph::V(graph)[igraph::E(graph)$source]$isCov, ifelse(igraph::V(graph)[igraph::E(graph)$target]$isDep, "g", "f"),
+    # Else If source is mediator and target is global dependent -> b
+    ifelse(igraph::V(graph)[igraph::E(graph)$source]$isMed & igraph::V(graph)[igraph::E(graph)$target]$isDep, "b",
       # Else If source is mediator and target is not global dependent (i.e., other mediator) -> d
       ifelse(igraph::V(graph)[igraph::E(graph)$source]$isMed & !igraph::V(graph)[igraph::E(graph)$target]$isDep, "d",
         # Else If source is exogenous and target is mediator -> a
@@ -647,6 +722,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
           # Else -> c
           "c")
       )
+    )
   )
   # Get occurence of each symbol
   parSymbolTable <- table(igraph::E(graph)$parSymbol)
@@ -709,6 +785,22 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       }
     }
   }
+
+  .procCheckFactorLevels(dataset, factors)
+}
+
+.procModelCompleteCases <- function(graph, dataset, options) {
+  # Rows that lavaan uses for this model. With listwise deletion, these are the
+  # cases that are complete on the model's own (dummy-coded) variables only.
+  # Missing values in variables of other models, or in variables that are only
+  # listed in the variable boxes, must not restrict this model's sample:
+  # otherwise its moderators are centered and probed on a smaller sample than
+  # the one lavaan fits, and the excluded rows enter the fit uncentered.
+  if (is.null(options$naAction) || options$naAction != "listwise") {
+    return(!logical(nrow(dataset)))
+  }
+  modelVars <- intersect(igraph::V(graph)$name, names(dataset))
+  return(complete.cases(dataset[, modelVars, drop = FALSE]))
 }
 
 .procMeanCenter <- function(graph, dataset, options) {
@@ -716,12 +808,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (options$meanCenteredModeration) {
     # Only use complete cases for standardization with listwise deletion
     # Otherwise data entered into lavaan is not actually standardized
-    if (!is.null(options$naAction) && options$naAction == "listwise") {
-      isComplete <- complete.cases(dataset)
-    } else {
-      isComplete <- !logical(nrow(dataset))
-    }
-    
+    isComplete <- .procModelCompleteCases(graph, dataset, options)
+
     for (v in unique(unlist(igraph::V(graph)[intLength > 1]$intVars))) {
       # Only center continuous variables
       if (v %in% options[["covariates"]]) {
@@ -782,6 +870,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Mean-center data set before quantile computation
   dataset <- .procMeanCenter(container[["graph"]]$object, dataset, options)
 
+  # If listwise missing value deletion, only use the model's complete cases for quantiles
+  isComplete <- .procModelCompleteCases(graph, dataset, options)
+
   modProbes <- lapply(modVars, function(nms) {
     # Is moderator factor
     matchFac <- sapply(options[["factors"]], grepl, x = nms)
@@ -793,12 +884,6 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       row.names(conMat) <- as.character(conMat[, colIdx])
       # Return matrix with dummy coding for each factor
       return(conMat[, colIdx])
-    }
-    # If listwise missing value deletion, only use complete cases for quantiles
-    if (options$naAction == "listwise") {
-      isComplete <- complete.cases(dataset)
-    } else {
-      isComplete <- !logical(nrow(dataset))
     }
 
     vComplete <- dataset[[nms]][isComplete]
@@ -1725,6 +1810,7 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     c("processModels", modelIdx, "modelNumberMediators"),
     c("processModels", modelIdx, "modelNumberModeratorW"),
     c("processModels", modelIdx, "modelNumberModeratorZ"),
+    c("processModels", modelIdx, "modelNumberCovariates"),
     c("processModels", modelIdx, "independentCovariances"),
     c("processModels", modelIdx, "mediatorCovariances"),
     c("processModels", modelIdx, "dependentCovariances"),
@@ -1828,6 +1914,12 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 }
 
 .procRecognizeModelNumber <- function(graph) {
+  # Covariates do not define the Hayes configuration, so leave them out
+  if (any(igraph::V(graph)$isCov)) {
+    graph <- igraph::delete_vertices(graph, igraph::V(graph)[isCov])
+    graph <- igraph::delete_graph_attr(graph, "covariates")
+    graph <- .procGraphAddAttributes(graph)
+  }
   # Get global dependent variable
   globalDependent <- igraph::V(graph)[isDep]$name
   # Get mediator terms
@@ -1875,6 +1967,24 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       colNames = "modelNumber"
     )
   }
+}
+
+.procModeledVariables <- function(fit) {
+  # Variables whose distribution enters the likelihood. With independent covariances
+  # (fixed.x = FALSE, the default) the likelihood also includes the exogenous
+  # variables (X, moderators, covariates, interaction terms); otherwise it is
+  # conditional on them, as in a regression.
+  what <- if (fit@Options[["fixed.x"]]) "ov.nox" else "ov"
+  return(sort(lavaan::lavNames(fit, what)))
+}
+
+.procModelsShareData <- function(fits) {
+  # Information criteria and log-likelihoods are only comparable between models
+  # of the same data: the same modeled variables and the same cases. Models with
+  # different predictors or covariates qualify only without independent covariances.
+  modeledVars <- lapply(fits, .procModeledVariables)
+  caseIdx     <- lapply(fits, lavaan::lavInspect, what = "case.idx")
+  return(all(sapply(modeledVars, identical, modeledVars[[1]])) && all(sapply(caseIdx, identical, caseIdx[[1]])))
 }
 
 .procModelSummaryTable <- function(jaspResults, options, modelsContainer, errors) {
@@ -1963,6 +2073,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     }
     if (options[["bicWeights"]]) {
       summaryTable[["wBIC"]][converged] <- .computeWeights(bic)
+    }
+
+    if (sum(converged) > 1 && !.procModelsShareData(procResults[converged])) {
+      summaryTable$addFootnote(message = .procIncomparableModelsMsg())
     }
   }
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
@@ -3140,6 +3254,14 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
       }
     }
   }
+
+  # Place covariates in the column of X, below all other nodes
+  nCov <- sum(igraph::V(graph)$isCov)
+  if (nCov > 0) {
+    igraph::V(graph)[isCov]$posX <- 0
+    igraph::V(graph)[isCov]$posY <- min(igraph::V(graph)$posY, na.rm = TRUE) - seq_len(nCov)
+  }
+
   return(graph)
 }
 
@@ -3149,6 +3271,9 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   if (!.procCheckGraph(graph)) return()
   
   if (type == "conceptual") {
+    # Covariates are statistical controls, not part of the conceptual model, so they are not shown
+    if (any(igraph::V(graph)$isCov))
+      graph <- igraph::delete_vertices(graph, igraph::V(graph)[isCov])
     graph <- .procGraphLayoutConceptual(graph)
   } else {
     graph <- .procGraphLayoutStatistical(graph)
@@ -3198,8 +3323,10 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
   # Create node type variable for coloring
   nodeType <- ifelse(igraph::V(graph)$isMed, "Mediator",
     ifelse(igraph::V(graph)$isInt | igraph::V(graph)$isPartOfInt, "Moderator",
-      ifelse(igraph::V(graph)$isExo, "Independent",
-        ifelse(igraph::V(graph)$isDep, "Dependent", NA)
+      ifelse(igraph::V(graph)$isCov, "Covariate",
+        ifelse(igraph::V(graph)$isExo, "Independent",
+          ifelse(igraph::V(graph)$isDep, "Dependent", NA)
+        )
       )
     )
   )
@@ -3209,8 +3336,15 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 
   nodeTypeLevels <- unique(na.omit(nodeType))
   if (options[["useColorPalette"]]) {
-    typeCols <- colorFun(length(nodeTypeLevels))
-    names(typeCols) <- nodeTypeLevels
+    # colorFun interpolates the palette, so each colour depends on the number of
+    # node types. Covariates therefore get a fixed light grey outside the palette:
+    # adding covariates, or dropping them in the conceptual plot, must not
+    # recolour the other node types
+    paletteLevels <- nodeTypeLevels[nodeTypeLevels != "Covariate"]
+    typeCols <- c(colorFun(length(paletteLevels)), "#D9D9D9")
+    names(typeCols) <- c(paletteLevels, "Covariate")
+    # Same order as nodeTypeLevels, which labels the legend
+    typeCols <- typeCols[nodeTypeLevels]
     igraph::V(graph)$nodeFill <- ifelse(is.na(nodeType), "transparent", typeCols[nodeType])
   } else {
     igraph::V(graph)$nodeFill <- "transparent"
@@ -3439,6 +3573,8 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
 .procModelIncompleteMsg <- function() gettext("At least one model is incomplete or no model is specified. Please add at least one model and complete specified models.")
 
 .procInformationCriteriaMsg <- function() gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators.")
+
+.procIncomparableModelsMsg <- function() gettext("The models differ in the variables they describe or in the cases used, so their information criteria and log-likelihoods cannot be compared. With 'Independent variables' selected under 'Residual Covariances', a model also describes its independent variables, moderators, and covariates; otherwise only its mediators and dependent variables.")
 
 .procCausalAssumptionsMsg <- function() gettext(
   "<b>Important</b>: Parameter estimates can only be interpreted as causal effects if all confounding effects are accounted for and if the causal effect directions are correctly specified."

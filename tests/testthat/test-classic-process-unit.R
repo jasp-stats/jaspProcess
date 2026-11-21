@@ -836,6 +836,136 @@ test_that("Test that .procSafeFactorLevels only relabels declared factor columns
   expect_identical(result[["Z"]], c("e f", "g h"))
 })
 
+test_that("Test that .procCheckFactorLevels rejects levels that clash with the interaction separator", {
+  dataset <- data.frame(
+    ok    = c("ctrl", "treat_A", "_treat", "a b"),
+    dbl   = c("ctrl", "treat__A", "treat__B", "ctrl"),
+    trail = c("ctrl", "treat_", "ctrl", "ctrl"),
+    space = c("ctrl", "treat _", "ctrl", "ctrl"),
+    stringsAsFactors = FALSE
+  )
+  expect_silent(jaspProcess:::.procCheckFactorLevels(dataset, "ok"))
+  expect_error(jaspProcess:::.procCheckFactorLevels(dataset, c("ok", "dbl")), "treat__A, treat__B", class = "validationError")
+  expect_error(jaspProcess:::.procCheckFactorLevels(dataset, "trail"), "treat_\\.", class = "validationError")
+  # Also after the name-safe relabelling ("treat _" -> "treat._" ends with "_")
+  expect_error(jaspProcess:::.procCheckFactorLevels(dataset, "space"), "treat _", class = "validationError")
+})
+
+# Covariates in the Hayes configuration input ------------------------------
+
+createDummyGraphModelMediationCovariates <- function() {
+  # Simple mediation (X = contGamma, M = contcor1, Y = contNormal) with two covariates
+  edgeList <- matrix(c("contGamma", "contNormal",
+                       "contGamma", "contcor1",
+                       "contcor1", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graph <- create_graph_from_edgeList(edgeList)
+  return(jaspProcess:::.procGraphAddCovariates(graph, c("contcor2", "debCollin1")))
+}
+
+test_that("Test that .procGraphAddCovariates works", {
+  graph <- createDummyGraphModelMediationCovariates()
+  edges <- paste(igraph::E(graph)$source, igraph::E(graph)$target, sep = "->")
+
+  # Covariates enter the mediator and outcome equations, but not the equation of X
+  expect_setequal(edges, c(
+    "contGamma->contNormal", "contGamma->contcor1", "contcor1->contNormal",
+    "contcor2->contNormal", "contcor2->contcor1", "debCollin1->contNormal", "debCollin1->contcor1"
+  ))
+  expect_equal(igraph::V(graph)[isCov]$name, c("contcor2", "debCollin1"))
+  # Covariates are exogenous but they are not treatment variables
+  expect_true(all(igraph::V(graph)[isCov]$isExo))
+  expect_equal(igraph::V(graph)[isTreat]$name, "contGamma")
+  expect_equal(igraph::V(graph)[isMed]$name, "contcor1")
+})
+
+test_that("Test that .procGraphAddCovariates works - no covariates", {
+  graph <- createDummyGraphModelModeratedMediation()
+  expect_identical(jaspProcess:::.procGraphAddCovariates(graph, character(0)), graph)
+  expect_false(any(igraph::V(graph)$isCov))
+})
+
+test_that("Test that .procGraphAddCovariates works - moderated mediation", {
+  graph <- jaspProcess:::.procGraphAddCovariates(createDummyGraphModelModeratedMediation(), "debCollin1")
+
+  # No edges into moderators or interaction terms
+  expect_setequal(igraph::E(graph)[.from("debCollin1")]$target, c("contNormal", "contcor1"))
+  # Moderation structure is unchanged
+  expect_true(igraph::E(graph)[source == "contGamma" & target == "contNormal"]$isMod)
+  expect_equal(igraph::V(graph)[isTreat]$name, "contGamma")
+})
+
+test_that("Test that .procGraphAddCovariates rejects covariates that are already in the model", {
+  edgeList <- matrix(c("contGamma", "contNormal",
+                       "contGamma", "contcor1",
+                       "contcor1", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graph <- create_graph_from_edgeList(edgeList)
+
+  # X, a mediator, or Y as a covariate
+  for (v in c("contGamma", "contcor1", "contNormal")) {
+    expect_error(jaspProcess:::.procGraphAddCovariates(graph, c("contcor2", v)), paste0("Remove ", v, " from the covariates"))
+  }
+  # A moderator as a covariate
+  expect_error(jaspProcess:::.procGraphAddCovariates(createDummyGraphModelModeratedMediation(), "contcor2"), "Remove contcor2 from the covariates")
+})
+
+test_that("Test that .procModelGraphSingleModel adds covariates for Hayes configurations", {
+  modelOptions <- list(
+    inputType = "inputModelNumber",
+    modelNumber = 4,
+    modelNumberIndependent = "contGamma",
+    modelNumberMediators = list("contcor1"),
+    modelNumberModeratorW = "",
+    modelNumberModeratorZ = "",
+    modelNumberCovariates = list("contcor2")
+  )
+  graph <- jaspProcess:::.procModelGraphSingleModel(modelOptions, globalDependent = "contNormal")
+
+  expect_setequal(igraph::E(graph)[.from("contcor2")]$target, c("contNormal", "contcor1"))
+  expect_equal(igraph::V(graph)[isCov]$name, "contcor2")
+
+  # Analyses saved before the option existed have no covariates
+  modelOptions[["modelNumberCovariates"]] <- NULL
+  graph <- jaspProcess:::.procModelGraphSingleModel(modelOptions, globalDependent = "contNormal")
+
+  expect_false(any(igraph::V(graph)$isCov))
+  expect_equal(igraph::ecount(graph), 3)
+})
+
+test_that("Test that .procGraphAddParNamesSingleModel works - covariates", {
+  graph <- jaspProcess:::.procGraphAddParNamesSingleModel(createDummyGraphModelMediationCovariates())
+  # Covariate paths: f into the mediator, g into the outcome
+  expect_equal(igraph::E(graph)$parSymbol, c("c", "a", "b", "g", "f", "g", "f"))
+  expect_equal(igraph::E(graph)$parName, c("c1", "a1", "b1", "g1", "f1", "g2", "f2"))
+})
+
+test_that("Test that .procRecognizeModelNumber ignores covariates", {
+  edgeList <- matrix(c("contGamma", "contNormal",
+                       "contGamma", "contcor1",
+                       "contcor1", "contNormal"
+  ), ncol = 2, byrow = TRUE)
+  graphMediation <- create_graph_from_edgeList(edgeList)
+
+  expect_equal(
+    jaspProcess:::.procRecognizeModelNumber(createDummyGraphModelMediationCovariates()),
+    jaspProcess:::.procRecognizeModelNumber(graphMediation)
+  )
+  expect_true(4 %in% jaspProcess:::.procRecognizeModelNumber(createDummyGraphModelMediationCovariates()))
+
+  graph_5_14 <- jaspProcess:::.procGraphAddCovariates(createDummyGraphModelModeratedMediation(), "debCollin1")
+  expect_equal(jaspProcess:::.procRecognizeModelNumber(graph_5_14), c(5, 14))
+})
+
+test_that("Test that .procGraphLayoutStatistical places covariates below X", {
+  graph <- jaspProcess:::.procGraphLayoutStatistical(createDummyGraphModelMediationCovariates())
+  covNodes <- igraph::V(graph)[isCov]
+
+  expect_equal(covNodes$posX, c(0, 0))
+  expect_true(all(covNodes$posY < min(igraph::V(graph)[!isCov]$posY)))
+  expect_false(anyNA(igraph::V(graph)$posY))
+})
+
 test_that("Test that .procResiduals works", {
   set.seed(1)
   dat <- data.frame(x = rnorm(100), w = rnorm(100))
