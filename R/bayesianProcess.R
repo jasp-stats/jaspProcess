@@ -16,7 +16,7 @@
 #
 
 # Main function ----
-BayesianProcess <- function(jaspResults, dataset = NULL, options) {
+BayesianProcessInternal <- function(jaspResults, dataset = NULL, options) {
   # Set title
   jaspResults$title <- gettext("Process Analysis")
   # Check if all models are ready to compute something

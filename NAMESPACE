@@ -1,3 +1,5 @@
 export(ClassicProcess)
+export(ClassicProcessInternal)
 export(BayesianProcess)
+export(BayesianProcessInternal)
 import(jaspBase)

@@ -6,7 +6,7 @@ Description
 	title		: qsTr("Process")
 	description	: qsTr("Test and compare causal and conditional process models.")
 	icon		: "classical-process.svg"
-	hasWrappers:  false
+	hasWrappers:  true
 	
 	GroupTitle
 	{

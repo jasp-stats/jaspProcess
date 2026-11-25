@@ -16,7 +16,7 @@
 #
 
 # Main function ----
-ClassicProcess <- function(jaspResults, dataset = NULL, options) {
+ClassicProcessInternal <- function(jaspResults, dataset = NULL, options) {
   # Set title
   jaspResults$title <- gettext("Process Analysis")
   # Check if all models are ready to compute something
