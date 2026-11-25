@@ -3407,11 +3407,11 @@ ClassicProcess <- function(jaspResults, dataset = NULL, options) {
     # Use the first error message
     for (r in procResults) {
       if (is.character(r)) {
-        jaspResults$setError(r)
+        .quitAnalysis(r)
         return()
       }
     }
-    jaspResults$setError(.procEstimationMsg())
+    .quitAnalysis(.procEstimationMsg())
   }
 }
 

@@ -1681,3 +1681,36 @@ test_that("Residual Q-Q plot with confidence band works", {
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   jaspTools::expect_equal_plots(testPlot, "residuals-qq-plot-ci-contNormal")
 })
+
+test_that("Not implemented Hayes model shows its error message when all models fail", {
+  # Hayes configuration 19 is accepted by the form (1 to 92) but not implemented,
+  # so no model can be fitted and the analysis should stop with that model's message
+  set.seed(1)
+  df <- data.frame(x = rnorm(50), w = rnorm(50), m = rnorm(50), y = rnorm(50))
+
+  options <- getOptionsClassical()
+  options$dependent <- "y"
+  options$covariates <- list("x", "w", "m")
+  options$factors <- list()
+  options$processModels <- list(getProcessModel(list()))
+  options$processModels[[1]]$inputType <- "inputModelNumber"
+  options$processModels[[1]]$modelNumber <- 19
+  options$processModels[[1]]$modelNumberIndependent <- "x"
+  options$processModels[[1]]$modelNumberMediators <- list("m")
+  options$processModels[[1]]$modelNumberModeratorW <- "w"
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", df, options)
+
+  expect_identical(results[["status"]], "validationError")
+  expect_identical(results[["results"]][["errorMessage"]], "Model 1: Hayes configuration 19 not implemented")
+
+  # with two failing models, the first model's message is shown
+  options$processModels[[2]] <- options$processModels[[1]]
+  options$processModels[[2]]$name <- "Model 2"
+  options$processModels[[2]]$modelNumber <- 20
+  set.seed(1)
+  results <- jaspTools::runAnalysis("ClassicProcess", df, options)
+
+  expect_identical(results[["status"]], "validationError")
+  expect_identical(results[["results"]][["errorMessage"]], "Model 1: Hayes configuration 19 not implemented")
+})
