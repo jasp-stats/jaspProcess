@@ -24,6 +24,7 @@
 * Changing the number of bootstrap replications in the classical analysis now refits the models; before, the results of the previous number of replications were kept.
 * Requesting output for a single model (e.g., a plot or a parameter estimates table) no longer recomputes the model summary and R² tables. In the Bayesian analysis, this avoids recomputing WAIC and LOO for every model.
 * Process models with a categorical predictor no longer error when a factor level label contains a space or other special character (e.g. "emotion regulation"). Such labels are now coerced to syntactically valid names before being used in mean-centering and lavaan model syntax ([Issue #3597](https://github.com/jasp-stats/jasp-issues/issues/3597)).
+* When no model of the classical analysis can be fitted (for example with a Hayes configuration number that is not implemented), the analysis now shows the first model's error message instead of "Analyis returned an error but no errormessage...".
 
 ---
 
