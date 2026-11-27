@@ -1,5 +1,7 @@
 # Unit tests for Bayesian Process analysis
 
+installJaspProcessForUnitTests()
+
 test_that("Test that .procBayesStandardizedResidualsFromDraws works", {
   set.seed(1)
   dat <- data.frame(x = rnorm(50), w = rnorm(50))

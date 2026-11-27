@@ -1,5 +1,8 @@
 # Unit tests for Classic Process analysis
 
+installJaspProcessForUnitTests()
+localPlainColumnNames()
+
 # Helper functions --------------------------------------------------------
 
 create_graph_from_edgeList <- function(edgeList) {

@@ -44,7 +44,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -174,7 +174,7 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -301,9 +301,9 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -492,9 +492,9 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -672,9 +672,9 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor1", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "contcor1", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -905,9 +905,9 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facExperim", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "facExperim", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -1129,9 +1129,9 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -1260,9 +1260,9 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -1391,15 +1391,15 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
+        list(value = "#2", processDependent = "debCollin1", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
+        list(value = "#4", processDependent = "debCollin1", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#5", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -1662,15 +1662,15 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
+        list(value = "#2", processDependent = "debCollin1", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
+        list(value = "#4", processDependent = "debCollin1", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#5", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -1904,15 +1904,15 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
+        list(value = "#2", processDependent = "debCollin1", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#4", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#5", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -2194,15 +2194,15 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
+        list(value = "#2", processDependent = "debCollin1", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#4", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#5", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "contcor2")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -2455,17 +2455,17 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "debMiss1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#4", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#5", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debMiss1", 
+        list(value = "#6", processDependent = "contNormal", processIndependent = "debMiss1", 
             processType = "mediators", processVariable = "contcor1")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -2635,17 +2635,17 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "debMiss1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#4", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#5", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debMiss1", 
+        list(value = "#6", processDependent = "contNormal", processIndependent = "debMiss1", 
             processType = "mediators", processVariable = "contcor1")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -2816,23 +2816,23 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "contGamma", 
+        list(value = "#4", processDependent = "debCollin1", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contcor2", processIndependent = "contGamma", 
+        list(value = "#5", processDependent = "contcor2", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contGamma", 
+        list(value = "#6", processDependent = "contNormal", processIndependent = "contGamma", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contcor2", processIndependent = "debCollin1", 
+        list(value = "#7", processDependent = "contcor2", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#8", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "contcor1"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
+        list(value = "#9", processDependent = "contNormal", processIndependent = "contcor2", 
             processType = "moderators", processVariable = "contcor1")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
@@ -3066,23 +3066,23 @@ options$processModels <- list(list(conceptualPathPlot = TRUE, independentCovaria
     modelNumberIndependent = "", modelNumberMediators = list(), 
     modelNumberModeratorW = "", modelNumberModeratorZ = "", name = "Model 1", 
     pathCoefficients = TRUE, intercepts = FALSE, processRelationships = list(
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "debCollin1"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#2", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#3", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "mediators", processVariable = "contcor2"), 
-        list(processDependent = "debCollin1", processIndependent = "facGender", 
+        list(value = "#4", processDependent = "debCollin1", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contcor2", processIndependent = "facGender", 
+        list(value = "#5", processDependent = "contcor2", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "facGender", 
+        list(value = "#6", processDependent = "contNormal", processIndependent = "facGender", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contcor2", processIndependent = "debCollin1", 
+        list(value = "#7", processDependent = "contcor2", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "debCollin1", 
+        list(value = "#8", processDependent = "contNormal", processIndependent = "debCollin1", 
             processType = "moderators", processVariable = "facExperim"), 
-        list(processDependent = "contNormal", processIndependent = "contcor2", 
+        list(value = "#9", processDependent = "contNormal", processIndependent = "contcor2", 
             processType = "moderators", processVariable = "facExperim")), 
     residualCovariances = TRUE, statisticalPathPlot = TRUE, residualVsFittedPlot = FALSE, residualQqPlot = FALSE, totalEffects = TRUE))
 set.seed(1)
