@@ -634,6 +634,24 @@ test_that("Test that .procEffectsTablesGetConditionalLabels works", {
   expect_equal(jaspProcess:::.procEffectsTablesGetConditionalLabels(paths, mods), labels)
 })
 
+test_that("Test that .procFormatFactorLevels works", {
+  # Same contrasts as .procAddFactorDummyIntVars creates
+  contrasts <- list(
+    facGender = contr.treatment(c("f", "m")),
+    facThree  = contr.treatment(c("A", "B", "C"))
+  )
+  varNames <- c("facGenderm", "facThreeB", "facThreeC", "contNormal", "(Intercept)", "facGender",
+                "facGenderm__contcor1", "facGenderm__facThreeC__contcor1", "facGendermean", "")
+  expected <- c("facGender (m)", "facThree (B)", "facThree (C)", "contNormal", "(Intercept)", "facGender",
+                "facGender (m):contcor1", "facGender (m):facThree (C):contcor1", "facGendermean", "")
+
+  expect_equal(jaspProcess:::.procFormatFactorLevels(varNames, contrasts), expected)
+
+  # Without factors only the interaction separator changes
+  expect_equal(jaspProcess:::.procFormatFactorLevels(c("contGamma__contcor1", "contNormal"), NULL),
+               c("contGamma:contcor1", "contNormal"))
+})
+
 test_that("Test that .procMainGraphLayoutPosHelper works", {
   expect_equal(jaspProcess:::.procMainGraphLayoutPosHelper(1), 1)
   expect_equal(jaspProcess:::.procMainGraphLayoutPosHelper(1:2), c(1, -1))
